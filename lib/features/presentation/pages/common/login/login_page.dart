@@ -151,6 +151,7 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         isDismissible: false,
         isScrollControlled: true,
+        backgroundColor: Colors.white,
         builder: (context) {
           return BlocProvider(
             create: (context) => sl<OtpCubit>(),

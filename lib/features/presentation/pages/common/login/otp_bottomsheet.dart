@@ -107,23 +107,28 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                           Text(
                             '00:${value.toString().padLeft(2, "0")}',
                           ),
+                          const SizedBox(height: 20),
                           InkWell(
                             onTap: () {
                               if (_timeCounter.value <= 0) {
-                                context.read<OtpCubit>().resendOtp(
-                                      LoginParams(
-                                        countryCode: widget.data.countryCode,
-                                        phoneNumber: widget.data.phoneNumber,
-                                      ),
-                                    );
+                                _timeCounter.value = timerInitVal;
+                                resendOtpTimer();
+                                // context.read<OtpCubit>().resendOtp(
+                                //       LoginParams(
+                                //         countryCode: widget.data.countryCode,
+                                //         phoneNumber: widget.data.phoneNumber,
+                                //       ),
+                                //     );
                               }
                             },
                             child: Text(
                               "Send me a new code",
                               style: theme.publicSansFonts.regularStyle(
+                                  fontSize: 16,
+                                  decoration: TextDecoration.underline,
                                   fontColor: (_timeCounter.value <= 0)
                                       ? AppColors.primaryColor
-                                      : AppColors.black21),
+                                      : Colors.grey.shade500),
                             ),
                           )
                         ],
@@ -138,12 +143,15 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                         text: StringKeys.verify,
                         onPressed: () {
                           if (otp != null && otp!.length == 6) {
-                            context.read<OtpCubit>().verifyOtp(
-                                  LoginParams(
-                                      countryCode: widget.data.countryCode,
-                                      phoneNumber: widget.data.phoneNumber,
-                                      otp: otp),
-                                );
+                            // context.read<OtpCubit>().verifyOtp(
+                            //       LoginParams(
+                            //           countryCode: widget.data.countryCode,
+                            //           phoneNumber: widget.data.phoneNumber,
+                            //           otp: otp),
+                            //     );
+                            widget.showErrorToast(
+                                context: context,
+                                message: "API is not integrated yet");
                           } else {
                             widget.showErrorToast(
                                 context: context,
