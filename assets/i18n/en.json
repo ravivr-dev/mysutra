@@ -1,8 +1,8 @@
 {
-"dashboard" : "dashboard",
 "login" : "Login",
-"mobile_number" : "Mobile number",
-"verify" : "Verify"
+"mobile_number" : "Mobile Number",
+"verify" : "Verify",
+"choose_Account" : "Choose Account Type"
  
 
 }

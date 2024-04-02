@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/login_page.dart';
+import 'package:my_sutra/features/presentation/pages/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/pages/common/splash/splash_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -18,11 +19,14 @@ class Routes {
       case AppRoutes.loginRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<LoginCubit>()..getAcademyCenters(),
+            create: (context) => sl<LoginCubit>(),
             child: const LoginPage(),
           ),
         );
 
+      case AppRoutes.chooseAccountTypeRoute:
+        return MaterialPageRoute(
+            builder: (_) => const ChooseAccountTypeScreen());
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
       //       builder: (_) => const MyBatchesScreen());

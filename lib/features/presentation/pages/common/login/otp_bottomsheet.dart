@@ -140,7 +140,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     child: SafeArea(
                       child: CustomButton(
                         isLoading: state is OtpLoading,
-                        text: StringKeys.verify,
+                        text: context.stringForKey(StringKeys.verify),
                         onPressed: () {
                           if (otp != null && otp!.length == 6) {
                             // context.read<OtpCubit>().verifyOtp(

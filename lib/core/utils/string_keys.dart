@@ -1,6 +1,7 @@
+
 class StringKeys {
-  static const String dashboard = 'Dashboard';
-  static const String login = 'Login';
-  static const String mobileNumber = "Mobile Number";
-  static const String verify = "Verify";
+  static const String login = 'login';
+  static const String mobileNumber = "mobile_number";
+  static const String verify = "verify";
+  static const String chooseAccount = "choose_Account";
 }

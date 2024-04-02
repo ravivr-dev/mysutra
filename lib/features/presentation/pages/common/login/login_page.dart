@@ -1,3 +1,4 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -10,8 +11,9 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.da
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/otp_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/otp_bottomsheet.dart';
-import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/features/presentation/pages/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
 import 'package:my_sutra/injection_container.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -68,24 +70,12 @@ class _LoginPageState extends State<LoginPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            component.assetImage(path: Assets.iconsLogo),
-                            Text(
-                              "T&C | Privacy policy",
-                              style: theme.publicSansFonts.semiBoldStyle(
-                                  fontSize: 14,
-                                  fontColor: AppColors.primaryColor),
-                            )
-                          ],
-                        ),
+                        const AppLogoWithTermsConditionWidget(),
                         const SizedBox(
                           height: 60,
                         ),
                         Text(
-                          StringKeys.login,
+                          context.stringForKey(StringKeys.login),
                           style:
                               theme.publicSansFonts.semiBoldStyle(fontSize: 25),
                         ),
@@ -93,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         TextFormWithCountryCode(
-                          title: StringKeys.mobileNumber,
+                          title: context.stringForKey(StringKeys.mobileNumber),
                           countryCode: _countryCode,
                           controller: _mobCtrl,
                         ),
@@ -123,13 +113,19 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         const SizedBox(height: 14),
-                        Text(
-                          "Create an account",
-                          style: theme.publicSansFonts.regularStyle(
-                            fontSize: 16,
-                            height: 22,
-                            fontColor: AppColors.primaryColor,
-                            decoration: TextDecoration.underline,
+                        InkWell(
+                          onTap: () {
+                            AiloitteNavigation.intentWithClearAllRoutes(
+                                context, AppRoutes.chooseAccountTypeRoute);
+                          },
+                          child: Text(
+                            "Create an account",
+                            style: theme.publicSansFonts.regularStyle(
+                              fontSize: 16,
+                              height: 22,
+                              fontColor: AppColors.primaryColor,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         )
                       ],
