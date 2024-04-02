@@ -81,7 +81,6 @@ class _UserRestClient implements UserRestClient {
 
   @override
   Future<SuccessMessageModel> login(
-    String academy,
     String countryCode,
     int phoneNumber,
   ) async {
@@ -89,7 +88,6 @@ class _UserRestClient implements UserRestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'academyCenterId': academy,
       'countryCode': countryCode,
       'phoneNumber': phoneNumber,
     };
@@ -143,7 +141,6 @@ class _UserRestClient implements UserRestClient {
 
   @override
   Future<OtpResponseModel> sendOtp(
-    String academy,
     String countryCode,
     int phoneNumber,
     int otp,
@@ -152,7 +149,6 @@ class _UserRestClient implements UserRestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'academyCenterId': academy,
       'countryCode': countryCode,
       'phoneNumber': phoneNumber,
       'otp': otp,

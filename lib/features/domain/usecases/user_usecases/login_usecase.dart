@@ -11,7 +11,6 @@ class LoginUsecase extends UseCase<String, LoginParams> {
   @override
   Future<Either<Failure, String>> call(LoginParams params) async {
     return await repo.login(
-      academy: params.academy,
       countryCode: params.countryCode,
       phoneNumber: params.phoneNumber,
     );
@@ -19,13 +18,11 @@ class LoginUsecase extends UseCase<String, LoginParams> {
 }
 
 class LoginParams {
-  final String academy;
   final String countryCode;
   final String phoneNumber;
   final String? otp;
 
   LoginParams({
-    required this.academy,
     required this.countryCode,
     required this.phoneNumber,
     this.otp,

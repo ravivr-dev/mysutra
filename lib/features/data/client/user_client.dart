@@ -58,7 +58,6 @@ abstract class UserRestClient {
 
   @POST(ENDPOINT_LOGIN)
   Future<SuccessMessageModel> login(
-    @Field("academyCenterId") String academy,
     @Field("countryCode") String countryCode,
     @Field("phoneNumber") int phoneNumber,
   );
@@ -68,7 +67,6 @@ abstract class UserRestClient {
 
   @POST(ENDPOINT_VERIFY_OTP)
   Future<OtpResponseModel> sendOtp(
-    @Field("academyCenterId") String academy,
     @Field("countryCode") String countryCode,
     @Field("phoneNumber") int phoneNumber,
     @Field("otp") int otp,

@@ -20,12 +20,12 @@ abstract class UserDataSource {
   Future<AcademyCentersModel> getAcademyCentres({int? pageNumber, int? limit});
 
   Future<SuccessMessageModel> login(
-      {required String academy,
+      {
       required String countryCode,
       required String phoneNumber});
 
   Future<OtpResponseModel> sendOtp(
-      {required String academy,
+      {
       required String countryCode,
       required String phoneNumber,
       required String otp});
@@ -100,12 +100,12 @@ class UserDataSourceImpl extends UserDataSource {
 
   @override
   Future<SuccessMessageModel> login(
-      {required String academy,
+      {
       required String countryCode,
       required String phoneNumber}) async {
     try {
       return await client
-          .login(academy, countryCode, int.parse(phoneNumber))
+          .login( countryCode, int.parse(phoneNumber))
           .catchError((err) {
         _processDio(err);
       });
@@ -121,13 +121,13 @@ class UserDataSourceImpl extends UserDataSource {
 
   @override
   Future<OtpResponseModel> sendOtp(
-      {required String academy,
+      {
       required String countryCode,
       required String phoneNumber,
       required String otp}) async {
     try {
       return await client
-          .sendOtp(academy, countryCode, int.parse(phoneNumber), int.parse(otp))
+          .sendOtp( countryCode, int.parse(phoneNumber), int.parse(otp))
           .catchError((err) {
         _processDio(err);
       });

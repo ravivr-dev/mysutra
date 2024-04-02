@@ -4,12 +4,13 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/academy_center_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/otp_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/otp_bottomsheet.dart';
+import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/injection_container.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,9 +23,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _countryCode = TextEditingController();
   final TextEditingController _mobCtrl = TextEditingController();
-  String? selectedAcademy;
-
-  List<AcademyCenter> listOfCenters = [];
 
   @override
   void initState() {
@@ -53,15 +51,15 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.only(top: 25, left: 22, right: 22),
             child: BlocConsumer<LoginCubit, LoginState>(
               listener: (context, state) {
-                if (state is AcademyLoaded) {
-                  listOfCenters = state.academies;
-                } else if (state is LoginError) {
-                  widget.showErrorToast(context: context, message: state.error);
-                } else if (state is LoginSuccess) {
-                  widget.showSuccessToast(
-                      context: context, message: state.message);
-                  showOtpBottomSheet();
-                }
+                // if (state is AcademyLoaded) {
+                //   listOfCenters = state.academies;
+                // } else if (state is LoginError) {
+                //   widget.showErrorToast(context: context, message: state.error);
+                // } else if (state is LoginSuccess) {
+                //   widget.showSuccessToast(
+                //       context: context, message: state.message);
+                //   showOtpBottomSheet();
+                // }
               },
               builder: (context, state) {
                 return Column(
@@ -70,48 +68,26 @@ class _LoginPageState extends State<LoginPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            component.assetImage(path: Assets.iconsLogo),
+                            Text(
+                              "T&C | Privacy policy",
+                              style: theme.publicSansFonts.semiBoldStyle(
+                                  fontSize: 14,
+                                  fontColor: AppColors.primaryColor),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
                         Text(
                           StringKeys.login,
                           style:
                               theme.publicSansFonts.semiBoldStyle(fontSize: 25),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Select Academy Center',
-                          style:
-                              theme.publicSansFonts.semiBoldStyle(fontSize: 14),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        DropdownMenu<String>(
-                          hintText: 'Select Academy Center',
-                          inputDecorationTheme: const InputDecorationTheme(
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 25),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30)))),
-                          expandedInsets: const EdgeInsets.only(),
-                          trailingIcon: const Padding(
-                              padding: EdgeInsets.only(right: 10),
-                              child: Icon(Icons.keyboard_arrow_down_outlined)),
-                          onSelected: (val) {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            selectedAcademy = val;
-                          },
-                          dropdownMenuEntries: listOfCenters.map((value) {
-                            return DropdownMenuEntry<String>(
-                              value: value.id!,
-                              label: value.name!,
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                              ),
-                            );
-                          }).toList(),
                         ),
                         const SizedBox(
                           height: 20,
@@ -123,28 +99,40 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    CustomButton(
-                      text: StringKeys.login.toUpperCase(),
-                      isLoading: state is LoginLoading,
-                      onPressed: () {
-                        if (selectedAcademy == null) {
-                          widget.showErrorToast(
-                              context: context,
-                              message: "Please Select Academy Center");
-                        } else if (_mobCtrl.text == "" ||
-                            _mobCtrl.text.length != 10) {
-                          widget.showErrorToast(
-                              context: context,
-                              message: "Please enter a valid mobile number");
-                        } else {
-                          context.read<LoginCubit>().login(
-                                LoginParams(
-                                    academy: selectedAcademy!,
-                                    countryCode: _countryCode.text,
-                                    phoneNumber: _mobCtrl.text),
-                              );
-                        }
-                      },
+                    Column(
+                      children: [
+                        CustomButton(
+                          text: StringKeys.login.toUpperCase(),
+                          isLoading: false,
+                          onPressed: () {
+                            if (_mobCtrl.text == "" ||
+                                _mobCtrl.text.length != 10) {
+                              widget.showErrorToast(
+                                  context: context,
+                                  message:
+                                      "Please enter a valid mobile number");
+                            } else {
+                              showOtpBottomSheet();
+                              // context.read<LoginCubit>().login(
+                              //       LoginParams(
+                              //           academy: selectedAcademy!,
+                              //           countryCode: _countryCode.text,
+                              //           phoneNumber: _mobCtrl.text),
+                              //     );
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 14),
+                        Text(
+                          "Create an account",
+                          style: theme.publicSansFonts.regularStyle(
+                            fontSize: 16,
+                            height: 22,
+                            fontColor: AppColors.primaryColor,
+                            decoration: TextDecoration.underline,
+                          ),
+                        )
+                      ],
                     ),
                     const SizedBox(),
                     const SizedBox(),
@@ -168,9 +156,7 @@ class _LoginPageState extends State<LoginPage> {
             create: (context) => sl<OtpCubit>(),
             child: OtpBottomsheet(
               data: LoginParams(
-                  academy: selectedAcademy!,
-                  countryCode: _countryCode.text,
-                  phoneNumber: _mobCtrl.text),
+                  countryCode: _countryCode.text, phoneNumber: _mobCtrl.text),
             ),
           );
         });

@@ -12,7 +12,6 @@ class VerifyOtpUsecase extends UseCase<String, LoginParams> {
   @override
   Future<Either<Failure, String>> call(LoginParams params) async {
     return await repo.sendOtp(
-      academy: params.academy,
       countryCode: params.countryCode,
       phoneNumber: params.phoneNumber,
       otp: params.otp!,

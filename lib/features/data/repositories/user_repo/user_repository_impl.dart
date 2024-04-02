@@ -43,13 +43,10 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<Either<Failure, String>> login(
-      {required String academy,
-      required String countryCode,
-      required String phoneNumber}) async {
+      {required String countryCode, required String phoneNumber}) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.login(
-          academy: academy,
           countryCode: countryCode,
           phoneNumber: phoneNumber,
         );
@@ -65,14 +62,12 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<Either<Failure, String>> sendOtp(
-      {required String academy,
-      required String countryCode,
+      {required String countryCode,
       required String phoneNumber,
       required String otp}) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.sendOtp(
-          academy: academy,
           countryCode: countryCode,
           phoneNumber: phoneNumber,
           otp: otp,
@@ -81,7 +76,7 @@ class UserRepositoryImpl extends UserRepository {
         if (result.otpData != null) {
           localDataSource.setAccessToken(result.otpData!.accessToken!);
           localDataSource.setUserRole(result.otpData!.role!);
-          localDataSource.setCurrentAcademy(academy);
+          // localDataSource.setCurrentAcademy(academy);
           localDataSource.setUserName(result.otpData!.name ?? "");
         }
 

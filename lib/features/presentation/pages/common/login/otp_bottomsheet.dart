@@ -112,7 +112,6 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                               if (_timeCounter.value <= 0) {
                                 context.read<OtpCubit>().resendOtp(
                                       LoginParams(
-                                        academy: widget.data.academy,
                                         countryCode: widget.data.countryCode,
                                         phoneNumber: widget.data.phoneNumber,
                                       ),
@@ -141,7 +140,6 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                           if (otp != null && otp!.length == 6) {
                             context.read<OtpCubit>().verifyOtp(
                                   LoginParams(
-                                      academy: widget.data.academy,
                                       countryCode: widget.data.countryCode,
                                       phoneNumber: widget.data.phoneNumber,
                                       otp: otp),

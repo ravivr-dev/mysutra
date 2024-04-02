@@ -11,12 +11,10 @@ abstract class UserRepository {
       {int? pageNumber, int? limit});
 
   Future<Either<Failure, String>> login(
-      {required String academy,
-      required String countryCode,
-      required String phoneNumber});
+      {required String countryCode, required String phoneNumber});
 
   Future<Either<Failure, String>> sendOtp(
-      {required String academy,
+{
       required String countryCode,
       required String phoneNumber,
       required String otp});
