@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/login_page.dart';
 import 'package:my_sutra/features/presentation/pages/common/registration/choose_account_type_scree.dart';
+import 'package:my_sutra/features/presentation/pages/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/pages/common/splash/splash_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -26,7 +27,15 @@ class Routes {
 
       case AppRoutes.chooseAccountTypeRoute:
         return MaterialPageRoute(
-            builder: (_) => const ChooseAccountTypeScreen());
+          builder: (_) => const ChooseAccountTypeScreen(),
+        );
+
+      case AppRoutes.createAccountRoute:
+        return MaterialPageRoute(
+          builder: (_) => CreateAccountScreen(
+            profession: args as String,
+          ),
+        );
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
       //       builder: (_) => const MyBatchesScreen());
