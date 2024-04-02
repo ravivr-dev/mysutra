@@ -65,7 +65,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       hoverColor: AppColors.white,
                       focusColor: AppColors.white,
                       horizontalTitleGap: 10,
-                      leading: component.assetImage(path: Assets.iconsPerson),
+                      // leading: component.assetImage(path: Assets.iconsPerson),
                       title: Text(
                         'Student Performances',
                         style: fontStyle,
@@ -78,7 +78,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       hoverColor: AppColors.white,
                       focusColor: AppColors.white,
                       horizontalTitleGap: 10,
-                      leading: component.assetImage(path: Assets.iconsSwitch),
+                      // leading: component.assetImage(path: Assets.iconsSwitch),
                       title: Text(
                         'Switch Academy',
                         style: fontStyle,
@@ -90,7 +90,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       hoverColor: AppColors.white,
                       focusColor: AppColors.white,
                       horizontalTitleGap: 10,
-                      leading: component.assetImage(path: Assets.iconsMessage),
+                      // leading: component.assetImage(path: Assets.iconsMessage),
                       title: Text(
                         'Write feedback',
                         style: fontStyle,

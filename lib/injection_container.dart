@@ -32,9 +32,6 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.da
 import 'package:my_sutra/features/domain/usecases/user_usecases/mark_attendance_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/training_program_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
-import 'package:my_sutra/features/presentation/pages/coach/attendance/cubit/attendance_cubit.dart';
-import 'package:my_sutra/features/presentation/pages/coach/dashboard/cubit/dashboard_cubit.dart';
-import 'package:my_sutra/features/presentation/pages/coach/my_batches/cubit/my_batches_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/otp_cubit.dart';
 import 'package:my_sutra/features/presentation/pages/common/profile/cubit/profile_cubit.dart';
@@ -49,14 +46,7 @@ Future<void> init() async {
       sl<MyBatchesUsecase>(), sl<LocalDataSource>(), sl<UserProfileUsecase>()));
   sl.registerFactory(
       () => LoginCubit(sl<AcademyCenterUsecase>(), sl<LoginUsecase>()));
-  sl.registerLazySingleton(() => MyBatchesCubit(sl<TrainingProgramUsecase>()));
   // sl.registerLazySingleton(() => MyBatchesCubit(sl<MyAcademyCenterUsecase>()));
-  sl.registerFactory(() => DashboardCubit(
-      sl<CheckinUsecase>(),
-      sl<CheckoutUsecase>(),
-      sl<CheckinStatusUsecase>(),
-      sl<MyBatchesUsecase>(),
-      sl<LocalDataSource>()));
   sl.registerFactory(
       () => OtpCubit(sl<LoginUsecase>(), sl<VerifyOtpUsecase>()));
   sl.registerLazySingleton(() => ProfileCubit(
@@ -65,8 +55,6 @@ Future<void> init() async {
       sl<ChangeEmailUsecase>(),
       sl<ChangePhoneOtpUsecase>(),
       sl<ChangeEmailOtpUsecase>()));
-  sl.registerLazySingleton(() => AttendanceCubit(
-      sl<GetBatchStudentsUsecase>(), sl<MarkAttendanceUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => AcademyCenterUsecase(sl<UserRepository>()));

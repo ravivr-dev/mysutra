@@ -1,33 +1,81 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/presentation/pages/common/registration/widgets/account_type_item_widget.dart';
 import 'package:my_sutra/features/presentation/pages/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
+import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
-class ChooseAccountTypeScreen extends StatelessWidget {
+class ChooseAccountTypeScreen extends StatefulWidget {
   const ChooseAccountTypeScreen({super.key});
+
+  @override
+  State<ChooseAccountTypeScreen> createState() =>
+      _ChooseAccountTypeScreenState();
+}
+
+class _ChooseAccountTypeScreenState extends State<ChooseAccountTypeScreen> {
+  List<AcountType> listOfAccountTypes = [
+    AcountType(
+      icon: Assets.iconsDoctor,
+      title: "Health Professional",
+      subtitle:
+          "Healthcare provider managing providing medical assistance to patients.",
+    ),
+    AcountType(
+      icon: Assets.iconsSneeze,
+      title: "Patient",
+      subtitle:
+          "Access medical care, appointments, and records for personalized treatment.",
+    ),
+    AcountType(
+      icon: Assets.iconsInfluencer,
+      title: "Influencer",
+      subtitle:
+          "Promote health tips, collaborate with brands, advocate for wellness.",
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        left: false,
-        right: false,
-        child: ListView(
-          padding: const EdgeInsets.only(top: 25, left: 22, right: 22),
-          children: [
-            const AppLogoWithTermsConditionWidget(),
-            const SizedBox(height: 60),
-            Text(
-              context.stringForKey(StringKeys.chooseAccount),
-              style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 22),
+        children: [
+          const SafeArea(child: SizedBox()),
+          const AppLogoWithTermsConditionWidget(),
+          const SizedBox(height: 60),
+          Text(
+            context.stringForKey(StringKeys.chooseAccount),
+            style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
+          ),
+          const SizedBox(height: 15),
+          ...List.generate(listOfAccountTypes.length, (index) {
+            return AccountTypeItemWidget(data: listOfAccountTypes[index]);
+          }),
+          const SizedBox(height: 50),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                AiloitteNavigation.intentWithClearAllRoutes(
+                    context, AppRoutes.loginRoute);
+              },
+              child: Text(
+                "Sign in Instead",
+                style: theme.publicSansFonts.regularStyle(
+                  fontSize: 16,
+                  height: 22,
+                  fontColor: AppColors.primaryColor,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
-            const SizedBox(height: 60),
-
-            
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
