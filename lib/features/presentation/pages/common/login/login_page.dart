@@ -7,6 +7,7 @@ import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
+import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
@@ -42,10 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: InkWell(
-        splashFactory: NoSplash.splashFactory,
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      body: CustomInkwell(
         child: Padding(
           padding: AppDeco.screenPadding,
           child: BlocConsumer<LoginCubit, LoginState>(

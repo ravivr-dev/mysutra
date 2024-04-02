@@ -14,7 +14,9 @@ class AccountTypeItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      splashFactory: NoSplash.splashFactory,
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
       onTap: () {
         AiloitteNavigation.intentWithData(
             context, AppRoutes.createAccountRoute, data.profession);
