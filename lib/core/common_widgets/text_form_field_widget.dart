@@ -105,14 +105,11 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.title != null) ...[
-            InkWell(
-              onTap: () {},
-              child: component.text(
-                widget.title,
-                style: theme.publicSansFonts.semiBoldStyle(
-                  fontSize: 14,
-                  height: 22,
-                ),
+            component.text(
+              widget.title,
+              style: theme.publicSansFonts.semiBoldStyle(
+                fontSize: 14,
+                height: 22,
               ),
             ),
             component.spacer(height: 4),

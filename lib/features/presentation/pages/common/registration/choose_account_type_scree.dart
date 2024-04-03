@@ -47,7 +47,7 @@ class _ChooseAccountTypeScreenState extends State<ChooseAccountTypeScreen> {
       body: ListView(
         padding: AppDeco.screenPadding,
         children: [
-          const SafeArea(child: SizedBox()),
+           AppDeco.screenTopHandler,
           const AppLogoWithTermsConditionWidget(),
           const SizedBox(height: 60),
           Text(

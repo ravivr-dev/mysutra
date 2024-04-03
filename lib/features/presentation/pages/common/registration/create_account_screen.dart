@@ -44,7 +44,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         child: ListView(
           padding: AppDeco.screenPadding,
           children: [
-            const SafeArea(child: SizedBox()),
+            AppDeco.screenTopHandler,
             const AppLogoWithTermsConditionWidget(),
             const SizedBox(height: 60),
             Row(

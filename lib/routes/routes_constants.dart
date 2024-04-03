@@ -5,6 +5,7 @@ class AppRoutes {
   static const String loginRoute = "/login_screen";
   static const String chooseAccountTypeRoute = "/choose_account_type_screen";
   static const String createAccountRoute = "/create_account_screen";
+  static const String selectAccountRoute = "/select_account_screen";
 
 
 

@@ -149,9 +149,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                             //           phoneNumber: widget.data.phoneNumber,
                             //           otp: otp),
                             //     );
-                            widget.showErrorToast(
-                                context: context,
-                                message: "API is not integrated yet");
+                           AiloitteNavigation.intentWithClearAllRoutes(context, AppRoutes.selectAccountRoute);
                           } else {
                             widget.showErrorToast(
                                 context: context,

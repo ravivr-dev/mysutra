@@ -19,4 +19,6 @@ class AppDeco {
           offset: const Offset(-1, 1)),
     ],
   );
+
+  static SafeArea screenTopHandler = const SafeArea(child: SizedBox.shrink());
 }
