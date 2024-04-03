@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _handleNavigation() {
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       AiloitteNavigation.intentWithClearAllRoutes(
           context, AppRoutes.loginRoute);
     });

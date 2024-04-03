@@ -1,6 +1,7 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
@@ -9,7 +10,11 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
+import 'package:my_sutra/features/presentation/pages/common/login/cubit/otp_cubit.dart';
+import 'package:my_sutra/features/presentation/pages/common/login/otp_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/pages/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
+import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -126,7 +131,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
             const SizedBox(height: 70),
             CustomButton(
-              onPressed: () {},
+              onPressed: () {
+                showOtpBottomSheet();
+              },
               text: "Continue",
             ),
             const SizedBox(height: 15),
@@ -151,5 +158,22 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
       ),
     );
+  }
+
+  showOtpBottomSheet() {
+    return showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        isScrollControlled: true,
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return BlocProvider(
+            create: (context) => sl<OtpCubit>(),
+            child: OtpBottomsheet(
+              data: LoginParams(
+                  countryCode: _countryCode.text, phoneNumber: _mobCtrl.text),
+            ),
+          );
+        });
   }
 }
