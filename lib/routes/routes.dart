@@ -6,6 +6,7 @@ import 'package:my_sutra/features/presentation/common/login/select_account.dart'
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
+import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -41,6 +42,13 @@ class Routes {
       case AppRoutes.selectAccountRoute:
         return MaterialPageRoute(
           builder: (_) => const SelectAccountScreen(),
+        );
+
+      /// Patient Routes
+
+      case AppRoutes.findDoctorRoute:
+        return MaterialPageRoute(
+          builder: (_) => const FindDoctorScreen(),
         );
 
       // case AppRoutes.myBatchesRoute:

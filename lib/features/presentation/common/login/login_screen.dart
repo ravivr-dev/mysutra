@@ -110,8 +110,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 14),
                       InkWell(
                         onTap: () {
+                          // AiloitteNavigation.intentWithClearAllRoutes(
+                          //     context, AppRoutes.chooseAccountTypeRoute);
                           AiloitteNavigation.intentWithClearAllRoutes(
-                              context, AppRoutes.chooseAccountTypeRoute);
+                              context, AppRoutes.findDoctorRoute);
                         },
                         child: Text(
                           "Create an account",

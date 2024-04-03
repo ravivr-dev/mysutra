@@ -1,11 +1,12 @@
 class AppRoutes {
   static const String splashRoutes = "/splash_screen";
-  // static const String dashboardCoachRoute = "/dashboard_coach_screen";
-  // static const String dashboardStudentRoute = "/dashboard_student_screen";
   static const String loginRoute = "/login_screen";
   static const String chooseAccountTypeRoute = "/choose_account_type_screen";
   static const String createAccountRoute = "/create_account_screen";
   static const String selectAccountRoute = "/select_account_screen";
+
+  // patient routes
+  static const String findDoctorRoute = "/find_doctor_screen";
 
 
 

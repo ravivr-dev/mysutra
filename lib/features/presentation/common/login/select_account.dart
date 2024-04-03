@@ -69,7 +69,7 @@ class SelectAccountScreen extends StatelessWidget {
                         Icons.arrow_forward_ios_rounded,
                         color: AppColors.neutral,
                         size: 16,
-                      )
+                      ),
                     ],
                   ),
                 );

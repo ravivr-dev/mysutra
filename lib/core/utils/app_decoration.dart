@@ -20,5 +20,17 @@ class AppDeco {
     ],
   );
 
+  static BoxDecoration drawerDecoration = BoxDecoration(
+    borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
+    boxShadow: [
+      BoxShadow(
+        color: AppColors.neutral.withOpacity(0.3),
+        blurRadius: 20,
+      ),
+    ],
+    color: AppColors.white,
+  );
+
   static SafeArea screenTopHandler = const SafeArea(child: SizedBox.shrink());
 }
