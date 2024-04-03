@@ -8,7 +8,7 @@ import 'package:my_sutra/features/data/datasource/local_datasource/local_datasou
 import 'package:my_sutra/features/domain/usecases/user_usecases/batches_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/my_academy_centers_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/user_profile_usecase.dart';
-import 'package:my_sutra/features/presentation/pages/common/home/cubit/home_cubit.dart';
+import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_sutra/core/components/config/theme/theme.dart';
 import 'package:my_sutra/core/components/custom_widgets/custom_widgets.dart';
@@ -32,9 +32,9 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.da
 import 'package:my_sutra/features/domain/usecases/user_usecases/mark_attendance_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/training_program_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/cubit/otp_cubit.dart';
-import 'package:my_sutra/features/presentation/pages/common/profile/cubit/profile_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
+import 'package:my_sutra/features/presentation/common/profile/cubit/profile_cubit.dart';
 
 final sl = GetIt.instance;
 

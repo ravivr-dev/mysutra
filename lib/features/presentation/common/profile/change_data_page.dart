@@ -8,7 +8,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_otp_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_usecase.dart';
-import 'package:my_sutra/features/presentation/pages/common/profile/cubit/profile_cubit.dart';
+import 'package:my_sutra/features/presentation/common/profile/cubit/profile_cubit.dart';
 
 class ChangeDataPage extends StatefulWidget {
   const ChangeDataPage({super.key, required this.data});

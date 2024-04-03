@@ -6,7 +6,7 @@ import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/constants.dart';
-import 'package:my_sutra/features/presentation/pages/common/home/cubit/home_cubit.dart';
+import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 

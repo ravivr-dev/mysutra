@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/login_screen.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/select_account.dart';
-import 'package:my_sutra/features/presentation/pages/common/registration/choose_account_type_scree.dart';
-import 'package:my_sutra/features/presentation/pages/common/registration/create_account_screen.dart';
-import 'package:my_sutra/features/presentation/pages/common/splash/splash_screen.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
+import 'package:my_sutra/features/presentation/common/login/select_account.dart';
+import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
+import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
+import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 

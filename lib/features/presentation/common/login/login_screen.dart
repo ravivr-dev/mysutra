@@ -10,10 +10,10 @@ import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/cubit/login_cubit.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/cubit/otp_cubit.dart';
-import 'package:my_sutra/features/presentation/pages/common/login/otp_bottomsheet.dart';
-import 'package:my_sutra/features/presentation/pages/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/otp_bottomsheet.dart';
+import 'package:my_sutra/features/presentation/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
