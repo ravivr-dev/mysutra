@@ -1,13 +1,12 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/calendar_widget.dart';
+import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
 
 class FindDoctorScreen extends StatefulWidget {
   const FindDoctorScreen({super.key});
@@ -43,6 +42,8 @@ class _FindDoctorScreenState extends State<FindDoctorScreen> {
                   const TextFormFieldWidget(hintText: "Search"),
                   const SizedBox(height: 20),
                   const CalendarWidget(),
+                  const SizedBox(height: 20),
+                  const WeekPicker()
                 ],
               ),
             ),
