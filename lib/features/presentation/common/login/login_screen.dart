@@ -8,6 +8,7 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
+import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
@@ -65,11 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppDeco.screenTopHandler,
+                      const ScreenTopHandler(),
                       const AppLogoWithTermsConditionWidget(),
-                      const SizedBox(
-                        height: 60,
-                      ),
+                      const SizedBox(height: 60),
                       Text(
                         context.stringForKey(StringKeys.login),
                         style:
@@ -145,10 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context) {
           return BlocProvider(
             create: (context) => sl<OtpCubit>(),
-            child: OtpBottomsheet(
-              data: LoginParams(
-                  countryCode: _countryCode.text, phoneNumber: _mobCtrl.text),
-            ),
+            child: const OtpBottomsheet(),
           );
         });
   }

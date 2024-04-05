@@ -20,11 +20,9 @@ class LoginUsecase extends UseCase<String, LoginParams> {
 class LoginParams {
   final String countryCode;
   final String phoneNumber;
-  final String? otp;
 
   LoginParams({
     required this.countryCode,
     required this.phoneNumber,
-    this.otp,
   });
 }

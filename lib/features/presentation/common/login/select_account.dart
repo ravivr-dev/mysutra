@@ -4,6 +4,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/constants.dart';
+import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class SelectAccountScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class SelectAccountScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppDeco.screenTopHandler,
+          const ScreenTopHandler(),
           Padding(
             padding: AppDeco.screenPadding,
             child: Text(
@@ -86,7 +87,7 @@ class SelectAccountScreen extends StatelessWidget {
                       context, AppRoutes.loginRoute);
                 },
                 child: Text(
-                  "Login with another account",
+                  "Login with another number",
                   style: theme.publicSansFonts.regularStyle(
                     fontSize: 16,
                     height: 22,
@@ -97,7 +98,7 @@ class SelectAccountScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 30),
         ],
       ),
     );

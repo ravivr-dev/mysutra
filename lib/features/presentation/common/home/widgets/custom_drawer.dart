@@ -59,20 +59,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           context, AppRoutes.homeRoute);
                     },
                   ),
-                  if (context.read<HomeCubit>().userRole == "COACH")
-                    ListTile(
-                      selectedTileColor: AppColors.white,
-                      hoverColor: AppColors.white,
-                      focusColor: AppColors.white,
-                      horizontalTitleGap: 10,
-                      // leading: component.assetImage(path: Assets.iconsPerson),
-                      title: Text(
-                        'Student Performances',
-                        style: fontStyle,
-                      ),
-                      onTap: () {},
-                    )
-                  else ...[
+           
                     ListTile(
                       selectedTileColor: AppColors.white,
                       hoverColor: AppColors.white,
@@ -98,7 +85,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       onTap: () {},
                     ),
                   ]
-                ],
+              
               ),
             ),
             ListTile(
@@ -131,17 +118,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
           HomeCubit cubit = context.read<HomeCubit>();
           return Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 22,
                 backgroundImage: NetworkImage(
-                    cubit.userData?.profilePic ?? Constants.tempNetworkUrl),
+                     Constants.tempNetworkUrl),
               ),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    cubit.userData?.name ?? "",
+                     "User Name",
                     style: theme.publicSansFonts.mediumStyle(
                         fontSize: 16, fontColor: AppColors.black33, height: 24),
                   ),

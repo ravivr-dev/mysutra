@@ -5,6 +5,7 @@ import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/constants.dart';
+import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/calendar_widget.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
 
@@ -30,7 +31,7 @@ class _FindDoctorScreenState extends State<FindDoctorScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppDeco.screenTopHandler,
+ const ScreenTopHandler(),
                   Text(
                     "Let's find your\ndoctor",
                     style: theme.publicSansFonts.mediumStyle(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
+import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/registration/widgets/account_type_item_widget.dart';
 import 'package:my_sutra/features/presentation/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
@@ -47,7 +48,7 @@ class _ChooseAccountTypeScreenState extends State<ChooseAccountTypeScreen> {
       body: ListView(
         padding: AppDeco.screenPadding,
         children: [
-           AppDeco.screenTopHandler,
+   const ScreenTopHandler(),
           const AppLogoWithTermsConditionWidget(),
           const SizedBox(height: 60),
           Text(

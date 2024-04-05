@@ -31,6 +31,4 @@ class AppDeco {
     ],
     color: AppColors.white,
   );
-
-  static SafeArea screenTopHandler = const SafeArea(child: SizedBox.shrink());
 }
