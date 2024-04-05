@@ -49,15 +49,13 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: AppDeco.screenPadding,
           child: BlocConsumer<LoginCubit, LoginState>(
             listener: (context, state) {
-              // if (state is AcademyLoaded) {
-              //   listOfCenters = state.academies;
-              // } else if (state is LoginError) {
-              //   widget.showErrorToast(context: context, message: state.error);
-              // } else if (state is LoginSuccess) {
-              //   widget.showSuccessToast(
-              //       context: context, message: state.message);
-              //   showOtpBottomSheet();
-              // }
+              if (state is LoginError) {
+                widget.showErrorToast(context: context, message: state.error);
+              } else if (state is LoginSuccess) {
+                widget.showSuccessToast(
+                    context: context, message: state.message);
+                showOtpBottomSheet();
+              }
             },
             builder: (context, state) {
               return Column(
@@ -96,13 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context: context,
                                 message: "Please enter a valid mobile number");
                           } else {
-                            showOtpBottomSheet();
-                            // context.read<LoginCubit>().login(
-                            //       LoginParams(
-                            //           academy: selectedAcademy!,
-                            //           countryCode: _countryCode.text,
-                            //           phoneNumber: _mobCtrl.text),
-                            //     );
+                            context.read<LoginCubit>().login(
+                                  LoginParams(
+                                      countryCode: _countryCode.text,
+                                      phoneNumber: _mobCtrl.text),
+                                );
                           }
                         },
                       ),
