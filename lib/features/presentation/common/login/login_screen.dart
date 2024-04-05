@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       CustomButton(
                         text: StringKeys.login.toUpperCase(),
-                        isLoading: false,
+                        isLoading: state is LoginLoading,
                         onPressed: () {
                           if (_mobCtrl.text == "" ||
                               _mobCtrl.text.length != 10) {
@@ -140,7 +140,10 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context) {
           return BlocProvider(
             create: (context) => sl<OtpCubit>(),
-            child: const OtpBottomsheet(),
+            child: OtpBottomsheet(
+              data: LoginParams(
+                  countryCode: _countryCode.text, phoneNumber: _mobCtrl.text),
+            ),
           );
         });
   }

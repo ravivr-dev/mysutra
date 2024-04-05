@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_sutra/core/components/config/theme/theme.dart';
@@ -29,10 +30,11 @@ Future<void> init() async {
   sl.registerFactory(() => HomeCubit(sl<LocalDataSource>()));
   sl.registerFactory(() => LoginCubit(sl<LoginUsecase>()));
   // sl.registerLazySingleton(() => MyBatchesCubit(sl<MyAcademyCenterUsecase>()));
-  sl.registerFactory(() => OtpCubit(sl<LoginUsecase>()));
+  sl.registerFactory(() => OtpCubit(sl<LoginUsecase>(), sl<OtpUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
+  sl.registerLazySingleton(() => OtpUsecase(sl<UserRepository>()));
 
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(

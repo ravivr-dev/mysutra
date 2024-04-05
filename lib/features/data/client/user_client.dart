@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
+import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
@@ -44,4 +45,7 @@ abstract class UserRestClient {
     @Field("countryCode") String countryCode,
     @Field("phoneNumber") int phoneNumber,
   );
+
+  @POST(ENDPOINT_OTP)
+  Future<OtpModel> verifyOtp(@Field("otp") int otp);
 }

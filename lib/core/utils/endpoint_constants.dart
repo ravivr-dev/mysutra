@@ -2,4 +2,5 @@
 
 
 const ENDPOINT_LOGIN = '/user/login';
+const ENDPOINT_OTP = '/user/verify-otp';
 

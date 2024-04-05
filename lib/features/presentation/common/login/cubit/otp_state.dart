@@ -13,9 +13,9 @@ final class ResendOtpSuccess extends OtpState {
 }
 
 final class OtpSuccess extends OtpState {
-  final String message;
+  final OtpModel data;
 
-  OtpSuccess(this.message);
+  OtpSuccess(this.data);
 }
 
 final class OtpError extends OtpState {

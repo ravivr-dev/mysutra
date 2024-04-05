@@ -158,7 +158,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             const SizedBox(height: 70),
             CustomButton(
               onPressed: () {
-                showOtpBottomSheet();
+                // showOtpBottomSheet();
               },
               text: "Continue",
             ),
@@ -186,19 +186,19 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     );
   }
 
-  showOtpBottomSheet() {
-    return showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        isScrollControlled: true,
-        backgroundColor: Colors.white,
-        builder: (context) {
-          return BlocProvider(
-            create: (context) => sl<OtpCubit>(),
-            child: const OtpBottomsheet(),
-          );
-        });
-  }
+  // showOtpBottomSheet() {
+  //   return showModalBottomSheet(
+  //       context: context,
+  //       isDismissible: false,
+  //       isScrollControlled: true,
+  //       backgroundColor: Colors.white,
+  //       builder: (context) {
+  //         return BlocProvider(
+  //           create: (context) => sl<OtpCubit>(),
+  //           child: const OtpBottomsheet(),
+  //         );
+  //       });
+  // }
 
   updateProfileImageSheet() {
     showModalBottomSheet(

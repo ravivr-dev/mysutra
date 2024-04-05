@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -14,8 +15,8 @@ import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class OtpBottomsheet extends StatefulWidget {
-
-  const OtpBottomsheet({super.key});
+  final LoginParams data;
+  const OtpBottomsheet({super.key, required this.data});
 
   @override
   State<OtpBottomsheet> createState() => _OtpBottomsheetState();
@@ -51,9 +52,9 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                 widget.showErrorToast(context: context, message: state.error);
               } else if (state is OtpSuccess) {
                 widget.showSuccessToast(
-                    context: context, message: state.message);
-                AiloitteNavigation.intentWithClearAllRoutes(
-                    context, AppRoutes.homeRoute);
+                    context: context, message: state.data.message ?? "");
+                // AiloitteNavigation.intentWithClearAllRoutes(
+                //     context, AppRoutes.homeRoute);
               } else if (state is ResendOtpSuccess) {
                 widget.showSuccessToast(
                     context: context, message: state.message);
@@ -70,9 +71,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     'Enter OTP',
                     style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   Text(
                       'Please enter the OTP received on your\nregistered mobile number',
                       textAlign: TextAlign.center,
@@ -83,7 +82,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                   ),
                   Center(
                     child: OTPTextField(
-                      length: 6,
+                      length: 4,
                       onChanged: (value) {
                         otp = value;
                       },
@@ -111,12 +110,12 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                               if (_timeCounter.value <= 0) {
                                 _timeCounter.value = timerInitVal;
                                 resendOtpTimer();
-                                // context.read<OtpCubit>().resendOtp(
-                                //       LoginParams(
-                                //         countryCode: widget.data.countryCode,
-                                //         phoneNumber: widget.data.phoneNumber,
-                                //       ),
-                                //     );
+                                context.read<OtpCubit>().resendOtp(
+                                      LoginParams(
+                                        countryCode: widget.data.countryCode,
+                                        phoneNumber: widget.data.phoneNumber,
+                                      ),
+                                    );
                               }
                             },
                             child: Text(
@@ -140,14 +139,10 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                         isLoading: state is OtpLoading,
                         text: context.stringForKey(StringKeys.verify),
                         onPressed: () {
-                          if (otp != null && otp!.length == 6) {
-                            // context.read<OtpCubit>().verifyOtp(
-                            //       LoginParams(
-                            //           countryCode: widget.data.countryCode,
-                            //           phoneNumber: widget.data.phoneNumber,
-                            //           otp: otp),
-                            //     );
-                           AiloitteNavigation.intentWithClearAllRoutes(context, AppRoutes.selectAccountRoute);
+                          if (otp != null && otp!.length == 4) {
+                            context.read<OtpCubit>().verifyOtp(int.parse(otp!));
+                            // AiloitteNavigation.intentWithClearAllRoutes(
+                            //     context, AppRoutes.selectAccountRoute);
                           } else {
                             widget.showErrorToast(
                                 context: context,

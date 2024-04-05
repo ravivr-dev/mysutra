@@ -1,21 +1,14 @@
 import 'package:my_sutra/core/config/my_shared_pref.dart';
+import 'package:my_sutra/core/utils/constants.dart';
 
 abstract class LocalDataSource {
   String? getAccessToken();
 
   setAccessToken(String token);
 
-  String? getUserRole();
+  String getUserRole();
 
   setUserRole(String role);
-
-  String? getCurrentAcademy();
-
-  setCurrentAcademy(String id);
-
-  String getUsername();
-
-  setUserName(String name);
 
   logout();
 }
@@ -41,32 +34,12 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  String? getUserRole() {
-    return mySharedPref.getUserRole();
+  String getUserRole() {
+    return mySharedPref.getUserRole() ?? ROLE_PATIENT;
   }
 
   @override
   setUserRole(String role) {
     return mySharedPref.setUserRole(role);
-  }
-
-  @override
-  String? getCurrentAcademy() {
-    return mySharedPref.getCurrentAcademy();
-  }
-
-  @override
-  setCurrentAcademy(String id) {
-    return mySharedPref.setCurrentAcademy(id);
-  }
-
-  @override
-  String getUsername() {
-    return mySharedPref.getUserName();
-  }
-
-  @override
-  setUserName(String name) {
-    return mySharedPref.setUserName(name);
   }
 }
