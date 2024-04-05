@@ -6,6 +6,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
+import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
@@ -16,6 +17,7 @@ import 'package:my_sutra/features/presentation/common/login/otp_bottomsheet.dart
 import 'package:my_sutra/features/presentation/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   final String profession;
@@ -36,6 +38,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _specializationCtrl = TextEditingController();
   final TextEditingController _regNumCtrl = TextEditingController();
   final TextEditingController _socialCtrl = TextEditingController();
+
+  final ImagePicker picker = ImagePicker();
+  XFile? profilePic;
 
   @override
   Widget build(BuildContext context) {
@@ -76,28 +81,33 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ),
             const SizedBox(height: 20),
             Center(
-              child: DottedBorder(
-                strokeWidth: 2,
-                color: AppColors.greyD9,
-                strokeCap: StrokeCap.round,
-                borderType: BorderType.RRect,
-                dashPattern: const [15, 10],
-                radius: const Radius.circular(20),
-                padding: const EdgeInsets.all(35),
-                child: Column(
-                  children: [
-                    const Icon(
-                      Icons.person_rounded,
-                      size: 50,
-                      color: AppColors.blackAE,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Upload Picture",
-                      style: theme.publicSansFonts.semiBoldStyle(
-                          fontSize: 14, fontColor: AppColors.blackAE),
-                    ),
-                  ],
+              child: InkWell(
+                onTap: () {
+                  updateProfileImageSheet();
+                },
+                child: DottedBorder(
+                  strokeWidth: 2,
+                  color: AppColors.greyD9,
+                  strokeCap: StrokeCap.round,
+                  borderType: BorderType.RRect,
+                  dashPattern: const [15, 10],
+                  radius: const Radius.circular(20),
+                  padding: const EdgeInsets.all(35),
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.person_rounded,
+                        size: 50,
+                        color: AppColors.blackAE,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Upload Picture",
+                        style: theme.publicSansFonts.semiBoldStyle(
+                            fontSize: 14, fontColor: AppColors.blackAE),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -175,5 +185,24 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ),
           );
         });
+  }
+
+  updateProfileImageSheet() {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return UploadImageBottomSheet(
+          showRemovePhoto: true,
+          onChange: (image) {
+            profilePic = image;
+            setState(() {});
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 }
