@@ -14,7 +14,11 @@ class AppLogoWithTermsConditionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        component.assetImage(path: Assets.iconsLogo),
+        SizedBox(
+          height: 30,
+          child: component.assetImage(
+              path: Assets.iconsLogo1, fit: BoxFit.fitHeight),
+        ),
         Text(
           "T&C | Privacy policy",
           style: theme.publicSansFonts
