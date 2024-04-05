@@ -6,8 +6,13 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 class UploadImageBottomSheet extends StatefulWidget {
   final bool showRemovePhoto;
   final Function(XFile? image) onChange;
-  const UploadImageBottomSheet(
-      {super.key, this.showRemovePhoto = false, required this.onChange});
+  final Function() removePhoto;
+  const UploadImageBottomSheet({
+    super.key,
+    this.showRemovePhoto = false,
+    required this.onChange,
+    required this.removePhoto,
+  });
 
   @override
   State<UploadImageBottomSheet> createState() => _UploadImageBottomSheetState();
@@ -35,7 +40,7 @@ class _UploadImageBottomSheetState extends State<UploadImageBottomSheet> {
                 if (widget.showRemovePhoto) ...[
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      widget.removePhoto();
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12),

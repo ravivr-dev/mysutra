@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -85,30 +87,44 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 onTap: () {
                   updateProfileImageSheet();
                 },
-                child: DottedBorder(
-                  strokeWidth: 2,
-                  color: AppColors.greyD9,
-                  strokeCap: StrokeCap.round,
-                  borderType: BorderType.RRect,
-                  dashPattern: const [15, 10],
-                  radius: const Radius.circular(20),
-                  padding: const EdgeInsets.all(35),
-                  child: Column(
-                    children: [
-                      const Icon(
-                        Icons.person_rounded,
-                        size: 50,
-                        color: AppColors.blackAE,
+                child: profilePic == null
+                    ? DottedBorder(
+                        strokeWidth: 2,
+                        color: AppColors.greyD9,
+                        strokeCap: StrokeCap.round,
+                        borderType: BorderType.RRect,
+                        dashPattern: const [15, 10],
+                        radius: const Radius.circular(20),
+                        padding: const EdgeInsets.all(35),
+                        child: Column(
+                          children: [
+                            const Icon(
+                              Icons.person_rounded,
+                              size: 50,
+                              color: AppColors.blackAE,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "Upload Picture",
+                              style: theme.publicSansFonts.semiBoldStyle(
+                                  fontSize: 14, fontColor: AppColors.blackAE),
+                            ),
+                          ],
+                        ),
+                      )
+                    : CircleAvatar(
+                        radius: 70,
+                        backgroundColor: Colors.transparent,
+                        child: ClipPath(
+                          clipper: const ShapeBorderClipper(
+                            shape: CircleBorder(),
+                          ),
+                          child: Image.file(
+                            File(profilePic!.path),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        "Upload Picture",
-                        style: theme.publicSansFonts.semiBoldStyle(
-                            fontSize: 14, fontColor: AppColors.blackAE),
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -195,7 +211,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return UploadImageBottomSheet(
-          showRemovePhoto: true,
+          showRemovePhoto: profilePic != null,
+          removePhoto: () {
+            profilePic = null;
+            setState(() {});
+            Navigator.pop(context);
+          },
           onChange: (image) {
             profilePic = image;
             setState(() {});
