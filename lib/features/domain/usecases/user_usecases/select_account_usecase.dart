@@ -7,7 +7,7 @@ import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 class SelectAccountUsecase extends UseCase<List<UserData>, NoParams> {
   final UserRepository repo;
 
-  SelectAccountUsecase({required this.repo});
+  SelectAccountUsecase(this.repo);
 
   @override
   Future<Either<Failure, List<UserData>>> call(NoParams params) async {

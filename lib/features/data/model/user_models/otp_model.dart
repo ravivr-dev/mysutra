@@ -19,6 +19,7 @@ class UserData {
   int? phoneNumber;
   String? email;
   String? specializationId;
+  String? specializationName;
   String? registrationNumber;
   List<String>? socialProfileUrls;
   String? dob;
@@ -39,6 +40,7 @@ class UserData {
       this.phoneNumber,
       this.email,
       this.specializationId,
+      this.specializationName,
       this.registrationNumber,
       this.socialProfileUrls,
       this.dob,
@@ -59,6 +61,7 @@ class UserData {
     phoneNumber = json['phoneNumber'];
     email = json['email'];
     specializationId = json['specializationId'];
+    specializationName = json['specializationName'];
     registrationNumber = json['registrationNumber'];
     socialProfileUrls = json['socialProfileUrls'].cast<String>();
     dob = json['dob'];

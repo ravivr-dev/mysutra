@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/select_account.dart';
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
@@ -41,7 +42,10 @@ class Routes {
 
       case AppRoutes.selectAccountRoute:
         return MaterialPageRoute(
-          builder: (_) => const SelectAccountScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => sl<SelectAccountCubit>()..getData(),
+            child: const SelectAccountScreen(),
+          ),
         );
 
       /// Patient Routes
