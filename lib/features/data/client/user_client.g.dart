@@ -52,13 +52,13 @@ class _UserRestClient implements UserRestClient {
   }
 
   @override
-  Future<OtpModel> verifyOtp(int otp) async {
+  Future<UserModel> verifyOtp(int otp) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'otp': otp};
-    final _result =
-        await _dio.fetch<Map<String, dynamic>>(_setStreamType<OtpModel>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UserModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -74,7 +74,34 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = OtpModel.fromJson(_result.data!);
+    final value = UserModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserAccountsModel> getUserAccounts() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UserAccountsModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/user/accounts',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = UserAccountsModel.fromJson(_result.data!);
     return value;
   }
 

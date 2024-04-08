@@ -42,7 +42,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, OtpModel>> verifyOtp(int otp) async {
+  Future<Either<Failure, UserModel>> verifyOtp(int otp) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.verifyOtp(otp);
@@ -52,6 +52,21 @@ class UserRepositoryImpl extends UserRepository {
         }
 
         return Right(result);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserData>>> getUserAccounts() async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getUserAccounts();
+
+        return Right(result.data ?? []);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

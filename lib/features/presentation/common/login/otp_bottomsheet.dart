@@ -4,6 +4,7 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -12,7 +13,6 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
-import 'package:my_sutra/routes/routes_constants.dart';
 
 class OtpBottomsheet extends StatefulWidget {
   final LoginParams data;
@@ -53,8 +53,8 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
               } else if (state is OtpSuccess) {
                 widget.showSuccessToast(
                     context: context, message: state.data.message ?? "");
-                // AiloitteNavigation.intentWithClearAllRoutes(
-                //     context, AppRoutes.homeRoute);
+                AiloitteNavigation.intentWithClearAllRoutes(
+                    context, AppRoutes.selectAccountRoute);
               } else if (state is ResendOtpSuccess) {
                 widget.showSuccessToast(
                     context: context, message: state.message);

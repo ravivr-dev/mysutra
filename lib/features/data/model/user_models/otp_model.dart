@@ -1,10 +1,10 @@
-class OtpModel {
+class UserModel {
   String? message;
   UserData? data;
 
-  OtpModel({this.message, this.data});
+  UserModel({this.message, this.data});
 
-  OtpModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     data = json['data'] != null ? UserData.fromJson(json['data']) : null;
   }

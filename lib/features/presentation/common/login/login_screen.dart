@@ -102,7 +102,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {
+                          // AiloitteNavigation.intentWithClearAllRoutes(
+                          //     context, AppRoutes.chooseAccountTypeRoute);
+                        },
+                        child: Text(
+                          "Login as Guest",
+                          style: theme.publicSansFonts.regularStyle(
+                            fontSize: 16,
+                            height: 22,
+                            fontColor: AppColors.black49,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       InkWell(
                         onTap: () {
                           AiloitteNavigation.intentWithClearAllRoutes(

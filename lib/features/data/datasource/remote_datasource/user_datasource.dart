@@ -8,12 +8,15 @@ import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 
 abstract class UserDataSource {
   Future<GeneralModel> login(
       {required String countryCode, required String phoneNumber});
 
-  Future<OtpModel> verifyOtp(int otp);
+  Future<UserModel> verifyOtp(int otp);
+
+  Future<UserAccountsModel> getUserAccounts();
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -53,9 +56,25 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<OtpModel> verifyOtp(int otp) async {
+  Future<UserModel> verifyOtp(int otp) async {
     try {
       return await client.verifyOtp(otp).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<UserAccountsModel> getUserAccounts() async {
+    try {
+      return await client.getUserAccounts().catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

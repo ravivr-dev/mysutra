@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
@@ -47,5 +48,8 @@ abstract class UserRestClient {
   );
 
   @POST(ENDPOINT_OTP)
-  Future<OtpModel> verifyOtp(@Field("otp") int otp);
+  Future<UserModel> verifyOtp(@Field("otp") int otp);
+
+  @GET(ENDPOINT_ACCOUNTS)
+  Future<UserAccountsModel> getUserAccounts();
 }
