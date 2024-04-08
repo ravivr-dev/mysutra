@@ -6,6 +6,7 @@ import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/select_account.dart';
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
+import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
 import 'package:my_sutra/injection_container.dart';
@@ -35,8 +36,11 @@ class Routes {
 
       case AppRoutes.createAccountRoute:
         return MaterialPageRoute(
-          builder: (_) => CreateAccountScreen(
-            profession: args as String,
+          builder: (_) => BlocProvider(
+            create: (context) => sl<RegistrationCubit>(),
+            child: CreateAccountScreen(
+              profession: args as String,
+            ),
           ),
         );
 
