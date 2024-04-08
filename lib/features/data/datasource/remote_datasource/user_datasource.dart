@@ -8,6 +8,7 @@ import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 
 abstract class UserDataSource {
@@ -19,6 +20,8 @@ abstract class UserDataSource {
   Future<UserAccountsModel> getUserAccounts();
 
   Future<UserModel> getSelectedUserAccounts(String id);
+
+  Future<SpecializationModel> getSpecialisation({int? start, int? limit});
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -93,6 +96,22 @@ class UserDataSourceImpl extends UserDataSource {
   Future<UserModel> getSelectedUserAccounts(String id) async {
     try {
       return await client.getSelectedUserAccounts(id).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<SpecializationModel> getSpecialisation({int? start, int? limit}) async {
+    try {
+      return await client.getSpecialisation(start, limit).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

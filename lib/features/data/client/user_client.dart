@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
@@ -55,4 +56,10 @@ abstract class UserRestClient {
 
   @POST(ENDPOINT_ACCOUNTS)
   Future<UserModel> getSelectedUserAccounts(@Field("userId") String id);
+
+  @GET(ENDPOINT_SPECIALIZATION)
+  Future<SpecializationModel> getSpecialisation(
+    @Query("pagination") int? start,
+    @Query("limit") int? limit,
+  );
 }

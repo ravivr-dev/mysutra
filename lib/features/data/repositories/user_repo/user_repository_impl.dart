@@ -6,6 +6,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/user_datasource.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 
@@ -80,6 +81,21 @@ class UserRepositoryImpl extends UserRepository {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getSelectedUserAccounts(id);
+
+        return Right(result.data!);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SpecializationItem>>> getSpecialisation({int? start, int? limit}) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getSpecialisation(start: start, limit: limit);
 
         return Right(result.data!);
       } else {
