@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
@@ -31,14 +32,16 @@ Future<void> init() async {
   sl.registerLazySingleton(() => MainCubit(sl<LocalDataSource>()));
   sl.registerFactory(() => HomeCubit(sl<LocalDataSource>()));
   sl.registerFactory(() => LoginCubit(sl<LoginUsecase>()));
-  sl.registerLazySingleton(
-      () => SelectAccountCubit(sl<SelectAccountUsecase>()));
+  sl.registerLazySingleton(() => SelectAccountCubit(
+      sl<SelectAccountUsecase>(), sl<GetSelectedAccountUsecase>()));
   sl.registerFactory(() => OtpCubit(sl<LoginUsecase>(), sl<OtpUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => OtpUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => SelectAccountUsecase(sl<UserRepository>()));
+  sl.registerLazySingleton(
+      () => GetSelectedAccountUsecase(sl<UserRepository>()));
 
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(

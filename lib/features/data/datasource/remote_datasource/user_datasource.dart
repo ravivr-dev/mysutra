@@ -18,8 +18,7 @@ abstract class UserDataSource {
 
   Future<UserAccountsModel> getUserAccounts();
 
-  Future<UserModel>
-  getSelectedUserAccounts(String id);
+  Future<UserModel> getSelectedUserAccounts(String id);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -73,7 +72,7 @@ class UserDataSourceImpl extends UserDataSource {
       rethrow;
     }
   }
-  
+
   @override
   Future<UserAccountsModel> getUserAccounts() async {
     try {
@@ -89,7 +88,7 @@ class UserDataSourceImpl extends UserDataSource {
       rethrow;
     }
   }
-  
+
   @override
   Future<UserModel> getSelectedUserAccounts(String id) async {
     try {

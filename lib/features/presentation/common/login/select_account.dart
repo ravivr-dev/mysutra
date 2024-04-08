@@ -52,7 +52,7 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                   widget.showErrorToast(context: context, message: state.error);
                 } else if (state is SelectAccountLoaded) {
                   users = state.data;
-                }
+                } else if (state is SelectedAccountLoaded) {}
               },
               builder: (context, state) {
                 if (state is SelectAccountLoading) {
@@ -66,53 +66,60 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
                   itemBuilder: (_, index) {
-                    return Container(
-                      decoration: AppDeco.cardDecoration,
-                      padding: const EdgeInsets.all(12),
-                      margin: const EdgeInsets.symmetric(vertical: 12),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(
-                                users[index].profilePic ??
-                                    Constants.tempNetworkUrl),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  users[index].fullName ?? "",
-                                  style: theme.publicSansFonts
-                                      .semiBoldStyle(fontSize: 18),
-                                ),
-                                Text(
-                                  users[index]
-                                          .role
-                                          ?.capitalizeFirstLetterOfEveryWord ??
-                                      "",
-                                  style: theme.publicSansFonts.regularStyle(
-                                      fontSize: 14,
-                                      fontColor: AppColors.black49),
-                                ),
-                                if (users[index].specializationName != null)
+                    return InkWell(
+                      onTap: () {
+                        context
+                            .read<SelectAccountCubit>()
+                            .getSelectedAccountData(users[index].id!);
+                      },
+                      child: Container(
+                        decoration: AppDeco.cardDecoration,
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.symmetric(vertical: 12),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(
+                                  users[index].profilePic ??
+                                      Constants.tempNetworkUrl),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Text(
-                                    users[index].specializationName!,
+                                    users[index].fullName ?? "",
+                                    style: theme.publicSansFonts
+                                        .semiBoldStyle(fontSize: 18),
+                                  ),
+                                  Text(
+                                    users[index]
+                                            .role
+                                            ?.capitalizeFirstLetterOfEveryWord ??
+                                        "",
                                     style: theme.publicSansFonts.regularStyle(
                                         fontSize: 14,
                                         fontColor: AppColors.black49),
                                   ),
-                              ],
+                                  if (users[index].specializationName != null)
+                                    Text(
+                                      users[index].specializationName!,
+                                      style: theme.publicSansFonts.regularStyle(
+                                          fontSize: 14,
+                                          fontColor: AppColors.black49),
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: AppColors.neutral,
-                            size: 16,
-                          ),
-                        ],
+                            const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: AppColors.neutral,
+                              size: 16,
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

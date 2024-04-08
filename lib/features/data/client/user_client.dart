@@ -54,5 +54,5 @@ abstract class UserRestClient {
   Future<UserAccountsModel> getUserAccounts();
 
   @POST(ENDPOINT_ACCOUNTS)
-  Future<UserModel> getSelectedUserAccounts(String id);
+  Future<UserModel> getSelectedUserAccounts(@Field("userId") String id);
 }

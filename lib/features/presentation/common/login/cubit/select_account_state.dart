@@ -17,3 +17,9 @@ final class SelectAccountLoaded extends SelectAccountState {
 
   SelectAccountLoaded(this.data);
 }
+
+final class SelectedAccountLoaded extends SelectAccountState {
+  final UserData data;
+
+  SelectedAccountLoaded(this.data);
+}
