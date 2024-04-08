@@ -17,6 +17,9 @@ abstract class UserDataSource {
   Future<UserModel> verifyOtp(int otp);
 
   Future<UserAccountsModel> getUserAccounts();
+
+  Future<UserModel>
+  getSelectedUserAccounts(String id);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -75,6 +78,22 @@ class UserDataSourceImpl extends UserDataSource {
   Future<UserAccountsModel> getUserAccounts() async {
     try {
       return await client.getUserAccounts().catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<UserModel> getSelectedUserAccounts(String id) async {
+    try {
+      return await client.getSelectedUserAccounts(id).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

@@ -74,4 +74,19 @@ class UserRepositoryImpl extends UserRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, UserData>> getSelectedUserAccounts(String id) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getSelectedUserAccounts(id);
+
+        return Right(result.data!);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
 }

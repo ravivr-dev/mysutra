@@ -9,4 +9,6 @@ abstract class UserRepository {
   Future<Either<Failure, UserModel>> verifyOtp(int otp);
 
   Future<Either<Failure, List<UserData>>> getUserAccounts();
+
+  Future<Either<Failure, UserData>> getSelectedUserAccounts(String id);
 }

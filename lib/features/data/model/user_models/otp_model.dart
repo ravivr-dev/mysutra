@@ -62,7 +62,7 @@ class UserData {
     email = json['email'];
     specializationId = json['specializationId'];
     specializationName = json['specializationName'];
-    registrationNumber = json['registrationNumber'];
+    registrationNumber = json['specialization'];
     socialProfileUrls = json['socialProfileUrls'].cast<String>();
     dob = json['dob'];
     gender = json['gender'];
