@@ -32,7 +32,7 @@ class _ChooseAccountTypeScreenState extends State<ChooseAccountTypeScreen> {
       title: "Patient",
       subtitle:
           "Access medical care, appointments, and records for personalized treatment.",
-      profession: "Patient",
+      profession: "User",
     ),
     AcountType(
         icon: Assets.iconsInfluencer,
@@ -45,39 +45,44 @@ class _ChooseAccountTypeScreenState extends State<ChooseAccountTypeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: AppDeco.screenPadding,
-        children: [
-   const ScreenTopHandler(),
-          const AppLogoWithTermsConditionWidget(),
-          const SizedBox(height: 60),
-          Text(
-            context.stringForKey(StringKeys.chooseAccount),
-            style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
-          ),
-          const SizedBox(height: 15),
-          ...List.generate(listOfAccountTypes.length, (index) {
-            return AccountTypeItemWidget(data: listOfAccountTypes[index]);
-          }),
-          const SizedBox(height: 50),
-          Center(
-            child: GestureDetector(
-              onTap: () {
-                AiloitteNavigation.intentWithClearAllRoutes(
-                    context, AppRoutes.loginRoute);
-              },
-              child: Text(
-                "Sign in Instead",
-                style: theme.publicSansFonts.regularStyle(
-                  fontSize: 16,
-                  height: 22,
-                  fontColor: AppColors.primaryColor,
-                  decoration: TextDecoration.underline,
-                ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: AppDeco.screenPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const ScreenTopHandler(),
+              const AppLogoWithTermsConditionWidget(),
+              const SizedBox(height: 60),
+              Text(
+                context.stringForKey(StringKeys.chooseAccount),
+                style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
               ),
-            ),
-          )
-        ],
+              const SizedBox(height: 15),
+              ...List.generate(listOfAccountTypes.length, (index) {
+                return AccountTypeItemWidget(data: listOfAccountTypes[index]);
+              }),
+              const SizedBox(height: 50),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    AiloitteNavigation.intentWithClearAllRoutes(
+                        context, AppRoutes.loginRoute);
+                  },
+                  child: Text(
+                    "Sign in Instead",
+                    style: theme.publicSansFonts.regularStyle(
+                      fontSize: 16,
+                      height: 22,
+                      fontColor: AppColors.primaryColor,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

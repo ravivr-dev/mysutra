@@ -38,10 +38,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _specializationCtrl = TextEditingController();
   final TextEditingController _regNumCtrl = TextEditingController();
+  final TextEditingController _expCtrl = TextEditingController();
   final TextEditingController _socialCtrl = TextEditingController();
 
   final ImagePicker picker = ImagePicker();
   XFile? profilePic;
+
+  List<String> socialUrls = [];
 
   @override
   void didChangeDependencies() {
@@ -138,7 +141,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ),
             const SizedBox(height: 20),
             TextFormFieldWidget(
-              title: "Full Name",
+              title: widget.profession == "User" ? "User Name" : "Full Name",
               controller: _nameCtrl,
             ),
             TextFormWithCountryCode(
@@ -159,11 +162,75 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 title: "Professional Registration number",
                 controller: _regNumCtrl,
               ),
-            ] else if (widget.profession == "Influencer")
+              TextFormFieldWidget(
+                hintText: "Experience",
+                title: "Total year of experience",
+                controller: _expCtrl,
+                suffixWidget: Padding(
+                  padding: const EdgeInsets.only(top: 10, right: 20),
+                  child: Text(
+                    "Years",
+                    style: theme.publicSansFonts
+                        .regularStyle(fontSize: 16, height: 22),
+                  ),
+                ),
+              ),
+            ] else if (widget.profession == "Influencer") ...[
+              TextFormFieldWidget(
+                title: "Age",
+                controller: _expCtrl,
+                suffixWidget: Padding(
+                  padding: const EdgeInsets.only(top: 10, right: 20),
+                  child: Text(
+                    "Years",
+                    style: theme.publicSansFonts
+                        .regularStyle(fontSize: 16, height: 22),
+                  ),
+                ),
+              ),
               TextFormFieldWidget(
                 title: "Social Profile URL",
                 controller: _socialCtrl,
+                suffixWidget: IconButton(
+                  color: AppColors.primaryColor,
+                  onPressed: () {
+                    if (_socialCtrl.text.trim() != "") {
+                      socialUrls.add(_socialCtrl.text.trim());
+                      _socialCtrl.clear();
+                      setState(() {});
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.add_rounded,
+                    size: 30,
+                  ),
+                ),
               ),
+              const SizedBox(height: 10),
+              Wrap(
+                  runSpacing: 0,
+                  spacing: 8,
+                  children: socialUrls
+                      .map((e) => InputChip(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: const BorderSide(
+                                  color: AppColors.primaryColor),
+                            ),
+                            label: Text(e),
+                            labelStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primaryColor),
+                            backgroundColor:
+                                AppColors.primaryColor.withOpacity(0.15),
+                            deleteIconColor: AppColors.primaryColor,
+                            onDeleted: () {
+                              socialUrls.remove(e);
+                              setState(() {});
+                            },
+                          ))
+                      .toList()),
+            ],
             const SizedBox(height: 70),
             CustomButton(
               onPressed: () {
