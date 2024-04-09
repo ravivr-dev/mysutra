@@ -9,14 +9,20 @@ import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
+import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/otp_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
+import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -39,14 +45,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _specializationCtrl = TextEditingController();
   final TextEditingController _regNumCtrl = TextEditingController();
   final TextEditingController _expCtrl = TextEditingController();
+  final TextEditingController _ageCtrl = TextEditingController();
   final TextEditingController _socialCtrl = TextEditingController();
 
   final ValueNotifier<List<String>> urlList = ValueNotifier<List<String>>([]);
 
   final ImagePicker picker = ImagePicker();
   XFile? profilePic;
-
-  // List<String> socialUrls = [];
 
   @override
   void didChangeDependencies() {
@@ -68,211 +73,256 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomInkwell(
-        child: ListView(
-          padding: AppDeco.screenPadding,
-          children: [
-            const ScreenTopHandler(),
-            const AppLogoWithTermsConditionWidget(),
-            const SizedBox(height: 60),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: BlocConsumer<RegistrationCubit, RegistrationState>(
+          listener: (context, state) {
+            if (state is RegistrationError) {
+              widget.showErrorToast(context: context, message: state.error);
+            } else if (state is RegistrationSuccess) {
+              widget.showSuccessToast(context: context, message: state.message);
+              showOtpBottomSheet();
+            }
+          },
+          builder: (context, state) {
+            return ListView(
+              padding: AppDeco.screenPadding,
               children: [
+                const ScreenTopHandler(),
+                const AppLogoWithTermsConditionWidget(),
+                const SizedBox(height: 60),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "For ${widget.profession}s",
+                      style: theme.publicSansFonts.mediumStyle(
+                          fontSize: 14, fontColor: AppColors.primaryColor),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        AiloitteNavigation.intentWithClearAllRoutes(
+                            context, AppRoutes.chooseAccountTypeRoute);
+                      },
+                      child: Text(
+                        "Switch user",
+                        style: theme.publicSansFonts.mediumStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                            fontColor: AppColors.primaryColor),
+                      ),
+                    ),
+                  ],
+                ),
                 Text(
-                  "For ${widget.profession}s",
-                  style: theme.publicSansFonts.mediumStyle(
-                      fontSize: 14, fontColor: AppColors.primaryColor),
+                  "Create an account",
+                  style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
                 ),
-                InkWell(
-                  onTap: () {
-                    AiloitteNavigation.intentWithClearAllRoutes(
-                        context, AppRoutes.chooseAccountTypeRoute);
-                  },
-                  child: Text(
-                    "Switch user",
-                    style: theme.publicSansFonts.mediumStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 14,
-                        fontColor: AppColors.primaryColor),
-                  ),
-                ),
-              ],
-            ),
-            Text(
-              "Create an account",
-              style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
-            ),
-            const SizedBox(height: 20),
-            if (widget.profession != "User")
-              Center(
-                child: InkWell(
-                  onTap: () {
-                    updateProfileImageSheet();
-                  },
-                  child: profilePic == null
-                      ? DottedBorder(
-                          strokeWidth: 2,
-                          color: AppColors.greyD9,
-                          strokeCap: StrokeCap.round,
-                          borderType: BorderType.RRect,
-                          dashPattern: const [15, 10],
-                          radius: const Radius.circular(20),
-                          padding: const EdgeInsets.all(35),
-                          child: Column(
-                            children: [
-                              const Icon(
-                                Icons.person_rounded,
-                                size: 50,
-                                color: AppColors.blackAE,
+                const SizedBox(height: 20),
+                if (widget.profession != "User")
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        updateProfileImageSheet();
+                      },
+                      child: profilePic == null
+                          ? DottedBorder(
+                              strokeWidth: 2,
+                              color: AppColors.greyD9,
+                              strokeCap: StrokeCap.round,
+                              borderType: BorderType.RRect,
+                              dashPattern: const [15, 10],
+                              radius: const Radius.circular(20),
+                              padding: const EdgeInsets.all(35),
+                              child: Column(
+                                children: [
+                                  const Icon(
+                                    Icons.person_rounded,
+                                    size: 50,
+                                    color: AppColors.blackAE,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "Upload Picture",
+                                    style: theme.publicSansFonts.semiBoldStyle(
+                                        fontSize: 14,
+                                        fontColor: AppColors.blackAE),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "Upload Picture",
-                                style: theme.publicSansFonts.semiBoldStyle(
-                                    fontSize: 14, fontColor: AppColors.blackAE),
-                              ),
-                            ],
-                          ),
-                        )
-                      : CircleAvatar(
-                          radius: 70,
-                          backgroundColor: Colors.transparent,
-                          child: ClipPath(
-                            clipper: const ShapeBorderClipper(
-                              shape: CircleBorder(),
-                            ),
-                            child: Image.file(
-                              File(profilePic!.path),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                ),
-              ),
-            const SizedBox(height: 20),
-            TextFormFieldWidget(
-              title: widget.profession == "User" ? "User Name" : "Full Name",
-              controller: _nameCtrl,
-            ),
-            TextFormWithCountryCode(
-              title: context.stringForKey(StringKeys.mobileNumber),
-              countryCode: _countryCode,
-              controller: _mobCtrl,
-            ),
-            TextFormFieldWidget(
-              title: "Email",
-              controller: _emailCtrl,
-            ),
-            if (widget.profession == "Doctor") ...[
-              TextFormFieldWidget(
-                title: "Specialization",
-                controller: _specializationCtrl,
-              ),
-              TextFormFieldWidget(
-                title: "Professional Registration number",
-                controller: _regNumCtrl,
-              ),
-              TextFormFieldWidget(
-                hintText: "Experience",
-                title: "Total year of experience",
-                controller: _expCtrl,
-                suffixWidget: Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 20),
-                  child: Text(
-                    "Years",
-                    style: theme.publicSansFonts
-                        .regularStyle(fontSize: 16, height: 22),
-                  ),
-                ),
-              ),
-            ] else if (widget.profession == "Influencer") ...[
-              TextFormFieldWidget(
-                title: "Age",
-                controller: _expCtrl,
-                suffixWidget: Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 20),
-                  child: Text(
-                    "Years",
-                    style: theme.publicSansFonts
-                        .regularStyle(fontSize: 16, height: 22),
-                  ),
-                ),
-              ),
-              TextFormFieldWidget(
-                title: "Social Profile URL",
-                controller: _socialCtrl,
-                suffixWidget: IconButton(
-                  color: AppColors.primaryColor,
-                  onPressed: () {
-                    if (_socialCtrl.text.trim().isNotEmpty) {
-                      urlList.value.add(_socialCtrl.text.trim());
-                      urlList.value = [...urlList.value];
-                      _socialCtrl.clear();
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.add_rounded,
-                    size: 30,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              ValueListenableBuilder(
-                  valueListenable: urlList,
-                  builder:
-                      (BuildContext context, List<String> list, Widget? child) {
-                    return Wrap(
-                      runSpacing: 0,
-                      spacing: 8,
-                      children: list
-                          .map((e) => InputChip(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: const BorderSide(
-                                      color: AppColors.primaryColor),
+                            )
+                          : CircleAvatar(
+                              radius: 70,
+                              backgroundColor: Colors.transparent,
+                              child: ClipPath(
+                                clipper: const ShapeBorderClipper(
+                                  shape: CircleBorder(),
                                 ),
-                                label: Text(e),
-                                labelStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryColor),
-                                backgroundColor:
-                                    AppColors.primaryColor.withOpacity(0.15),
-                                deleteIconColor: AppColors.primaryColor,
-                                onDeleted: () {
-                                  urlList.value.remove(e);
-                                  urlList.value = [...urlList.value];
-                                },
-                              ))
-                          .toList(),
-                    );
-                  }),
-            ],
-            const SizedBox(height: 70),
-            CustomButton(
-              onPressed: () {},
-              text: "Continue",
-            ),
-            const SizedBox(height: 15),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  AiloitteNavigation.intentWithClearAllRoutes(
-                      context, AppRoutes.loginRoute);
-                },
-                child: Text(
-                  "Sign in Instead",
-                  style: theme.publicSansFonts.regularStyle(
-                    fontSize: 16,
-                    fontColor: AppColors.primaryColor,
-                    decoration: TextDecoration.underline,
+                                child: Image.file(
+                                  File(profilePic!.path),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                    ),
+                  ),
+                const SizedBox(height: 20),
+                TextFormFieldWidget(
+                  title:
+                      widget.profession == "User" ? "User Name" : "Full Name",
+                  controller: _nameCtrl,
+                ),
+                TextFormWithCountryCode(
+                  title: context.stringForKey(StringKeys.mobileNumber),
+                  countryCode: _countryCode,
+                  controller: _mobCtrl,
+                ),
+                TextFormFieldWidget(
+                  title: "Email",
+                  controller: _emailCtrl,
+                ),
+                if (widget.profession == "Doctor") ...[
+                  TextFormFieldWidget(
+                    title: "Specialization",
+                    controller: _specializationCtrl,
+                  ),
+                  TextFormFieldWidget(
+                    title: "Professional Registration number",
+                    controller: _regNumCtrl,
+                  ),
+                  TextFormFieldWidget(
+                    hintText: "Experience",
+                    title: "Total year of experience",
+                    controller: _expCtrl,
+                    suffixWidget: Padding(
+                      padding: const EdgeInsets.only(top: 10, right: 20),
+                      child: Text(
+                        "Years",
+                        style: theme.publicSansFonts
+                            .regularStyle(fontSize: 16, height: 22),
+                      ),
+                    ),
+                  ),
+                ] else if (widget.profession == "Influencer") ...[
+                  TextFormFieldWidget(
+                    title: "Age",
+                    controller: _ageCtrl,
+                    suffixWidget: Padding(
+                      padding: const EdgeInsets.only(top: 10, right: 20),
+                      child: Text(
+                        "Years",
+                        style: theme.publicSansFonts
+                            .regularStyle(fontSize: 16, height: 22),
+                      ),
+                    ),
+                  ),
+                  TextFormFieldWidget(
+                    title: "Social Profile URL",
+                    controller: _socialCtrl,
+                    suffixWidget: IconButton(
+                      color: AppColors.primaryColor,
+                      onPressed: () {
+                        if (_socialCtrl.text.trim().isNotEmpty) {
+                          urlList.value.add(_socialCtrl.text.trim());
+                          urlList.value = [...urlList.value];
+                          _socialCtrl.clear();
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.add_rounded,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ValueListenableBuilder(
+                      valueListenable: urlList,
+                      builder: (BuildContext context, List<String> list,
+                          Widget? child) {
+                        return Wrap(
+                          runSpacing: 0,
+                          spacing: 8,
+                          children: list
+                              .map((e) => InputChip(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: const BorderSide(
+                                          color: AppColors.primaryColor),
+                                    ),
+                                    label: Text(e),
+                                    labelStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primaryColor),
+                                    backgroundColor: AppColors.primaryColor
+                                        .withOpacity(0.15),
+                                    deleteIconColor: AppColors.primaryColor,
+                                    onDeleted: () {
+                                      urlList.value.remove(e);
+                                      urlList.value = [...urlList.value];
+                                    },
+                                  ))
+                              .toList(),
+                        );
+                      }),
+                ],
+                const SizedBox(height: 70),
+                CustomButton(
+                  onPressed: () {
+                    context.read<RegistrationCubit>().registration(
+                          RegistrationParams(
+                              role: giveRole(),
+                              profilePic: null,
+                              fullName: _nameCtrl.text,
+                              countryCode: _countryCode.text,
+                              phoneNumber: int.tryParse(_mobCtrl.text),
+                              email: _emailCtrl.text,
+                              specializationId: _specializationCtrl.text,
+                              registrationNumber: _regNumCtrl.text,
+                              experience: int.tryParse(_expCtrl.text),
+                              age: int.tryParse(_ageCtrl.text),
+                              socialUrls: urlList.value.isNotEmpty
+                                  ? urlList.value
+                                  : null),
+                        );
+                  },
+                  text: "Continue",
+                ),
+                const SizedBox(height: 15),
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      AiloitteNavigation.intentWithClearAllRoutes(
+                          context, AppRoutes.loginRoute);
+                    },
+                    child: Text(
+                      "Sign in Instead",
+                      style: theme.publicSansFonts.regularStyle(
+                        fontSize: 16,
+                        fontColor: AppColors.primaryColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 40),
-          ],
+                const SizedBox(height: 40),
+              ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  showOtpBottomSheet() {
+    return showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        isScrollControlled: true,
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return BlocProvider(
+            create: (context) => sl<OtpCubit>(),
+            child: const OtpBottomsheet(),
+          );
+        });
   }
 
   updateProfileImageSheet() {
@@ -297,5 +347,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         );
       },
     );
+  }
+
+  String giveRole() {
+    if (widget.profession == "Doctor") {
+      return ROLE_DOCTOR;
+    } else if (widget.profession == "Influencer") {
+      return ROLE_INFLUENCER;
+    }
+    return ROLE_PATIENT;
   }
 }

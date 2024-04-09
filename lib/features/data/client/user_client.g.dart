@@ -166,6 +166,59 @@ class _UserRestClient implements UserRestClient {
     return value;
   }
 
+  @override
+  Future<GeneralModel> registration(
+    String role,
+    String? profilePic,
+    String? fullName,
+    String? countryCode,
+    int? phoneNumber,
+    String? email,
+    String? specializationId,
+    String? registrationNumber,
+    int? age,
+    int? experience,
+    List<String>? socialUrls,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'role': role,
+      'profilePic': profilePic,
+      'fullName': fullName,
+      'countryCode': countryCode,
+      'phoneNumber': phoneNumber,
+      'email': email,
+      'specializationId': specializationId,
+      'registrationNumber': registrationNumber,
+      'age': age,
+      'totalExperience': experience,
+      'socialProfileUrls': socialUrls,
+    };
+    _data.removeWhere((k, v) => v == null);
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GeneralModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/user/registration',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = GeneralModel.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

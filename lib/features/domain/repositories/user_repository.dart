@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
 abstract class UserRepository {
   Future<Either<Failure, String>> login(
@@ -15,4 +16,6 @@ abstract class UserRepository {
 
   Future<Either<Failure, List<SpecializationItem>>> getSpecialisation(
       {int? start, int? limit});
+
+  Future<Either<Failure, String>> registration(RegistrationParams params);
 }

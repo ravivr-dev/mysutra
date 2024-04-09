@@ -62,4 +62,18 @@ abstract class UserRestClient {
     @Query("pagination") int? start,
     @Query("limit") int? limit,
   );
+
+  @POST(ENDPOINT_REGISTRATION)
+  Future<GeneralModel> registration(
+      @Field("role") String role,
+      @Field("profilePic") String? profilePic,
+      @Field("fullName") String? fullName,
+      @Field("countryCode") String? countryCode,
+      @Field("phoneNumber") int? phoneNumber,
+      @Field("email") String? email,
+      @Field("specializationId") String? specializationId,
+      @Field("registrationNumber") String? registrationNumber,
+      @Field("age") int? age,
+      @Field("totalExperience") int? experience,
+      @Field("socialProfileUrls") List<String>? socialUrls);
 }

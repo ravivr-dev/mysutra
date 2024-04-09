@@ -9,6 +9,7 @@ import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
@@ -92,12 +93,32 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<SpecializationItem>>> getSpecialisation({int? start, int? limit}) async {
+  Future<Either<Failure, List<SpecializationItem>>> getSpecialisation(
+      {int? start, int? limit}) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDataSource.getSpecialisation(start: start, limit: limit);
+        final result = await remoteDataSource.getSpecialisation(
+            start: start, limit: limit);
 
         return Right(result.data!);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> registration(
+      RegistrationParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.registration(params);
+
+        localDataSource.setAccessToken(result.token ?? "");
+
+        return Right(result.message ?? "");
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

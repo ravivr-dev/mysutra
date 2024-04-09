@@ -3,7 +3,7 @@
 // import 'package:flutter/services.dart';
 
 class Constants {
-  static const String appName = "Sportync";
+  static const String appName = "MySutra";
 
   static const String authorization = "Authorization";
 

@@ -15,8 +15,8 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 
 class OtpBottomsheet extends StatefulWidget {
-  final LoginParams data;
-  const OtpBottomsheet({super.key, required this.data});
+  final LoginParams? data;
+  const OtpBottomsheet({super.key, this.data});
 
   @override
   State<OtpBottomsheet> createState() => _OtpBottomsheetState();
@@ -110,12 +110,14 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                               if (_timeCounter.value <= 0) {
                                 _timeCounter.value = timerInitVal;
                                 resendOtpTimer();
-                                context.read<OtpCubit>().resendOtp(
-                                      LoginParams(
-                                        countryCode: widget.data.countryCode,
-                                        phoneNumber: widget.data.phoneNumber,
-                                      ),
-                                    );
+                                if (widget.data != null) {
+                                  context.read<OtpCubit>().resendOtp(
+                                        LoginParams(
+                                          countryCode: widget.data!.countryCode,
+                                          phoneNumber: widget.data!.phoneNumber,
+                                        ),
+                                      );
+                                }
                               }
                             },
                             child: Text(

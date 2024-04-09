@@ -12,6 +12,12 @@ final class SpecializationLoaded extends RegistrationState {
   SpecializationLoaded(this.data);
 }
 
+final class RegistrationSuccess extends RegistrationState {
+  final String message;
+
+  RegistrationSuccess(this.message);
+}
+
 final class RegistrationError extends RegistrationState {
   final String error;
 

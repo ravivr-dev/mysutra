@@ -10,6 +10,7 @@ import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
 abstract class UserDataSource {
   Future<GeneralModel> login(
@@ -22,6 +23,8 @@ abstract class UserDataSource {
   Future<UserModel> getSelectedUserAccounts(String id);
 
   Future<SpecializationModel> getSpecialisation({int? start, int? limit});
+
+  Future<GeneralModel> registration(RegistrationParams params);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -107,11 +110,41 @@ class UserDataSourceImpl extends UserDataSource {
       rethrow;
     }
   }
-  
+
   @override
-  Future<SpecializationModel> getSpecialisation({int? start, int? limit}) async {
+  Future<SpecializationModel> getSpecialisation(
+      {int? start, int? limit}) async {
     try {
       return await client.getSpecialisation(start, limit).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GeneralModel> registration(RegistrationParams params) async {
+    try {
+      return await client
+          .registration(
+              params.role,
+              params.profilePic,
+              params.fullName,
+              params.countryCode,
+              params.phoneNumber,
+              params.email,
+              params.specializationId,
+              params.registrationNumber,
+              params.age,
+              params.experience,
+              params.socialUrls)
+          .catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {
