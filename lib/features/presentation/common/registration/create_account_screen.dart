@@ -41,10 +41,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _expCtrl = TextEditingController();
   final TextEditingController _socialCtrl = TextEditingController();
 
+  final ValueNotifier<List<String>> urlList = ValueNotifier<List<String>>([]);
+
   final ImagePicker picker = ImagePicker();
   XFile? profilePic;
 
-  List<String> socialUrls = [];
+  // List<String> socialUrls = [];
 
   @override
   void didChangeDependencies() {
@@ -54,6 +56,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           .getSpecialisations(GeneralPagination(start: 1, limit: 100));
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    urlList.dispose();
+    super.dispose();
   }
 
   @override
@@ -94,51 +102,52 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
             ),
             const SizedBox(height: 20),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  updateProfileImageSheet();
-                },
-                child: profilePic == null
-                    ? DottedBorder(
-                        strokeWidth: 2,
-                        color: AppColors.greyD9,
-                        strokeCap: StrokeCap.round,
-                        borderType: BorderType.RRect,
-                        dashPattern: const [15, 10],
-                        radius: const Radius.circular(20),
-                        padding: const EdgeInsets.all(35),
-                        child: Column(
-                          children: [
-                            const Icon(
-                              Icons.person_rounded,
-                              size: 50,
-                              color: AppColors.blackAE,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "Upload Picture",
-                              style: theme.publicSansFonts.semiBoldStyle(
-                                  fontSize: 14, fontColor: AppColors.blackAE),
-                            ),
-                          ],
-                        ),
-                      )
-                    : CircleAvatar(
-                        radius: 70,
-                        backgroundColor: Colors.transparent,
-                        child: ClipPath(
-                          clipper: const ShapeBorderClipper(
-                            shape: CircleBorder(),
+            if (widget.profession != "User")
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    updateProfileImageSheet();
+                  },
+                  child: profilePic == null
+                      ? DottedBorder(
+                          strokeWidth: 2,
+                          color: AppColors.greyD9,
+                          strokeCap: StrokeCap.round,
+                          borderType: BorderType.RRect,
+                          dashPattern: const [15, 10],
+                          radius: const Radius.circular(20),
+                          padding: const EdgeInsets.all(35),
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.person_rounded,
+                                size: 50,
+                                color: AppColors.blackAE,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "Upload Picture",
+                                style: theme.publicSansFonts.semiBoldStyle(
+                                    fontSize: 14, fontColor: AppColors.blackAE),
+                              ),
+                            ],
                           ),
-                          child: Image.file(
-                            File(profilePic!.path),
-                            fit: BoxFit.cover,
+                        )
+                      : CircleAvatar(
+                          radius: 70,
+                          backgroundColor: Colors.transparent,
+                          child: ClipPath(
+                            clipper: const ShapeBorderClipper(
+                              shape: CircleBorder(),
+                            ),
+                            child: Image.file(
+                              File(profilePic!.path),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
+                ),
               ),
-            ),
             const SizedBox(height: 20),
             TextFormFieldWidget(
               title: widget.profession == "User" ? "User Name" : "Full Name",
@@ -194,10 +203,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 suffixWidget: IconButton(
                   color: AppColors.primaryColor,
                   onPressed: () {
-                    if (_socialCtrl.text.trim() != "") {
-                      socialUrls.add(_socialCtrl.text.trim());
+                    if (_socialCtrl.text.trim().isNotEmpty) {
+                      urlList.value.add(_socialCtrl.text.trim());
+                      urlList.value = [...urlList.value];
                       _socialCtrl.clear();
-                      setState(() {});
                     }
                   },
                   icon: const Icon(
@@ -207,35 +216,39 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              Wrap(
-                  runSpacing: 0,
-                  spacing: 8,
-                  children: socialUrls
-                      .map((e) => InputChip(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: const BorderSide(
-                                  color: AppColors.primaryColor),
-                            ),
-                            label: Text(e),
-                            labelStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor),
-                            backgroundColor:
-                                AppColors.primaryColor.withOpacity(0.15),
-                            deleteIconColor: AppColors.primaryColor,
-                            onDeleted: () {
-                              socialUrls.remove(e);
-                              setState(() {});
-                            },
-                          ))
-                      .toList()),
+              ValueListenableBuilder(
+                  valueListenable: urlList,
+                  builder:
+                      (BuildContext context, List<String> list, Widget? child) {
+                    return Wrap(
+                      runSpacing: 0,
+                      spacing: 8,
+                      children: list
+                          .map((e) => InputChip(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: const BorderSide(
+                                      color: AppColors.primaryColor),
+                                ),
+                                label: Text(e),
+                                labelStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primaryColor),
+                                backgroundColor:
+                                    AppColors.primaryColor.withOpacity(0.15),
+                                deleteIconColor: AppColors.primaryColor,
+                                onDeleted: () {
+                                  urlList.value.remove(e);
+                                  urlList.value = [...urlList.value];
+                                },
+                              ))
+                          .toList(),
+                    );
+                  }),
             ],
             const SizedBox(height: 70),
             CustomButton(
-              onPressed: () {
-                // showOtpBottomSheet();
-              },
+              onPressed: () {},
               text: "Continue",
             ),
             const SizedBox(height: 15),
@@ -261,20 +274,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       ),
     );
   }
-
-  // showOtpBottomSheet() {
-  //   return showModalBottomSheet(
-  //       context: context,
-  //       isDismissible: false,
-  //       isScrollControlled: true,
-  //       backgroundColor: Colors.white,
-  //       builder: (context) {
-  //         return BlocProvider(
-  //           create: (context) => sl<OtpCubit>(),
-  //           child: const OtpBottomsheet(),
-  //         );
-  //       });
-  // }
 
   updateProfileImageSheet() {
     showModalBottomSheet(
