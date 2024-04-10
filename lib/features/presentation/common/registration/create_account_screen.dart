@@ -16,6 +16,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
@@ -50,8 +51,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   final ValueNotifier<List<String>> urlList = ValueNotifier<List<String>>([]);
 
+  List<SpecializationItem> specialisationList = [];
+
   final ImagePicker picker = ImagePicker();
   XFile? profilePic;
+  String? profilePicKey;
 
   @override
   void didChangeDependencies() {
@@ -80,6 +84,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             } else if (state is RegistrationSuccess) {
               widget.showSuccessToast(context: context, message: state.message);
               showOtpBottomSheet();
+            } else if (state is UploadDocument) {
+              profilePic = state.file;
+              profilePicKey = state.data.key;
             }
           },
           builder: (context, state) {
@@ -121,7 +128,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   Center(
                     child: InkWell(
                       onTap: () {
-                        updateProfileImageSheet();
+                        updateProfileImageSheet(
+                          onChange: (image) {
+                            if (image != null) {
+                              context
+                                  .read<RegistrationCubit>()
+                                  .uploadDoc(image);
+                            }
+                            Navigator.pop(context);
+                          },
+                        );
                       },
                       child: profilePic == null
                           ? DottedBorder(
@@ -325,7 +341,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         });
   }
 
-  updateProfileImageSheet() {
+  updateProfileImageSheet({required dynamic Function(XFile?) onChange}) {
     showModalBottomSheet(
       context: context,
       isDismissible: true,
@@ -333,18 +349,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return UploadImageBottomSheet(
-          showRemovePhoto: profilePic != null,
-          removePhoto: () {
-            profilePic = null;
-            setState(() {});
-            Navigator.pop(context);
-          },
-          onChange: (image) {
-            profilePic = image;
-            setState(() {});
-            Navigator.pop(context);
-          },
-        );
+            showRemovePhoto: profilePic != null,
+            removePhoto: () {
+              profilePic = null;
+              setState(() {});
+              Navigator.pop(context);
+            },
+            onChange: onChange);
       },
     );
   }

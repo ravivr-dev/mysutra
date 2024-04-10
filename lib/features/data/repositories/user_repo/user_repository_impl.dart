@@ -8,8 +8,9 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/user_datasource.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
-import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
+import 'package:my_sutra/features/data/repositories/user_repo/user_repository_conv.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
@@ -96,14 +97,15 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<SpecializationItem>>> getSpecialisation(
+  Future<Either<Failure, List<SpecializationEntity>>> getSpecialisation(
       {int? start, int? limit}) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getSpecialisation(
             start: start, limit: limit);
 
-        return Right(result.data!);
+        return Right(
+            UserRepoConv.convSpecialisationModelToEntity(result.data ?? []));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

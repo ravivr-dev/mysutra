@@ -5,6 +5,7 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
 abstract class UserRepository {
@@ -17,7 +18,7 @@ abstract class UserRepository {
 
   Future<Either<Failure, UserData>> getSelectedUserAccounts(String id);
 
-  Future<Either<Failure, List<SpecializationItem>>> getSpecialisation(
+  Future<Either<Failure, List<SpecializationEntity>>> getSpecialisation(
       {int? start, int? limit});
 
   Future<Either<Failure, String>> registration(RegistrationParams params);

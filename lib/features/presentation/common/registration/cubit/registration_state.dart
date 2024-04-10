@@ -7,7 +7,7 @@ final class RegistrationInitial extends RegistrationState {}
 final class RegistrationLoading extends RegistrationState {}
 
 final class SpecializationLoaded extends RegistrationState {
-  final List<SpecializationItem> data;
+  final List<SpecializationEntity> data;
 
   SpecializationLoaded(this.data);
 }
@@ -19,8 +19,9 @@ final class RegistrationSuccess extends RegistrationState {
 }
 final class UploadDocument extends RegistrationState {
   final UploadDocModel data;
+  final XFile file;
 
-  UploadDocument(this.data);
+  UploadDocument(this.data, this.file);
 }
 
 final class RegistrationError extends RegistrationState {

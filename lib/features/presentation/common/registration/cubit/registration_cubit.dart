@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
@@ -36,10 +38,10 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     });
   }
 
-  uploadDoc(File file) async {
-    final result = await uploadDocUsecase.call(file);
+  uploadDoc(XFile file) async {
+    final result = await uploadDocUsecase.call(File(file.path));
     result.fold((l) => _emitFailure(l), (data) {
-      emit(UploadDocument(data));
+      emit(UploadDocument(data, file));
     });
   }
 
