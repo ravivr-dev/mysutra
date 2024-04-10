@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
 
 part 'otp_state.dart';
@@ -11,16 +12,27 @@ part 'otp_state.dart';
 class OtpCubit extends Cubit<OtpState> {
   final LoginUsecase loginUsecase;
   final OtpUsecase verifyOtpUsecase;
+  final RegistrationUsecase registrationUsecase;
 
+  OtpCubit(this.loginUsecase, this.verifyOtpUsecase, this.registrationUsecase)
+      : super(OtpInitial());
 
-  OtpCubit(this.loginUsecase,this.verifyOtpUsecase) : super(OtpInitial());
-
-  resendOtp(LoginParams params) async {
+  resendLoginOtp(LoginParams params) async {
     final result = await loginUsecase(params);
 
     result.fold((l) => _emitFailure(l), (data) {
       emit(
-        ResendOtpSuccess(data),
+        ResendLoginOtpSuccess(data),
+      );
+    });
+  }
+
+  resendRegOtp(RegistrationParams params) async {
+    final result = await registrationUsecase(params);
+
+    result.fold((l) => _emitFailure(l), (data) {
+      emit(
+        ResendRegOtpSuccess(data),
       );
     });
   }

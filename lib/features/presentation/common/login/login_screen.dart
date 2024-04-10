@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return BlocProvider(
             create: (context) => sl<OtpCubit>(),
             child: OtpBottomsheet(
-              data: LoginParams(
+              loginData: LoginParams(
                   countryCode: _countryCode.text, phoneNumber: _mobCtrl.text),
             ),
           );

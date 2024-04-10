@@ -302,7 +302,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ],
                 const SizedBox(height: 70),
                 CustomButton(
-                isLoading: state is RegistrationLoading,
+                  isLoading: state is RegistrationLoading,
                   onPressed: () {
                     context.read<RegistrationCubit>().registration(
                           RegistrationParams(
@@ -358,7 +358,20 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         builder: (context) {
           return BlocProvider(
             create: (context) => sl<OtpCubit>(),
-            child: const OtpBottomsheet(),
+            child: OtpBottomsheet(
+              regData: RegistrationParams(
+                  role: giveRole(),
+                  profilePic: profilePicKey,
+                  fullName: _nameCtrl.text,
+                  countryCode: _countryCode.text,
+                  phoneNumber: int.tryParse(_mobCtrl.text),
+                  email: _emailCtrl.text,
+                  specializationId: selectedSpecification,
+                  registrationNumber: _regNumCtrl.text,
+                  experience: int.tryParse(_expCtrl.text),
+                  age: int.tryParse(_ageCtrl.text),
+                  socialUrls: urlList.value.isNotEmpty ? urlList.value : null),
+            ),
           );
         });
   }

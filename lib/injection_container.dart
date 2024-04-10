@@ -38,9 +38,10 @@ Future<void> init() async {
   sl.registerFactory(() => LoginCubit(sl<LoginUsecase>()));
   sl.registerLazySingleton(() => SelectAccountCubit(
       sl<SelectAccountUsecase>(), sl<GetSelectedAccountUsecase>()));
-  sl.registerFactory(() => OtpCubit(sl<LoginUsecase>(), sl<OtpUsecase>()));
-  sl.registerFactory(() => RegistrationCubit(
-      sl<SpecialisationUsecase>(), sl<RegistrationUsecase>(), sl<UploadDocumentUsecase>()));
+  sl.registerFactory(() => OtpCubit(
+      sl<LoginUsecase>(), sl<OtpUsecase>(), sl<RegistrationUsecase>()));
+  sl.registerFactory(() => RegistrationCubit(sl<SpecialisationUsecase>(),
+      sl<RegistrationUsecase>(), sl<UploadDocumentUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));

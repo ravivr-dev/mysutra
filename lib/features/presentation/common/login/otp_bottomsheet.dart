@@ -4,6 +4,7 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -15,8 +16,13 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 
 class OtpBottomsheet extends StatefulWidget {
-  final LoginParams? data;
-  const OtpBottomsheet({super.key, this.data});
+  final LoginParams? loginData;
+  final RegistrationParams? regData;
+  const OtpBottomsheet({
+    super.key,
+    this.loginData,
+    this.regData,
+  });
 
   @override
   State<OtpBottomsheet> createState() => _OtpBottomsheetState();
@@ -55,7 +61,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     context: context, message: state.data.message ?? "");
                 AiloitteNavigation.intentWithClearAllRoutes(
                     context, AppRoutes.selectAccountRoute);
-              } else if (state is ResendOtpSuccess) {
+              } else if (state is ResendLoginOtpSuccess) {
                 widget.showSuccessToast(
                     context: context, message: state.message);
                 _timeCounter.value = timerInitVal;
@@ -110,13 +116,14 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                               if (_timeCounter.value <= 0) {
                                 _timeCounter.value = timerInitVal;
                                 resendOtpTimer();
-                                if (widget.data != null) {
-                                  context.read<OtpCubit>().resendOtp(
-                                        LoginParams(
-                                          countryCode: widget.data!.countryCode,
-                                          phoneNumber: widget.data!.phoneNumber,
-                                        ),
-                                      );
+                                if (widget.loginData != null) {
+                                  context
+                                      .read<OtpCubit>()
+                                      .resendLoginOtp(widget.loginData!);
+                                } else if (widget.regData != null) {
+                                  context
+                                      .read<OtpCubit>()
+                                      .resendRegOtp(widget.regData!);
                                 }
                               }
                             },
