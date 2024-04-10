@@ -17,6 +17,11 @@ final class RegistrationSuccess extends RegistrationState {
 
   RegistrationSuccess(this.message);
 }
+final class UploadDocument extends RegistrationState {
+  final UploadDocModel data;
+
+  UploadDocument(this.data);
+}
 
 final class RegistrationError extends RegistrationState {
   final String error;

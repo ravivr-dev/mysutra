@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
@@ -76,4 +79,9 @@ abstract class UserRestClient {
       @Field("age") int? age,
       @Field("totalExperience") int? experience,
       @Field("socialProfileUrls") List<String>? socialUrls);
+
+  @POST(ENDPOINT_UPLOAD_FILE)
+  Future<UploadDocModel> uploadDocument(
+    @Part() File file,
+  );
 }

@@ -9,6 +9,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_acc
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
@@ -39,7 +40,7 @@ Future<void> init() async {
       sl<SelectAccountUsecase>(), sl<GetSelectedAccountUsecase>()));
   sl.registerFactory(() => OtpCubit(sl<LoginUsecase>(), sl<OtpUsecase>()));
   sl.registerFactory(() => RegistrationCubit(
-      sl<SpecialisationUsecase>(), sl<RegistrationUsecase>()));
+      sl<SpecialisationUsecase>(), sl<RegistrationUsecase>(), sl<UploadDocumentUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -49,6 +50,7 @@ Future<void> init() async {
       () => GetSelectedAccountUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => SpecialisationUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => RegistrationUsecase(sl<UserRepository>()));
+  sl.registerLazySingleton(() => UploadDocumentUsecase(sl<UserRepository>()));
 
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(

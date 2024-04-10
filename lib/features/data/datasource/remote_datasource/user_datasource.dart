@@ -1,5 +1,7 @@
 // ignore_for_file: body_might_complete_normally_catch_error
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
@@ -9,6 +11,7 @@ import 'package:my_sutra/features/data/datasource/local_datasource/local_datasou
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
@@ -25,6 +28,8 @@ abstract class UserDataSource {
   Future<SpecializationModel> getSpecialisation({int? start, int? limit});
 
   Future<GeneralModel> registration(RegistrationParams params);
+
+  Future<UploadDocModel>   uploadDocument(File file);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -145,6 +150,22 @@ class UserDataSourceImpl extends UserDataSource {
               params.experience,
               params.socialUrls)
           .catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<UploadDocModel> uploadDocument(File file) async {
+   try {
+      return await client.uploadDocument(file).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

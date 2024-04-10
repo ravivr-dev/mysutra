@@ -1,17 +1,22 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 
 part 'registration_state.dart';
 
 class RegistrationCubit extends Cubit<RegistrationState> {
   final SpecialisationUsecase specialisationUsecase;
   final RegistrationUsecase registrationUsecase;
-  RegistrationCubit(this.specialisationUsecase, this.registrationUsecase)
+  final UploadDocumentUsecase uploadDocUsecase;
+  RegistrationCubit(this.specialisationUsecase, this.registrationUsecase,
+      this.uploadDocUsecase)
       : super(RegistrationInitial());
 
   getSpecialisations(GeneralPagination params) async {
@@ -28,6 +33,13 @@ class RegistrationCubit extends Cubit<RegistrationState> {
 
     result.fold((l) => _emitFailure(l), (data) {
       emit(RegistrationSuccess(data));
+    });
+  }
+
+  uploadDoc(File file) async {
+    final result = await uploadDocUsecase.call(file);
+    result.fold((l) => _emitFailure(l), (data) {
+      emit(UploadDocument(data));
     });
   }
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
 import 'package:my_sutra/core/error/failures.dart';
@@ -7,6 +9,7 @@ import 'package:my_sutra/features/data/datasource/local_datasource/local_datasou
 import 'package:my_sutra/features/data/datasource/remote_datasource/user_datasource.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
@@ -119,6 +122,21 @@ class UserRepositoryImpl extends UserRepository {
         localDataSource.setAccessToken(result.token ?? "");
 
         return Right(result.message ?? "");
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UploadDocModel>> uploadDocument(File file) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.uploadDocument(file);
+
+        return Right(result);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
