@@ -45,7 +45,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _countryCode = TextEditingController();
   final TextEditingController _mobCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
-  final TextEditingController _specializationCtrl = TextEditingController();
+  // final TextEditingController _specializationCtrl = TextEditingController();
   final TextEditingController _regNumCtrl = TextEditingController();
   final TextEditingController _expCtrl = TextEditingController();
   final TextEditingController _ageCtrl = TextEditingController();
@@ -302,16 +302,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ],
                 const SizedBox(height: 70),
                 CustomButton(
+                isLoading: state is RegistrationLoading,
                   onPressed: () {
                     context.read<RegistrationCubit>().registration(
                           RegistrationParams(
                               role: giveRole(),
-                              profilePic: null,
+                              profilePic: profilePicKey,
                               fullName: _nameCtrl.text,
                               countryCode: _countryCode.text,
                               phoneNumber: int.tryParse(_mobCtrl.text),
                               email: _emailCtrl.text,
-                              specializationId: _specializationCtrl.text,
+                              specializationId: selectedSpecification,
                               registrationNumber: _regNumCtrl.text,
                               experience: int.tryParse(_expCtrl.text),
                               age: int.tryParse(_ageCtrl.text),
