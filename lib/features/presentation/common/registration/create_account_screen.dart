@@ -6,6 +6,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
+import 'package:my_sutra/core/common_widgets/custom_search_field.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
@@ -16,7 +17,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
@@ -26,6 +27,7 @@ import 'package:my_sutra/features/presentation/common/registration/widgets/app_l
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:searchfield/searchfield.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   final String profession;
@@ -51,7 +53,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   final ValueNotifier<List<String>> urlList = ValueNotifier<List<String>>([]);
 
-  List<SpecializationItem> specialisationList = [];
+  List<SpecializationEntity> specialisationList = [];
+  String? selectedSpecification;
 
   final ImagePicker picker = ImagePicker();
   XFile? profilePic;
@@ -79,7 +82,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       body: CustomInkwell(
         child: BlocConsumer<RegistrationCubit, RegistrationState>(
           listener: (context, state) {
-            if (state is RegistrationError) {
+            if (state is SpecializationLoaded) {
+              specialisationList = state.data;
+            } else if (state is RegistrationError) {
               widget.showErrorToast(context: context, message: state.error);
             } else if (state is RegistrationSuccess) {
               widget.showSuccessToast(context: context, message: state.message);
@@ -196,9 +201,25 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   controller: _emailCtrl,
                 ),
                 if (widget.profession == "Doctor") ...[
-                  TextFormFieldWidget(
+                  // TextFormFieldWidget(
+                  //   title: "Specialization",
+                  //   controller: _specializationCtrl,
+                  // ),
+                  TextSearchField(
+                    textCapitalization: TextCapitalization.words,
                     title: "Specialization",
-                    controller: _specializationCtrl,
+                    onSuggestionTap: (value) {
+                      selectedSpecification = value.item;
+                    },
+                    suggestions: specialisationList
+                        .map((e) => SearchFieldListItem(e.name,
+                            item: e.id,
+                            child: Text(
+                              e.name.capitalizeFirstLetterOfSentence,
+                              style: theme.publicSansFonts.regularStyle(
+                                  fontSize: 18, fontColor: AppColors.black49),
+                            )))
+                        .toList(),
                   ),
                   TextFormFieldWidget(
                     title: "Professional Registration number",

@@ -20,6 +20,7 @@ class SpecializationModel {
 class SpecializationItem {
   String? id;
   String? name;
+  String? imageUrl;
   String? createdAt;
   String? updatedAt;
 
@@ -28,6 +29,7 @@ class SpecializationItem {
   SpecializationItem.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     name = json['name'];
+    imageUrl = json['imageUrl'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }

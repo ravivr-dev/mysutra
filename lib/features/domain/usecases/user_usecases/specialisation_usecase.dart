@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/core/usecase/usecase.dart';
-import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 

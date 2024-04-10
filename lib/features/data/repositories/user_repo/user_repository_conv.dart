@@ -8,7 +8,8 @@ class UserRepoConv {
         List<SpecializationEntity>.empty(growable: true);
 
     for (SpecializationItem e in data) {
-      list.add(SpecializationEntity(e.name ?? ""));
+      list.add(SpecializationEntity(
+          name: e.name ?? "", id: e.id ?? "", image: e.imageUrl ?? ""));
     }
     return list;
   }

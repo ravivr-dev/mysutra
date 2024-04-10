@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:searchfield/searchfield.dart';
 
-class TextFormFieldWidget extends StatefulWidget {
-  const TextFormFieldWidget({
+class TextSearchField extends StatefulWidget {
+  const TextSearchField({
     super.key,
     this.initialData,
     this.title,
     this.controller,
-    this.onChange,
-    this.onDone,
-    this.onSaved,
     this.style,
     this.prefixWidget,
     this.borderRadius = 30,
@@ -44,12 +42,14 @@ class TextFormFieldWidget extends StatefulWidget {
     this.suffixIconConstraints,
     this.prefixIconConstraints,
     this.contentPadding,
+    required this.suggestions,
+    this.emptyWidget,
+    this.onSuggestionTap,
   });
-  final String? initialData;
+  final List<SearchFieldListItem<dynamic>> suggestions;
+  final SearchFieldListItem<String>? initialData;
+  final Widget? emptyWidget;
   final String? title;
-  final Function(String onChange)? onChange;
-  final Function(String onSave)? onSaved;
-  final Function(String text)? onDone;
   final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
   final TextEditingController? controller;
@@ -83,12 +83,13 @@ class TextFormFieldWidget extends StatefulWidget {
   final BoxConstraints? prefixIconConstraints;
   final BoxConstraints? suffixIconConstraints;
   final EdgeInsets? contentPadding;
+  final Function(SearchFieldListItem<dynamic>)? onSuggestionTap;
 
   @override
-  State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
+  State<TextSearchField> createState() => _TextSearchFieldState();
 }
 
-class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
+class _TextSearchFieldState extends State<TextSearchField> {
   @override
   void initState() {
     if (widget.initialData != null && widget.initialData != '' ||
@@ -114,37 +115,29 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             ),
             component.spacer(height: 4),
           ],
-          TextFormField(
+          SearchField(
+            onSuggestionTap: widget.onSuggestionTap,
             key: widget.key,
+            suggestions: widget.suggestions,
             initialValue: widget.initialData,
             focusNode: widget.focusNode,
+            emptyWidget: widget.emptyWidget ?? const SizedBox(),
             readOnly: widget.readOnly,
+            itemHeight: 100,
             enabled: widget.isEnabled,
             controller: widget.controller,
             textInputAction: widget.textInputAction,
-            onSaved: (newValue) => widget.onSaved,
-            onChanged: (value) {},
-            textAlignVertical: TextAlignVertical.center,
-            style: widget.style ??
-                theme.publicSansFonts.regularStyle(
-                  fontSize: 18,
-                ),
-            cursorWidth: 1,
             textCapitalization: widget.textCapitalization != null
                 ? widget.textCapitalization!
                 : widget.textInputType == TextInputType.text
                     ? TextCapitalization.sentences
                     : TextCapitalization.none,
             inputFormatters: widget.inputFormatters,
-            keyboardType: widget.textInputType,
-            maxLines: widget.maxLines,
             autofocus: widget.autoFocus,
-            onEditingComplete: () {},
             onTap: widget.onTap,
-            maxLength: widget.maxLength,
             validator: (text) =>
                 widget.validator != null ? widget.validator!(text ?? "") : null,
-            decoration: InputDecoration(
+            searchInputDecoration: InputDecoration(
               prefixIconConstraints: widget.prefixIconConstraints,
               suffixIconConstraints: widget.suffixIconConstraints,
               counterText: '',

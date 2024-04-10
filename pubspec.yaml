@@ -53,6 +53,7 @@ dependencies:
   geolocator: ^11.0.0
   dotted_border: ^2.1.0
   image_picker: ^1.0.7
+  searchfield: ^1.0.1
   # google_maps_flutter: ^2.2.8
 
 dev_dependencies:
