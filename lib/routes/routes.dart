@@ -9,6 +9,7 @@ import 'package:my_sutra/features/presentation/common/registration/create_accoun
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
+import 'package:my_sutra/features/presentation/patient/search_doctor_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -57,6 +58,11 @@ class Routes {
       case AppRoutes.findDoctorRoute:
         return MaterialPageRoute(
           builder: (_) => const FindDoctorScreen(),
+        );
+
+      case AppRoutes.searchDoctorRoute:
+        return MaterialPageRoute(
+          builder: (_) => const SearchDoctorScreen(),
         );
 
       // case AppRoutes.myBatchesRoute:

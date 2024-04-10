@@ -17,15 +17,18 @@ class Assets {
   static const String i18nEn = 'assets/i18n/en.json';
   static const String iconsArrowForward = 'assets/icons/arrow_forward.svg';
   static const String iconsCall = 'assets/icons/call.svg';
+  static const String iconsCheckup = 'assets/icons/checkup.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsDoctor = 'assets/icons/doctor.svg';
   static const String iconsDropdown = 'assets/icons/dropdown.svg';
   static const String iconsEditIcon = 'assets/icons/edit_icon.svg';
+  static const String iconsFreeze = 'assets/icons/freeze.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
   static const String iconsLogo1 = 'assets/icons/logo_1.png';
   static const String iconsSneeze = 'assets/icons/sneeze.svg';
+  static const String iconsVirus = 'assets/icons/virus.svg';
   static const String imagesLogout = 'assets/images/logout.svg';
   static const String imagesSplash = 'assets/images/splash.json';
 

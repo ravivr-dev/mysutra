@@ -105,8 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          // AiloitteNavigation.intentWithClearAllRoutes(
-                          //     context, AppRoutes.chooseAccountTypeRoute);
+                          AiloitteNavigation.intentWithClearAllRoutes(
+                              context, AppRoutes.searchDoctorRoute);
                         },
                         child: Text(
                           "Login as Guest",

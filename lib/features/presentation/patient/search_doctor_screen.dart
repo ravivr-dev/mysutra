@@ -6,20 +6,16 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
-import 'package:my_sutra/features/presentation/patient/widgets/calendar_widget.dart';
-import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
+import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
 
-
-
-////////  THis screen is not using anywhere for now 
-class FindDoctorScreen extends StatefulWidget {
-  const FindDoctorScreen({super.key});
+class SearchDoctorScreen extends StatefulWidget {
+  const SearchDoctorScreen({super.key});
 
   @override
-  State<FindDoctorScreen> createState() => _FindDoctorScreenState();
+  State<SearchDoctorScreen> createState() => _SearchDoctorScreenState();
 }
 
-class _FindDoctorScreenState extends State<FindDoctorScreen> {
+class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,20 +30,32 @@ class _FindDoctorScreenState extends State<FindDoctorScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
- const ScreenTopHandler(),
+                  const ScreenTopHandler(),
                   Text(
-                    "Let's find your\ndoctor",
+                    "Welcome back",
+                    style: theme.publicSansFonts.regularStyle(
+                      fontColor: AppColors.blackColor,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Sahil Pal",
                     style: theme.publicSansFonts.mediumStyle(
                       fontColor: AppColors.blackColor,
                       fontSize: 24,
                       height: 28,
                     ),
                   ),
+                  const SizedBox(height: 16),
                   const TextFormFieldWidget(hintText: "Search"),
-                  const SizedBox(height: 20),
-                  const CalendarWidget(),
-                  const SizedBox(height: 20),
-                  const WeekPicker()
+                  // const SizedBox(height: 20),
+                  // const CalendarWidget(),
+                  // const SizedBox(height: 20),
+                  // const WeekPicker()
+
+                  const SizedBox(height: 32),
+                  const DashboardHelperItems(),
                 ],
               ),
             ),
