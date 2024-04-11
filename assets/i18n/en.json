@@ -1,8 +1,8 @@
 {
-"login" : "Login",
-"mobile_number" : "Mobile Number",
-"verify" : "Verify",
-"choose_Account" : "Choose Account Type"
- 
-
+  "login": "Login",
+  "mobile_number": "Mobile Number",
+  "verify": "Verify",
+  "choose_Account": "Choose Account Type",
+  "login_with_otp": "Login with OTP",
+  "search_result": "Search result"
 }
