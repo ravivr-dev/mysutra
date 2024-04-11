@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Column(
                     children: [
                       CustomButton(
-                        text: StringKeys.login.toUpperCase(),
+                        text: context.stringForKey(StringKeys.loginWithOTP),
                         isLoading: state is LoginLoading,
                         onPressed: () {
                           if (_mobCtrl.text == "" ||
