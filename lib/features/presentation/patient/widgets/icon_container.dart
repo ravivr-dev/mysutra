@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
-import 'package:my_sutra/core/utils/app_colors.dart';
 
 
 class IconContainer extends StatelessWidget {
@@ -25,13 +24,13 @@ class IconContainer extends StatelessWidget {
           child: Container(
             height: 40,
             width: 40,
-            foregroundDecoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(6),
-            ),
+            // foregroundDecoration: BoxDecoration(
+            //   color: backgroundColor,
+            //   borderRadius: BorderRadius.circular(6),
+            // ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: AppColors.white,
+              color: backgroundColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.shade100,

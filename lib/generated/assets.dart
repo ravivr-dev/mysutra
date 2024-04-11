@@ -22,12 +22,15 @@ class Assets {
   static const String iconsDoctor = 'assets/icons/doctor.svg';
   static const String iconsDropdown = 'assets/icons/dropdown.svg';
   static const String iconsEditIcon = 'assets/icons/edit_icon.svg';
+  static const String iconsFilter = 'assets/icons/filter.svg';
   static const String iconsFreeze = 'assets/icons/freeze.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
   static const String iconsLogo1 = 'assets/icons/logo_1.png';
   static const String iconsSneeze = 'assets/icons/sneeze.svg';
+  static const String iconsThreeDots = 'assets/icons/three_dots.svg';
+  static const String iconsVerify = 'assets/icons/verify.svg';
   static const String iconsVirus = 'assets/icons/virus.svg';
   static const String imagesLogout = 'assets/images/logout.svg';
   static const String imagesSplash = 'assets/images/splash.json';
