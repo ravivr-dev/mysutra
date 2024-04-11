@@ -14,6 +14,7 @@ class AppColors {
   static const Color backgroundColor = Color(0xffF6F4F9);
   static const Color blackF2 = Color(0xffF2F4F9);
   static const Color greyEC = Color(0xffECECEC);
+  static const Color transparent = Color(0x00000000);
   static const Color black24 = Color(0xff242424);
 
   // old colors
@@ -36,4 +37,10 @@ class AppColors {
   static const Color purple = Color(0xff2E44F6);
   static const Color selected = Color(0xff8B8D98);
   static const Color blue25 = Color(0xff256FFF);
+  static const Color color0xFFFEFFD1 = Color(0xFFFEFFD1);
+  static const Color star = Color(0xFFD9B104);
+  static const Color color0xFF8338EC = Color(0xFF8338EC);
+  static const Color color0xFF526371 = Color(0xFF526371);
+  static const Color color0xFFF5F5F5 = Color(0xFFF5F5F5);
+
 }
