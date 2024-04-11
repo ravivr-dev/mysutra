@@ -14,6 +14,8 @@ class CustomButton extends StatelessWidget {
   final String? icon;
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleStyle;
+  final double? borderRadius;
+
   const CustomButton({
     super.key,
     this.loaderColor,
@@ -26,6 +28,7 @@ class CustomButton extends StatelessWidget {
     this.icon,
     this.titlePadding,
     this.titleStyle,
+    this.borderRadius,
   });
 
   @override
@@ -36,7 +39,7 @@ class CustomButton extends StatelessWidget {
         onPressed: isLoading! ? nullPress : onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius ?? 12),
           ),
           backgroundColor: buttonColor ?? AppColors.primaryColor,
         ),
