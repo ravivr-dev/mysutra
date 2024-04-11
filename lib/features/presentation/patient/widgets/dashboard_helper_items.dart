@@ -21,7 +21,7 @@ class _DashboardHelperItemsState extends State<DashboardHelperItems> {
       children: [
         IconContainer(
           icon: Assets.iconsFreeze,
-          backgroundColor: AppColors.colorFF9F12.withOpacity(0.16),
+          backgroundColor: AppColors.colorFF9F12,
           title: "Obstetrician",
           onTap: () {
             // AiloitteNavigation.intent(context, AppRoutes.markAttendanceRoute);
@@ -29,7 +29,7 @@ class _DashboardHelperItemsState extends State<DashboardHelperItems> {
         ),
         IconContainer(
           icon: Assets.iconsCheckup,
-          backgroundColor: AppColors.color56CA7E.withOpacity(0.16),
+          backgroundColor: AppColors.color56CA7E,
           title: "Andrologist",
           onTap: () {
             // AiloitteNavigation.intent(context, AppRoutes.attendanceStatusRoute);
@@ -37,7 +37,7 @@ class _DashboardHelperItemsState extends State<DashboardHelperItems> {
         ),
         IconContainer(
           icon: Assets.iconsVirus,
-          backgroundColor: AppColors.colorFF6161.withOpacity(0.16),
+          backgroundColor: AppColors.colorFF6161,
           title: "Urologist",
           onTap: () {
             // getCenterBottomSheet(
@@ -51,7 +51,7 @@ class _DashboardHelperItemsState extends State<DashboardHelperItems> {
         ),
         IconContainer(
             icon: Assets.iconsVirus,
-            backgroundColor: AppColors.purple.withOpacity(0.16),
+            backgroundColor: AppColors.purple,
             title: "Pediatric ",
             onTap: () {}
             // AiloitteNavigation.intent(context, AppRoutes.leaderboardRoute),

@@ -22,6 +22,7 @@ class Assets {
   static const String iconsDoctor = 'assets/icons/doctor.svg';
   static const String iconsDropdown = 'assets/icons/dropdown.svg';
   static const String iconsEditIcon = 'assets/icons/edit_icon.svg';
+  static const String iconsFilter = 'assets/icons/filter.svg';
   static const String iconsFreeze = 'assets/icons/freeze.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
