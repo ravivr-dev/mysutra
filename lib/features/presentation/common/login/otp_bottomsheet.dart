@@ -32,6 +32,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
   final ValueNotifier<int> _timeCounter = ValueNotifier<int>(60);
   String? otp;
   final int timerInitVal = 60;
+  late Timer _resendOtpTimer;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
 
   @override
   void dispose() {
+    _resendOtpTimer.cancel();
     _timeCounter.dispose();
     super.dispose();
   }
@@ -190,9 +192,8 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
     );
   }
 
-  resendOtpTimer() {
-    Duration oneSec = const Duration(seconds: 1);
-    Timer.periodic(oneSec, (time) {
+  void resendOtpTimer() {
+    _resendOtpTimer = Timer.periodic(const Duration(seconds: 1), (time) {
       _timeCounter.value--;
       if (_timeCounter.value <= 0) {
         time.cancel();
