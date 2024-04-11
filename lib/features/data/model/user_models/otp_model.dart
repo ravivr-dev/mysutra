@@ -1,12 +1,14 @@
 class UserModel {
   String? message;
   UserData? data;
+  int? totalUserAccounts;
 
-  UserModel({this.message, this.data});
+  UserModel({this.message, this.data, this.totalUserAccounts});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     data = json['data'] != null ? UserData.fromJson(json['data']) : null;
+    totalUserAccounts = json['totalUserAccounts'];
   }
 }
 

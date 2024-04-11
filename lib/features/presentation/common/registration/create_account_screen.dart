@@ -199,6 +199,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 TextFormFieldWidget(
                   title: "Email",
                   controller: _emailCtrl,
+                  textCapitalization: TextCapitalization.none,
                 ),
                 if (widget.profession == "Doctor") ...[
                   // TextFormFieldWidget(
@@ -315,7 +316,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               specializationId: selectedSpecification,
                               registrationNumber: _regNumCtrl.text,
                               experience: int.tryParse(_expCtrl.text),
-                              age: int.tryParse(_ageCtrl.text),
+                              age: _ageCtrl.text,
                               socialUrls: urlList.value.isNotEmpty
                                   ? urlList.value
                                   : null),
@@ -369,7 +370,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   specializationId: selectedSpecification,
                   registrationNumber: _regNumCtrl.text,
                   experience: int.tryParse(_expCtrl.text),
-                  age: int.tryParse(_ageCtrl.text),
+                  age: _ageCtrl.text,
                   socialUrls: urlList.value.isNotEmpty ? urlList.value : null),
             ),
           );

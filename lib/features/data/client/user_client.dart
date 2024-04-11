@@ -76,7 +76,7 @@ abstract class UserRestClient {
       @Field("email") String? email,
       @Field("specializationId") String? specializationId,
       @Field("registrationNumber") String? registrationNumber,
-      @Field("age") int? age,
+      @Field("age") String? age,
       @Field("totalExperience") int? experience,
       @Field("socialProfileUrls") List<String>? socialUrls);
 

@@ -176,7 +176,7 @@ class _UserRestClient implements UserRestClient {
     String? email,
     String? specializationId,
     String? registrationNumber,
-    int? age,
+    String? age,
     int? experience,
     List<String>? socialUrls,
   ) async {
