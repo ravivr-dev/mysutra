@@ -59,8 +59,14 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
               } else if (state is OtpSuccess) {
                 widget.showSuccessToast(
                     context: context, message: state.data.message ?? "");
-                AiloitteNavigation.intentWithClearAllRoutes(
-                    context, AppRoutes.selectAccountRoute);
+
+                if (state.data.totalUserAccounts == 1 ||
+                    widget.loginData != null) {
+                  // TODO: direct login route
+                } else {
+                  AiloitteNavigation.intentWithClearAllRoutes(
+                      context, AppRoutes.selectAccountRoute);
+                }
               } else if (state is ResendLoginOtpSuccess) {
                 widget.showSuccessToast(
                     context: context, message: state.message);
@@ -79,13 +85,12 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                      'Please enter the OTP received on your\nregistered mobile number',
-                      textAlign: TextAlign.center,
-                      style: theme.publicSansFonts.mediumStyle(
-                          fontSize: 12, fontColor: AppColors.grey92)),
-                  const SizedBox(
-                    height: 30,
+                    'Please enter the OTP received on your\nregistered mobile number',
+                    textAlign: TextAlign.center,
+                    style: theme.publicSansFonts
+                        .mediumStyle(fontSize: 12, fontColor: AppColors.grey92),
                   ),
+                  const SizedBox(height: 30),
                   Center(
                     child: OTPTextField(
                       length: 4,
