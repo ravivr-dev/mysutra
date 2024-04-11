@@ -20,9 +20,12 @@ class _DateWidgetState extends State<DateWidget> {
         radius: 10,
         child: InkWell(
           onTap: () {
-            setState(() {
-              date = date.add(const Duration(days: 1));
-            });
+            if (!(date.day == DateTime.now().day &&
+                date.month == DateTime.now().month)) {
+              setState(() {
+                date = date.add(const Duration(days: 1));
+              });
+            }
           },
           child: const Padding(
             padding: EdgeInsets.only(left: 5),

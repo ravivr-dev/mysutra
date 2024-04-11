@@ -9,6 +9,7 @@ import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
+import 'package:my_sutra/generated/assets.dart';
 
 class SearchDoctorScreen extends StatefulWidget {
   const SearchDoctorScreen({super.key});
@@ -87,14 +88,14 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
                 child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Appointments",
                       style: theme.publicSansFonts.semiBoldStyle(
                           fontSize: 16, fontColor: AppColors.blackColor),
                     ),
-                 const   DateWidget()
+                    const DateWidget()
                   ],
                 ),
               ),
@@ -102,7 +103,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(bottom: 40, top: 20),
-                  itemCount: 10,
+                  itemCount: 4,
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: AppDeco.cardDecoration,
@@ -112,49 +113,78 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(Constants.tempNetworkUrl),
+                          Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                Constants.tempNetworkUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Dr. Surya Pandey",
-                                  style: theme.publicSansFonts.mediumStyle(
-                                      fontSize: 12,
-                                      fontColor: AppColors.blackColor),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Dr. Surya Pandey",
+                                      style: theme.publicSansFonts.mediumStyle(
+                                          fontSize: 12,
+                                          height: 20,
+                                          fontColor: AppColors.blackColor),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    component.assetImage(
+                                        path: Assets.iconsVerify),
+                                  ],
                                 ),
                                 Text(
                                   "Physiotherapist",
                                   style: theme.publicSansFonts.regularStyle(
                                       fontSize: 10,
+                                      height: 20,
                                       fontColor: AppColors.black81),
                                 ),
-                                Text(
-                                  "02:30 AM",
-                                  style: theme.publicSansFonts.regularStyle(
-                                      fontSize: 10,
-                                      fontColor: AppColors.blackColor),
+                                const SizedBox(height: 10),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppColors.blackF2,
+                                  ),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.schedule_outlined,
+                                        size: 11,
+                                        color: AppColors.black81,
+                                      ),
+                                   
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "Nov 24, 9:00 AM",
+                                        style: theme.publicSansFonts
+                                            .regularStyle(
+                                                fontSize: 10,
+                                                fontColor: AppColors.black64),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.blackF2,
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Text(
-                              "Start in 2 hours",
-                              style: theme.publicSansFonts.regularStyle(
-                                  fontSize: 10, fontColor: AppColors.black64),
-                            ),
-                          ),
+                          component.assetImage(path: Assets.iconsThreeDots),
                         ],
                       ),
                     );
