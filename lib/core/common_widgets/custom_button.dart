@@ -41,8 +41,10 @@ class CustomButton extends StatelessWidget {
           backgroundColor: buttonColor ?? AppColors.primaryColor,
         ),
         child: isLoading!
-            ? LoadingAnimationWidget.inkDrop(
+            ? LoadingAnimationWidget.discreteCircle(
                 color: loaderColor ?? AppColors.white,
+                secondRingColor: AppColors.white.withOpacity(0.7),
+                thirdRingColor:AppColors.white.withOpacity(0.3),
                 size: 22,
               )
             : Padding(

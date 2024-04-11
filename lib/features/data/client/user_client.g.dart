@@ -19,69 +19,7 @@ class _UserRestClient implements UserRestClient {
   String? baseUrl;
 
   @override
-  Future<UserProfileModel> getProfile() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserProfileModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/profile',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = UserProfileModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<AcademyCentersModel> getAcademyCentres(
-    int? pageNumber,
-    int? limit,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pagination': pageNumber,
-      r'limit': limit,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AcademyCentersModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/academy-centers',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = AcademyCentersModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<SuccessMessageModel> login(
-    String academy,
+  Future<GeneralModel> login(
     String countryCode,
     int phoneNumber,
   ) async {
@@ -89,12 +27,11 @@ class _UserRestClient implements UserRestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'academyCenterId': academy,
       'countryCode': countryCode,
       'phoneNumber': phoneNumber,
     };
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GeneralModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -110,55 +47,18 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
+    final value = GeneralModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SuccessMessageModel> logout() async {
+  Future<UserModel> verifyOtp(int otp) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/logout',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<OtpResponseModel> sendOtp(
-    String academy,
-    String countryCode,
-    int phoneNumber,
-    int otp,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {
-      'academyCenterId': academy,
-      'countryCode': countryCode,
-      'phoneNumber': phoneNumber,
-      'otp': otp,
-    };
+    final _data = {'otp': otp};
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<OtpResponseModel>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<UserModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -174,66 +74,25 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = OtpResponseModel.fromJson(_result.data!);
+    final value = UserModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<MyAcademyCenterModel> getMyAcademyCentres(
-    int? pageNumber,
-    int? limit,
-  ) async {
+  Future<UserAccountsModel> getUserAccounts() async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pagination': pageNumber,
-      r'limit': limit,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MyAcademyCenterModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/coach/academy-center',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = MyAcademyCenterModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BatchesModel> getMyBatches(
-    int? pageNumber,
-    int? limit,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pagination': pageNumber,
-      r'limit': limit,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BatchesModel>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<UserAccountsModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/coach/batches',
+              '/user/accounts',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -242,26 +101,59 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = BatchesModel.fromJson(_result.data!);
+    final value = UserAccountsModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<TrainingProgramModel> getTrainingProgram(
-      String academyCenterId) async {
+  Future<UserModel> getSelectedUserAccounts(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
+    final _data = {'userId': id};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UserModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/user/accounts',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = UserModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SpecializationModel> getSpecialisation(
+    int? start,
+    int? limit,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'pagination': start,
+      r'limit': limit,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<TrainingProgramModel>(Options(
+        _setStreamType<SpecializationModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/coach/academy-center/${academyCenterId}',
+              '/user/specialization',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -270,235 +162,51 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = TrainingProgramModel.fromJson(_result.data!);
+    final value = SpecializationModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SuccessMessageModel> checkIn() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/coach/checkIn',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<SuccessMessageModel> checkOut() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'coach/checkOut',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<SuccessMessageModel> changePhone(
-    String countryCode,
-    int phoneNumber,
+  Future<GeneralModel> registration(
+    String role,
+    String? profilePic,
+    String? fullName,
+    String? countryCode,
+    int? phoneNumber,
+    String? email,
+    String? specializationId,
+    String? registrationNumber,
+    int? age,
+    int? experience,
+    List<String>? socialUrls,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = {
+      'role': role,
+      'profilePic': profilePic,
+      'fullName': fullName,
       'countryCode': countryCode,
       'phoneNumber': phoneNumber,
-    };
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/change-phone-number',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<SuccessMessageModel> changePhoneOtp(int otp) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {'otp': otp};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/change-phone-number/verify-otp',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<SuccessMessageModel> changeEmail(String email) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {'email': email};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/change-email',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<SuccessMessageModel> changeEmailOtp(int otp) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {'otp': otp};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/change-email/verify-otp',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BatchStudentsModel> getBatchStudents(
-    int? pageNumber,
-    int? limit,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pagination': pageNumber,
-      r'limit': limit,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BatchStudentsModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/coach/batches/students',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = BatchStudentsModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<SuccessMessageModel> markStudentAttendance(
-    String? date,
-    List<String>? studentIds,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = {
-      'date': date,
-      'studentIds': studentIds,
+      'email': email,
+      'specializationId': specializationId,
+      'registrationNumber': registrationNumber,
+      'age': age,
+      'totalExperience': experience,
+      'socialProfileUrls': socialUrls,
     };
     _data.removeWhere((k, v) => v == null);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GeneralModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/coach/mark-attendance',
+              '/user/registration',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -507,32 +215,32 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
+    final value = GeneralModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<CheckinStatusModel> getCheckinStatus(
-    int? pageNumber,
-    int? limit,
-  ) async {
+  Future<UploadDocModel> uploadDocument(File file) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pagination': pageNumber,
-      r'limit': limit,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = FormData();
+    _data.files.add(MapEntry(
+      'file',
+      MultipartFile.fromFileSync(
+        file.path,
+        filename: file.path.split(Platform.pathSeparator).last,
+      ),
+    ));
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<CheckinStatusModel>(Options(
-      method: 'GET',
+        .fetch<Map<String, dynamic>>(_setStreamType<UploadDocModel>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/coach/checkIn',
+              '/upload/file',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -541,7 +249,7 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CheckinStatusModel.fromJson(_result.data!);
+    final value = UploadDocModel.fromJson(_result.data!);
     return value;
   }
 

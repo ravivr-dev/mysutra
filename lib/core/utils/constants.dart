@@ -3,7 +3,7 @@
 // import 'package:flutter/services.dart';
 
 class Constants {
-  static const String appName = "Sportync";
+  static const String appName = "MySutra";
 
   static const String authorization = "Authorization";
 
@@ -20,70 +20,9 @@ class Constants {
   static const String errorUnknown = "Unknown error occurred";
   static const String errorTypeServer = "Server Error";
   static const String errorTypeTimeout = "Time Out";
-  static const String aboutAddedSuccessFully = "About Added Successfully";
-  static const String youHaveUsedAllAvailableAttempt =
-      "All available attempts for this quiz already used";
-  static const String quizAlreadySubmitted = "Quiz already submitted";
 
-  // static const String platformAndroid = "android";
-  // static const String platformIos = "ios";
-  // static const String redirectTo = "redirectTo";
-  // static const String redirectDataId = "redirectDataId";
-
-  static const String baseUrl = "https://api-dev.sportync.com/";
-
-  /// Socket Url
-  // static const String socialSocketUrl =
-  //     "wss://jiss5vrid8.execute-api.eu-west-2.amazonaws.com/websocket";
-  // static const String stripePaymentIntentUrl =
-  //     'https://api.stripe.com/v1/payment_intents';
-
-  // static const String socketIoUnhandledException = "unhandled_exception";
-  // static const String socketError = "errors";
-  // static const String socketErrorParams = "error_params";
-
-  // static const String apiVersion = "/api/v1";
-
-  // static bool initialUriHandled = false;
-
-  // static const String resourceRequestStatusApproved = "approved";
-  // static const String resourceRequestStatusDeclined = "declined";
-
-  // static const String countryCodeUK = "+44";
-
-  // static const String verificationStatusApproved = "approved";
-  // static const String verificationStatusPending = "pending";
-
-  // static const String typeResearch = "research";
-  // static const String typePresentation = "presentation";
-
-  // static const String imageFileType = "image";
-  // static const String videoFileType = "video";
-  // static const String documentFileType = "document";
-  // static const String contentTypeForPayment =
-  //     'application/x-www-form-urlencoded';
-
-  ///Type of format
-  // static const String dateFormatYYYY_MM_DD = "yyyy/MM/dd";
-
-  // static const String defaultCountryCode = "+91";
-  // static const String mobileNumberType = "mobileNumber";
-  // static const String emailType = "email";
-
-  // static String activeStatus = "active";
-  // static const String pendingStatus = "pending";
-  // static const String approvedStatus = "approved";
-  // static const String newStatus = "new";
-  // static const String completedStatus = "completed";
-  // static const String cancelStatus = "cancelled";
-  // static const String opneStatus = "open";
-  // static const String closedStatus = "closed";
-  // static const String resolvedStatus = "resolved";
-  // static const String deletedStatus = "deleted";
-
-// // User
-//   static const String userTypeWorker = "CLIENT";
-//   static const String userTypeEmployer = "VENDOR";
+  static const String baseUrl =
+      "http://mysutra-dev.ap-south-1.elasticbeanstalk.com";
 }
 
 class DateTimeUtils {
@@ -127,3 +66,7 @@ class DateTimeUtils {
     return [years, months, days];
   }
 }
+
+const String ROLE_DOCTOR = "DOCTOR";
+const String ROLE_PATIENT = "PATIENT";
+const String ROLE_INFLUENCER = "INFLUENCER";

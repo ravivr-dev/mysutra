@@ -1,65 +1,35 @@
 // ignore_for_file: body_might_complete_normally_catch_error
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
-import 'package:my_sutra/features/data/model/success_message_model.dart';
-import 'package:my_sutra/features/data/model/user_models/academy_centers_model.dart';
-import 'package:my_sutra/features/data/model/user_models/batch_students_model.dart';
-import 'package:my_sutra/features/data/model/user_models/batches_model.dart';
-import 'package:my_sutra/features/data/model/user_models/chekin_status_model.dart';
-import 'package:my_sutra/features/data/model/user_models/my_academy_center_model.dart';
-import 'package:my_sutra/features/data/model/user_models/otp_response_model.dart';
-import 'package:my_sutra/features/data/model/user_models/training_program_model.dart';
-import 'package:my_sutra/features/data/model/user_models/user_profile_model.dart';
+import 'package:my_sutra/features/data/model/user_models/general_model.dart';
+import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
+import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
 abstract class UserDataSource {
-  Future<AcademyCentersModel> getAcademyCentres({int? pageNumber, int? limit});
+  Future<GeneralModel> login(
+      {required String countryCode, required String phoneNumber});
 
-  Future<SuccessMessageModel> login(
-      {required String academy,
-      required String countryCode,
-      required String phoneNumber});
+  Future<UserModel> verifyOtp(int otp);
 
-  Future<OtpResponseModel> sendOtp(
-      {required String academy,
-      required String countryCode,
-      required String phoneNumber,
-      required String otp});
+  Future<UserAccountsModel> getUserAccounts();
 
-  Future<MyAcademyCenterModel> getMyAcademyCentres(
-      {int? pageNumber, int? limit});
+  Future<UserModel> getSelectedUserAccounts(String id);
 
-  Future<BatchesModel> getMyBatches({int? pageNumber, int? limit});
+  Future<SpecializationModel> getSpecialisation({int? start, int? limit});
 
-  Future<TrainingProgramModel> getTrainingProgram(String academyId);
+  Future<GeneralModel> registration(RegistrationParams params);
 
-  Future<SuccessMessageModel> checkIn();
-
-  Future<SuccessMessageModel> checkOut();
-
-  Future<SuccessMessageModel> logout();
-
-  Future<UserProfileModel> getProfile();
-
-  Future<SuccessMessageModel> changePhone(
-      {required String countryCode, required int phoneNumber});
-
-  Future<SuccessMessageModel> changePhoneOtp({required int otp});
-
-  Future<SuccessMessageModel> changeEmail({required String email});
-
-  Future<SuccessMessageModel> changeEmailOtp({required int otp});
-
-  Future<BatchStudentsModel> getBatchStudents({int? pageNumber, int? limit});
-
-  Future<SuccessMessageModel> markAttendance(
-      {required String? date, required List<String>? studentIds});
-
-  Future<CheckinStatusModel> getCheckinStatus({int? pageNumber, int? limit});
+  Future<UploadDocModel>   uploadDocument(File file);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -80,11 +50,11 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<AcademyCentersModel> getAcademyCentres(
-      {int? pageNumber, int? limit}) async {
+  Future<GeneralModel> login(
+      {required String countryCode, required String phoneNumber}) async {
     try {
       return await client
-          .getAcademyCentres(pageNumber, limit)
+          .login(countryCode, int.parse(phoneNumber))
           .catchError((err) {
         _processDio(err);
       });
@@ -99,13 +69,86 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<SuccessMessageModel> login(
-      {required String academy,
-      required String countryCode,
-      required String phoneNumber}) async {
+  Future<UserModel> verifyOtp(int otp) async {
+    try {
+      return await client.verifyOtp(otp).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserAccountsModel> getUserAccounts() async {
+    try {
+      return await client.getUserAccounts().catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserModel> getSelectedUserAccounts(String id) async {
+    try {
+      return await client.getSelectedUserAccounts(id).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SpecializationModel> getSpecialisation(
+      {int? start, int? limit}) async {
+    try {
+      return await client.getSpecialisation(start, limit).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GeneralModel> registration(RegistrationParams params) async {
     try {
       return await client
-          .login(academy, countryCode, int.parse(phoneNumber))
+          .registration(
+              params.role,
+              params.profilePic,
+              params.fullName,
+              params.countryCode,
+              params.phoneNumber,
+              params.email,
+              params.specializationId,
+              params.registrationNumber,
+              params.age,
+              params.experience,
+              params.socialUrls)
           .catchError((err) {
         _processDio(err);
       });
@@ -118,17 +161,11 @@ class UserDataSourceImpl extends UserDataSource {
       rethrow;
     }
   }
-
+  
   @override
-  Future<OtpResponseModel> sendOtp(
-      {required String academy,
-      required String countryCode,
-      required String phoneNumber,
-      required String otp}) async {
-    try {
-      return await client
-          .sendOtp(academy, countryCode, int.parse(phoneNumber), int.parse(otp))
-          .catchError((err) {
+  Future<UploadDocModel> uploadDocument(File file) async {
+   try {
+      return await client.uploadDocument(file).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {
@@ -136,233 +173,6 @@ class UserDataSourceImpl extends UserDataSource {
         message: e.getErrorFromDio(
             validateAuthentication: true, localDataSource: localDataSource),
       );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<MyAcademyCenterModel> getMyAcademyCentres(
-      {int? pageNumber, int? limit}) async {
-    try {
-      return await client
-          .getMyAcademyCentres(pageNumber, limit)
-          .catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<BatchesModel> getMyBatches({int? pageNumber, int? limit}) async {
-    try {
-      return await client.getMyBatches(pageNumber, limit).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<TrainingProgramModel> getTrainingProgram(String academyId) async {
-    try {
-      return await client.getTrainingProgram(academyId).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> checkIn() async {
-    try {
-      return await client.checkIn().catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> checkOut() async {
-    try {
-      return await client.checkOut().catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> logout() async {
-    try {
-      return await client.logout().catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<UserProfileModel> getProfile() async {
-    try {
-      return await client.getProfile().catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> changePhone(
-      {required String countryCode, required int phoneNumber}) async {
-    try {
-      return await client
-          .changePhone(countryCode, phoneNumber)
-          .catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> changePhoneOtp({required int otp}) async {
-    try {
-      return await client.changePhoneOtp(otp).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> changeEmail({required String email}) async {
-    try {
-      return await client.changeEmail(email).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> changeEmailOtp({required int otp}) async {
-    try {
-      return await client.changeEmailOtp(otp).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<BatchStudentsModel> getBatchStudents(
-      {int? pageNumber, int? limit}) async {
-    try {
-      return await client.getBatchStudents(pageNumber, limit).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SuccessMessageModel> markAttendance(
-      {required String? date, required List<String>? studentIds}) async {
-    try {
-      return await client
-          .markStudentAttendance(date, studentIds)
-          .catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<CheckinStatusModel> getCheckinStatus(
-      {int? pageNumber, int? limit}) async {
-    try {
-      return await client.getCheckinStatus(pageNumber, limit).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-          message: e.getErrorFromDio(
-              validateAuthentication: true, localDataSource: localDataSource));
     } on Exception {
       rethrow;
     }

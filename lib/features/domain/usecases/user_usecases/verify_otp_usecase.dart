@@ -1,21 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/core/usecase/usecase.dart';
+import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
-import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 
-class VerifyOtpUsecase extends UseCase<String, LoginParams> {
+class OtpUsecase extends UseCase<UserModel, int> {
   final UserRepository repo;
-
-  VerifyOtpUsecase(this.repo);
+  OtpUsecase(this.repo);
 
   @override
-  Future<Either<Failure, String>> call(LoginParams params) async {
-    return await repo.sendOtp(
-      academy: params.academy,
-      countryCode: params.countryCode,
-      phoneNumber: params.phoneNumber,
-      otp: params.otp!,
-    );
+  Future<Either<Failure, UserModel>> call(int params) async {
+    return await repo.verifyOtp(params);
   }
 }
