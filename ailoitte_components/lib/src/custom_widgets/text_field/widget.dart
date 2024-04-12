@@ -270,7 +270,7 @@ class _AiloitteTextFieldWidgetState extends State<AiloitteTextFieldWidget> {
                                 child: widget.hideObscureWidget ?? Container(),
                               )
                         : widget.suffixWidget,
-                    filled: _isFilled,
+                    filled: widget.filled,
                     fillColor: widget.fillColor,
                     border: _getBorder(),
                     focusedBorder: _getFocusedBorder(),
@@ -355,7 +355,7 @@ class _AiloitteTextFieldWidgetState extends State<AiloitteTextFieldWidget> {
 
     return OutlineInputBorder(
       borderSide: BorderSide(
-        color: _isFilled
+        color: widget.filled
             ? widget.borderColor ?? defaultBorderColor
             : widget.emptyBorderColor ?? Colors.blue,
       ),

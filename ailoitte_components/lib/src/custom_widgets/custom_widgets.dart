@@ -398,7 +398,7 @@ class AilCustomWidgets extends AiloitteTheme {
       textInputType: textInputType ?? TextInputType.text,
       inputFormatters: inputFormatters,
       textCapitalization: textCapitalization,
-      fillColor: Colors.transparent,
+      fillColor: fillColor ?? Colors.transparent,
       focus: focus,
       validator: validator,
       showFocusedBorder: showFocusedBorder ?? false,

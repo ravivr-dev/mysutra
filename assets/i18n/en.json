@@ -5,5 +5,13 @@
   "choose_Account": "Choose Account Type",
   "login_with_otp": "Login with OTP",
   "search_result": "Search result",
-  "my_profile": "My Profile"
+  "my_profile": "My Profile",
+  "settings": "Settings",
+  "session_1_timing*": "Session 1 Timing*",
+  "session_2_timing*": "Session 2 Timing*",
+  "session_fees": "Session Fees",
+  "save_changes": "Save Changes",
+  "to": "to",
+  "session_duration": "Session Duration",
+  "select_days": "Select days"
 }
