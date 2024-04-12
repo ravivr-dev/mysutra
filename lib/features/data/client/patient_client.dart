@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
@@ -37,5 +39,13 @@ abstract class PatientRestClient {
     );
   }
 
-
+  @GET(ENDPOINT_PATIENT_SEARCH)
+  Future<SearchDoctorModel> searchDoctors(
+    @Query("search") String search,
+    @Query("experience") int experience,
+    @Query("pagination") int start,
+    @Query("limit") int? limit,
+    @Query("reviews") int reviews,
+    @Query("specializationId") String specializationId,
+  );
 }
