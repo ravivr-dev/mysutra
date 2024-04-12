@@ -6,7 +6,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 class CustomButton extends StatelessWidget {
   final Color? loaderColor;
   final String? text;
-  final bool? isLoading;
+  final bool isLoading;
   final Color? textColor;
   final Color? buttonColor;
   final Function()? onPressed;
@@ -36,18 +36,18 @@ class CustomButton extends StatelessWidget {
     return SizedBox(
       width: double.maxFinite,
       child: ElevatedButton(
-        onPressed: isLoading! ? nullPress : onPressed,
+        onPressed: isLoading ? nullPress : onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 12),
           ),
           backgroundColor: buttonColor ?? AppColors.primaryColor,
         ),
-        child: isLoading!
+        child: isLoading
             ? LoadingAnimationWidget.discreteCircle(
                 color: loaderColor ?? AppColors.white,
                 secondRingColor: AppColors.white.withOpacity(0.7),
-                thirdRingColor:AppColors.white.withOpacity(0.3),
+                thirdRingColor: AppColors.white.withOpacity(0.3),
                 size: 22,
               )
             : Padding(
