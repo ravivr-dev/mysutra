@@ -5,4 +5,5 @@ class StringKeys {
   static const String verify = "verify";
   static const String chooseAccount = "choose_Account";
   static const String searchResult = 'search_result';
+  static const String myProfile = 'my_profile';
 }

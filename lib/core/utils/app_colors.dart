@@ -44,5 +44,6 @@ class AppColors {
   static const Color color0xFFF5F5F5 = Color(0xFFF5F5F5);
   static const Color color0xFF55ACEE = Color(0xFF55ACEE);
   static const Color color0xFFFB5607 = Color(0xFFFB5607);
-
+  static const Color dividerColor = Color(0xFFEDEEF2);
+  static const Color color0xFF88A6FF = Color(0xFF88A6FF);
 }
