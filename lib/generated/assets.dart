@@ -28,8 +28,11 @@ class Assets {
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
   static const String iconsLogo1 = 'assets/icons/logo_1.png';
+  static const String iconsMedal = 'assets/icons/medal.svg';
   static const String iconsSneeze = 'assets/icons/sneeze.svg';
+  static const String iconsStar = 'assets/icons/star.svg';
   static const String iconsThreeDots = 'assets/icons/three_dots.svg';
+  static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsVerify = 'assets/icons/verify.svg';
   static const String iconsVirus = 'assets/icons/virus.svg';
   static const String imagesLogout = 'assets/images/logout.svg';
