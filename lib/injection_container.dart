@@ -19,6 +19,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_useca
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_sutra/core/components/config/theme/theme.dart';
 import 'package:my_sutra/core/components/custom_widgets/custom_widgets.dart';
@@ -47,6 +48,7 @@ Future<void> init() async {
       sl<LoginUsecase>(), sl<OtpUsecase>(), sl<RegistrationUsecase>()));
   sl.registerFactory(() => RegistrationCubit(sl<SpecialisationUsecase>(),
       sl<RegistrationUsecase>(), sl<UploadDocumentUsecase>()));
+  sl.registerFactory(() => SearchDoctorCubit(sl<SearchDoctorUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));

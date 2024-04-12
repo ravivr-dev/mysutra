@@ -41,11 +41,11 @@ abstract class PatientRestClient {
 
   @GET(ENDPOINT_PATIENT_SEARCH)
   Future<SearchDoctorModel> searchDoctors(
-    @Query("search") String search,
-    @Query("experience") int experience,
-    @Query("pagination") int start,
+    @Query("search") String? search,
+    @Query("experience") int? experience,
+    @Query("pagination") int? start,
     @Query("limit") int? limit,
-    @Query("reviews") int reviews,
-    @Query("specializationId") String specializationId,
+    @Query("reviews") int? reviews,
+    @Query("specializationId") String? specializationId,
   );
 }

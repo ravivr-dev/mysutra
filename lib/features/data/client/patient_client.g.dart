@@ -20,12 +20,12 @@ class _PatientRestClient implements PatientRestClient {
 
   @override
   Future<SearchDoctorModel> searchDoctors(
-    String search,
-    int experience,
-    int start,
+    String? search,
+    int? experience,
+    int? start,
     int? limit,
-    int reviews,
-    String specializationId,
+    int? reviews,
+    String? specializationId,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
