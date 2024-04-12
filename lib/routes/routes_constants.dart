@@ -8,6 +8,8 @@ class AppRoutes {
   // patient routes
   static const String findDoctorRoute = "/find_doctor_screen";
   static const String searchDoctorRoute = "/search_doctor_screen";
+  static const String searchResultRoute = "/search_result_screen";
+
 
 
 

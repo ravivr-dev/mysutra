@@ -4,7 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
+import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
+import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
+import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
@@ -53,6 +57,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RegistrationUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => UploadDocumentUsecase(sl<UserRepository>()));
 
+  /// Repository
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(
       localDataSource: sl<LocalDataSource>(),
@@ -60,12 +65,21 @@ Future<void> init() async {
       networkInfo: sl<NetworkInfo>(),
     ),
   );
+  sl.registerLazySingleton<PatientRepository>(
+    () => PatientRepositoryImpl(
+      localDataSource: sl<LocalDataSource>(),
+      remoteDataSource: sl<PatientDataSource>(),
+      networkInfo: sl<NetworkInfo>(),
+    ),
+  );
 
   /// DataSource
   sl.registerLazySingleton<LocalDataSource>(
       () => LocalDataSourceImpl(sl<MySharedPref>()));
-  sl.registerLazySingleton<UserDataSource>(
-      () => UserDataSourceImpl(client: sl(), localDataSource: sl()));
+  sl.registerLazySingleton<UserDataSource>(() => UserDataSourceImpl(
+      client: sl<UserRestClient>(), localDataSource: sl<LocalDataSource>()));
+  sl.registerLazySingleton<PatientDataSource>(() => PatientDataSourceImpl(
+      client: sl<PatientRestClient>(), localDataSource: sl<LocalDataSource>()));
 
   sl.registerLazySingleton<AppTheme>(() => AppTheme());
   sl.registerLazySingleton<CustomWidgets>(() => CustomWidgets());
@@ -96,22 +110,12 @@ Future<void> init() async {
   );
 
   ///Others
-
-  // final dbProvider = DBProvider();
-
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
-  // sl.registerLazySingleton<DBProvider>(() => dbProvider);
-  //sl.registerLazySingleton(() => EventClient(dio, sl()));
 
   sl.registerLazySingleton(() => InternetConnectionChecker());
-  // sl.registerLazySingleton<MySharedPref>(() => MySharedPref(sl()));
-  // sl.registerLazySingleton<LocalDataSource>(
-  //   () => LocalDataSourceImpl(mySharedPref: sl(), dbProvider: sl()),
-  // );
-  // sl.registerLazySingleton(
-  //   () => MyRemoteConfig(/*remoteConfig*/
-  //       ),
-  // );
+
   sl.registerLazySingleton<UserRestClient>(() => UserRestClient(dio, sl()));
+  sl.registerLazySingleton<PatientRestClient>(
+      () => PatientRestClient(dio, sl()));
 }
