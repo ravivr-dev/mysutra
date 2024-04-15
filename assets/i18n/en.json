@@ -19,5 +19,7 @@
   "write_your_comment": "Write your comment",
   "comments": "Comments",
   "reply": "Reply",
-  "follow": "Follow"
+  "follow": "Follow",
+  "reschedule_appointment": "Reschedule Appointment",
+  "cancel_appointment": "Cancel Appointment"
 }

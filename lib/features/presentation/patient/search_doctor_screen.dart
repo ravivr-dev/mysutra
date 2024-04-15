@@ -7,6 +7,7 @@ import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
+import 'package:my_sutra/features/presentation/patient/search/bottomsheet/dr_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
@@ -105,87 +106,96 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
                   padding: const EdgeInsets.only(bottom: 40, top: 20),
                   itemCount: 4,
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: AppDeco.cardDecoration,
-                      padding: const EdgeInsets.all(12),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 24),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 70,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                Constants.tempNetworkUrl,
-                                fit: BoxFit.cover,
+                    return InkWell(
+                      onTap: () {
+                        context.showBottomSheet(
+                          const DrBottomSheet(),
+                          borderRadius: 22,
+                        );
+                      },
+                      child: Container(
+                        decoration: AppDeco.cardDecoration,
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 24),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 70,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  Constants.tempNetworkUrl,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Dr. Surya Pandey",
-                                      style: theme.publicSansFonts.mediumStyle(
-                                          fontSize: 12,
-                                          height: 20,
-                                          fontColor: AppColors.blackColor),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    component.assetImage(
-                                        path: Assets.iconsVerify),
-                                  ],
-                                ),
-                                Text(
-                                  "Physiotherapist",
-                                  style: theme.publicSansFonts.regularStyle(
-                                      fontSize: 10,
-                                      height: 20,
-                                      fontColor: AppColors.black81),
-                                ),
-                                const SizedBox(height: 10),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: AppColors.blackF2,
-                                  ),
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     children: [
-                                      const Icon(
-                                        Icons.schedule_outlined,
-                                        size: 11,
-                                        color: AppColors.black81,
-                                      ),
-                                   
-                                      const SizedBox(width: 5),
                                       Text(
-                                        "Nov 24, 9:00 AM",
+                                        "Dr. Surya Pandey",
                                         style: theme.publicSansFonts
-                                            .regularStyle(
-                                                fontSize: 10,
-                                                fontColor: AppColors.black64),
+                                            .mediumStyle(
+                                                fontSize: 12,
+                                                height: 20,
+                                                fontColor:
+                                                    AppColors.blackColor),
                                       ),
+                                      const SizedBox(width: 5),
+                                      component.assetImage(
+                                          path: Assets.iconsVerify),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    "Physiotherapist",
+                                    style: theme.publicSansFonts.regularStyle(
+                                        fontSize: 10,
+                                        height: 20,
+                                        fontColor: AppColors.black81),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.blackF2,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.schedule_outlined,
+                                          size: 11,
+                                          color: AppColors.black81,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          "Nov 24, 9:00 AM",
+                                          style: theme.publicSansFonts
+                                              .regularStyle(
+                                                  fontSize: 10,
+                                                  fontColor: AppColors.black64),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          component.assetImage(path: Assets.iconsThreeDots),
-                        ],
+                            component.assetImage(path: Assets.iconsThreeDots),
+                          ],
+                        ),
                       ),
                     );
                   }),

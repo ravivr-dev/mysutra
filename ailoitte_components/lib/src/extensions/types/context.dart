@@ -48,6 +48,7 @@ extension AiloitteContextExtensions on BuildContext {
   }) {
     showModalBottomSheet(
       context: this,
+      clipBehavior: Clip.hardEdge,
       backgroundColor: backgroundColor ?? const Color(0xFFF1F1F1),
       isScrollControlled: isScrollControlled,
       shape: RoundedRectangleBorder(
