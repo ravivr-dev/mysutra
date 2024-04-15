@@ -15,48 +15,51 @@ class DashboardHelperItems extends StatefulWidget {
 class _DashboardHelperItemsState extends State<DashboardHelperItems> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        IconContainer(
-          icon: Assets.iconsFreeze,
-          backgroundColor: AppColors.colorFF9F12,
-          title: "Obstetrician",
-          onTap: () {
-            // AiloitteNavigation.intent(context, AppRoutes.markAttendanceRoute);
-          },
-        ),
-        IconContainer(
-          icon: Assets.iconsCheckup,
-          backgroundColor: AppColors.color56CA7E,
-          title: "Andrologist",
-          onTap: () {
-            // AiloitteNavigation.intent(context, AppRoutes.attendanceStatusRoute);
-          },
-        ),
-        IconContainer(
-          icon: Assets.iconsVirus,
-          backgroundColor: AppColors.colorFF6161,
-          title: "Urologist",
-          onTap: () {
-            // getCenterBottomSheet(
-            //   callback: (center) {
-            //     Navigator.pop(context);
-            //     AiloitteNavigation.intentWithData(
-            //         context, AppRoutes.coachingScheduleRoute, center);
-            //   },
-            // );
-          },
-        ),
-        IconContainer(
+    return SizedBox(
+      height: 76,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        children: [
+          IconContainer(
+            icon: Assets.iconsFreeze,
+            backgroundColor: AppColors.colorFF9F12,
+            title: "Obstetrician",
+            onTap: () {
+              // AiloitteNavigation.intent(context, AppRoutes.markAttendanceRoute);
+            },
+          ),
+          IconContainer(
+            icon: Assets.iconsCheckup,
+            backgroundColor: AppColors.color56CA7E,
+            title: "Andrologist",
+            onTap: () {
+              // AiloitteNavigation.intent(context, AppRoutes.attendanceStatusRoute);
+            },
+          ),
+          IconContainer(
             icon: Assets.iconsVirus,
-            backgroundColor: AppColors.purple,
-            title: "Pediatric ",
-            onTap: () {}
-            // AiloitteNavigation.intent(context, AppRoutes.leaderboardRoute),
-            ),
-      ],
+            backgroundColor: AppColors.colorFF6161,
+            title: "Urologist",
+            onTap: () {
+              // getCenterBottomSheet(
+              //   callback: (center) {
+              //     Navigator.pop(context);
+              //     AiloitteNavigation.intentWithData(
+              //         context, AppRoutes.coachingScheduleRoute, center);
+              //   },
+              // );
+            },
+          ),
+          IconContainer(
+              icon: Assets.iconsVirus,
+              backgroundColor: AppColors.purple,
+              title: "Pediatric ",
+              onTap: () {}
+              // AiloitteNavigation.intent(context, AppRoutes.leaderboardRoute),
+              ),
+        ],
+      ),
     );
   }
 
