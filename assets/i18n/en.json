@@ -13,5 +13,6 @@
   "save_changes": "Save Changes",
   "to": "to",
   "session_duration": "Session Duration",
-  "select_days": "Select days"
+  "select_days": "Select days",
+  "create_post": "Create post"
 }

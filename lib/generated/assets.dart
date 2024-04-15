@@ -19,6 +19,7 @@ class Assets {
   static const String iconsCall = 'assets/icons/call.svg';
   static const String iconsCheckup = 'assets/icons/checkup.svg';
   static const String iconsClose = 'assets/icons/close.svg';
+  static const String iconsDocs = 'assets/icons/docs.svg';
   static const String iconsDoctor = 'assets/icons/doctor.svg';
   static const String iconsDropdown = 'assets/icons/dropdown.svg';
   static const String iconsDummyDoctor = 'assets/icons/dummy_doctor.png';
@@ -27,11 +28,13 @@ class Assets {
   static const String iconsFilter = 'assets/icons/filter.svg';
   static const String iconsFreeze = 'assets/icons/freeze.svg';
   static const String iconsHome = 'assets/icons/home.svg';
+  static const String iconsImage = 'assets/icons/image.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
   static const String iconsLogo1 = 'assets/icons/logo_1.png';
   static const String iconsMedal = 'assets/icons/medal.svg';
   static const String iconsPhone = 'assets/icons/phone.svg';
+  static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSetting = 'assets/icons/setting.svg';
   static const String iconsSneeze = 'assets/icons/sneeze.svg';
   static const String iconsStar = 'assets/icons/star.svg';
@@ -40,6 +43,7 @@ class Assets {
   static const String iconsUserAdd = 'assets/icons/user_add.svg';
   static const String iconsUserCircle = 'assets/icons/user_circle.svg';
   static const String iconsVerify = 'assets/icons/verify.svg';
+  static const String iconsVideo = 'assets/icons/video.svg';
   static const String iconsVirus = 'assets/icons/virus.svg';
   static const String imagesLogout = 'assets/images/logout.svg';
   static const String imagesSplash = 'assets/images/splash.json';

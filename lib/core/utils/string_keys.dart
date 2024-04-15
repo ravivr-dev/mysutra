@@ -14,4 +14,5 @@ class StringKeys {
   static const String to = 'to';
   static const String sessionDuration = 'session_duration';
   static const String selectDays = 'select_days';
+  static const String createPost = 'create_post';
 }
