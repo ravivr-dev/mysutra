@@ -10,6 +10,8 @@ class CustomDropdown extends StatelessWidget {
   final List<DropDownValueModel> dropDownList;
   final String? Function(String?)? validator;
   final double? borderRadius;
+  final double? height;
+  final EdgeInsets? contentPadding;
 
   const CustomDropdown({
     super.key,
@@ -20,12 +22,14 @@ class CustomDropdown extends StatelessWidget {
     required this.dropDownList,
     this.validator,
     this.borderRadius,
+    this.height,
+    this.contentPadding,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
+      height: height ?? 48,
       child: DropDownTextField(
         clearOption: false,
         dropDownIconProperty: IconProperty(
@@ -33,7 +37,8 @@ class CustomDropdown extends StatelessWidget {
         onChanged: (val) => onChanged?.call(val),
         controller: controller,
         textFieldDecoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          contentPadding:
+              contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
           hintText: hintText ?? "Please select ",
           border: _getBorder(),
           errorBorder: _getBorder(borderColor: Colors.redAccent),

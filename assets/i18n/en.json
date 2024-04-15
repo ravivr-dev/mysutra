@@ -21,5 +21,12 @@
   "reply": "Reply",
   "follow": "Follow",
   "reschedule_appointment": "Reschedule Appointment",
-  "cancel_appointment": "Cancel Appointment"
+  "cancel_appointment": "Cancel Appointment",
+  "patient_details": "Patient details",
+  "full_name": "Full name",
+  "age": "Age",
+  "gender": "Gender",
+  "write_your_problem": "Write your problem",
+  "proceed_to_pay": "Proceed to pay",
+  "available_time": "Available time"
 }

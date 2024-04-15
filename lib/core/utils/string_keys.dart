@@ -22,4 +22,11 @@ class StringKeys {
   static const String follow = 'follow';
   static const String rescheduleAppointment = 'reschedule_appointment';
   static const String cancelAppointment = 'cancel_appointment';
+  static const String patientDetails = 'patient_details';
+  static const String fullName = 'full_name';
+  static const String age = 'age';
+  static const String gender = 'gender';
+  static const String writeYourProblem = 'write_your_problem';
+  static const String proceedToPay = 'proceed_to_pay';
+  static const String availableTime = 'available_time';
 }
