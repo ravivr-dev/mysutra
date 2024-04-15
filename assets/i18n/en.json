@@ -14,5 +14,10 @@
   "to": "to",
   "session_duration": "Session Duration",
   "select_days": "Select days",
-  "create_post": "Create post"
+  "create_post": "Create post",
+  "post": "Post",
+  "write_your_comment": "Write your comment",
+  "comments": "Comments",
+  "reply": "Reply",
+  "follow": "Follow"
 }

@@ -19,6 +19,7 @@ class Assets {
   static const String iconsCall = 'assets/icons/call.svg';
   static const String iconsCheckup = 'assets/icons/checkup.svg';
   static const String iconsClose = 'assets/icons/close.svg';
+  static const String iconsComment = 'assets/icons/comment.svg';
   static const String iconsDocs = 'assets/icons/docs.svg';
   static const String iconsDoctor = 'assets/icons/doctor.svg';
   static const String iconsDropdown = 'assets/icons/dropdown.svg';
@@ -27,6 +28,7 @@ class Assets {
   static const String iconsEmail = 'assets/icons/email.svg';
   static const String iconsFilter = 'assets/icons/filter.svg';
   static const String iconsFreeze = 'assets/icons/freeze.svg';
+  static const String iconsHeart = 'assets/icons/heart.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsImage = 'assets/icons/image.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
@@ -36,6 +38,7 @@ class Assets {
   static const String iconsPhone = 'assets/icons/phone.svg';
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSetting = 'assets/icons/setting.svg';
+  static const String iconsShare = 'assets/icons/share.svg';
   static const String iconsSneeze = 'assets/icons/sneeze.svg';
   static const String iconsStar = 'assets/icons/star.svg';
   static const String iconsThreeDots = 'assets/icons/three_dots.svg';
