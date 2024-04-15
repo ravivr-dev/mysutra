@@ -37,7 +37,8 @@ class MyApp extends StatelessWidget {
         initialRoute: AppRoutes.splashRoutes,
         
         theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: const AppBarTheme(scrolledUnderElevation: 0.0),
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
           useMaterial3: true,
         ),
