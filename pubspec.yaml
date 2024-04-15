@@ -54,6 +54,7 @@ dependencies:
   dotted_border: ^2.1.0
   image_picker: ^1.0.7
   searchfield: ^1.0.1
+  dropdown_textfield: ^1.0.8
   # google_maps_flutter: ^2.2.8
 
 dev_dependencies:
