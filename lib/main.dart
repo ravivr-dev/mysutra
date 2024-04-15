@@ -14,7 +14,7 @@ void main() async {
   await di.init();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarIconBrightness: Brightness.dark,
-    statusBarBrightness: Brightness.light,
+    statusBarBrightness: Brightness.dark,
   ));
 
   runApp(const MyApp());
