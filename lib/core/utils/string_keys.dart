@@ -29,4 +29,11 @@ class StringKeys {
   static const String writeYourProblem = 'write_your_problem';
   static const String proceedToPay = 'proceed_to_pay';
   static const String availableTime = 'available_time';
+  static const String searchFilter = 'search_filter';
+  static const String speciality = 'speciality';
+  static const String reviews = 'reviews';
+  static const String location = 'location';
+  static const String detectMyLocation = 'detect_my_location';
+  static const String yearOfExperience = 'year_of_experience';
+  static const String applyFilter = 'apply_filter';
 }

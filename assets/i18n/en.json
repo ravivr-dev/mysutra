@@ -28,5 +28,12 @@
   "gender": "Gender",
   "write_your_problem": "Write your problem",
   "proceed_to_pay": "Proceed to pay",
-  "available_time": "Available time"
+  "available_time": "Available time",
+  "search_filter": "Search filter",
+  "speciality": "Speciality",
+  "reviews": "Reviews",
+  "location": "Location",
+  "detect_my_location": "Detect my location",
+  "year_of_experience": "Year of experience",
+  "apply_filter": "Apply Filter"
 }

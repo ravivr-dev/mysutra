@@ -247,7 +247,7 @@ class _AiloitteTextFieldWidgetState extends State<AiloitteTextFieldWidget> {
                     errorMaxLines: 3,
                     suffixIconConstraints: const BoxConstraints(
                       maxHeight: 20,
-                      maxWidth: 40,
+                      maxWidth: 50,
                       minHeight: 20,
                       minWidth: 40,
                     ),
