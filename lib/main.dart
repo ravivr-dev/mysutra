@@ -7,6 +7,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+import 'ailoitte_component_injector.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
