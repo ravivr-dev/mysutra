@@ -38,7 +38,9 @@ class MyApp extends StatelessWidget {
         
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
-          appBarTheme: const AppBarTheme(scrolledUnderElevation: 0.0),
+          appBarTheme: const AppBarTheme(
+              scrolledUnderElevation: 0.0,
+              backgroundColor: AppColors.transparent),
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
           useMaterial3: true,
         ),
