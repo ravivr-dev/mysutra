@@ -10,6 +10,8 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 
 abstract class PatientDataSource {
   Future<SearchDoctorModel> searchDoctors(SearchDoctorParams data);
+
+  Future<Map<String, dynamic>> followDoctor(Map<String, dynamic> data);
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -38,6 +40,22 @@ class PatientDataSourceImpl extends PatientDataSource {
       return await client
           .searchDoctors(data.search, data.experience,data.start, data.limit, data.reviews, data.specializationId)
           .catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> followDoctor(Map<String, dynamic> data) async {
+    try {
+      return await client.followDoctor(data).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

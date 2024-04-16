@@ -9,6 +9,7 @@ import 'package:my_sutra/features/data/datasource/local_datasource/local_datasou
 import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
@@ -48,7 +49,10 @@ Future<void> init() async {
       sl<LoginUsecase>(), sl<OtpUsecase>(), sl<RegistrationUsecase>()));
   sl.registerFactory(() => RegistrationCubit(sl<SpecialisationUsecase>(),
       sl<RegistrationUsecase>(), sl<UploadDocumentUsecase>()));
-  sl.registerFactory(() => SearchDoctorCubit(sl<SearchDoctorUsecase>()));
+  sl.registerFactory(() => SearchDoctorCubit(
+        searchDoctorUsecase: sl<SearchDoctorUsecase>(),
+        followDoctorUseCase: sl<FollowDoctorUseCase>(),
+      ));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -60,6 +64,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RegistrationUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => UploadDocumentUsecase(sl<UserRepository>()));
   sl.registerFactory(() => SearchDoctorUsecase(sl<PatientRepository>()));
+  sl.registerFactory(() => FollowDoctorUseCase(sl<PatientRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

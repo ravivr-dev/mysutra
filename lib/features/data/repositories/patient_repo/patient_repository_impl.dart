@@ -5,9 +5,12 @@ import 'package:my_sutra/core/network/network_info.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/follow_model.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
 class PatientRepositoryImpl extends PatientRepository {
@@ -29,6 +32,25 @@ class PatientRepositoryImpl extends PatientRepository {
 
         return Right(
             PatientRepoConv.convSpecialisationModelToEntity(result.data ?? []));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, FollowEntity>> followDoctor(
+      FollowDoctorParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.followDoctor({
+          'doctorId': data.doctorId,
+        });
+
+        return Right(PatientRepoConv.followModelToEntity(
+            FollowModel.fromJson(result['data'] ?? {})));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

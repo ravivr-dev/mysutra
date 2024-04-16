@@ -11,4 +11,4 @@ const ENDPOINT_UPLOAD_FILE = '/upload/file';
 // patient endpoints
 const ENDPOINT_PATIENT_SEARCH = '/patient/search';
 
-
+const ENDPOINT_FOLLOW_DOCTOR = '/patient/doctor/follow';

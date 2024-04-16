@@ -11,7 +11,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
-import 'package:my_sutra/generated/assets.dart';
+import '../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({super.key});
@@ -47,6 +47,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               widget.showErrorToast(context: context, message: state.error);
             } else if (state is SearchDoctorLoaded) {
               doctorsList = state.data;
+            } else if (state is FollowDoctorSuccessState) {
+              doctorsList[state.followedDoctorIndex].reInitIsFollowing();
+
+              setState(() {});
             }
           },
           builder: (context, state) {
@@ -64,7 +68,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                     itemCount: doctorsList.length,
                     separatorBuilder: (_, __) => component.spacer(height: 12),
                     itemBuilder: (_, index) {
-                      return _buildCard(doctorsList[index]);
+                      return _buildCard(doctorsList[index], index);
                     })
               ],
             );
@@ -74,7 +78,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     );
   }
 
-  Widget _buildCard(DoctorEntity data) {
+  Widget _buildCard(DoctorEntity data, int index) {
+    final isFollowed = data.isFollowing == true;
+
     return Container(
       decoration: AppDeco.cardDecoration,
       padding: const EdgeInsets.all(12),
@@ -130,8 +136,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   ),
                 ),
                 component.spacer(height: 4),
-                if (data.isFollowing == false)
-                  Container(
+                InkWell(
+                  onTap: () {
+                    context.read<SearchDoctorCubit>().followDoctor(
+                        params: FollowDoctorParams(doctorId: data.id!),
+                        followedDoctorIndex: index);
+                  },
+                  child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
                       color: AppColors.color0xFFF5F5F5,
@@ -140,16 +151,26 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.add, color: AppColors.color0xFF8338EC),
+                        Icon(
+                          isFollowed ? Icons.check : Icons.add,
+                          color: isFollowed
+                              ? AppColors.color0xFF15C0B6
+                              : AppColors.color0xFF8338EC,
+                          size: 18,
+                        ),
+                        component.spacer(width: 4),
                         component.text(
-                          'Follow',
+                          isFollowed ? 'Following' : 'Follow',
                           style: theme.publicSansFonts.regularStyle(
-                            fontColor: AppColors.color0xFF8338EC,
+                            fontColor: isFollowed
+                                ? AppColors.color0xFF15C0B6
+                                : AppColors.color0xFF8338EC,
                           ),
                         )
                       ],
                     ),
-                  )
+                  ),
+                )
               ],
             ),
           ),

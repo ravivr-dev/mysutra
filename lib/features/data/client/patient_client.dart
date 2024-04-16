@@ -48,4 +48,7 @@ abstract class PatientRestClient {
     @Query("reviews") int? reviews,
     @Query("specializationId") String? specializationId,
   );
+
+  @POST(ENDPOINT_FOLLOW_DOCTOR)
+  Future<dynamic> followDoctor(@Body() Map<String, dynamic> data);
 }

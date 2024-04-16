@@ -6,7 +6,7 @@ class DoctorEntity {
   final int? ratings;
   final int? reviews;
   final int? fees;
-  final bool? isFollowing;
+  bool? isFollowing;
 
   DoctorEntity({
     required this.id,
@@ -18,4 +18,10 @@ class DoctorEntity {
     required this.fees,
     required this.isFollowing,
   });
+
+  void reInitIsFollowing() {
+    if (isFollowing != null) {
+      isFollowing = !isFollowing!;
+    }
+  }
 }

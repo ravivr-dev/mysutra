@@ -12,6 +12,24 @@ final class SearchDoctorError extends SearchDoctorState {
   SearchDoctorError(this.error);
 }
 
+final class FollowDoctorLoading extends SearchDoctorState {}
+
+final class FollowDoctorSuccessState extends SearchDoctorState {
+  final FollowEntity followEntity;
+  final int followedDoctorIndex;
+  FollowDoctorSuccessState({
+    required this.followEntity,
+    required this.followedDoctorIndex,
+  });
+}
+
+final class FolowDoctorErrorState extends SearchDoctorState {
+  final String message;
+  FolowDoctorErrorState({
+    required this.message,
+  });
+}
+
 final class SearchDoctorLoaded extends SearchDoctorState {
   final List<DoctorEntity> data;
 
