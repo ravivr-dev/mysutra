@@ -37,4 +37,7 @@ abstract class DoctorClient {
 
   @POST(EndPoints.timeSlots)
   Future<dynamic> updateTimeSlots(@Body() Map<String, dynamic> map);
+
+  @PUT(EndPoints.profile)
+  Future<dynamic> updateAboutOrFees(@Body() Map<String, dynamic> map);
 }

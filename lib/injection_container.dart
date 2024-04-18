@@ -13,6 +13,7 @@ import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repositor
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
@@ -59,8 +60,9 @@ Future<void> init() async {
         searchDoctorUsecase: sl<SearchDoctorUsecase>(),
         followDoctorUseCase: sl<FollowDoctorUseCase>(),
       ));
-  sl.registerFactory(
-      () => SettingCubit(updateTimeSlotsUseCase: sl<UpdateTimeSlotsUseCase>()));
+  sl.registerFactory(() => SettingCubit(
+      updateTimeSlotsUseCase: sl<UpdateTimeSlotsUseCase>(),
+      updateAboutOrFeesUseCase: sl<UpdateAboutOrFeesUseCase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -74,6 +76,7 @@ Future<void> init() async {
   sl.registerFactory(() => SearchDoctorUsecase(sl<PatientRepository>()));
   sl.registerFactory(() => FollowDoctorUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => UpdateTimeSlotsUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => UpdateAboutOrFeesUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

@@ -14,3 +14,12 @@ final class UpdateTimeSlotErrorState extends SettingState {
 final class UpdateTimeSlotSuccessState extends SettingState {
   UpdateTimeSlotSuccessState();
 }
+
+final class UpdateAboutOrFeesLoadingState extends SettingState {}
+
+final class UpdateAboutOrFeesSuccessState extends SettingState {}
+
+final class UpdateAboutOrFeesErrorState extends SettingState {
+  final String message;
+  UpdateAboutOrFeesErrorState({required this.message});
+}

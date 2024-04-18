@@ -51,6 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       SingleValueDropDownController();
   final SingleValueDropDownController _session2EndController =
       SingleValueDropDownController();
+  final TextEditingController _feesController = TextEditingController();
 
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _session1EndController.dispose();
     _session2StartController.dispose();
     _session2EndController.dispose();
+    _feesController.dispose();
     super.dispose();
   }
 
@@ -89,7 +91,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             if (state is UpdateTimeSlotSuccessState) {
               _showToast(message: 'Session Updated Successfully');
               AiloitteNavigation.back(context);
+            } else if (state is UpdateAboutOrFeesSuccessState) {
+              _showToast(message: 'Fees Updated Successfully');
+              AiloitteNavigation.back(context);
             } else if (state is UpdateTimeSlotErrorState) {
+              _showToast(message: state.message);
+            } else if (state is UpdateAboutOrFeesErrorState) {
               _showToast(message: state.message);
             }
           },
@@ -262,7 +269,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildTextField(),
               component.spacer(height: 18),
               CustomButton(
-                onPressed: () {},
+                onPressed: () {
+                  final fees = int.tryParse(_feesController.text);
+                  if (_feesController.text.isEmpty) {
+                    _showToast(message: 'Please add fees');
+                    return;
+                  } else if (fees == null) {
+                    _showToast(message: 'Please add Valid Fees');
+                    return;
+                  }
+                  _updateFees(fees);
+                },
                 text: context.stringForKey(StringKeys.saveChanges),
                 buttonColor: AppColors.color0xFF8338EC,
                 fontSize: 14,
@@ -273,6 +290,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  void _updateFees(int fees) {
+    context.read<SettingCubit>().updateAboutOrFees(fees: fees);
   }
 
   void _reInitSessionsValue() {
@@ -420,8 +441,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return SizedBox(
       height: 48,
       child: component.textField(
-        controller: TextEditingController(),
+        controller: _feesController,
         fillColor: AppColors.white,
+        textInputType: TextInputType.number,
         borderRadius: 90,
         filled: true,
         focusedBorderColor: AppColors.color0xFFDADCE0,

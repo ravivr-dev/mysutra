@@ -15,4 +15,5 @@ class EndPoints {
 
   // doctor endpoints
   static const String timeSlots = '/doctor/time-slots';
+  static const String profile = '/doctor/profile';
 }

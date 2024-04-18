@@ -8,6 +8,7 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_sl
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/utils/constants.dart';
+import '../../../domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 
 class DoctorRepositoryImpl extends DoctorRepository {
   final LocalDataSource localDataSource;
@@ -26,6 +27,25 @@ class DoctorRepositoryImpl extends DoctorRepository {
       if (await networkInfo.isConnected) {
         final result =
             await remoteDataSource.updateTimeSlots(data.doctorTimeSlot.toJson);
+
+        return Right(result);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> updateAboutOrFess(
+      UpdateAboutOrFeesParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.updateAboutOrFees({
+          if (data.fees != null) 'fees': data.fees,
+          if (data.about != null) 'about': data.about
+        });
 
         return Right(result);
       } else {
