@@ -39,7 +39,7 @@ abstract class PatientRestClient {
     );
   }
 
-  @GET(ENDPOINT_PATIENT_SEARCH)
+  @GET(EndPoints.patientSearch)
   Future<SearchDoctorModel> searchDoctors(
     @Query("search") String? search,
     @Query("experience") int? experience,
@@ -49,6 +49,6 @@ abstract class PatientRestClient {
     @Query("specializationId") String? specializationId,
   );
 
-  @POST(ENDPOINT_FOLLOW_DOCTOR)
+  @POST(EndPoints.doctorFollow)
   Future<dynamic> followDoctor(@Body() Map<String, dynamic> data);
 }

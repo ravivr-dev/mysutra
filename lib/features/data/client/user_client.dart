@@ -45,28 +45,28 @@ abstract class UserRestClient {
     );
   }
 
-  @POST(ENDPOINT_LOGIN)
+  @POST(EndPoints.login)
   Future<GeneralModel> login(
     @Field("countryCode") String countryCode,
     @Field("phoneNumber") int phoneNumber,
   );
 
-  @POST(ENDPOINT_OTP)
+  @POST(EndPoints.verifyOtp)
   Future<UserModel> verifyOtp(@Field("otp") int otp);
 
-  @GET(ENDPOINT_ACCOUNTS)
+  @GET(EndPoints.accounts)
   Future<UserAccountsModel> getUserAccounts();
 
-  @POST(ENDPOINT_ACCOUNTS)
+  @POST(EndPoints.accounts)
   Future<UserModel> getSelectedUserAccounts(@Field("userId") String id);
 
-  @GET(ENDPOINT_SPECIALIZATION)
+  @GET(EndPoints.userSpecialization)
   Future<SpecializationModel> getSpecialisation(
     @Query("pagination") int? start,
     @Query("limit") int? limit,
   );
 
-  @POST(ENDPOINT_REGISTRATION)
+  @POST(EndPoints.userRegistration)
   Future<GeneralModel> registration(
       @Field("role") String role,
       @Field("profilePic") String? profilePic,
@@ -80,7 +80,7 @@ abstract class UserRestClient {
       @Field("totalExperience") int? experience,
       @Field("socialProfileUrls") List<String>? socialUrls);
 
-  @POST(ENDPOINT_UPLOAD_FILE)
+  @POST(EndPoints.uploadFile)
   Future<UploadDocModel> uploadDocument(
     @Part() File file,
   );
