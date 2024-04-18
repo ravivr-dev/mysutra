@@ -4,6 +4,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -17,8 +18,8 @@ class MyProfileScreen extends StatelessWidget {
         backgroundColor: AppColors.transparent,
         title: component.text(context.stringForKey(StringKeys.myProfile)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 23),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -49,14 +50,41 @@ class MyProfileScreen extends StatelessWidget {
                 style: theme.publicSansFonts.regularStyle(
                   fontColor: AppColors.color0xFF526371,
                 )),
-            component.spacer(height: 24),
+            component.spacer(height: 8),
+            component.text('250 Followers',
+                style: theme.publicSansFonts.semiBoldStyle(
+                  fontColor: AppColors.color0xFF85799E,
+                  fontSize: 16,
+                )),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: component.text(
+                  'THis is a text content box for a user bio  set a limit of 100 Characters  max',
+                  textAlign: TextAlign.center,
+                  style: theme.publicSansFonts.regularStyle(
+                    fontColor: AppColors.neutral,
+                  )),
+            ),
+            component.textButton(
+                title: 'Edit',
+                callback: () {},
+                titleStyle: theme.publicSansFonts.semiBoldStyle(
+                  fontSize: 14,
+                  fontColor: AppColors.color0xFF8338EC,
+                )),
+            component.spacer(height: 12),
             const Divider(color: AppColors.dividerColor),
             component.spacer(height: 12),
             _buildCard(value: 'My Patients', icons: Assets.iconsUserCircle),
             component.spacer(height: 12),
             _buildCard(value: 'My Following', icons: Assets.iconsUserAdd),
             component.spacer(height: 12),
-            _buildCard(value: 'Settings', icons: Assets.iconsSetting),
+            _buildCard(
+                value: 'Settings',
+                icons: Assets.iconsSetting,
+                onTap: () {
+                  AiloitteNavigation.intent(context, AppRoutes.settingRoute);
+                }),
             component.spacer(height: 12),
             _buildTileCard(
                 icon: Assets.iconsPhone,
@@ -111,23 +139,24 @@ class MyProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCard({
-    required String value,
-    required String icons,
-  }) {
-    return Container(
-      decoration: _getDecoration,
-      padding: _getCardPadding,
-      child: Row(
-        children: [
-          component.assetImage(path: icons),
-          component.spacer(width: 5),
-          component.text(value,
-              style: theme.publicSansFonts.semiBoldStyle(
-                fontSize: 16,
-                fontColor: AppColors.black21,
-              ))
-        ],
+  Widget _buildCard(
+      {required String value, required String icons, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: _getDecoration,
+        padding: _getCardPadding,
+        child: Row(
+          children: [
+            component.assetImage(path: icons),
+            component.spacer(width: 5),
+            component.text(value,
+                style: theme.publicSansFonts.semiBoldStyle(
+                  fontSize: 16,
+                  fontColor: AppColors.black21,
+                ))
+          ],
+        ),
       ),
     );
   }
