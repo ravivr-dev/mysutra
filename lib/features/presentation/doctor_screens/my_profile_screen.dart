@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -67,7 +68,9 @@ class MyProfileScreen extends StatelessWidget {
             ),
             component.textButton(
                 title: 'Edit',
-                callback: () {},
+                callback: () {
+                  context.showBottomSheet(const AboutMeBottomSheet());
+                },
                 titleStyle: theme.publicSansFonts.semiBoldStyle(
                   fontSize: 14,
                   fontColor: AppColors.color0xFF8338EC,
