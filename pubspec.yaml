@@ -54,8 +54,13 @@ dependencies:
   dotted_border: ^2.1.0
   image_picker: ^1.0.7
   searchfield: ^1.0.1
-  dropdown_textfield: ^1.0.8
+#  dropdown_textfield: ^1.0.8
   # google_maps_flutter: ^2.2.8
+  dropdown_textfield:
+    git:
+      url: https://github.com/sahil-ailoitte/dropdown_textfield.git
+      ref: master
+
 
 dev_dependencies:
   flutter_test:

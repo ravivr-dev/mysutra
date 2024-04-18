@@ -281,46 +281,46 @@ class CustomWidgets extends AilCustomWidgets {
       showUnderline: showUnderline,
     );
   }
-
-  Widget customDropdownTextField({
-    final double? padding,
-    required final List<String> items,
-    final Function(String?)? onChange,
-    final Function(String?)? validator,
-    final String? defaultValue,
-    final String? hint,
-    final String? placeHolder,
-    final double? height,
-    final double? borderRadius,
-    final double? borderWidth,
-    final Color? borderColor,
-    final Color? fillColor,
-    final Color? dropdownColor,
-    final TextStyle? textStyle,
-    final TextStyle? hintStyle,
-  }) {
-    return AilDropdownTextWidget(
-      items: items,
-      padding: padding,
-      defaultValue: defaultValue,
-      height: height,
-      hint: hint,
-      hintStyle: hintStyle,
-      onChange: onChange,
-      validator: validator,
-      placeHolder: placeHolder ?? '',
-      borderColor: borderColor ?? AppColors.white.withOpacity(0.06),
-      borderRadius: borderRadius ?? 18,
-      borderWidth: 2,
-      fillColor: fillColor ?? AppColors.primaryColor,
-      textStyle: textStyle ??
-          theme.publicSansFonts.mediumStyle(
-            fontSize: 18,
-            fontColor: AppColors.white,
-          ),
-      dropdownColor: dropdownColor ?? AppColors.blackColor,
-    );
-  }
+///commented this code because we were facing version issue
+  // Widget customDropdownTextField({
+  //   final double? padding,
+  //   required final List<String> items,
+  //   final Function(String?)? onChange,
+  //   final Function(String?)? validator,
+  //   final String? defaultValue,
+  //   final String? hint,
+  //   final String? placeHolder,
+  //   final double? height,
+  //   final double? borderRadius,
+  //   final double? borderWidth,
+  //   final Color? borderColor,
+  //   final Color? fillColor,
+  //   final Color? dropdownColor,
+  //   final TextStyle? textStyle,
+  //   final TextStyle? hintStyle,
+  // }) {
+  //   return AilDropdownTextWidget(
+  //     items: items,
+  //     padding: padding,
+  //     defaultValue: defaultValue,
+  //     height: height,
+  //     hint: hint,
+  //     hintStyle: hintStyle,
+  //     onChange: onChange,
+  //     validator: validator,
+  //     placeHolder: placeHolder ?? '',
+  //     borderColor: borderColor ?? AppColors.white.withOpacity(0.06),
+  //     borderRadius: borderRadius ?? 18,
+  //     borderWidth: 2,
+  //     fillColor: fillColor ?? AppColors.primaryColor,
+  //     textStyle: textStyle ??
+  //         theme.publicSansFonts.mediumStyle(
+  //           fontSize: 18,
+  //           fontColor: AppColors.white,
+  //         ),
+  //     dropdownColor: dropdownColor ?? AppColors.blackColor,
+  //   );
+  // }
 
   ///Use customDropdownOnObjectField for Objects
   Widget customDropdownOnStringField({
