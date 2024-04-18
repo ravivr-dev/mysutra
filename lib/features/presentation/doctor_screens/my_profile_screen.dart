@@ -1,11 +1,15 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+
+import '../../../injection_container.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -69,7 +73,9 @@ class MyProfileScreen extends StatelessWidget {
             component.textButton(
                 title: 'Edit',
                 callback: () {
-                  context.showBottomSheet(const AboutMeBottomSheet());
+                  context.showBottomSheet(BlocProvider<SettingCubit>(
+                      create: (_) => sl<SettingCubit>(),
+                      child: const AboutMeBottomSheet()));
                 },
                 titleStyle: theme.publicSansFonts.semiBoldStyle(
                   fontSize: 14,
