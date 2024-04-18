@@ -15,6 +15,8 @@ class CustomButton extends StatelessWidget {
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleStyle;
   final double? borderRadius;
+  final double? height;
+  final double? fontSize;
 
   const CustomButton({
     super.key,
@@ -29,6 +31,8 @@ class CustomButton extends StatelessWidget {
     this.titlePadding,
     this.titleStyle,
     this.borderRadius,
+    this.height,
+    this.fontSize,
   });
 
   @override
@@ -38,6 +42,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? nullPress : onPressed,
         style: ElevatedButton.styleFrom(
+          maximumSize: height != null ? Size(double.infinity, height!) : null,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 12),
           ),
@@ -57,7 +62,7 @@ class CustomButton extends StatelessWidget {
                   text ?? "",
                   style: titleStyle ??
                       theme.publicSansFonts.regularStyle(
-                        fontSize: 18,
+                        fontSize: fontSize ?? 18,
                         height: 22,
                         fontColor: textColor ?? AppColors.white,
                       ),
