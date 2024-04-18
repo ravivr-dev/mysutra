@@ -64,7 +64,8 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
 
                 if (state.data.totalUserAccounts == 1 ||
                     widget.loginData != null) {
-                  // TODO: direct login route
+                  AiloitteNavigation.intentWithClearAllRoutes(
+                      context, AppRoutes.homeRoute);
                 } else {
                   AiloitteNavigation.intentWithClearAllRoutes(
                       context, AppRoutes.selectAccountRoute);
