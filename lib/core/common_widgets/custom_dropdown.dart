@@ -5,7 +5,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 class CustomDropdown extends StatelessWidget {
   final String? title;
   final Function(DropDownValueModel)? onChanged;
-  final SingleValueDropDownController controller;
+  final SingleValueDropDownController? controller;
   final String? hintText;
   final List<DropDownValueModel> dropDownList;
   final String? Function(String?)? validator;
@@ -17,7 +17,7 @@ class CustomDropdown extends StatelessWidget {
     super.key,
     this.title,
     this.onChanged,
-    required this.controller,
+    this.controller,
     this.hintText,
     required this.dropDownList,
     this.validator,
