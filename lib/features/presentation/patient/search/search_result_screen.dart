@@ -174,18 +174,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               ],
             ),
           ),
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                data.profilePic ?? Constants.tempNetworkUrl,
-                fit: BoxFit.cover,
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              data.profilePic ?? Constants.tempNetworkUrl,
+              fit: BoxFit.fill,
+              width: 70,
+              height: 70,
             ),
           ),
         ],
