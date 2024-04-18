@@ -9,9 +9,7 @@ class AppRoutes {
   static const String findDoctorRoute = "/find_doctor_screen";
   static const String searchDoctorRoute = "/search_doctor_screen";
   static const String searchResultRoute = "/search_result_screen";
-
-
-
+  static const String settingRoute = '/doctor_screens/settings_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

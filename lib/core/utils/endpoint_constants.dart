@@ -1,14 +1,18 @@
 // ignore_for_file: constant_identifier_names
 
-
-const ENDPOINT_LOGIN = '/user/login';
-const ENDPOINT_OTP = '/user/verify-otp';
-const ENDPOINT_ACCOUNTS = '/user/accounts';
-const ENDPOINT_SPECIALIZATION = '/user/specialization';
-const ENDPOINT_REGISTRATION = '/user/registration';
-const ENDPOINT_UPLOAD_FILE = '/upload/file';
+class EndPoints {
+  static const String login = '/user/login';
+  static const String verifyOtp = '/user/verify-otp';
+  static const String accounts = '/user/accounts';
+  static const String userSpecialization = '/user/specialization';
+  static const String userRegistration = '/user/registration';
+  static const String uploadFile = '/upload/file';
 
 // patient endpoints
-const ENDPOINT_PATIENT_SEARCH = '/patient/search';
+  static const String patientSearch = '/patient/search';
 
-const ENDPOINT_FOLLOW_DOCTOR = '/patient/doctor/follow';
+  static const String doctorFollow = '/patient/doctor/follow';
+
+  // doctor endpoints
+  static const String timeSlots = '/doctor/time-slots';
+}

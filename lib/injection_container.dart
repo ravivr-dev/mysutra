@@ -4,11 +4,16 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
+import 'package:my_sutra/features/data/client/doctor_client.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
+import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
+import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
@@ -20,6 +25,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_useca
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_sutra/core/components/config/theme/theme.dart';
@@ -53,6 +59,8 @@ Future<void> init() async {
         searchDoctorUsecase: sl<SearchDoctorUsecase>(),
         followDoctorUseCase: sl<FollowDoctorUseCase>(),
       ));
+  sl.registerFactory(
+      () => SettingCubit(updateTimeSlotsUseCase: sl<UpdateTimeSlotsUseCase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -65,6 +73,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UploadDocumentUsecase(sl<UserRepository>()));
   sl.registerFactory(() => SearchDoctorUsecase(sl<PatientRepository>()));
   sl.registerFactory(() => FollowDoctorUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => UpdateTimeSlotsUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(
@@ -81,6 +90,11 @@ Future<void> init() async {
       networkInfo: sl<NetworkInfo>(),
     ),
   );
+  sl.registerLazySingleton<DoctorRepository>(() => DoctorRepositoryImpl(
+        localDataSource: sl<LocalDataSource>(),
+        remoteDataSource: sl<DoctorDataSource>(),
+        networkInfo: sl<NetworkInfo>(),
+      ));
 
   /// DataSource
   sl.registerLazySingleton<LocalDataSource>(
@@ -89,6 +103,8 @@ Future<void> init() async {
       client: sl<UserRestClient>(), localDataSource: sl<LocalDataSource>()));
   sl.registerLazySingleton<PatientDataSource>(() => PatientDataSourceImpl(
       client: sl<PatientRestClient>(), localDataSource: sl<LocalDataSource>()));
+  sl.registerLazySingleton<DoctorDataSource>(() => DoctorDataSourceImpl(
+      client: sl<DoctorClient>(), localDataSource: sl<LocalDataSource>()));
 
   sl.registerLazySingleton<AppTheme>(() => AppTheme());
   sl.registerLazySingleton<CustomWidgets>(() => CustomWidgets());
@@ -127,4 +143,5 @@ Future<void> init() async {
   sl.registerLazySingleton<UserRestClient>(() => UserRestClient(dio, sl()));
   sl.registerLazySingleton<PatientRestClient>(
       () => PatientRestClient(dio, sl()));
+  sl.registerLazySingleton<DoctorClient>(() => DoctorClient(dio, sl()));
 }

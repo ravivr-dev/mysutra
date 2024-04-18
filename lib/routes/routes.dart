@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
@@ -8,6 +9,8 @@ import 'package:my_sutra/features/presentation/common/registration/choose_accoun
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
@@ -74,6 +77,15 @@ class Routes {
             child: const SearchResultScreen(),
           ),
         );
+      case AppRoutes.settingRoute:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<SettingCubit>(),
+            child: const SettingsScreen(),
+          ),
+        );
+      case AppRoutes.homeRoute:
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
