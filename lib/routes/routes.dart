@@ -10,7 +10,7 @@ import 'package:my_sutra/features/presentation/common/registration/create_accoun
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
-import 'package:my_sutra/features/presentation/doctor_screens/settings_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';

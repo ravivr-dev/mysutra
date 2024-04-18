@@ -8,9 +8,9 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
-import '../../../ailoitte_component_injector.dart';
-import '../../../core/utils/app_colors.dart';
-import '../../data/model/doctor_models/time_slot_model.dart';
+import '../../../../ailoitte_component_injector.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../data/model/doctor_models/time_slot_model.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
