@@ -1,5 +1,4 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
@@ -88,7 +87,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                 value: context.stringForKey(StringKeys.yearOfExperience)),
             component.spacer(height: 16),
             CustomDropdown(
-              controller: SingleValueDropDownController(),
+              // controller: SingleValueDropDownController(),
               dropDownList: [],
               height: 70,
               borderRadius: 90,

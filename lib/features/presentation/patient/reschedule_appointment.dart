@@ -1,5 +1,4 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
@@ -68,7 +67,7 @@ class _RescheduleAppointmentState extends State<ReScheduleAppointment> {
             _buildText(value: context.stringForKey(StringKeys.gender)),
             component.spacer(height: 10),
             CustomDropdown(
-              controller: SingleValueDropDownController(),
+              // controller: SingleValueDropDownController(),
               dropDownList: [],
               height: 70,
               borderRadius: 90,
