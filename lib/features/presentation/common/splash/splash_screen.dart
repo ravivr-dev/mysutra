@@ -20,10 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   context.read<MainCubit>().checkSession();
-    // });
-    _handleNavigation();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<MainCubit>().checkSession();
+    });
   }
 
   void _handleNavigation() {
@@ -37,12 +36,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
-        // if (state is LoggedIn) {
-        //   AiloitteNavigation.intentWithClearAllRoutes(
-        //       context, AppRoutes.homeRoute);
-        // } else if (state is LoggedOut) {
-        //   _handleNavigation();
-        // }
+        if (state is LoggedIn) {
+          AiloitteNavigation.intentWithClearAllRoutes(
+              context, AppRoutes.homeRoute);
+        } else if (state is LoggedOut) {
+          _handleNavigation();
+        }
       },
       builder: (context, state) {
         return Scaffold(

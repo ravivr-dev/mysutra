@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_sutra/core/common_widgets/custom_app_bar.dart';
-import 'package:my_sutra/features/presentation/common/home/widgets/custom_drawer.dart';
-import 'package:my_sutra/features/presentation/common/home/widgets/cutom_nav_bar.dart';
+import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_profile_screen.dart';
+import 'package:my_sutra/features/presentation/patient/search_doctor_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
+import 'package:my_sutra/generated/assets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,77 +14,63 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 1;
+  int _selectedScreen = 0;
 
-  // final coachScreens = [
-  //   BlocProvider<ProfileCubit>(
-  //     create: (context) => sl<ProfileCubit>(),
-  //     child: const ProfilePage(),
-  //   ),
-  //   BlocProvider<DashboardCubit>(
-  //     create: (context) => sl<DashboardCubit>()
-  //       ..getMyBatches()
-  //       ..getCheckinStatus(),
-  //     child: const DashboardCoach(),
-  //   ),
-  //   BlocProvider<MyBatchesCubit>(
-  //     create: (context) => sl<MyBatchesCubit>(),
-  //     child: const MyBatchesScreen(),
-  //   ),
-  // ];
-
-  // final studentScreens = [
-  //   BlocProvider<ProfileCubit>(
-  //     create: (context) => sl<ProfileCubit>(),
-  //     child: const ProfilePage(),
-  //   ),
-  //   BlocProvider<DashboardCubit>(
-  //     create: (context) => sl<DashboardCubit>(),
-  //     child: const DashboardStudent(),
-  //   ),
-  //   BlocProvider<MyBatchesCubit>(
-  //     create: (context) => sl<MyBatchesCubit>(),
-  //     child: const MyBatchesScreen(),
-  //   ),
-  // ];
+  final List<Widget> _screens = [
+    const SearchDoctorScreen(),
+    const PostScreen(),
+    const SizedBox.shrink(),
+    Container(),
+    const MyProfileScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const CustomDrawer(),
-      appBar: CustomAppBar(
-        title: appbarGetter(),
-        showDrawer: true,
-        centerTitle: true,
-        showNotification: true,
-      ),
-      bottomNavigationBar: CustomNavBar(
-        currentIndex: currentIndex,
-        onChnageScreen: (value) {
+      backgroundColor: AppColors.backgroundColor,
+      body: _screens[_selectedScreen],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedScreen,
+        onTap: (index) {
+          if (index == 2) {
+            return;
+          }
           setState(() {
-            currentIndex = value;
+            _selectedScreen = index;
           });
         },
-      ),
-      body: IndexedStack(
-        index: currentIndex,
-        children: [Container()],
-        // children: context.read<HomeCubit>().userRole == "COACH"
-        //     ? coachScreens
-        //     : studentScreens,
+        selectedItemColor: AppColors.primaryColor,
+        unselectedItemColor: AppColors.black33,
+        showUnselectedLabels: true,
+        items: [
+          _buildBottomBarItem(icon: Assets.iconsHome2, label: 'Home', index: 0),
+          _buildBottomBarItem(icon: Assets.iconsFeed, label: 'Feed', index: 1),
+          const BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: AppColors.primaryColor,
+                    child: Icon(Icons.add, color: AppColors.white)),
+              ),
+              label: ''),
+          _buildBottomBarItem(
+              icon: Assets.iconsPayment, label: 'Payments', index: 3),
+          _buildBottomBarItem(
+              icon: Assets.iconsUser2, label: 'My Profile', index: 4),
+        ],
       ),
     );
   }
 
-  String appbarGetter() {
-    if (currentIndex == 0) {
-      return "My Profile";
-    } else if (currentIndex == 1) {
-      return "Dashboard";
-    } else if (currentIndex == 2) {
-      return "My Batches";
-    } else {
-      return "";
-    }
+  BottomNavigationBarItem _buildBottomBarItem(
+      {required String icon, required String label, required int index}) {
+    final isSelected = index == _selectedScreen;
+    return BottomNavigationBarItem(
+        icon: component.assetImage(
+            path: icon,
+            color: isSelected ? AppColors.primaryColor : AppColors.black39),
+        label: label);
   }
 }
