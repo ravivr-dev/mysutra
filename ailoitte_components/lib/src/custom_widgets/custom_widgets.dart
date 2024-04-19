@@ -372,6 +372,7 @@ class AilCustomWidgets extends AiloitteTheme {
     final int? minLines,
     final bool expands = false,
     final BoxConstraints? prefixIconConstraints,
+    final String? helperText,
   }) {
     return AiloitteTextFieldWidget(
       expands: expands,
@@ -390,6 +391,8 @@ class AilCustomWidgets extends AiloitteTheme {
       hintTextStyle: hintTextStyle,
       suffixWidget: suffixWidget,
       isEnabled: isEnabled ?? true,
+      helperText: helperText,
+      showHelperText: helperText != null,
       onTapCallback: onTapCallback,
       prefixIconConstraints: prefixIconConstraints,
       maxLines: maxLines,
