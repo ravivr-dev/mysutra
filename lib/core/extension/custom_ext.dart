@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 
+import '../utils/endpoint_constants.dart';
+
 extension CustomDateTimeFunction on DateTime {
   String getFormattedDateTimeInStringYYYYMMDD(
       {final String formatter = Constants.serverDateFormat}) {
@@ -33,7 +35,7 @@ extension RequestOptionsFunction on RequestOptions {
   }) {
     final accessToken = token ?? localDataSource.getAccessToken() ?? '';
     log(accessToken, name: "Bearer");
-    if (accessToken.isNotEmpty) {
+    if (accessToken.isNotEmpty && path != EndPoints.confirmAppointment) {
       headers[Constants.authorization] = "Bearer $accessToken";
     }
     return this;
