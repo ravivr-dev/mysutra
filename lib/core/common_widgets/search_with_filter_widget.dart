@@ -11,12 +11,15 @@ class SearchWithFilter extends StatefulWidget {
     this.hintText,
     this.onTapFilter,
     this.backgroundColor,
+    this.onTap,
   });
+
   final Function(String onChange)? onChange;
   final TextEditingController? controller;
   final String? hintText;
   final void Function()? onTapFilter;
   final Color? backgroundColor;
+  final VoidCallback? onTap;
 
   @override
   State<SearchWithFilter> createState() => _SearchWithFilterState();
@@ -37,6 +40,7 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
         Expanded(
           child: TextFormField(
             key: widget.key,
+            onTap: widget.onTap,
             controller: widget.controller,
             onChanged: (value) {},
             textAlignVertical: TextAlignVertical.center,
