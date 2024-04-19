@@ -7,16 +7,19 @@ import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
 import '../../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import '../../../../domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
 
 part 'search_doctor_state.dart';
 
 class SearchDoctorCubit extends Cubit<SearchDoctorState> {
   final SearchDoctorUsecase searchDoctorUsecase;
   final FollowDoctorUseCase followDoctorUseCase;
+  final GetDoctorDetailsUseCase getDoctorDetailsUseCase;
 
   SearchDoctorCubit({
     required this.searchDoctorUsecase,
     required this.followDoctorUseCase,
+    required this.getDoctorDetailsUseCase,
   }) : super(SearchDoctorInitial());
 
   getData(SearchDoctorParams params) async {
@@ -38,6 +41,14 @@ class SearchDoctorCubit extends Cubit<SearchDoctorState> {
         (l) => emit(FolowDoctorErrorState(message: l.message)),
         (r) => emit(FollowDoctorSuccessState(
             followEntity: r, followedDoctorIndex: followedDoctorIndex)));
+  }
+
+  void getDoctorDetails({required String doctorId}) async {
+    emit(GetDoctorDetailsLoadingState());
+    final result = await getDoctorDetailsUseCase
+        .call(GetDoctorDetailsParams(doctorID: doctorId));
+    result.fold((l) => emit(GetDoctorDetailsErrorState(message: l.message)),
+        (r) => emit(GetDoctorDetailsSuccessState(doctorEntity: r)));
   }
 
   FutureOr<void> _emitFailure(

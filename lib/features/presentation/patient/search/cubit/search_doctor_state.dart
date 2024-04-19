@@ -35,3 +35,19 @@ final class SearchDoctorLoaded extends SearchDoctorState {
 
   SearchDoctorLoaded(this.data);
 }
+
+final class GetDoctorDetailsLoadingState extends SearchDoctorState {}
+
+final class GetDoctorDetailsSuccessState extends SearchDoctorState {
+  final DoctorEntity doctorEntity;
+  GetDoctorDetailsSuccessState({
+    required this.doctorEntity,
+  });
+}
+
+final class GetDoctorDetailsErrorState extends SearchDoctorState {
+  final String message;
+  GetDoctorDetailsErrorState({
+    required this.message,
+  });
+}

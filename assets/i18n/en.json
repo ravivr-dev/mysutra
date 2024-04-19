@@ -35,5 +35,16 @@
   "location": "Location",
   "detect_my_location": "Detect my location",
   "year_of_experience": "Year of experience",
-  "apply_filter": "Apply Filter"
+  "apply_filter": "Apply Filter",
+  "view_profile": "View profile",
+  "report": "Report",
+  "reason_for_visit": "Reason for visit",
+  "phone_number": "Phone number",
+  "email": "Email",
+  "chat_now": "Chat Now",
+  "booking_successful": "Booking Successful",
+  "your_booking_has_been_confirmed": "Your booking has been confirmed",
+  "confirmYourBooking": "Confirm your booking",
+  "please_confirm_your_booking_by_text": "Please Confirm your booking by entering OTP Sent on your number",
+  "send_me_a_new_code": "Send me a new code"
 }

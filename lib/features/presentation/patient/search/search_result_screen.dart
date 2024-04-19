@@ -11,6 +11,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 import '../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -44,13 +45,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         child: BlocConsumer<SearchDoctorCubit, SearchDoctorState>(
           listener: (context, state) {
             if (state is SearchDoctorError) {
-              widget.showErrorToast(context: context, message: state.error);
+              _showToast(message: state.error);
             } else if (state is SearchDoctorLoaded) {
               doctorsList = state.data;
             } else if (state is FollowDoctorSuccessState) {
               doctorsList[state.followedDoctorIndex].reInitIsFollowing();
-
               setState(() {});
+            } else if (state is GetDoctorDetailsErrorState) {
+              _showToast(message: state.message);
+            } else if (state is GetDoctorDetailsSuccessState) {
+              _navigateToDoctorDetailScreen(state.doctorEntity);
             }
           },
           builder: (context, state) {
@@ -81,110 +85,132 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   Widget _buildCard(DoctorEntity data, int index) {
     final isFollowed = data.isFollowing == true;
 
-    return Container(
-      decoration: AppDeco.cardDecoration,
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                component.text(data.fullName,
-                    style: theme.publicSansFonts.mediumStyle(
-                      fontSize: 16,
-                    )),
-                component.text(data.specialization,
+    return InkWell(
+      onTap: () {
+        if (data.id == null) {
+          _showToast(
+              message: 'Facing issue with doctor please choose another one');
+          return;
+        }
+        _getDoctorDetails(data.id!);
+      },
+      child: Container(
+        decoration: AppDeco.cardDecoration,
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  component.text(data.fullName,
+                      style: theme.publicSansFonts.mediumStyle(
+                        fontSize: 16,
+                      )),
+                  component.text(data.specialization,
+                      style: theme.publicSansFonts.regularStyle(
+                        fontSize: 14,
+                        fontColor: AppColors.black81,
+                      )),
+                  component.spacer(height: 4),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: AppColors.color0xFFFEFFD1,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.star, color: AppColors.star),
+                            component.text(data.ratings.toString(),
+                                style: theme.publicSansFonts.regularStyle())
+                          ],
+                        ),
+                      ),
+                      component.spacer(width: 8),
+                      component.text(
+                        '(${data.ratings} reviews)',
+                        style: theme.publicSansFonts.regularStyle(
+                          fontColor: AppColors.color0xFF8338EC,
+                        ),
+                      ),
+                    ],
+                  ),
+                  component.spacer(
+                    height: 4,
+                  ),
+                  component.text(
+                    '₹ ${data.fees}',
                     style: theme.publicSansFonts.regularStyle(
-                      fontSize: 14,
-                      fontColor: AppColors.black81,
-                    )),
-                component.spacer(height: 4),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(4),
+                      fontColor: AppColors.color0xFF526371,
+                    ),
+                  ),
+                  component.spacer(height: 4),
+                  InkWell(
+                    onTap: () {
+                      context.read<SearchDoctorCubit>().followDoctor(
+                          params: FollowDoctorParams(doctorId: data.id!),
+                          followedDoctorIndex: index);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: AppColors.color0xFFFEFFD1,
+                        color: AppColors.color0xFFF5F5F5,
+                        borderRadius: BorderRadius.circular(4),
                       ),
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.star, color: AppColors.star),
-                          component.text(data.ratings.toString(),
-                              style: theme.publicSansFonts.regularStyle())
+                          Icon(
+                            isFollowed ? Icons.check : Icons.add,
+                            color: isFollowed
+                                ? AppColors.color0xFF15C0B6
+                                : AppColors.color0xFF8338EC,
+                            size: 18,
+                          ),
+                          component.spacer(width: 4),
+                          component.text(
+                            isFollowed ? 'Following' : 'Follow',
+                            style: theme.publicSansFonts.regularStyle(
+                              fontColor: isFollowed
+                                  ? AppColors.color0xFF15C0B6
+                                  : AppColors.color0xFF8338EC,
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    component.spacer(width: 8),
-                    component.text(
-                      '(${data.ratings} reviews)',
-                      style: theme.publicSansFonts.regularStyle(
-                        fontColor: AppColors.color0xFF8338EC,
-                      ),
-                    ),
-                  ],
-                ),
-                component.spacer(
-                  height: 4,
-                ),
-                component.text(
-                  '₹ ${data.fees}',
-                  style: theme.publicSansFonts.regularStyle(
-                    fontColor: AppColors.color0xFF526371,
-                  ),
-                ),
-                component.spacer(height: 4),
-                InkWell(
-                  onTap: () {
-                    context.read<SearchDoctorCubit>().followDoctor(
-                        params: FollowDoctorParams(doctorId: data.id!),
-                        followedDoctorIndex: index);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: AppColors.color0xFFF5F5F5,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          isFollowed ? Icons.check : Icons.add,
-                          color: isFollowed
-                              ? AppColors.color0xFF15C0B6
-                              : AppColors.color0xFF8338EC,
-                          size: 18,
-                        ),
-                        component.spacer(width: 4),
-                        component.text(
-                          isFollowed ? 'Following' : 'Follow',
-                          style: theme.publicSansFonts.regularStyle(
-                            fontColor: isFollowed
-                                ? AppColors.color0xFF15C0B6
-                                : AppColors.color0xFF8338EC,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              data.profilePic ?? Constants.tempNetworkUrl,
-              fit: BoxFit.fill,
-              width: 70,
-              height: 70,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                data.profilePic ?? Constants.tempNetworkUrl,
+                fit: BoxFit.fill,
+                width: 70,
+                height: 70,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  void _getDoctorDetails(String doctorId) {
+    context.read<SearchDoctorCubit>().getDoctorDetails(doctorId: doctorId);
+  }
+
+  void _showToast({required String message}) {
+    widget.showErrorToast(context: context, message: message);
+  }
+
+  void _navigateToDoctorDetailScreen(DoctorEntity entity) {
+    AiloitteNavigation.intentWithData(context, AppRoutes.doctorDetail, entity);
   }
 }

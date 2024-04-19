@@ -10,6 +10,11 @@ class AppRoutes {
   static const String searchDoctorRoute = "/search_doctor_screen";
   static const String searchResultRoute = "/search_result_screen";
   static const String settingRoute = '/doctor_screens/settings_screen';
+  static const String scheduleAppointment =
+      '/patient/schedule_appointment_screen';
+  static const String doctorDetail = '/patient/search/doctor_result_screen';
+  static const String bookingSuccessful =
+      '/patient/widgets/booking_successful_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

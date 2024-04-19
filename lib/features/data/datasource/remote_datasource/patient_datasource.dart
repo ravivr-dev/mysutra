@@ -7,11 +7,23 @@ import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 
+import '../../model/patient_models/available_time_slot.dart';
+import '../../model/patient_models/schedule_appointment_response_model.dart';
 
 abstract class PatientDataSource {
   Future<SearchDoctorModel> searchDoctors(SearchDoctorParams data);
 
   Future<Map<String, dynamic>> followDoctor(Map<String, dynamic> data);
+
+  Future<AvailableTimeSlotResponse> getAvailableSlots(Map<String, dynamic> map);
+
+  Future getDoctorDetails(String doctorId);
+
+  Future<ScheduleAppointmentResponseModel> scheduleAppointment(
+      Map<String, dynamic> map);
+
+  Future confirmAppointment(
+      {required Map<String, dynamic> map, required String token});
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -38,7 +50,8 @@ class PatientDataSourceImpl extends PatientDataSource {
   Future<SearchDoctorModel> searchDoctors(SearchDoctorParams data) async {
     try {
       return await client
-          .searchDoctors(data.search, data.experience,data.start, data.limit, data.reviews, data.specializationId)
+          .searchDoctors(data.search, data.experience, data.start, data.limit,
+              data.reviews, data.specializationId)
           .catchError((err) {
         _processDio(err);
       });
@@ -56,6 +69,73 @@ class PatientDataSourceImpl extends PatientDataSource {
   Future<Map<String, dynamic>> followDoctor(Map<String, dynamic> data) async {
     try {
       return await client.followDoctor(data).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AvailableTimeSlotResponse> getAvailableSlots(
+      Map<String, dynamic> map) async {
+    try {
+      return await client.getAvailableSlots(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future getDoctorDetails(String doctorId) async {
+    try {
+      return await client.getDoctorDetails(doctorId).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ScheduleAppointmentResponseModel> scheduleAppointment(
+      Map<String, dynamic> map) async {
+    try {
+      return await client.scheduleAppointment(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future confirmAppointment(
+      {required Map<String, dynamic> map, required String token}) async {
+    try {
+      return await client.confirmAppointment(map, token).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

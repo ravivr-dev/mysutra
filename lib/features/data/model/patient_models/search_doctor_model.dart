@@ -26,16 +26,25 @@ class DoctorDataModel {
   int? reviews;
   int? fees;
   bool? isFollowing;
+  int? patients;
+  int? experience;
+  String? about;
+  dynamic timings;
 
-  DoctorDataModel(
-      {this.id,
-      this.profilePic,
-      this.fullName,
-      this.specialization,
-      this.ratings,
-      this.reviews,
-      this.fees,
-      this.isFollowing});
+  DoctorDataModel({
+    this.id,
+    this.profilePic,
+    this.fullName,
+    this.specialization,
+    this.ratings,
+    this.reviews,
+    this.fees,
+    this.isFollowing,
+    this.patients,
+    this.experience,
+    this.about,
+    this.timings,
+  });
 
   DoctorDataModel.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -46,5 +55,9 @@ class DoctorDataModel {
     reviews = json['reviews'];
     fees = json['fees'];
     isFollowing = json['isFollowing'];
+    patients = json['patients'];
+    experience = json['experience'];
+    about = json['about'];
+    timings = json['timings'];
   }
 }

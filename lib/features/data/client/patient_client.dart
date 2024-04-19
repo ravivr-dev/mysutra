@@ -7,6 +7,9 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 
+import '../model/patient_models/available_time_slot.dart';
+import '../model/patient_models/schedule_appointment_response_model.dart';
+
 part 'patient_client.g.dart';
 
 /// Use below command to generate
@@ -51,4 +54,19 @@ abstract class PatientRestClient {
 
   @POST(EndPoints.doctorFollow)
   Future<dynamic> followDoctor(@Body() Map<String, dynamic> data);
+
+  @GET(EndPoints.availableSlots)
+  Future<AvailableTimeSlotResponse> getAvailableSlots(
+      @Queries() Map<String, dynamic> map);
+
+  @GET('${EndPoints.doctorDetails}/{doctorId}')
+  Future<dynamic> getDoctorDetails(@Path('doctorId') String doctorID);
+
+  @POST(EndPoints.scheduleAppointment)
+  Future<ScheduleAppointmentResponseModel> scheduleAppointment(
+      @Body() Map<String, dynamic> data);
+
+  @POST(EndPoints.confirmAppointment)
+  Future<dynamic> confirmAppointment(@Body() Map<String, dynamic> data,
+      @Header(Constants.authorization) token);
 }

@@ -23,6 +23,13 @@ class Constants {
 
   static const String baseUrl =
       "http://mysutra-dev.ap-south-1.elasticbeanstalk.com";
+
+  //Patient Constants
+  static const String id = '_id';
+  static const String day = 'day';
+  static const String slotType = 'slotType';
+  static const String startTime = 'startTime';
+  static const String endTime = 'endTime';
 }
 
 class DateTimeUtils {

@@ -15,7 +15,11 @@ import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
@@ -27,6 +31,7 @@ import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_sutra/core/components/config/theme/theme.dart';
@@ -59,10 +64,15 @@ Future<void> init() async {
   sl.registerFactory(() => SearchDoctorCubit(
         searchDoctorUsecase: sl<SearchDoctorUsecase>(),
         followDoctorUseCase: sl<FollowDoctorUseCase>(),
+        getDoctorDetailsUseCase: sl<GetDoctorDetailsUseCase>(),
       ));
   sl.registerFactory(() => SettingCubit(
       updateTimeSlotsUseCase: sl<UpdateTimeSlotsUseCase>(),
       updateAboutOrFeesUseCase: sl<UpdateAboutOrFeesUseCase>()));
+  sl.registerFactory(() => AppointmentCubit(
+      getAvailableSlotsUseCase: sl<GetAvailableSlotsUseCase>(),
+      scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
+      confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -77,6 +87,10 @@ Future<void> init() async {
   sl.registerFactory(() => FollowDoctorUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => UpdateTimeSlotsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => UpdateAboutOrFeesUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => GetDoctorDetailsUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => GetAvailableSlotsUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => ScheduleAppointmentUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => ConfirmAppointmentUseCase(sl<PatientRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

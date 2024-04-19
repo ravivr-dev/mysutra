@@ -1,11 +1,18 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 import '../../../../core/utils/app_colors.dart';
+import '../schedule_appointment_screen.dart';
 
 class DoctorResultScreen extends StatelessWidget {
-  const DoctorResultScreen({super.key});
+  final DoctorEntity doctorEntity;
+
+  const DoctorResultScreen({super.key, required this.doctorEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +28,32 @@ class DoctorResultScreen extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.center,
-              child: component.assetImage(
-                path: Assets.iconsInfluencer,
+              child: Container(
                 height: 160,
                 width: 160,
-                fit: BoxFit.fill,
+                clipBehavior: Clip.hardEdge,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                child: component.networkImage(
+                    fit: BoxFit.fill,
+                    url: doctorEntity.profilePic ?? '',
+                    errorWidget: Container(
+                        color: AppColors.grey92,
+                        child: const Icon(Icons.person))),
               ),
             ),
             component.spacer(height: 12),
             Align(
               alignment: Alignment.center,
-              child: component.text('Dr. Rita Rawat',
+              child: component.text(doctorEntity.fullName,
                   style: theme.publicSansFonts.mediumStyle(
                     fontSize: 16,
                   )),
             ),
             Align(
               alignment: Alignment.center,
-              child: component.text('AndroLogist | ₹2000.0 - ₹ 5000.0',
+              child: component.text(
+                  '${doctorEntity.specialization} | ₹${doctorEntity.fees ?? 'not updated'}',
                   style: theme.publicSansFonts.regularStyle(
                     fontColor: AppColors.color0xFF526371,
                   )),
@@ -48,7 +63,7 @@ class DoctorResultScreen extends StatelessWidget {
               children: [
                 Expanded(child: _buildFollowButton()),
                 component.spacer(width: 12),
-                Expanded(child: _buildBookAppointmentButton()),
+                Expanded(child: _buildBookAppointmentButton(context)),
               ],
             ),
             component.spacer(height: 24),
@@ -56,7 +71,7 @@ class DoctorResultScreen extends StatelessWidget {
               Expanded(
                   child: _buildDecoratedContainer(
                 color: AppColors.color0xFF55ACEE,
-                text: '1000+',
+                text: '${doctorEntity.patients}+',
                 subText: 'Patients',
                 iconPath: Assets.iconsUser,
               )),
@@ -64,7 +79,7 @@ class DoctorResultScreen extends StatelessWidget {
               Expanded(
                   child: _buildDecoratedContainer(
                 color: AppColors.color0xFFFB5607,
-                text: '10 Years',
+                text: '${doctorEntity.experience} Years',
                 subText: 'Experience',
                 iconPath: Assets.iconsMedal,
               )),
@@ -72,7 +87,7 @@ class DoctorResultScreen extends StatelessWidget {
               Expanded(
                   child: _buildDecoratedContainer(
                 color: AppColors.color0xFF8338EC,
-                text: '4.5',
+                text: '${doctorEntity.ratings}',
                 subText: 'Ratings',
                 iconPath: Assets.iconsStar,
               )),
@@ -83,8 +98,7 @@ class DoctorResultScreen extends StatelessWidget {
                   fontSize: 16,
                 )),
             component.spacer(height: 8),
-            component.text(
-                'Gases or vapors that are accidentally released from industrial activities, such as factory operations or oil and gas extraction. These emissions contribute to climate change and air pollution and may pose health risks to nearby communities',
+            component.text(doctorEntity.about,
                 style: theme.publicSansFonts.regularStyle(
                   fontColor: AppColors.black81,
                 )),
@@ -94,7 +108,8 @@ class DoctorResultScreen extends StatelessWidget {
                   fontSize: 16,
                 )),
             component.spacer(height: 8),
-            component.text('Mon-Sat (08:30 AM-9:00 PM)',
+            //todo add dynamic time here
+            component.text('',
                 style: theme.publicSansFonts.regularStyle(
                   fontColor: AppColors.black81,
                 )),
@@ -144,19 +159,39 @@ class DoctorResultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBookAppointmentButton() {
-    return Container(
-      height: 50,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.color0xFF8338EC,
+  void _showToast(BuildContext context, {required String message}) {
+    showErrorToast(context: context, message: message);
+  }
+
+  void _bookAppointment(BuildContext context, String doctorID) {
+    AiloitteNavigation.intentWithData(context, AppRoutes.scheduleAppointment,
+        ScheduleAppointmentScreenArgs(doctorId: doctorID));
+  }
+
+  Widget _buildBookAppointmentButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        if (doctorEntity.id == null) {
+          _showToast(context,
+              message:
+                  'Not about to book appointment with this doctor Please try again');
+          return;
+        }
+        _bookAppointment(context, doctorEntity.id!);
+      },
+      child: Container(
+        height: 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.color0xFF8338EC,
+        ),
+        child: component.text('Book Appointment',
+            style: theme.publicSansFonts.semiBoldStyle(
+              fontSize: 14,
+              fontColor: AppColors.white,
+            )),
       ),
-      child: component.text('Book Appointment',
-          style: theme.publicSansFonts.semiBoldStyle(
-            fontSize: 14,
-            fontColor: AppColors.white,
-          )),
     );
   }
 
