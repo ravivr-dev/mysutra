@@ -11,6 +11,7 @@ import 'package:my_sutra/features/presentation/patient/search/bottomsheet/dr_bot
 import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class SearchDoctorScreen extends StatefulWidget {
   const SearchDoctorScreen({super.key});
@@ -80,6 +81,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
                     const SizedBox(height: 16),
                     SearchWithFilter(
                       onTapFilter: () {},
+                      onTap: _navigateToSearchDoctorScreen,
                     ),
                     const SizedBox(height: 32),
                     const DashboardHelperItems(),
@@ -204,5 +206,9 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
         ),
       ),
     );
+  }
+
+  void _navigateToSearchDoctorScreen() {
+    AiloitteNavigation.intent(context, AppRoutes.searchResultRoute);
   }
 }
