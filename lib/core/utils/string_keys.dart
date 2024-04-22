@@ -36,4 +36,25 @@ class StringKeys {
   static const String detectMyLocation = 'detect_my_location';
   static const String yearOfExperience = 'year_of_experience';
   static const String applyFilter = 'apply_filter';
+  static const String viewProfile = 'view_profile';
+  static const String report = 'report';
+  static const String reasonForVisit = 'reason_for_visit';
+  static const String phoneNumber = 'phone_number';
+  static const String email = 'email';
+  static const String chatNow = 'chat_now';
+  static const String bookingSuccessful = 'booking_successful';
+  static const String yourBookingHasBeenConfirmed =
+      'your_booking_has_been_confirmed';
+  static const String confirmYourBooking = 'confirmYourBooking';
+  static const String pleaseConfirmYourBookingByText =
+      'please_confirm_your_booking_by_text';
+  static const String sendMeANewCode = 'send_me_a_new_code';
+  static const String pastAppointments = 'past_appointments';
+  static const String bookAppointment = 'book_appointment';
+  static const String doctors = 'doctors';
+  static const String influencers = 'influencers';
+  static const String myFollowing = 'my_following';
+  static const String rateTheAppointment = 'rate_the_appointment';
+  static const String downloadAttachedPrescription =
+      'download_attached_prescription';
 }

@@ -46,5 +46,12 @@
   "your_booking_has_been_confirmed": "Your booking has been confirmed",
   "confirmYourBooking": "Confirm your booking",
   "please_confirm_your_booking_by_text": "Please Confirm your booking by entering OTP Sent on your number",
-  "send_me_a_new_code": "Send me a new code"
+  "send_me_a_new_code": "Send me a new code",
+  "past_appointments": "Past appointments",
+  "book_appointment": "Book Appointment",
+  "doctors": "Doctors",
+  "influencers": "Influencers",
+  "my_following": "My Following",
+  "rate_the_appointment": "Rate the appointment",
+  "download_attached_prescription": "Download attached prescription"
 }
