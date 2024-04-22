@@ -20,10 +20,13 @@ class Assets {
   static const String iconsCall = 'assets/icons/call.svg';
   static const String iconsChat = 'assets/icons/chat.svg';
   static const String iconsCheckup = 'assets/icons/checkup.svg';
+  static const String iconsClock = 'assets/icons/clock.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsComment = 'assets/icons/comment.svg';
   static const String iconsDocs = 'assets/icons/docs.svg';
   static const String iconsDoctor = 'assets/icons/doctor.svg';
+  static const String iconsDocument = 'assets/icons/document.svg';
+  static const String iconsDownload = 'assets/icons/download.svg';
   static const String iconsDropdown = 'assets/icons/dropdown.svg';
   static const String iconsDummyDoctor = 'assets/icons/dummy_doctor.png';
   static const String iconsEditIcon = 'assets/icons/edit_icon.svg';
