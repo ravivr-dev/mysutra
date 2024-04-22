@@ -2,6 +2,7 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
@@ -16,6 +17,7 @@ class MyProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userRole = UserHelper.role;
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -34,67 +36,46 @@ class MyProfileScreen extends StatelessWidget {
                 width: 80,
                 fit: BoxFit.fill),
             component.spacer(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                component.text('Rahul Rathi',
-                    style: theme.publicSansFonts.mediumStyle(
-                      fontSize: 25,
-                      fontColor: AppColors.black37,
-                    )),
-                component.spacer(width: 4),
-                component.assetImage(
-                  path: Assets.iconsVerify,
-                  height: 24,
-                  width: 24,
-                  fit: BoxFit.fill,
-                )
-              ],
-            ),
-            component.text('Andrologist | 25 year experience',
-                style: theme.publicSansFonts.regularStyle(
-                  fontColor: AppColors.color0xFF526371,
-                )),
-            component.spacer(height: 8),
-            component.text('250 Followers',
-                style: theme.publicSansFonts.semiBoldStyle(
-                  fontColor: AppColors.color0xFF85799E,
-                  fontSize: 16,
-                )),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: component.text(
-                  'THis is a text content box for a user bio  set a limit of 100 Characters  max',
-                  textAlign: TextAlign.center,
-                  style: theme.publicSansFonts.regularStyle(
-                    fontColor: AppColors.neutral,
-                  )),
-            ),
-            component.textButton(
-                title: 'Edit',
-                callback: () {
-                  context.showBottomSheet(BlocProvider<SettingCubit>(
-                      create: (_) => sl<SettingCubit>(),
-                      child: const AboutMeBottomSheet()));
-                },
-                titleStyle: theme.publicSansFonts.semiBoldStyle(
-                  fontSize: 14,
-                  fontColor: AppColors.color0xFF8338EC,
-                )),
+            if (userRole == UserRole.patient)
+              _buildUserName()
+            else
+              ..._buildDoctorDetailsWidgets(context),
             component.spacer(height: 12),
             const Divider(color: AppColors.dividerColor),
             component.spacer(height: 12),
-            _buildCard(value: 'My Patients', icons: Assets.iconsUserCircle),
-            component.spacer(height: 12),
-            _buildCard(value: 'My Following', icons: Assets.iconsUserAdd),
+            if (userRole != UserRole.influencer)
+              _buildCard(
+                  value: userRole == UserRole.patient
+                      ? 'My Doctors'
+                      : 'My Patients',
+                  icons: Assets.iconsUserCircle),
             component.spacer(height: 12),
             _buildCard(
-                value: 'Settings',
-                icons: Assets.iconsSetting,
+                value: 'My Following',
+                icons: Assets.iconsUserAdd,
                 onTap: () {
-                  AiloitteNavigation.intent(context, AppRoutes.settingRoute);
+                  AiloitteNavigation.intent(context, AppRoutes.myFollowing);
                 }),
             component.spacer(height: 12),
+            if (userRole == UserRole.doctor) ...[
+              _buildCard(
+                  value: 'Settings',
+                  icons: Assets.iconsSetting,
+                  onTap: () {
+                    AiloitteNavigation.intent(context, AppRoutes.settingRoute);
+                  }),
+              component.spacer(height: 12),
+            ],
+            if (userRole == UserRole.patient) ...[
+              _buildCard(
+                  value: 'Past Appointments',
+                  icons: Assets.iconsClock,
+                  onTap: () {
+                    AiloitteNavigation.intent(
+                        context, AppRoutes.pastAppointment);
+                  }),
+              component.spacer(height: 12),
+            ],
             _buildTileCard(
                 icon: Assets.iconsPhone,
                 text: 'Mobile number',
@@ -106,6 +87,64 @@ class MyProfileScreen extends StatelessWidget {
                 subText: 'hemuk9720@gmail.com'),
           ],
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildDoctorDetailsWidgets(BuildContext context) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildUserName(),
+          component.spacer(width: 4),
+          component.assetImage(
+            path: Assets.iconsVerify,
+            height: 24,
+            width: 24,
+            fit: BoxFit.fill,
+          )
+        ],
+      ),
+      component.text('Andrologist | 25 year experience',
+          style: theme.publicSansFonts.regularStyle(
+            fontColor: AppColors.color0xFF526371,
+          )),
+      component.spacer(height: 8),
+      component.text('250 Followers',
+          style: theme.publicSansFonts.semiBoldStyle(
+            fontColor: AppColors.color0xFF85799E,
+            fontSize: 16,
+          )),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: component.text(
+            'THis is a text content box for a user bio  set a limit of 100 Characters  max',
+            textAlign: TextAlign.center,
+            style: theme.publicSansFonts.regularStyle(
+              fontColor: AppColors.neutral,
+            )),
+      ),
+      component.textButton(
+          title: 'Edit',
+          callback: () {
+            context.showBottomSheet(BlocProvider<SettingCubit>(
+                create: (_) => sl<SettingCubit>(),
+                child: const AboutMeBottomSheet()));
+          },
+          titleStyle: theme.publicSansFonts.semiBoldStyle(
+            fontSize: 14,
+            fontColor: AppColors.color0xFF8338EC,
+          )),
+    ];
+  }
+
+  Widget _buildUserName() {
+    return component.text(
+      'Rahul Rathi',
+      style: theme.publicSansFonts.mediumStyle(
+        fontSize: 25,
+        fontColor: AppColors.black37,
       ),
     );
   }

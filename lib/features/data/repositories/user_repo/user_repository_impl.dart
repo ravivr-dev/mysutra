@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
 import 'package:my_sutra/core/error/failures.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/network/network_info.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
@@ -55,6 +56,7 @@ class UserRepositoryImpl extends UserRepository {
         if (result.data != null) {
           localDataSource.setAccessToken(result.data?.token ?? "");
           localDataSource.setUserRole(result.data?.role ?? "");
+          UserHelper.init(role: result.data!.role!);
         }
 
         return Right(result);

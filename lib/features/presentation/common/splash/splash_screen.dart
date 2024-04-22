@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import '../../../../injection_container.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -17,6 +20,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final localDataSource = sl<LocalDataSource>();
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +42,14 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is LoggedIn) {
-          AiloitteNavigation.intentWithClearAllRoutes(
-              context, AppRoutes.homeRoute);
+          final role = localDataSource.getUserRole();
+          if (role.isNotEmpty) {
+            UserHelper.init(role: role);
+            AiloitteNavigation.intentWithClearAllRoutes(
+                context, AppRoutes.homeRoute);
+            return;
+          }
+          _handleNavigation();
         } else if (state is LoggedOut) {
           _handleNavigation();
         }
