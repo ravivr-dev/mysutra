@@ -40,6 +40,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(
+              iconTheme: IconThemeData(
+                color: AppColors.color0xFF00082F.withOpacity(.27),
+              ),
               scrolledUnderElevation: 0.0,
               centerTitle: true,
               titleTextStyle: theme.publicSansFonts.mediumStyle(fontSize: 20),
