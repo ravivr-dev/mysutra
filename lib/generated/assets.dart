@@ -32,6 +32,7 @@ class Assets {
   static const String iconsFilter = 'assets/icons/filter.svg';
   static const String iconsFreeze = 'assets/icons/freeze.svg';
   static const String iconsGps = 'assets/icons/gps.svg';
+  static const String iconsGroup = 'assets/icons/group.svg';
   static const String iconsHeart = 'assets/icons/heart.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsHome2 = 'assets/icons/home2.svg';
