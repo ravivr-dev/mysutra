@@ -7,8 +7,10 @@ import '../../../../../generated/assets.dart';
 
 class UserFollowWidget extends StatelessWidget {
   final bool showMoreButton;
+  final VoidCallback? onShowMoreButtonClick;
 
-  const UserFollowWidget({this.showMoreButton = false, super.key});
+  const UserFollowWidget(
+      {this.onShowMoreButtonClick, this.showMoreButton = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +47,13 @@ class UserFollowWidget extends StatelessWidget {
         ),
         const Spacer(),
         if (showMoreButton)
-          const Icon(
-            Icons.more_vert,
-            color: AppColors.color0xFF292D32,
-            size: 18,
+          InkWell(
+            onTap: onShowMoreButtonClick,
+            child: const Icon(
+              Icons.more_vert,
+              color: AppColors.color0xFF292D32,
+              size: 18,
+            ),
           )
       ],
     );
