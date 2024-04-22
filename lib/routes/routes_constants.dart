@@ -15,6 +15,9 @@ class AppRoutes {
   static const String doctorDetail = '/patient/search/doctor_result_screen';
   static const String bookingSuccessful =
       '/patient/widgets/booking_successful_screen';
+  static const String pastAppointment =
+      '/patient/widgets/past_appointment_screen';
+  static const String myFollowing = '/common/home/widgets/my_following_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

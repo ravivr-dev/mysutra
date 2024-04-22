@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/widgets/my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
@@ -20,6 +21,7 @@ import 'package:my_sutra/features/presentation/patient/search/doctor_result_scre
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search_doctor_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/booking_successful_screen.dart';
+import 'package:my_sutra/features/presentation/patient/widgets/past_appointment_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -106,6 +108,11 @@ class Routes {
       case AppRoutes.bookingSuccessful:
         return MaterialPageRoute(
             builder: (_) => const BookingSuccessfulScreen());
+      case AppRoutes.pastAppointment:
+        return MaterialPageRoute(
+            builder: (_) => const PastAppointmentsScreen());
+      case AppRoutes.myFollowing:
+        return MaterialPageRoute(builder: (_) => const MyFollowingScreen());
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
