@@ -9,6 +9,7 @@ import 'package:my_sutra/core/common_widgets/custom_dropdown.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bottom_sheets/confirm_your_booking_bottom_sheet.dart';
@@ -267,7 +268,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   }
 
   Widget _buildTimeWidget(AvailableTimeSlotEntity entity) {
-    final timeSlot = _getTimeFromMinutes(entity.startTime);
+    final timeSlot = Utils.getTimeFromMinutes(entity.startTime);
     final isSelected = timeSlot == _selectedTimeSlot;
 
     return InkWell(
@@ -289,12 +290,6 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
             )),
       ),
     );
-  }
-
-  String _getTimeFromMinutes(int minutes) {
-    final hour = minutes ~/ 60;
-    final minute = minutes - (hour * 60);
-    return '${'$hour'.padLeft(2, '0')}:${'$minute'.padLeft(2, '0')} ${hour < 12 ? 'AM' : 'PM'}';
   }
 
   Widget _buildText({required String value, double? fontSize}) {
