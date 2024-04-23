@@ -40,6 +40,20 @@ class Constants {
   static const String message = 'message';
   static const String count = 'count';
   static const String data = 'data';
+
+  //User Constants
+  static const String user = 'user';
+  static const String role = 'role';
+  static const String fullName = 'fullName';
+  static const String isVerified = 'isVerified';
+  static const String specialization = 'specialization';
+  static const String totalExperience = 'totalExperience';
+  static const String totalFollowers = 'totalFollowers';
+  static const String email = 'email';
+  static const String fees = 'fees';
+  static const String about = 'about';
+
+//
 }
 
 class DateTimeUtils {

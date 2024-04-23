@@ -1,5 +1,8 @@
+import 'package:my_sutra/features/data/model/user_models/my_profile_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
+
+import '../../../domain/entities/user_entities/my_profile_entity.dart';
 
 class UserRepoConv {
   static List<SpecializationEntity> convSpecialisationModelToEntity(
@@ -12,5 +15,22 @@ class UserRepoConv {
           name: e.name ?? "", id: e.id ?? "", image: e.imageUrl ?? ""));
     }
     return list;
+  }
+
+  static MyProfileEntity myProfileModelToEntity(MyProfileModel model) {
+    return MyProfileEntity(
+      id: model.id,
+      profilePic: model.profilePic,
+      fullName: model.fullName,
+      specialization: model.specialization,
+      fees: model.fees,
+      role: model.role,
+      isVerified: model.isVerified,
+      totalExperience: model.totalExperience,
+      totalFollowers: model.totalFollowers,
+      countryCode: model.countryCode,
+      phoneNumber: model.phoneNumber,
+      email: model.email, about: model.about,
+    );
   }
 }

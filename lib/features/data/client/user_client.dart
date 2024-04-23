@@ -13,6 +13,8 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 
+import '../model/user_models/my_profile_model.dart';
+
 part 'user_client.g.dart';
 
 /// Use below command to generate
@@ -84,4 +86,7 @@ abstract class UserRestClient {
   Future<UploadDocModel> uploadDocument(
     @Part() File file,
   );
+
+  @GET(EndPoints.userProfile)
+  Future<MyProfileResponseModel> getProfileDetails();
 }

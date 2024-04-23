@@ -8,7 +8,9 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 
 class AboutMeBottomSheet extends StatefulWidget {
-  const AboutMeBottomSheet({super.key});
+  final String? about;
+
+  const AboutMeBottomSheet({super.key, required this.about});
 
   @override
   State<AboutMeBottomSheet> createState() => _AboutMeBottomSheetState();
@@ -20,7 +22,7 @@ class _AboutMeBottomSheetState extends State<AboutMeBottomSheet> {
   @override
   void initState() {
     ///we were getting controller used after being desposed that's why i'm initilizing it here
-    _aboutMeController = TextEditingController();
+    _aboutMeController = TextEditingController(text: widget.about);
     super.initState();
   }
 
@@ -36,7 +38,7 @@ class _AboutMeBottomSheetState extends State<AboutMeBottomSheet> {
       listener: (context, state) {
         if (state is UpdateAboutOrFeesSuccessState) {
           _showToast(message: 'Details Updated Successfully');
-          _popScreen();
+          _popScreen(text: _aboutMeController.text);
         } else if (state is UpdateAboutOrFeesErrorState) {
           _showToast(message: state.message);
         }
@@ -103,8 +105,8 @@ class _AboutMeBottomSheetState extends State<AboutMeBottomSheet> {
     );
   }
 
-  void _popScreen() {
-    AiloitteNavigation.back(context);
+  void _popScreen({String? text}) {
+    AiloitteNavigation.backWithData(context, text);
   }
 
   void _showToast({required String message}) {

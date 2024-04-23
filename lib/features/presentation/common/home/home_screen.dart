@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/features/presentation/doctor_screens/my_profile_screen.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search_doctor_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
+
+import '../../../../injection_container.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
     const PostScreen(),
     const SizedBox.shrink(),
     Container(),
-    const MyProfileScreen()
+    BlocProvider(
+      create: (BuildContext context) => sl<ProfileCubit>(),
+      child: const MyProfileScreen(),
+    )
   ];
 
   @override

@@ -15,6 +15,8 @@ import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
+import '../../model/user_models/my_profile_model.dart';
+
 abstract class UserDataSource {
   Future<GeneralModel> login(
       {required String countryCode, required String phoneNumber});
@@ -29,7 +31,9 @@ abstract class UserDataSource {
 
   Future<GeneralModel> registration(RegistrationParams params);
 
-  Future<UploadDocModel>   uploadDocument(File file);
+  Future<UploadDocModel> uploadDocument(File file);
+
+  Future<MyProfileResponseModel> getProfileDetails();
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -161,11 +165,27 @@ class UserDataSourceImpl extends UserDataSource {
       rethrow;
     }
   }
-  
+
   @override
   Future<UploadDocModel> uploadDocument(File file) async {
-   try {
+    try {
       return await client.uploadDocument(file).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MyProfileResponseModel> getProfileDetails() async {
+    try {
+      return await client.getProfileDetails().catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {
