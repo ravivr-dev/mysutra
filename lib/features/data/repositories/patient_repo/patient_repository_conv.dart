@@ -5,6 +5,8 @@ import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity
 import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
 
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
+import '../../../domain/entities/patient_entities/patient_entity.dart';
+import '../../model/patient_models/patient_model.dart';
 
 class PatientRepoConv {
   static List<DoctorEntity> convSpecialisationModelToEntity(
@@ -60,6 +62,20 @@ class PatientRepoConv {
             startTime: e.startTime,
             slotType: e.slotType,
             endTime: e.endTime))
+        .toList();
+  }
+
+  static List<PatientEntity> patientModelToEntity(List<PatientModel> patients) {
+    return patients
+        .map((e) => PatientEntity(
+            date: e.date,
+            time: e.time,
+            id: e.id,
+            userName: e.userName,
+            countryCode: e.countryCode,
+            phoneNumber: e.phoneNumber,
+            profilePic: e.profilePic,
+            timeInMinutes: e.timeInMinutes))
         .toList();
   }
 }

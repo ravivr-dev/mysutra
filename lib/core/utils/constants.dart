@@ -30,6 +30,16 @@ class Constants {
   static const String slotType = 'slotType';
   static const String startTime = 'startTime';
   static const String endTime = 'endTime';
+  static const String userName = 'username';
+  static const String profilePic = 'profilePic';
+  static const String countryCode = 'countryCode';
+  static const String phoneNumber = 'phoneNumber';
+  static const String date = 'date';
+  static const String time = 'time';
+  static const String timeInMinutes = 'timeInMinutes';
+  static const String message = 'message';
+  static const String count = 'count';
+  static const String data = 'data';
 }
 
 class DateTimeUtils {

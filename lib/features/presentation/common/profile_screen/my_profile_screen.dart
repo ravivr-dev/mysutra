@@ -5,12 +5,14 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
-import '../../../injection_container.dart';
+import '../../../../injection_container.dart';
+import '../../../domain/entities/patient_entities/patient_entity.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -27,65 +29,82 @@ class MyProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            component.assetImage(
-                path: Assets.iconsDummyDoctor,
-                height: 80,
-                width: 80,
-                fit: BoxFit.fill),
-            component.spacer(height: 16),
-            if (userRole == UserRole.patient)
-              _buildUserName()
-            else
-              ..._buildDoctorDetailsWidgets(context),
-            component.spacer(height: 12),
-            const Divider(color: AppColors.dividerColor),
-            component.spacer(height: 12),
-            if (userRole != UserRole.influencer)
+        child: BlocListener<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            if (state is GetPatientSuccessState) {
+              _goToMyPatientScreen(state.patients);
+            }
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              component.assetImage(
+                  path: Assets.iconsDummyDoctor,
+                  height: 80,
+                  width: 80,
+                  fit: BoxFit.fill),
+              component.spacer(height: 16),
+              if (userRole == UserRole.patient)
+                _buildUserName()
+              else
+                ..._buildDoctorDetailsWidgets(context),
+              component.spacer(height: 12),
+              const Divider(color: AppColors.dividerColor),
+              component.spacer(height: 12),
+              if (userRole != UserRole.influencer)
+                _buildCard(
+                    value: userRole == UserRole.patient
+                        ? 'My Doctors'
+                        : 'My Patients',
+                    onTap: () {
+                      if (userRole == UserRole.doctor) {
+                        //todo make it dynamic (implement pagination)
+                        context
+                            .read<ProfileCubit>()
+                            .getPatients(pagination: 1, limit: 10);
+                        return;
+                      }
+                    },
+                    icons: Assets.iconsUserCircle),
+              component.spacer(height: 12),
               _buildCard(
-                  value: userRole == UserRole.patient
-                      ? 'My Doctors'
-                      : 'My Patients',
-                  icons: Assets.iconsUserCircle),
-            component.spacer(height: 12),
-            _buildCard(
-                value: 'My Following',
-                icons: Assets.iconsUserAdd,
-                onTap: () {
-                  AiloitteNavigation.intent(context, AppRoutes.myFollowing);
-                }),
-            component.spacer(height: 12),
-            if (userRole == UserRole.doctor) ...[
-              _buildCard(
-                  value: 'Settings',
-                  icons: Assets.iconsSetting,
+                  value: 'My Following',
+                  icons: Assets.iconsUserAdd,
                   onTap: () {
-                    AiloitteNavigation.intent(context, AppRoutes.settingRoute);
+                    AiloitteNavigation.intent(context, AppRoutes.myFollowing);
                   }),
               component.spacer(height: 12),
-            ],
-            if (userRole == UserRole.patient) ...[
-              _buildCard(
-                  value: 'Past Appointments',
-                  icons: Assets.iconsClock,
-                  onTap: () {
-                    AiloitteNavigation.intent(
-                        context, AppRoutes.pastAppointment);
-                  }),
+              if (userRole == UserRole.doctor) ...[
+                _buildCard(
+                    value: 'Settings',
+                    icons: Assets.iconsSetting,
+                    onTap: () {
+                      AiloitteNavigation.intent(
+                          context, AppRoutes.settingRoute);
+                    }),
+                component.spacer(height: 12),
+              ],
+              if (userRole == UserRole.patient) ...[
+                _buildCard(
+                    value: 'Past Appointments',
+                    icons: Assets.iconsClock,
+                    onTap: () {
+                      AiloitteNavigation.intent(
+                          context, AppRoutes.pastAppointment);
+                    }),
+                component.spacer(height: 12),
+              ],
+              _buildTileCard(
+                  icon: Assets.iconsPhone,
+                  text: 'Mobile number',
+                  subText: '987654123'),
               component.spacer(height: 12),
+              _buildTileCard(
+                  icon: Assets.iconsEmail,
+                  text: 'Email Address',
+                  subText: 'hemuk9720@gmail.com'),
             ],
-            _buildTileCard(
-                icon: Assets.iconsPhone,
-                text: 'Mobile number',
-                subText: '987654123'),
-            component.spacer(height: 12),
-            _buildTileCard(
-                icon: Assets.iconsEmail,
-                text: 'Email Address',
-                subText: 'hemuk9720@gmail.com'),
-          ],
+          ),
         ),
       ),
     );
@@ -224,5 +243,13 @@ class MyProfileScreen extends StatelessWidget {
             color: AppColors.color0xFF88A6FF.withOpacity(.05),
           )
         ]);
+  }
+
+  void _goToMyPatientScreen(List<PatientEntity> patients) {
+    // AiloitteNavigation.intentWithData(context, nameRouted, patients);
+  }
+
+  void _getProfileDetails() {
+    context.read<ProfileCubit>().getProfileDetails();
   }
 }

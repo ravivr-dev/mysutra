@@ -3,11 +3,14 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/core/network/network_info.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
+import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_conv.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/utils/constants.dart';
+import '../../../domain/usecases/doctor_usecases/get_patient_usecase.dart';
 import '../../../domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 
 class DoctorRepositoryImpl extends DoctorRepository {
@@ -48,6 +51,25 @@ class DoctorRepositoryImpl extends DoctorRepository {
         });
 
         return Right(result);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PatientEntity>>> getPatients(
+      GetPatientsParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getPatients({
+          'pagination': data.pagination,
+          'limit': data.limit,
+        });
+
+        return Right(PatientRepoConv.patientModelToEntity(result.patients));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
