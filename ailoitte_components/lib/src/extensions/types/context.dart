@@ -38,7 +38,7 @@ extension AiloitteContextExtensions on BuildContext {
     return MediaQuery.of(this).viewPadding.top;
   }
 
-  void showBottomSheet(
+  Future<T?> showBottomSheet<T>(
     Widget widget, {
     bool isDismissible = false,
     double borderRadius = 20,
@@ -46,7 +46,7 @@ extension AiloitteContextExtensions on BuildContext {
     bool isScrollControlled = false,
     bool useRootNavigator = false,
   }) {
-    showModalBottomSheet(
+    return showModalBottomSheet(
       context: this,
       clipBehavior: Clip.hardEdge,
       backgroundColor: backgroundColor ?? const Color(0xFFF1F1F1),
