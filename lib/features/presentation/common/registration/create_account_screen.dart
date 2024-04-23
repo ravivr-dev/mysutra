@@ -59,6 +59,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final ImagePicker picker = ImagePicker();
   XFile? profilePic;
   String? profilePicKey;
+  List<String> _userNames = [];
+  String? _selectedUserName;
 
   @override
   void didChangeDependencies() {
@@ -92,6 +94,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             } else if (state is UploadDocument) {
               profilePic = state.file;
               profilePicKey = state.data.key;
+            } else if (state is GenerateUserNamesSuccessState) {
+              _userNames = state.entity.userNames;
+            } else if (state is GenerateUserNamesErrorState) {
+              widget.showErrorToast(context: context, message: state.message);
             }
           },
           builder: (context, state) {
@@ -187,9 +193,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   ),
                 const SizedBox(height: 20),
                 TextFormFieldWidget(
-                  title:
-                      widget.profession == "User" ? "User Name" : "Full Name",
+                  title: "Full Name",
                   controller: _nameCtrl,
+                ),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: _userNames.map((e) => _buildUserName(e)).toList(),
                 ),
                 TextFormWithCountryCode(
                   title: context.stringForKey(StringKeys.mobileNumber),
@@ -305,6 +315,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 CustomButton(
                   isLoading: state is RegistrationLoading,
                   onPressed: () {
+                    if (_selectedUserName == null) {
+                      widget.showErrorToast(
+                          context: context,
+                          message: 'Please Select Any UserName');
+                      return;
+                    }
                     context.read<RegistrationCubit>().registration(
                           RegistrationParams(
                               role: giveRole(),
@@ -319,7 +335,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               age: _ageCtrl.text,
                               socialUrls: urlList.value.isNotEmpty
                                   ? urlList.value
-                                  : null),
+                                  : null,
+                              userName: _selectedUserName!),
                         );
                   },
                   text: "Continue",
@@ -350,6 +367,30 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     );
   }
 
+  Widget _buildUserName(String userName) {
+    final isSelected = _selectedUserName == userName;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedUserName = userName;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+            color:
+                isSelected ? AppColors.primaryColor : AppColors.color0xFFFCFCFD,
+            borderRadius: BorderRadius.circular(44),
+            border: Border.all(color: AppColors.color0xFFDBDBDB)),
+        child: component.text(userName,
+            style: theme.publicSansFonts.mediumStyle(
+                fontSize: 16,
+                fontColor:
+                    isSelected ? AppColors.white : AppColors.color0xFF85799E)),
+      ),
+    );
+  }
+
   showOtpBottomSheet() {
     return showModalBottomSheet(
         context: context,
@@ -371,7 +412,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   registrationNumber: _regNumCtrl.text,
                   experience: int.tryParse(_expCtrl.text),
                   age: _ageCtrl.text,
-                  socialUrls: urlList.value.isNotEmpty ? urlList.value : null),
+                  socialUrls: urlList.value.isNotEmpty ? urlList.value : null,
+                  userName: _selectedUserName!),
             ),
           );
         });

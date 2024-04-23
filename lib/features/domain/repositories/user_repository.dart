@@ -5,6 +5,7 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import '../entities/user_entities/my_profile_entity.dart';
 
@@ -26,4 +27,6 @@ abstract class UserRepository {
   Future<Either<Failure, UploadDocModel>> uploadDocument(File file);
 
   Future<Either<Failure, MyProfileEntity>> getProfileDetails();
+
+  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames();
 }

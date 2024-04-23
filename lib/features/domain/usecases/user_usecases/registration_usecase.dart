@@ -25,6 +25,7 @@ class RegistrationParams {
   final String? registrationNumber;
   final int? experience;
   final String? age;
+  final String userName;
 
   final List<String>? socialUrls;
 
@@ -40,5 +41,6 @@ class RegistrationParams {
     required this.socialUrls,
     required this.experience,
     required this.age,
+    required this.userName,
   });
 }

@@ -12,6 +12,7 @@ import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/repositories/user_repo/user_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
@@ -157,6 +158,21 @@ class UserRepositoryImpl extends UserRepository {
         final result = await remoteDataSource.getProfileDetails();
 
         return Right(UserRepoConv.myProfileModelToEntity(result.data));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames() async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.generateUsernames();
+
+        return Right(GenerateUsernameEntity(userNames: result.userNames));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

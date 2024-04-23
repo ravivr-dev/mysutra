@@ -29,3 +29,18 @@ final class RegistrationError extends RegistrationState {
 
   RegistrationError(this.error);
 }
+
+final class GenerateUserNamesLoadingState extends RegistrationState {}
+
+final class GenerateUserNamesSuccessState extends RegistrationState {
+  final GenerateUsernameEntity entity;
+
+  GenerateUserNamesSuccessState({required this.entity});
+}
+
+final class GenerateUserNamesErrorState extends RegistrationState {
+  final String message;
+  GenerateUserNamesErrorState({
+    required this.message,
+  });
+}

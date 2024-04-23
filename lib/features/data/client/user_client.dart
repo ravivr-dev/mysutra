@@ -13,6 +13,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 
+import '../model/user_models/generate_username_model.dart';
 import '../model/user_models/my_profile_model.dart';
 
 part 'user_client.g.dart';
@@ -70,17 +71,19 @@ abstract class UserRestClient {
 
   @POST(EndPoints.userRegistration)
   Future<GeneralModel> registration(
-      @Field("role") String role,
-      @Field("profilePic") String? profilePic,
-      @Field("fullName") String? fullName,
-      @Field("countryCode") String? countryCode,
-      @Field("phoneNumber") int? phoneNumber,
-      @Field("email") String? email,
-      @Field("specializationId") String? specializationId,
-      @Field("registrationNumber") String? registrationNumber,
-      @Field("age") String? age,
-      @Field("totalExperience") int? experience,
-      @Field("socialProfileUrls") List<String>? socialUrls);
+    @Field("role") String role,
+    @Field("profilePic") String? profilePic,
+    @Field("fullName") String? fullName,
+    @Field("countryCode") String? countryCode,
+    @Field("phoneNumber") int? phoneNumber,
+    @Field("email") String? email,
+    @Field("specializationId") String? specializationId,
+    @Field("registrationNumber") String? registrationNumber,
+    @Field("age") String? age,
+    @Field("totalExperience") int? experience,
+    @Field("socialProfileUrls") List<String>? socialUrls,
+    @Field("username") String userName,
+  );
 
   @POST(EndPoints.uploadFile)
   Future<UploadDocModel> uploadDocument(
@@ -89,4 +92,7 @@ abstract class UserRestClient {
 
   @GET(EndPoints.userProfile)
   Future<MyProfileResponseModel> getProfileDetails();
+
+  @GET(EndPoints.generateUserName)
+  Future<GenerateUsernameModel> generateUserNames();
 }

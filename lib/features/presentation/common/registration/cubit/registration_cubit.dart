@@ -6,9 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
+
+import '../../../../domain/usecases/user_usecases/generate_usernames_usecase.dart';
 
 part 'registration_state.dart';
 
@@ -16,8 +19,10 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   final SpecialisationUsecase specialisationUsecase;
   final RegistrationUsecase registrationUsecase;
   final UploadDocumentUsecase uploadDocUsecase;
+  final GenerateUsernamesUseCase generateUsernamesUseCase;
+
   RegistrationCubit(this.specialisationUsecase, this.registrationUsecase,
-      this.uploadDocUsecase)
+      this.uploadDocUsecase, this.generateUsernamesUseCase)
       : super(RegistrationInitial());
 
   getSpecialisations(GeneralPagination params) async {
@@ -42,6 +47,13 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     result.fold((l) => _emitFailure(l), (data) {
       emit(UploadDocument(data, file));
     });
+  }
+
+  void generateUsernames() async {
+    emit(GenerateUserNamesLoadingState());
+    final result = await generateUsernamesUseCase.call();
+    result.fold((l) => emit(GenerateUserNamesErrorState(message: l.message)),
+        (r) => emit(GenerateUserNamesSuccessState(entity: r)));
   }
 
   FutureOr<void> _emitFailure(

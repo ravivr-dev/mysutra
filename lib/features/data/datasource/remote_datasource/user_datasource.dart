@@ -15,6 +15,7 @@ import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
+import '../../model/user_models/generate_username_model.dart';
 import '../../model/user_models/my_profile_model.dart';
 
 abstract class UserDataSource {
@@ -34,6 +35,8 @@ abstract class UserDataSource {
   Future<UploadDocModel> uploadDocument(File file);
 
   Future<MyProfileResponseModel> getProfileDetails();
+
+  Future<GenerateUsernameModel> generateUsernames();
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -142,17 +145,19 @@ class UserDataSourceImpl extends UserDataSource {
     try {
       return await client
           .registration(
-              params.role,
-              params.profilePic,
-              params.fullName,
-              params.countryCode,
-              params.phoneNumber,
-              params.email,
-              params.specializationId,
-              params.registrationNumber,
-              params.age,
-              params.experience,
-              params.socialUrls)
+        params.role,
+        params.profilePic,
+        params.fullName,
+        params.countryCode,
+        params.phoneNumber,
+        params.email,
+        params.specializationId,
+        params.registrationNumber,
+        params.age,
+        params.experience,
+        params.socialUrls,
+        params.userName,
+      )
           .catchError((err) {
         _processDio(err);
       });
@@ -186,6 +191,22 @@ class UserDataSourceImpl extends UserDataSource {
   Future<MyProfileResponseModel> getProfileDetails() async {
     try {
       return await client.getProfileDetails().catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GenerateUsernameModel> generateUsernames() async {
+    try {
+      return await client.generateUserNames().catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

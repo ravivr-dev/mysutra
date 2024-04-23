@@ -179,6 +179,7 @@ class _UserRestClient implements UserRestClient {
     String? age,
     int? experience,
     List<String>? socialUrls,
+    String userName,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -196,6 +197,7 @@ class _UserRestClient implements UserRestClient {
       'age': age,
       'totalExperience': experience,
       'socialProfileUrls': socialUrls,
+      'username': userName,
     };
     _data.removeWhere((k, v) => v == null);
     final _result = await _dio
@@ -277,6 +279,33 @@ class _UserRestClient implements UserRestClient {
               baseUrl,
             ))));
     final value = MyProfileResponseModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GenerateUsernameModel> generateUserNames() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GenerateUsernameModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/user/generate-username',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = GenerateUsernameModel.fromJson(_result.data!);
     return value;
   }
 
