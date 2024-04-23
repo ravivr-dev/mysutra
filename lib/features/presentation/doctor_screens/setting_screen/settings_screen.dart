@@ -6,11 +6,13 @@ import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_dropdown.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import '../../../../ailoitte_component_injector.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../data/model/doctor_models/time_slot_model.dart';
+import '../../../domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -44,6 +46,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   TimeOfDay? _session1EndTime;
   TimeOfDay? _session2StartTime;
   TimeOfDay? _session2EndTime;
+  final SingleValueDropDownController _session1StartController =
+      SingleValueDropDownController();
   final SingleValueDropDownController _session1EndController =
       SingleValueDropDownController();
 
@@ -61,6 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void dispose() {
+    _session1StartController.dispose();
     _session1EndController.dispose();
     _session2StartController.dispose();
     _session2EndController.dispose();
@@ -86,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-        child: BlocListener<SettingCubit, SettingState>(
+        child: BlocConsumer<SettingCubit, SettingState>(
           listener: (context, state) {
             if (state is UpdateTimeSlotSuccessState) {
               _showToast(message: 'Session Updated Successfully');
@@ -98,198 +103,250 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _showToast(message: state.message);
             } else if (state is UpdateAboutOrFeesErrorState) {
               _showToast(message: state.message);
+            } else if (state is GetTimeSlotsSuccessState) {
+              if (state.list.isNotEmpty) {
+                _initSelectedDuration(state.list[0].slotType ?? '30_MINS');
+                _initSelectedDays(state.list);
+                _initTimingController(state.list);
+              }
             }
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildScheduleRow(),
-              component.spacer(height: 21),
-              _buildHeader(
-                  text: context.stringForKey(StringKeys.sessionDuration)),
-              component.spacer(height: 8),
+          builder: (BuildContext context, SettingState state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildScheduleRow(),
+                component.spacer(height: 21),
+                _buildHeader(
+                    text: context.stringForKey(StringKeys.sessionDuration)),
+                component.spacer(height: 8),
 
-              ///we need to send time like this 30_MINS to server
-              _buildDropDown(
-                hintText: _selectedDuration,
-                borderRadius: 12,
-                onChanged: (model) {
-                  _selectedDuration = model!.value.split(' ')[0];
-                  _updateTimeOptions();
-                  _reInitSessionsValue();
-                  setState(() {});
-                },
-                items: _durationOptions,
-              ),
-              component.spacer(height: 20),
-              _buildHeader(text: context.stringForKey(StringKeys.selectDays)),
-              component.spacer(height: 8),
-              _buildDaysWidget(),
-              component.spacer(height: 20),
-              _buildHeader(
-                  text: context.stringForKey(StringKeys.session1Timing)),
-              component.spacer(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildDropDown(
-                      items: _getTimeList(),
+                ///we need to send time like this 30_MINS to server
+                _buildDropDown(
+                  hintText: _selectedDuration,
+                  borderRadius: 12,
+                  onChanged: (model) {
+                    _selectedDuration = model!.value.split(' ')[0];
+                    _updateTimeOptions();
+                    _reInitSessionsValue();
+                    setState(() {});
+                  },
+                  items: _durationOptions,
+                ),
+                component.spacer(height: 20),
+                _buildHeader(text: context.stringForKey(StringKeys.selectDays)),
+                component.spacer(height: 8),
+                _buildDaysWidget(),
+                component.spacer(height: 20),
+                _buildHeader(
+                    text: context.stringForKey(StringKeys.session1Timing)),
+                component.spacer(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildDropDown(
+                        controller: _session1StartController,
+                        items: _getTimeList(),
+                        onChanged: (model) {
+                          setState(() {
+                            _session1StartTime =
+                                _getTimeOfDayFromString(model!.value);
+                          });
+                        },
+                      ),
+                    ),
+                    component.spacer(width: 8),
+                    Expanded(
+                        child: _buildDropDown(
+                      controller: _session1EndController,
+                      items: _getTimeList(moreThan: _session1StartTime),
                       onChanged: (model) {
+                        if (_session1StartTime == null) {
+                          setState(() {
+                            _session1EndController.dropDownValue = null;
+                          });
+
+                          _showToast(
+                              message: 'Please Selection Session1Start Time');
+                          return;
+                        }
                         setState(() {
-                          _session1StartTime =
+                          _session1EndTime =
                               _getTimeOfDayFromString(model!.value);
                         });
                       },
+                    )),
+                  ],
+                ),
+                component.spacer(height: 20),
+                _buildHeader(
+                    text: context.stringForKey(StringKeys.session2Timing)),
+                component.spacer(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                        child: _buildDropDown(
+                      controller: _session2StartController,
+                      items: _getTimeList(moreThan: _session1EndTime),
+                      onChanged: (model) {
+                        if (_session1EndTime == null) {
+                          setState(() {
+                            _session2StartController.dropDownValue = null;
+                          });
+
+                          _showToast(message: 'Please Select Session 1 Timing');
+                          return;
+                        }
+                        setState(() {
+                          _session2StartTime =
+                              _getTimeOfDayFromString(model!.value);
+                        });
+                      },
+                    )),
+                    component.spacer(width: 8),
+                    Expanded(
+                        child: _buildDropDown(
+                      controller: _session2EndController,
+                      items: _getTimeList(moreThan: _session2StartTime),
+                      onChanged: (model) {
+                        if (_session2StartTime == null) {
+                          setState(() {
+                            _session2EndController.dropDownValue = null;
+                          });
+
+                          _showToast(
+                              message: 'Please Select Session2 Start Timing');
+                          return;
+                        }
+                        _session2EndTime =
+                            _getTimeOfDayFromString(model!.value);
+                      },
+                    )),
+                  ],
+                ),
+                component.spacer(height: 20),
+                CustomButton(
+                  text: 'Save Changes',
+                  onPressed: () {
+                    if (_selectedDays.isEmpty) {
+                      _showToast(message: 'Please select Days');
+                      return;
+                    } else if (_session1StartTime == null ||
+                        _session1EndTime == null ||
+                        _session2StartTime == null ||
+                        _session2EndTime == null) {
+                      _showToast(message: 'Please fill timings');
+                      return;
+                    }
+                    context.read<SettingCubit>().updateTimeSlot(DoctorTimeSlot(
+                        timeSlots: _selectedDays
+                            .map((e) => TimeSlot(day: e, slots: [
+                                  Slots(
+                                      startTime:
+                                          _getMinFromTime(_session1StartTime!),
+                                      endTime:
+                                          _getMinFromTime(_session1EndTime!)),
+                                  Slots(
+                                      startTime:
+                                          _getMinFromTime(_session2StartTime!),
+                                      endTime:
+                                          _getMinFromTime(_session2EndTime!)),
+                                ]))
+                            .toList(),
+                        slotType: _getServerSlot));
+                  },
+                  fontSize: 14,
+                  height: 50,
+                ),
+                component.spacer(height: 35),
+                const Divider(color: AppColors.color0xFFDADCE0),
+                component.spacer(height: 35),
+                Row(
+                  children: [
+                    Container(
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: AppColors.color0xFF8338EC, width: 2)),
                     ),
-                  ),
-                  component.spacer(width: 8),
-                  Expanded(
-                      child: _buildDropDown(
-                    controller: _session1EndController,
-                    items: _getTimeList(moreThan: _session1StartTime),
-                    onChanged: (model) {
-                      if (_session1StartTime == null) {
-                        setState(() {
-                          _session1EndController.dropDownValue = null;
-                        });
-
-                        _showToast(
-                            message: 'Please Selection Session1Start Time');
-                        return;
-                      }
-                      setState(() {
-                        _session1EndTime =
-                            _getTimeOfDayFromString(model!.value);
-                      });
-                    },
-                  )),
-                ],
-              ),
-              component.spacer(height: 20),
-              _buildHeader(
-                  text: context.stringForKey(StringKeys.session2Timing)),
-              component.spacer(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                      child: _buildDropDown(
-                    controller: _session2StartController,
-                    items: _getTimeList(moreThan: _session1EndTime),
-                    onChanged: (model) {
-                      if (_session1EndTime == null) {
-                        setState(() {
-                          _session2StartController.dropDownValue = null;
-                        });
-
-                        _showToast(message: 'Please Select Session 1 Timing');
-                        return;
-                      }
-                      setState(() {
-                        _session2StartTime =
-                            _getTimeOfDayFromString(model!.value);
-                      });
-                    },
-                  )),
-                  component.spacer(width: 8),
-                  Expanded(
-                      child: _buildDropDown(
-                    controller: _session2EndController,
-                    items: _getTimeList(moreThan: _session2StartTime),
-                    onChanged: (model) {
-                      if (_session2StartTime == null) {
-                        setState(() {
-                          _session2EndController.dropDownValue = null;
-                        });
-
-                        _showToast(
-                            message: 'Please Select Session2 Start Timing');
-                        return;
-                      }
-                      _session2EndTime = _getTimeOfDayFromString(model!.value);
-                    },
-                  )),
-                ],
-              ),
-              component.spacer(height: 20),
-              CustomButton(
-                text: 'Save Changes',
-                onPressed: () {
-                  if (_selectedDays.isEmpty) {
-                    _showToast(message: 'Please select Days');
-                    return;
-                  } else if (_session1StartTime == null ||
-                      _session1EndTime == null ||
-                      _session2StartTime == null ||
-                      _session2EndTime == null) {
-                    _showToast(message: 'Please fill timings');
-                    return;
-                  }
-                  context.read<SettingCubit>().updateTimeSlot(DoctorTimeSlot(
-                      timeSlots: _selectedDays
-                          .map((e) => TimeSlot(day: e, slots: [
-                                Slots(
-                                    startTime:
-                                        _getMinFromTime(_session1StartTime!),
-                                    endTime:
-                                        _getMinFromTime(_session1EndTime!)),
-                                Slots(
-                                    startTime:
-                                        _getMinFromTime(_session2StartTime!),
-                                    endTime:
-                                        _getMinFromTime(_session2EndTime!)),
-                              ]))
-                          .toList(),
-                      slotType: _getServerSlot));
-                },
-                fontSize: 14,
-                height: 50,
-              ),
-              component.spacer(height: 35),
-              const Divider(color: AppColors.color0xFFDADCE0),
-              component.spacer(height: 35),
-              Row(
-                children: [
-                  Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: AppColors.color0xFF8338EC, width: 2)),
-                  ),
-                  component.spacer(width: 4),
-                  component.text('Session fees',
-                      style: theme.publicSansFonts.semiBoldStyle(
-                          fontSize: 16, fontColor: AppColors.black21))
-                ],
-              ),
-              component.spacer(height: 20),
-              _buildHeader(text: context.stringForKey(StringKeys.sessionFees)),
-              component.spacer(height: 8),
-              _buildTextField(),
-              component.spacer(height: 18),
-              CustomButton(
-                onPressed: () {
-                  final fees = int.tryParse(_feesController.text);
-                  if (_feesController.text.isEmpty) {
-                    _showToast(message: 'Please add fees');
-                    return;
-                  } else if (fees == null) {
-                    _showToast(message: 'Please add Valid Fees');
-                    return;
-                  }
-                  _updateFees(fees);
-                },
-                text: context.stringForKey(StringKeys.saveChanges),
-                buttonColor: AppColors.color0xFF8338EC,
-                fontSize: 14,
-                height: 50,
-              )
-            ],
-          ),
+                    component.spacer(width: 4),
+                    component.text('Session fees',
+                        style: theme.publicSansFonts.semiBoldStyle(
+                            fontSize: 16, fontColor: AppColors.black21))
+                  ],
+                ),
+                component.spacer(height: 20),
+                _buildHeader(
+                    text: context.stringForKey(StringKeys.sessionFees)),
+                component.spacer(height: 8),
+                _buildTextField(),
+                component.spacer(height: 18),
+                CustomButton(
+                  onPressed: () {
+                    final fees = int.tryParse(_feesController.text);
+                    if (_feesController.text.isEmpty) {
+                      _showToast(message: 'Please add fees');
+                      return;
+                    } else if (fees == null) {
+                      _showToast(message: 'Please add Valid Fees');
+                      return;
+                    }
+                    _updateFees(fees);
+                  },
+                  text: context.stringForKey(StringKeys.saveChanges),
+                  buttonColor: AppColors.color0xFF8338EC,
+                  fontSize: 14,
+                  height: 50,
+                )
+              ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  void _initTimingController(List<GetTimeSlotsResponseDataEntity> list) {
+    final session1StartValue = Utils.getTimeFromMinutes(list[0].startTime ?? 0);
+    final session1EndValue = Utils.getTimeFromMinutes(list[0].endTime ?? 0);
+    _initSession1Timings(session1StartValue, session1EndValue);
+
+    if (list.length > 1) {
+      final session2StartValue =
+          Utils.getTimeFromMinutes(list[1].startTime ?? 0);
+      final session2EndValue = Utils.getTimeFromMinutes(list[1].endTime ?? 0);
+      _session2StartController.dropDownValue = DropDownValueModel(
+          name: session2StartValue, value: session2StartValue);
+      _session2EndController.dropDownValue =
+          DropDownValueModel(name: session2EndValue, value: session2EndValue);
+      _session2StartTime = _getTimeOfDayFromString(session2StartValue);
+      _session2EndTime = _getTimeOfDayFromString(session2EndValue);
+    }
+  }
+
+  void _initSession1Timings(
+      String session1StartValue, String session1EndValue) {
+    _session1StartController.dropDownValue =
+        DropDownValueModel(name: session1StartValue, value: session1StartValue);
+    _session1EndController.dropDownValue =
+        DropDownValueModel(name: session1EndValue, value: session1EndValue);
+    _session1StartTime = _getTimeOfDayFromString(session1StartValue);
+    _session1EndTime = _getTimeOfDayFromString(session1EndValue);
+  }
+
+  void _initSelectedDuration(String timeSlot) {
+    _selectedDuration = _convertServerTimeSlotToLocal(timeSlot);
+  }
+
+  void _initSelectedDays(List<GetTimeSlotsResponseDataEntity> list) {
+    _selectedDays.clear();
+    for (var element in list) {
+      if (!_selectedDays.contains(element.day)) {
+        _selectedDays.add(element.day ?? '');
+      }
+    }
   }
 
   void _updateFees(int fees) {
@@ -301,6 +358,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _session1EndTime = null;
     _session2StartTime = null;
     _session2EndTime = null;
+    _session1StartController.dropDownValue = null;
     _session1EndController.dropDownValue = null;
     _session2StartController.dropDownValue = null;
     _session2EndController.dropDownValue = null;
@@ -351,6 +409,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String get _getServerSlot {
     return '${_selectedDuration}_MINS';
+  }
+
+  /// This timeSlot (parameter) would be like this 30_MINS and we want to make it like 30
+  String _convertServerTimeSlotToLocal(String timeSlot) {
+    return timeSlot.split('_')[0];
   }
 
   List<String> _getTimeList({TimeOfDay? moreThan}) {

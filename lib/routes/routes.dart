@@ -87,7 +87,7 @@ class Routes {
       case AppRoutes.settingRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<SettingCubit>(),
+            create: (context) => sl<SettingCubit>()..getTimeSlots(),
             child: const SettingsScreen(),
           ),
         );

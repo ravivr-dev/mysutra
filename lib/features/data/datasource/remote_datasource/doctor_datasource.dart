@@ -6,12 +6,16 @@ import 'package:my_sutra/features/data/datasource/local_datasource/local_datasou
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/features/data/model/patient_models/get_patient_response_model.dart';
 
+import '../../model/doctor_models/get_time_slots_response_model.dart';
+
 abstract class DoctorDataSource {
   Future updateTimeSlots(Map<String, dynamic> map);
 
   Future updateAboutOrFees(Map<String, dynamic> map);
 
   Future<GetPatientResponseModel> getPatients(Map<String, dynamic> map);
+
+  Future<GetTimeSlotsResponseModel> getTimeSlots(Map<String, dynamic> map);
 }
 
 class DoctorDataSourceImpl extends DoctorDataSource {
@@ -67,6 +71,23 @@ class DoctorDataSourceImpl extends DoctorDataSource {
   Future<GetPatientResponseModel> getPatients(Map<String, dynamic> map) async {
     try {
       return await client.getPatients(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GetTimeSlotsResponseModel> getTimeSlots(
+      Map<String, dynamic> map) async {
+    try {
+      return await client.getTimeSlots(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

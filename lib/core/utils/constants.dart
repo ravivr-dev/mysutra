@@ -53,6 +53,9 @@ class Constants {
   static const String fees = 'fees';
   static const String about = 'about';
 
+  //Doctor Constants
+  static const String userId = 'userId';
+
 //
 }
 

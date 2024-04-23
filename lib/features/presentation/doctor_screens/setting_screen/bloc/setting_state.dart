@@ -23,3 +23,17 @@ final class UpdateAboutOrFeesErrorState extends SettingState {
   final String message;
   UpdateAboutOrFeesErrorState({required this.message});
 }
+
+final class GetTimeSlotsLoadingState extends SettingState {}
+
+final class GetTimeSlotsSuccessState extends SettingState {
+  List<GetTimeSlotsResponseDataEntity> list;
+  GetTimeSlotsSuccessState({
+    required this.list,
+  });
+}
+
+final class GetTimeSlotsErrorState extends SettingState {
+  final String message;
+  GetTimeSlotsErrorState({required this.message});
+}

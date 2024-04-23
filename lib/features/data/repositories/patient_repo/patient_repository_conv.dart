@@ -1,6 +1,8 @@
+import 'package:my_sutra/features/data/model/doctor_models/get_time_slots_response_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/patient_models/follow_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
 
@@ -76,6 +78,21 @@ class PatientRepoConv {
             phoneNumber: e.phoneNumber,
             profilePic: e.profilePic,
             timeInMinutes: e.timeInMinutes))
+        .toList();
+  }
+
+  static List<GetTimeSlotsResponseDataEntity>
+      getTimeSlotsResponseModelListToEntity(
+          List<GetTimeSlotsResponseData> model) {
+    return model
+        .map((e) => GetTimeSlotsResponseDataEntity(
+              id: e.id,
+              userId: e.userId,
+              day: e.day,
+              slotType: e.slotType,
+              startTime: e.startTime,
+              endTime: e.endTime,
+            ))
         .toList();
   }
 }
