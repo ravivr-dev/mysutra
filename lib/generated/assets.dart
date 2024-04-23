@@ -18,6 +18,7 @@ class Assets {
   static const String iconsArrowForward = 'assets/icons/arrow_forward.svg';
   static const String iconsCalendar = 'assets/icons/calendar.svg';
   static const String iconsCall = 'assets/icons/call.svg';
+  static const String iconsCallReceivedIcon = 'assets/icons/call_received_icon.svg';
   static const String iconsChat = 'assets/icons/chat.svg';
   static const String iconsCheckup = 'assets/icons/checkup.svg';
   static const String iconsClock = 'assets/icons/clock.svg';
@@ -60,6 +61,7 @@ class Assets {
   static const String iconsUserCircle = 'assets/icons/user_circle.svg';
   static const String iconsVerify = 'assets/icons/verify.svg';
   static const String iconsVideo = 'assets/icons/video.svg';
+  static const String iconsVideoCallIcon = 'assets/icons/video_call_icon.svg';
   static const String iconsVirus = 'assets/icons/virus.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String imagesLogout = 'assets/images/logout.svg';

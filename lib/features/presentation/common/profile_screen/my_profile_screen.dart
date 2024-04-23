@@ -85,8 +85,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           //todo make it dynamic (implement pagination)
                           context
                               .read<ProfileCubit>()
-                              .getPatients(pagination: 1, limit: 10);
-                          return;
+                              .getPatients(pagination: 1, limit: 25);
                         }
                       },
                       icons: Assets.iconsUserCircle),
@@ -114,7 +113,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       icons: Assets.iconsClock,
                       onTap: () {
                         AiloitteNavigation.intent(
-                            context, AppRoutes.pastAppointment);
+                            context, AppRoutes.patientPastAppointment);
                       }),
                   component.spacer(height: 12),
                 ],
@@ -281,10 +280,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   void _goToMyPatientScreen(List<PatientEntity> patients) {
-    // AiloitteNavigation.intentWithData(context, nameRouted, patients);
+    AiloitteNavigation.intentWithData(context, AppRoutes.myPatients, patients);
   }
 
   void _getProfileDetails() {
     context.read<ProfileCubit>().getProfileDetails();
   }
+}
+
+class MyPatientsArgs {
+  final List<PatientEntity> patients;
+
+  MyPatientsArgs({required this.patients});
 }

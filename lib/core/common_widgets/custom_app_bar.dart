@@ -49,7 +49,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(
         title ?? "",
-        style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
+        // style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
       ),
       actions: [
         if (showNotification!)

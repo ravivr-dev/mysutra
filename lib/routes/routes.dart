@@ -7,10 +7,14 @@ import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.da
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/select_account.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_patients_screens/my_patients_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_patients_screens/doctor_past_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
@@ -21,7 +25,7 @@ import 'package:my_sutra/features/presentation/patient/search/doctor_result_scre
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search_doctor_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/booking_successful_screen.dart';
-import 'package:my_sutra/features/presentation/patient/widgets/past_appointment_screen.dart';
+import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -105,14 +109,26 @@ class Routes {
         final args = settings?.arguments as DoctorEntity;
         return MaterialPageRoute(
             builder: (_) => DoctorResultScreen(doctorEntity: args));
+
       case AppRoutes.bookingSuccessful:
         return MaterialPageRoute(
             builder: (_) => const BookingSuccessfulScreen());
-      case AppRoutes.pastAppointment:
+
+      case AppRoutes.patientPastAppointment:
         return MaterialPageRoute(
-            builder: (_) => const PastAppointmentsScreen());
+            builder: (_) => const PatientPastAppointmentsScreen());
+
       case AppRoutes.myFollowing:
         return MaterialPageRoute(builder: (_) => const MyFollowingScreen());
+
+      case AppRoutes.myPatients:
+        final args = settings?.arguments as MyPatientsArgs;
+        return MaterialPageRoute(
+            builder: (_) => MyPatientsScreen(myPatientsArgs: args));
+
+      case AppRoutes.doctorPastAppointment:
+        return MaterialPageRoute(
+            builder: (_) => const DoctorPastAppointmentScreen());
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
