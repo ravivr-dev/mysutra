@@ -2,6 +2,8 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:ailoitte_components/src/custom_widgets/image/core/type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/generated/assets.dart';
 
 class AilCustomWidgets extends AiloitteTheme {
   PreferredSizeWidget appBar({
@@ -55,7 +57,7 @@ class AilCustomWidgets extends AiloitteTheme {
       borderRadius: borderRadius,
       height: height,
       onTap: onTap,
-      padding: padding,
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       width: width,
       enabledColor: enabledColor,
       disabledColor: disabledColor,
@@ -247,7 +249,8 @@ class AilCustomWidgets extends AiloitteTheme {
       height: height,
       width: width,
       boxFit: fit,
-      errorWidget: errorWidget,
+      errorWidget:
+          errorWidget ?? component.assetImage(path: Assets.imagesDefaultAvatar),
       loaderWidget: loaderWidget,
       imageRadius: imageRadius ?? 48,
     );

@@ -54,6 +54,7 @@ class StringKeys {
   static const String doctors = 'doctors';
   static const String influencers = 'influencers';
   static const String myFollowing = 'my_following';
+  static const String myPatients = 'my_patients';
   static const String rateTheAppointment = 'rate_the_appointment';
   static const String downloadAttachedPrescription =
       'download_attached_prescription';

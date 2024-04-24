@@ -15,9 +15,12 @@ class AppRoutes {
   static const String doctorDetail = '/patient/search/doctor_result_screen';
   static const String bookingSuccessful =
       '/patient/widgets/booking_successful_screen';
-  static const String pastAppointment =
-      '/patient/widgets/past_appointment_screen';
-  static const String myFollowing = '/common/home/widgets/my_following_screen';
+  static const String patientPastAppointment =
+      '/patient/widgets/patient_past_appointment_screen';
+  static const String patientMyFollowing = '/common/home/widgets/patient_my_following_screen';
+  static const String doctorMyFollowing = '/doctor_screens/my_following/doctor_my_following_screen';
+  static const String myPatients = '/doctor_screens/my_patients/my_patients_screen';
+  static const String doctorPastAppointment = '/doctor_screens/my_patients/doctor_past_appointment_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

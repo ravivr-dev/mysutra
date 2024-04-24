@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
 import '../../../../domain/entities/patient_entities/patient_entity.dart';
 import '../../../../domain/entities/user_entities/my_profile_entity.dart';
 import '../../../../domain/usecases/doctor_usecases/get_patient_usecase.dart';
@@ -10,8 +12,10 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final GetProfileDetailsUseCase getProfileDetailsUseCase;
   final GetPatientUseCaseUseCase getPatientUseCaseUseCase;
+  final GetDoctorFollowingUseCase getDoctorFollowingUseCase;
 
   ProfileCubit({
+    required this.getDoctorFollowingUseCase,
     required this.getProfileDetailsUseCase,
     required this.getPatientUseCaseUseCase,
   }) : super(ProfileInitial());
@@ -21,6 +25,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     final result = await getProfileDetailsUseCase.call();
     result.fold((l) => emit(GetProfileDetailsErrorState(message: l.message)),
         (r) => emit(GetProfileDetailsSuccessState(entity: r)));
+  }
+
+  void getDoctorFollowing({required int pagination, required int limit}) async {
+    emit(GetDoctorFollowingLoadingState());
+    final result = await getDoctorFollowingUseCase
+        .call(GetFollowingParams(pagination: pagination, limit: limit));
+    result.fold((l) => emit(GetDoctorFollowingErrorState(message: l.message)),
+        (r) => emit(GetDoctorFollowingLoadedState(followers: r)));
   }
 
   void getPatients({

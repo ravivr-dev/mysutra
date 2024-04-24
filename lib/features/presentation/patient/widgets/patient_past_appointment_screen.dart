@@ -7,8 +7,8 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/patient/bottom_sheets/appointment_bottom_sheet.dart';
 import 'package:my_sutra/generated/assets.dart';
 
-class PastAppointmentsScreen extends StatelessWidget {
-  const PastAppointmentsScreen({super.key});
+class PatientPastAppointmentsScreen extends StatelessWidget {
+  const PatientPastAppointmentsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

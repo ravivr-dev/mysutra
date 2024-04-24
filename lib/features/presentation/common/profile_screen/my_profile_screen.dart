@@ -6,6 +6,7 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
@@ -43,6 +44,15 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         centerTitle: true,
         backgroundColor: AppColors.transparent,
         title: component.text(context.stringForKey(StringKeys.myProfile)),
+        actions: [
+          IconButton(
+            onPressed: () {logoutDialog();},
+            icon: const Icon(
+              Icons.logout_outlined,
+              color: AppColors.black1C,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
@@ -55,6 +65,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             } else if (state is GetProfileDetailsSuccessState) {
               my = state.entity;
             }
+
+            if (state is GetDoctorFollowingLoadedState) {
+              _goToDoctorFollowingScreen(state.followers);
+            } else if (state is GetDoctorFollowingErrorState) {
+              _showToast(message: state.message);
+            }
           },
           builder: (BuildContext context, ProfileState state) {
             return Column(
@@ -64,7 +80,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   url: my?.profilePic ?? '',
                   height: 80,
                   width: 80,
-                  errorWidget: const Icon(Icons.person),
                   fit: BoxFit.fill,
                 ),
                 component.spacer(height: 16),
@@ -85,8 +100,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           //todo make it dynamic (implement pagination)
                           context
                               .read<ProfileCubit>()
-                              .getPatients(pagination: 1, limit: 10);
-                          return;
+                              .getPatients(pagination: 1, limit: 25);
                         }
                       },
                       icons: Assets.iconsUserCircle),
@@ -95,7 +109,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     value: 'My Following',
                     icons: Assets.iconsUserAdd,
                     onTap: () {
-                      AiloitteNavigation.intent(context, AppRoutes.myFollowing);
+                      if (userRole == UserRole.doctor) {
+                        context
+                            .read<ProfileCubit>()
+                            .getDoctorFollowing(pagination: 1, limit: 35);
+                        // AiloitteNavigation.intent(
+                        //     context, AppRoutes.doctorMyFollowing);
+                      } else {
+                        AiloitteNavigation.intent(
+                            context, AppRoutes.patientMyFollowing);
+                      }
                     }),
                 component.spacer(height: 12),
                 if (userRole == UserRole.doctor) ...[
@@ -114,7 +137,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       icons: Assets.iconsClock,
                       onTap: () {
                         AiloitteNavigation.intent(
-                            context, AppRoutes.pastAppointment);
+                            context, AppRoutes.patientPastAppointment);
                       }),
                   component.spacer(height: 12),
                 ],
@@ -281,10 +304,80 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   void _goToMyPatientScreen(List<PatientEntity> patients) {
-    // AiloitteNavigation.intentWithData(context, nameRouted, patients);
+    AiloitteNavigation.intentWithData(context, AppRoutes.myPatients, patients);
   }
 
   void _getProfileDetails() {
     context.read<ProfileCubit>().getProfileDetails();
   }
+
+  void _goToDoctorFollowingScreen(List<FollowerEntity> followers) {
+    AiloitteNavigation.intentWithData(
+        context, AppRoutes.doctorMyFollowing, followers);
+  }
+
+  logoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+          ),
+          iconPadding: const EdgeInsets.only(top: 40, bottom: 25),
+          icon: SizedBox(
+            height: 40,
+            width: 40,
+            child: component.assetImage(
+              path: Assets.imagesLogout,
+              fit: BoxFit.contain,
+            ),
+          ),
+          title: component.text(
+            "Logout",
+            style: theme.publicSansFonts
+                .semiBoldStyle(fontSize: 30, fontColor: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
+          content: component.text(
+            "Are you sure you want to logout ?",
+            style: theme.publicSansFonts
+                .regularStyle(fontSize: 16, fontColor: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
+          actionsPadding:
+          const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          actions: [
+            Column(
+              children: [
+                component.containedButton(
+                  enabledColor: AppColors.primaryColor,
+                  title: "Logout",
+                  onTap: () {
+                    AiloitteNavigation.intentWithClearAllRoutes(
+                        context, AppRoutes.loginRoute);
+                  },
+                ),
+                const SizedBox(height: 15),
+                component.outlinedButton(
+                  title: "Cancel",
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class MyPatientsArgs {
+  final List<PatientEntity> patients;
+
+  MyPatientsArgs({required this.patients});
 }

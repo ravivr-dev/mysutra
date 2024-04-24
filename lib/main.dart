@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
               scrolledUnderElevation: 0.0,
               centerTitle: true,
               titleTextStyle: theme.publicSansFonts.mediumStyle(fontSize: 20),
-              backgroundColor: AppColors.transparent),
+              backgroundColor: AppColors.backgroundColor),
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
           useMaterial3: true,
         ),
