@@ -10,6 +10,10 @@ abstract class LocalDataSource {
 
   setUserRole(String role);
 
+  void setIsDoctorVerified(bool isVerified);
+
+  bool get getIsDoctorVerified;
+
   logout();
 }
 
@@ -41,5 +45,13 @@ class LocalDataSourceImpl extends LocalDataSource {
   @override
   setUserRole(String role) {
     return mySharedPref.setUserRole(role);
+  }
+
+  @override
+  bool get getIsDoctorVerified => mySharedPref.getIsDoctorVerified ?? true;
+
+  @override
+  void setIsDoctorVerified(bool isVerified) {
+    return mySharedPref.setIsDoctorVerified(isVerified);
   }
 }

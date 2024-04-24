@@ -7,6 +7,7 @@ import '../../../core/utils/constants.dart';
 import '../datasource/local_datasource/local_datasource.dart';
 import '../model/doctor_models/get_time_slots_response_model.dart';
 import '../model/patient_models/get_patient_response_model.dart';
+import '../model/user_models/home_response_model.dart';
 
 part 'doctor_client.g.dart';
 
@@ -50,4 +51,7 @@ abstract class DoctorClient {
   @GET(EndPoints.timeSlots)
   Future<GetTimeSlotsResponseModel> getTimeSlots(
       @Queries() Map<String, dynamic> map);
+
+  @GET(EndPoints.home)
+  Future<HomeResponseModel> getUserDetails();
 }

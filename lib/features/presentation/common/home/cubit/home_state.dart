@@ -24,3 +24,19 @@ final class GetAppointmentsSuccessState extends HomeState {
     required this.appointmentEntities,
   });
 }
+
+final class GetUserDetailsLoadingState extends HomeState {}
+
+final class GetUserDetailsErrorState extends HomeState {
+  final String message;
+  GetUserDetailsErrorState({
+    required this.message,
+  });
+}
+
+final class GetUserDetailsSuccessState extends HomeState {
+  UserEntity entity;
+  GetUserDetailsSuccessState({
+    required this.entity,
+  });
+}

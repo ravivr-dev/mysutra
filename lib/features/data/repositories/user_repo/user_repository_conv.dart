@@ -1,8 +1,10 @@
 import 'package:my_sutra/features/data/model/user_models/my_profile_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 
 import '../../../domain/entities/user_entities/my_profile_entity.dart';
+import '../../model/user_models/home_response_model.dart';
 
 class UserRepoConv {
   static List<SpecializationEntity> convSpecialisationModelToEntity(
@@ -30,7 +32,17 @@ class UserRepoConv {
       totalFollowers: model.totalFollowers,
       countryCode: model.countryCode,
       phoneNumber: model.phoneNumber,
-      email: model.email, about: model.about,
+      email: model.email,
+      about: model.about,
+    );
+  }
+
+  static UserEntity userModelToEntity(UserModel model) {
+    return UserEntity(
+      fullName: model.fullName,
+      username: model.username,
+      profilePic: model.profilePic,
+      isVerified: model.isVerified,
     );
   }
 }

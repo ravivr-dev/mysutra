@@ -12,6 +12,9 @@ import '../../../../injection_container.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
+import '../../doctor_screens/bottom_sheets/verification_pending_bottom_sheet.dart';
+import '../home/cubit/home_cubit.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -42,9 +45,20 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is LoggedIn) {
+          //todo need to refactor this don't use localdatasource directly here
           final role = localDataSource.getUserRole();
           if (role.isNotEmpty) {
             UserHelper.init(role: role);
+            if (UserRole.getUserRole(role) == UserRole.doctor &&
+                !localDataSource.getIsDoctorVerified) {
+              context.showBottomSheet(
+                BlocProvider(
+                  create: (_) => sl<HomeCubit>(),
+                  child: const VerificationPendingBottomSheet(),
+                ),
+              );
+              return;
+            }
             AiloitteNavigation.intentWithClearAllRoutes(
                 context, AppRoutes.homeRoute);
             return;

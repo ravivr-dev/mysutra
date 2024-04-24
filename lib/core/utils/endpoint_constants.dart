@@ -22,6 +22,7 @@ class EndPoints {
   static const String timeSlots = '/doctor/time-slots';
   static const String profile = '/doctor/profile';
   static const String patients = '/doctor/patients';
+  static const String home = '/doctor/home';
 
 // user endpoints (these endpoints are common for all type of user (doctor/patient/influencer))
   static const String userProfile = '/user/profile';

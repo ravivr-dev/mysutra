@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
+import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/verification_pending_bottom_sheet.dart';
+import '../../../../injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -15,9 +18,11 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 
+
 class OtpBottomsheet extends StatefulWidget {
   final LoginParams? loginData;
   final RegistrationParams? regData;
+
   const OtpBottomsheet({
     super.key,
     this.loginData,
@@ -64,8 +69,17 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
 
                 if (state.data.totalUserAccounts == 1 ||
                     widget.loginData != null) {
-                  AiloitteNavigation.intentWithClearAllRoutes(
-                      context, AppRoutes.homeRoute);
+                  if (state.data.data?.isVerified ?? true) {
+                    AiloitteNavigation.intentWithClearAllRoutes(
+                        context, AppRoutes.homeRoute);
+                  } else {
+                    context.showBottomSheet(
+                      BlocProvider(
+                        create: (_) => sl<HomeCubit>(),
+                        child: const VerificationPendingBottomSheet(),
+                      ),
+                    );
+                  }
                 } else {
                   AiloitteNavigation.intentWithClearAllRoutes(
                       context, AppRoutes.selectAccountRoute);

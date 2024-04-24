@@ -59,6 +59,7 @@ class UserRepositoryImpl extends UserRepository {
           localDataSource.setAccessToken(result.data?.token ?? "");
           localDataSource.setUserRole(result.data?.role ?? "");
           UserHelper.init(role: result.data!.role!);
+          localDataSource.setIsDoctorVerified(result.data?.isVerified ?? true);
         }
 
         return Right(result);
