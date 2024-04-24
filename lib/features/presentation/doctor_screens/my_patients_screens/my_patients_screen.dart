@@ -12,9 +12,9 @@ import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class MyPatientsScreen extends StatefulWidget {
-  final MyPatientsArgs myPatientsArgs;
+  final List<PatientEntity> patients;
 
-  const MyPatientsScreen({super.key, required this.myPatientsArgs});
+  const MyPatientsScreen({super.key, required this.patients});
 
   @override
   State<MyPatientsScreen> createState() => _MyPatientsScreenState();
@@ -37,12 +37,12 @@ class _MyPatientsScreenState extends State<MyPatientsScreen> {
                   AiloitteNavigation.intent(
                       context, AppRoutes.doctorPastAppointment);
                 },
-                child: _buildPatientInfoCard(widget.myPatientsArgs.patients[index]));
+                child: _buildPatientInfoCard(widget.patients[index]));
           },
           separatorBuilder: (_, index) {
             return component.spacer(height: 12);
           },
-          itemCount: widget.myPatientsArgs.patients.length),
+          itemCount: widget.patients.length),
     );
   }
 

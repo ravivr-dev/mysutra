@@ -64,7 +64,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   url: my?.profilePic ?? '',
                   height: 80,
                   width: 80,
-                  errorWidget: const Icon(Icons.person),
                   fit: BoxFit.fill,
                 ),
                 component.spacer(height: 16),

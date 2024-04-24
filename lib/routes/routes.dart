@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/widgets/my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/select_account.dart';
-import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
-import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
@@ -122,9 +121,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const MyFollowingScreen());
 
       case AppRoutes.myPatients:
-        final args = settings?.arguments as MyPatientsArgs;
+        final args = settings?.arguments as List<PatientEntity>;
         return MaterialPageRoute(
-            builder: (_) => MyPatientsScreen(myPatientsArgs: args));
+            builder: (_) => MyPatientsScreen(patients: args));
 
       case AppRoutes.doctorPastAppointment:
         return MaterialPageRoute(

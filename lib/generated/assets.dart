@@ -64,6 +64,7 @@ class Assets {
   static const String iconsVideoCallIcon = 'assets/icons/video_call_icon.svg';
   static const String iconsVirus = 'assets/icons/virus.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
+  static const String imagesDefaultAvatar = 'assets/images/default_avatar.svg';
   static const String imagesLogout = 'assets/images/logout.svg';
   static const String imagesSplash = 'assets/images/splash.json';
 
