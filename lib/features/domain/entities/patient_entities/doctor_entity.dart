@@ -11,8 +11,7 @@ class DoctorEntity {
   final int? patients;
   final String? about;
 
-  //todo change its type (and Change from UI also)
-  final dynamic timings;
+  final TimingsEntity timings;
 
   DoctorEntity({
     required this.id,
@@ -34,4 +33,28 @@ class DoctorEntity {
       isFollowing = !isFollowing!;
     }
   }
+}
+
+class TimingsEntity {
+  final TimeSlotsEntity? firstTimeSlot;
+  final TimeSlotsEntity? lastTimeSlot;
+
+  TimingsEntity({
+    required this.firstTimeSlot,
+    required this.lastTimeSlot,
+  });
+}
+
+class TimeSlotsEntity {
+  final String? id;
+  final String? day;
+  final int? startTime;
+  final int? endTime;
+
+  TimeSlotsEntity({
+    required this.id,
+    required this.day,
+    required this.startTime,
+    required this.endTime,
+  });
 }

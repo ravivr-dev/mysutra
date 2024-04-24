@@ -18,6 +18,8 @@ class PatientRepoConv {
     List<DoctorEntity> list = List<DoctorEntity>.empty(growable: true);
 
     for (DoctorDataModel item in data) {
+      final firstTimeSlot = item.timings?.firstTimeSlot;
+      final lastTimeSlot = item.timings?.lastTimeSlot;
       list.add(DoctorEntity(
         id: item.id,
         profilePic: item.profilePic,
@@ -30,7 +32,18 @@ class PatientRepoConv {
         experience: item.experience,
         patients: item.patients,
         about: item.about,
-        timings: item.timings,
+        timings: TimingsEntity(
+          firstTimeSlot: TimeSlotsEntity(
+              id: firstTimeSlot?.id,
+              day: firstTimeSlot?.day,
+              startTime: firstTimeSlot?.startTime,
+              endTime: firstTimeSlot?.endTime),
+          lastTimeSlot: TimeSlotsEntity(
+              id: lastTimeSlot?.id,
+              day: lastTimeSlot?.day,
+              startTime: lastTimeSlot?.startTime,
+              endTime: lastTimeSlot?.endTime),
+        ),
       ));
     }
     return list;
@@ -41,6 +54,9 @@ class PatientRepoConv {
   }
 
   static DoctorEntity doctorModelToEntity(DoctorDataModel model) {
+    final firstTimeSlot = model.timings?.firstTimeSlot;
+    final lastTimeSlot = model.timings?.lastTimeSlot;
+
     return DoctorEntity(
       id: model.id,
       profilePic: model.profilePic,
@@ -53,7 +69,18 @@ class PatientRepoConv {
       experience: model.experience,
       patients: model.patients,
       about: model.about,
-      timings: model.timings,
+      timings: TimingsEntity(
+        firstTimeSlot: TimeSlotsEntity(
+            id: firstTimeSlot?.id,
+            day: firstTimeSlot?.day,
+            startTime: firstTimeSlot?.startTime,
+            endTime: firstTimeSlot?.endTime),
+        lastTimeSlot: TimeSlotsEntity(
+            id: lastTimeSlot?.id,
+            day: lastTimeSlot?.day,
+            startTime: lastTimeSlot?.startTime,
+            endTime: lastTimeSlot?.endTime),
+      ),
     );
   }
 

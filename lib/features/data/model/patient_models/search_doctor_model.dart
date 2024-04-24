@@ -1,3 +1,5 @@
+import 'package:my_sutra/core/utils/constants.dart';
+
 class SearchDoctorModel {
   String? message;
   int? count;
@@ -29,7 +31,7 @@ class DoctorDataModel {
   int? patients;
   int? experience;
   String? about;
-  dynamic timings;
+  Timings? timings;
 
   DoctorDataModel({
     this.id,
@@ -58,6 +60,45 @@ class DoctorDataModel {
     patients = json['patients'];
     experience = json['experience'];
     about = json['about'];
-    timings = json['timings'];
+    timings =
+        json['timings'] != null ? Timings.fromJson(json['timings']) : null;
   }
+}
+
+class Timings {
+  final TimeSlots? firstTimeSlot;
+  final TimeSlots? lastTimeSlot;
+
+  Timings({
+    required this.firstTimeSlot,
+    required this.lastTimeSlot,
+  });
+
+  Timings.fromJson(Map<String, dynamic> json)
+      : firstTimeSlot = json['firstTimeSlot'] != null
+            ? TimeSlots.fromJson(json['firstTimeSlot'])
+            : null,
+        lastTimeSlot = json['lastTimeSlot'] != null
+            ? TimeSlots.fromJson(json['lastTimeSlot'])
+            : null;
+}
+
+class TimeSlots {
+  final String id;
+  final String day;
+  final int startTime;
+  final int endTime;
+
+  TimeSlots({
+    required this.id,
+    required this.day,
+    required this.startTime,
+    required this.endTime,
+  });
+
+  TimeSlots.fromJson(Map<String, dynamic> json)
+      : id = json[Constants.id],
+        day = json[Constants.day],
+        startTime = json[Constants.startTime],
+        endTime = json[Constants.endTime];
 }

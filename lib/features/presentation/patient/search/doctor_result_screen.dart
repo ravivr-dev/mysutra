@@ -2,6 +2,7 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -53,7 +54,7 @@ class DoctorResultScreen extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: component.text(
-                  '${doctorEntity.specialization} | ₹${doctorEntity.fees ?? 'not updated'}',
+                  '${doctorEntity.specialization}   |   ₹${doctorEntity.fees?.toDouble() ?? 'not updated'}',
                   style: theme.publicSansFonts.regularStyle(
                     fontColor: AppColors.color0xFF526371,
                   )),
@@ -108,8 +109,8 @@ class DoctorResultScreen extends StatelessWidget {
                   fontSize: 16,
                 )),
             component.spacer(height: 8),
-            //todo add dynamic time here
-            component.text('',
+            component.text(
+                '${doctorEntity.timings.firstTimeSlot?.day ?? ''}-${doctorEntity.timings.lastTimeSlot?.day} (${Utils.getTimeFromMinutes(doctorEntity.timings.firstTimeSlot?.startTime ?? 0)} - ${Utils.getTimeFromMinutes(doctorEntity.timings.lastTimeSlot?.endTime ?? 0)})',
                 style: theme.publicSansFonts.regularStyle(
                   fontColor: AppColors.black81,
                 )),
