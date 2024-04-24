@@ -116,7 +116,7 @@ class PatientRepositoryImpl extends PatientRepository {
           'date': data.date,
           'time': data.time,
           'patientDetails': {
-            'fullName': data.patientName,
+            'username': data.patientName,
             'age': data.patientAge,
             'gender': data.patientGender,
             'countryCode': '+91',
