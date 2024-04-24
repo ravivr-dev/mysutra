@@ -15,8 +15,10 @@ import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
+import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/schedule_appointment_response_entity.dart';
 import '../../../domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
+import '../../../domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import '../../../domain/usecases/patient_usecases/get_available_slots_usecase.dart';
 import '../../../domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
 import '../../../domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
@@ -150,6 +152,26 @@ class PatientRepositoryImpl extends PatientRepository {
         }
 
         return Right(result);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<AppointmentEntity>>> getAppointments(
+      GetAppointmentsParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getAppointments({
+          'date': data.date,
+          'pagination': data.pagination,
+          'limit': data.limit,
+        });
+
+        return Right(PatientRepoConv.appointmentModelListToEntity(result.data));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

@@ -4,10 +4,12 @@ import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity
 import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
+import '../entities/patient_entities/appointment_entity.dart';
 import '../entities/patient_entities/available_time_slot_entity.dart';
 import '../entities/patient_entities/follow_entity.dart';
 import '../entities/patient_entities/schedule_appointment_response_entity.dart';
 import '../usecases/patient_usecases/confirm_appointment_usecase.dart';
+import '../usecases/patient_usecases/get_appointments_usecase.dart';
 import '../usecases/patient_usecases/get_available_slots_usecase.dart';
 import '../usecases/patient_usecases/get_doctor_details_usecase.dart';
 import '../usecases/patient_usecases/schedule_appointment_usecase.dart';
@@ -29,4 +31,6 @@ abstract class PatientRepository {
 
   Future<Either<Failure, dynamic>> confirmAppointment(
       ConfirmAppointmentParams data);
+
+  Future<Either<Failure, List<AppointmentEntity>>> getAppointments(GetAppointmentsParams data);
 }

@@ -8,6 +8,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor
 import 'package:my_sutra/core/extension/dio_error.dart';
 
 import '../../model/patient_models/available_time_slot.dart';
+import '../../model/patient_models/get_appointment_response_model.dart';
 import '../../model/patient_models/schedule_appointment_response_model.dart';
 
 abstract class PatientDataSource {
@@ -24,6 +25,8 @@ abstract class PatientDataSource {
 
   Future confirmAppointment(
       {required Map<String, dynamic> map, required String token});
+
+  Future<GetAppointmentResponseModel> getAppointments(Map<String, dynamic> map);
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -136,6 +139,22 @@ class PatientDataSourceImpl extends PatientDataSource {
       {required Map<String, dynamic> map, required String token}) async {
     try {
       return await client.confirmAppointment(map, token).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GetAppointmentResponseModel> getAppointments(Map<String, dynamic> map) async {
+    try {
+      return await client.getAppointments(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

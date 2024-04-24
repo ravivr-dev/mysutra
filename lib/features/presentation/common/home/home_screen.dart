@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
-import 'package:my_sutra/features/presentation/patient/search_doctor_screen.dart';
+import 'package:my_sutra/features/presentation/patient/appointment_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 
@@ -21,7 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedScreen = 0;
 
   final List<Widget> _screens = [
-    const SearchDoctorScreen(),
+    BlocProvider<HomeCubit>(
+      create: (BuildContext context) => sl<HomeCubit>(),
+      child: const AppointmentScreen(),
+    ),
     const PostScreen(),
     const SizedBox.shrink(),
     Container(),

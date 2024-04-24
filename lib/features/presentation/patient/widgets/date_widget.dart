@@ -3,62 +3,52 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 
 class DateWidget extends StatefulWidget {
-  const DateWidget({super.key});
+  final void Function(DateTime selectedDate) onDateChanged;
+
+  const DateWidget({super.key, required this.onDateChanged});
 
   @override
   State<DateWidget> createState() => _DateWidgetState();
 }
 
 class _DateWidgetState extends State<DateWidget> {
-  DateTime date = DateTime.now();
+  DateTime _date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      CircleAvatar(
-        backgroundColor: AppColors.primaryColor,
-        radius: 10,
-        child: InkWell(
-          onTap: () {
-            if (!(date.day == DateTime.now().day &&
-                date.month == DateTime.now().month)) {
-              setState(() {
-                date = date.add(const Duration(days: 1));
-              });
-            }
-          },
-          child: const Padding(
-            padding: EdgeInsets.only(left: 5),
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-              size: 12,
-            ),
+    return Row(
+      children: [
+        _buildArrowButton(icon: Icons.arrow_back_ios, isPrevious: true),
+        SizedBox(
+          width: 65,
+          child: Center(
+            child: Text(DateFormat('d MMM').format(_date)),
           ),
         ),
-      ),
-      SizedBox(
-        width: 65,
-        child: Center(
-          child: Text(DateFormat('d MMM').format(date)),
-        ),
-      ),
-      CircleAvatar(
+        _buildArrowButton(icon: Icons.arrow_forward_ios, isPrevious: false)
+      ],
+    );
+  }
+
+  Widget _buildArrowButton({required IconData icon, required bool isPrevious}) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _date = isPrevious
+              ? _date.subtract(const Duration(days: 1))
+              : _date.add(const Duration(days: 1));
+        });
+        widget.onDateChanged.call(_date);
+      },
+      child: CircleAvatar(
         backgroundColor: AppColors.primaryColor,
         radius: 10,
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              date = date.subtract(const Duration(days: 1));
-            });
-          },
-          child: const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white,
-            size: 12,
-          ),
+        child: Icon(
+          icon,
+          color: Colors.white,
+          size: 12,
         ),
-      )
-    ]);
+      ),
+    );
   }
 }

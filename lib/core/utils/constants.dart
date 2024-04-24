@@ -40,6 +40,7 @@ class Constants {
   static const String message = 'message';
   static const String count = 'count';
   static const String data = 'data';
+  static const String doctorId = 'doctorId';
 
   //User Constants
   static const String user = 'user';

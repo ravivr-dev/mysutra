@@ -8,6 +8,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 
 import '../model/patient_models/available_time_slot.dart';
+import '../model/patient_models/get_appointment_response_model.dart';
 import '../model/patient_models/schedule_appointment_response_model.dart';
 
 part 'patient_client.g.dart';
@@ -69,4 +70,8 @@ abstract class PatientRestClient {
   @POST(EndPoints.confirmAppointment)
   Future<dynamic> confirmAppointment(@Body() Map<String, dynamic> data,
       @Header(Constants.authorization) token);
+
+  @GET(EndPoints.appointments)
+  Future<GetAppointmentResponseModel> getAppointments(
+      @Queries() Map<String, dynamic> map);
 }

@@ -6,8 +6,10 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
 
+import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
 import '../../../domain/entities/patient_entities/patient_entity.dart';
+import '../../model/patient_models/get_appointment_response_model.dart';
 import '../../model/patient_models/patient_model.dart';
 
 class PatientRepoConv {
@@ -92,6 +94,25 @@ class PatientRepoConv {
               slotType: e.slotType,
               startTime: e.startTime,
               endTime: e.endTime,
+            ))
+        .toList();
+  }
+
+  static List<AppointmentEntity> appointmentModelListToEntity(
+      List<AppointmentModel> list) {
+    return list
+        .map((e) => AppointmentEntity(
+              id: e.id,
+              doctorId: e.doctorId,
+              userId: e.userId,
+              profilePic: e.profilePic,
+              fullName: e.fullName,
+              username: e.username,
+              isVerified: e.isVerified,
+              specialization: e.specialization,
+              date: e.date,
+              time: e.time,
+              timeInMinutes: e.timeInMinutes,
             ))
         .toList();
   }
