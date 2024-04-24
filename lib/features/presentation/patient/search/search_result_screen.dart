@@ -22,10 +22,18 @@ class SearchResultScreen extends StatefulWidget {
 }
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void didChangeDependencies() {
-    context.read<SearchDoctorCubit>().getData(SearchDoctorParams());
+    _callSearchDoctorApi();
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   List<DoctorEntity> doctorsList = [];
@@ -61,9 +69,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             return Column(
               children: [
                 SearchWithFilter(
+                  controller: _searchController,
                   onTapFilter: () {},
                   hintText: 'Search for doctors',
                   backgroundColor: AppColors.white,
+                  onChange: (value) {
+                    _callSearchDoctorApi(search: value);
+                  },
                 ),
                 component.spacer(height: 30),
                 ListView.separated(
@@ -200,6 +212,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         ),
       ),
     );
+  }
+
+  void _callSearchDoctorApi({String? search}) {
+    context
+        .read<SearchDoctorCubit>()
+        .getData(SearchDoctorParams(search: search));
   }
 
   void _getDoctorDetails(String doctorId) {
