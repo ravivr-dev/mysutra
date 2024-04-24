@@ -61,6 +61,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   String? profilePicKey;
   List<String> _userNames = [];
   String? _selectedUserName;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void didChangeDependencies() {
@@ -101,265 +102,286 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             }
           },
           builder: (context, state) {
-            return ListView(
-              padding: AppDeco.screenPadding,
-              children: [
-                const ScreenTopHandler(),
-                const AppLogoWithTermsConditionWidget(),
-                const SizedBox(height: 60),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "For ${widget.profession}s",
-                      style: theme.publicSansFonts.mediumStyle(
-                          fontSize: 14, fontColor: AppColors.primaryColor),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        AiloitteNavigation.intentWithClearAllRoutes(
-                            context, AppRoutes.chooseAccountTypeRoute);
-                      },
-                      child: Text(
-                        "Switch user",
+            return Form(
+              key: _formKey,
+              child: ListView(
+                padding: AppDeco.screenPadding,
+                children: [
+                  const ScreenTopHandler(),
+                  const AppLogoWithTermsConditionWidget(),
+                  const SizedBox(height: 60),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "For ${widget.profession}s",
                         style: theme.publicSansFonts.mediumStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 14,
-                            fontColor: AppColors.primaryColor),
+                            fontSize: 14, fontColor: AppColors.primaryColor),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          AiloitteNavigation.intentWithClearAllRoutes(
+                              context, AppRoutes.chooseAccountTypeRoute);
+                        },
+                        child: Text(
+                          "Switch user",
+                          style: theme.publicSansFonts.mediumStyle(
+                              decoration: TextDecoration.underline,
+                              fontSize: 14,
+                              fontColor: AppColors.primaryColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "Create an account",
+                    style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
+                  ),
+                  const SizedBox(height: 20),
+                  if (widget.profession != "User")
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          updateProfileImageSheet(
+                            onChange: (image) {
+                              if (image != null) {
+                                context
+                                    .read<RegistrationCubit>()
+                                    .uploadDoc(image);
+                              }
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        child: profilePic == null
+                            ? DottedBorder(
+                                strokeWidth: 2,
+                                color: AppColors.greyD9,
+                                strokeCap: StrokeCap.round,
+                                borderType: BorderType.RRect,
+                                dashPattern: const [15, 10],
+                                radius: const Radius.circular(20),
+                                padding: const EdgeInsets.all(35),
+                                child: Column(
+                                  children: [
+                                    const Icon(
+                                      Icons.person_rounded,
+                                      size: 50,
+                                      color: AppColors.blackAE,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      "Upload Picture",
+                                      style: theme.publicSansFonts
+                                          .semiBoldStyle(
+                                              fontSize: 14,
+                                              fontColor: AppColors.blackAE),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : CircleAvatar(
+                                radius: 70,
+                                backgroundColor: Colors.transparent,
+                                child: ClipPath(
+                                  clipper: const ShapeBorderClipper(
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: Image.file(
+                                    File(profilePic!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
+                  const SizedBox(height: 20),
+                  TextFormFieldWidget(
+                    validator: (value) =>
+                        value.isEmpty ? 'Please Enter Full Name' : null,
+                    title: "Full Name",
+                    controller: _nameCtrl,
+                  ),
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: _userNames.map((e) => _buildUserName(e)).toList(),
+                  ),
+                  TextFormWithCountryCode(
+                    title: context.stringForKey(StringKeys.mobileNumber),
+                    countryCode: _countryCode,
+                    controller: _mobCtrl,
+                  ),
+                  TextFormFieldWidget(
+                    title: "Email",
+                    validator: (value) =>
+                        value.isEmpty ? 'Please Enter Email' : null,
+                    controller: _emailCtrl,
+                    textCapitalization: TextCapitalization.none,
+                  ),
+                  if (widget.profession == "Doctor") ...[
+                    // TextFormFieldWidget(
+                    //   title: "Specialization",
+                    //   controller: _specializationCtrl,
+                    // ),
+                    TextSearchField(
+                      textCapitalization: TextCapitalization.words,
+                      title: "Specialization",
+                      validator: (value) =>
+                          value.isEmpty ? 'Please Select Specialization' : null,
+                      onSuggestionTap: (value) {
+                        selectedSpecification = value.item;
+                      },
+                      suggestions: specialisationList
+                          .map((e) => SearchFieldListItem(e.name,
+                              item: e.id,
+                              child: Text(
+                                e.name.capitalizeFirstLetterOfSentence,
+                                style: theme.publicSansFonts.regularStyle(
+                                    fontSize: 18, fontColor: AppColors.black49),
+                              )))
+                          .toList(),
+                    ),
+                    TextFormFieldWidget(
+                      title: "Professional Registration number",
+                      validator: (value) => value.isEmpty
+                          ? 'Please Enter Registration Number'
+                          : null,
+                      controller: _regNumCtrl,
+                    ),
+                    TextFormFieldWidget(
+                      hintText: "Experience",
+                      title: "Total year of experience",
+                      validator: (value) =>
+                          value.isEmpty ? 'Please Enter Experience' : null,
+                      controller: _expCtrl,
+                      suffixWidget: Padding(
+                        padding: const EdgeInsets.only(top: 10, right: 20),
+                        child: Text(
+                          "Years",
+                          style: theme.publicSansFonts
+                              .regularStyle(fontSize: 16, height: 22),
+                        ),
+                      ),
+                    ),
+                  ] else if (widget.profession == "Influencer") ...[
+                    TextFormFieldWidget(
+                      title: "Age",
+                      controller: _ageCtrl,
+                      validator: (value) =>
+                          value.isEmpty ? 'Please Enter Age' : null,
+                      suffixWidget: Padding(
+                        padding: const EdgeInsets.only(top: 10, right: 20),
+                        child: Text(
+                          "Years",
+                          style: theme.publicSansFonts
+                              .regularStyle(fontSize: 16, height: 22),
+                        ),
+                      ),
+                    ),
+                    TextFormFieldWidget(
+                      title: "Social Profile URL",
+                      controller: _socialCtrl,
+                      validator: (value) =>
+                          value.isEmpty ? 'Please Enter Social Profile URL' : null,
+                      suffixWidget: IconButton(
+                        color: AppColors.primaryColor,
+                        onPressed: () {
+                          if (_socialCtrl.text.trim().isNotEmpty) {
+                            urlList.value.add(_socialCtrl.text.trim());
+                            urlList.value = [...urlList.value];
+                            _socialCtrl.clear();
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.add_rounded,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ValueListenableBuilder(
+                        valueListenable: urlList,
+                        builder: (BuildContext context, List<String> list,
+                            Widget? child) {
+                          return Wrap(
+                            runSpacing: 0,
+                            spacing: 8,
+                            children: list
+                                .map((e) => InputChip(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: const BorderSide(
+                                            color: AppColors.primaryColor),
+                                      ),
+                                      label: Text(e),
+                                      labelStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.primaryColor),
+                                      backgroundColor: AppColors.primaryColor
+                                          .withOpacity(0.15),
+                                      deleteIconColor: AppColors.primaryColor,
+                                      onDeleted: () {
+                                        urlList.value.remove(e);
+                                        urlList.value = [...urlList.value];
+                                      },
+                                    ))
+                                .toList(),
+                          );
+                        }),
                   ],
-                ),
-                Text(
-                  "Create an account",
-                  style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
-                ),
-                const SizedBox(height: 20),
-                if (widget.profession != "User")
+                  const SizedBox(height: 70),
+                  CustomButton(
+                    isLoading: state is RegistrationLoading,
+                    onPressed: () {
+                      if (_selectedUserName == null) {
+                        widget.showErrorToast(
+                            context: context,
+                            message: 'Please Select Any UserName');
+                        return;
+                      }
+                      if (_formKey.currentState!.validate()) {
+                        context.read<RegistrationCubit>().registration(
+                              RegistrationParams(
+                                  role: giveRole(),
+                                  profilePic: profilePicKey,
+                                  fullName: _nameCtrl.text,
+                                  countryCode: _countryCode.text,
+                                  phoneNumber: int.tryParse(_mobCtrl.text),
+                                  email: _emailCtrl.text,
+                                  specializationId: selectedSpecification,
+                                  registrationNumber: _regNumCtrl.text,
+                                  experience: int.tryParse(_expCtrl.text),
+                                  age: _ageCtrl.text,
+                                  socialUrls: urlList.value.isNotEmpty
+                                      ? urlList.value
+                                      : null,
+                                  userName: _selectedUserName!),
+                            );
+                      }
+                    },
+                    text: "Continue",
+                  ),
+                  const SizedBox(height: 15),
                   Center(
                     child: InkWell(
                       onTap: () {
-                        updateProfileImageSheet(
-                          onChange: (image) {
-                            if (image != null) {
-                              context
-                                  .read<RegistrationCubit>()
-                                  .uploadDoc(image);
-                            }
-                            Navigator.pop(context);
-                          },
-                        );
+                        AiloitteNavigation.intentWithClearAllRoutes(
+                            context, AppRoutes.loginRoute);
                       },
-                      child: profilePic == null
-                          ? DottedBorder(
-                              strokeWidth: 2,
-                              color: AppColors.greyD9,
-                              strokeCap: StrokeCap.round,
-                              borderType: BorderType.RRect,
-                              dashPattern: const [15, 10],
-                              radius: const Radius.circular(20),
-                              padding: const EdgeInsets.all(35),
-                              child: Column(
-                                children: [
-                                  const Icon(
-                                    Icons.person_rounded,
-                                    size: 50,
-                                    color: AppColors.blackAE,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    "Upload Picture",
-                                    style: theme.publicSansFonts.semiBoldStyle(
-                                        fontSize: 14,
-                                        fontColor: AppColors.blackAE),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : CircleAvatar(
-                              radius: 70,
-                              backgroundColor: Colors.transparent,
-                              child: ClipPath(
-                                clipper: const ShapeBorderClipper(
-                                  shape: CircleBorder(),
-                                ),
-                                child: Image.file(
-                                  File(profilePic!.path),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                    ),
-                  ),
-                const SizedBox(height: 20),
-                TextFormFieldWidget(
-                  title: "Full Name",
-                  controller: _nameCtrl,
-                ),
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: _userNames.map((e) => _buildUserName(e)).toList(),
-                ),
-                TextFormWithCountryCode(
-                  title: context.stringForKey(StringKeys.mobileNumber),
-                  countryCode: _countryCode,
-                  controller: _mobCtrl,
-                ),
-                TextFormFieldWidget(
-                  title: "Email",
-                  controller: _emailCtrl,
-                  textCapitalization: TextCapitalization.none,
-                ),
-                if (widget.profession == "Doctor") ...[
-                  // TextFormFieldWidget(
-                  //   title: "Specialization",
-                  //   controller: _specializationCtrl,
-                  // ),
-                  TextSearchField(
-                    textCapitalization: TextCapitalization.words,
-                    title: "Specialization",
-                    onSuggestionTap: (value) {
-                      selectedSpecification = value.item;
-                    },
-                    suggestions: specialisationList
-                        .map((e) => SearchFieldListItem(e.name,
-                            item: e.id,
-                            child: Text(
-                              e.name.capitalizeFirstLetterOfSentence,
-                              style: theme.publicSansFonts.regularStyle(
-                                  fontSize: 18, fontColor: AppColors.black49),
-                            )))
-                        .toList(),
-                  ),
-                  TextFormFieldWidget(
-                    title: "Professional Registration number",
-                    controller: _regNumCtrl,
-                  ),
-                  TextFormFieldWidget(
-                    hintText: "Experience",
-                    title: "Total year of experience",
-                    controller: _expCtrl,
-                    suffixWidget: Padding(
-                      padding: const EdgeInsets.only(top: 10, right: 20),
                       child: Text(
-                        "Years",
-                        style: theme.publicSansFonts
-                            .regularStyle(fontSize: 16, height: 22),
+                        "Sign in Instead",
+                        style: theme.publicSansFonts.regularStyle(
+                          fontSize: 16,
+                          fontColor: AppColors.primaryColor,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ),
-                ] else if (widget.profession == "Influencer") ...[
-                  TextFormFieldWidget(
-                    title: "Age",
-                    controller: _ageCtrl,
-                    suffixWidget: Padding(
-                      padding: const EdgeInsets.only(top: 10, right: 20),
-                      child: Text(
-                        "Years",
-                        style: theme.publicSansFonts
-                            .regularStyle(fontSize: 16, height: 22),
-                      ),
-                    ),
-                  ),
-                  TextFormFieldWidget(
-                    title: "Social Profile URL",
-                    controller: _socialCtrl,
-                    suffixWidget: IconButton(
-                      color: AppColors.primaryColor,
-                      onPressed: () {
-                        if (_socialCtrl.text.trim().isNotEmpty) {
-                          urlList.value.add(_socialCtrl.text.trim());
-                          urlList.value = [...urlList.value];
-                          _socialCtrl.clear();
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.add_rounded,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ValueListenableBuilder(
-                      valueListenable: urlList,
-                      builder: (BuildContext context, List<String> list,
-                          Widget? child) {
-                        return Wrap(
-                          runSpacing: 0,
-                          spacing: 8,
-                          children: list
-                              .map((e) => InputChip(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      side: const BorderSide(
-                                          color: AppColors.primaryColor),
-                                    ),
-                                    label: Text(e),
-                                    labelStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primaryColor),
-                                    backgroundColor: AppColors.primaryColor
-                                        .withOpacity(0.15),
-                                    deleteIconColor: AppColors.primaryColor,
-                                    onDeleted: () {
-                                      urlList.value.remove(e);
-                                      urlList.value = [...urlList.value];
-                                    },
-                                  ))
-                              .toList(),
-                        );
-                      }),
+                  const SizedBox(height: 40),
                 ],
-                const SizedBox(height: 70),
-                CustomButton(
-                  isLoading: state is RegistrationLoading,
-                  onPressed: () {
-                    if (_selectedUserName == null) {
-                      widget.showErrorToast(
-                          context: context,
-                          message: 'Please Select Any UserName');
-                      return;
-                    }
-                    context.read<RegistrationCubit>().registration(
-                          RegistrationParams(
-                              role: giveRole(),
-                              profilePic: profilePicKey,
-                              fullName: _nameCtrl.text,
-                              countryCode: _countryCode.text,
-                              phoneNumber: int.tryParse(_mobCtrl.text),
-                              email: _emailCtrl.text,
-                              specializationId: selectedSpecification,
-                              registrationNumber: _regNumCtrl.text,
-                              experience: int.tryParse(_expCtrl.text),
-                              age: _ageCtrl.text,
-                              socialUrls: urlList.value.isNotEmpty
-                                  ? urlList.value
-                                  : null,
-                              userName: _selectedUserName!),
-                        );
-                  },
-                  text: "Continue",
-                ),
-                const SizedBox(height: 15),
-                Center(
-                  child: InkWell(
-                    onTap: () {
-                      AiloitteNavigation.intentWithClearAllRoutes(
-                          context, AppRoutes.loginRoute);
-                    },
-                    child: Text(
-                      "Sign in Instead",
-                      style: theme.publicSansFonts.regularStyle(
-                        fontSize: 16,
-                        fontColor: AppColors.primaryColor,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-              ],
+              ),
             );
           },
         ),
