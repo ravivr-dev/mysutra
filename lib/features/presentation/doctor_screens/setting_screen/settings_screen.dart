@@ -378,17 +378,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else if (duration > 60) {
         int hour = duration ~/ 60;
         int min = duration - (hour * 60);
+        final testTime = TimeOfDay(
+            hour: timeOfDay.hour + hour, minute: timeOfDay.minute + min);
+
+        ///This condition will execute when our _selectedDuration would be 120 or greater than that (like 2,3,4,5 hours and so on )
+        if (testTime.hour > 24) {
+          break;
+        }
 
         /// This check is for (if previous time is 6:30 and duration is 90 than our new time would be 8:00)
         if (timeOfDay.minute + min >= 60) {
           hour = hour + ((timeOfDay.minute + min) ~/ 60);
           min = 0;
           timeOfDay = TimeOfDay(hour: timeOfDay.hour + hour, minute: min);
+          if (timeOfDay.hour >= 24 && timeOfDay.minute > 0) {
+            break;
+          }
           _timeOptions.add(timeOfDay);
           continue;
         }
         timeOfDay = TimeOfDay(
             hour: timeOfDay.hour + hour, minute: timeOfDay.minute + min);
+        if (timeOfDay.hour >= 24 && timeOfDay.minute > 0) {
+          break;
+        }
         _timeOptions.add(timeOfDay);
         continue;
       }
