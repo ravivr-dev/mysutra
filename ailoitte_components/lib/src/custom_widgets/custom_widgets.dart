@@ -57,7 +57,7 @@ class AilCustomWidgets extends AiloitteTheme {
       borderRadius: borderRadius,
       height: height,
       onTap: onTap,
-      padding: padding,
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       width: width,
       enabledColor: enabledColor,
       disabledColor: disabledColor,

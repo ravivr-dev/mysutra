@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
 import 'package:retrofit/http.dart';
 import '../../../core/utils/constants.dart';
 import '../datasource/local_datasource/local_datasource.dart';
@@ -42,6 +43,10 @@ abstract class DoctorClient {
 
   @PUT(EndPoints.profile)
   Future<dynamic> updateAboutOrFees(@Body() Map<String, dynamic> map);
+
+  @GET(EndPoints.doctorFollowing)
+  Future<FollowingResponseModel> getFollowings(
+      @Queries() Map<String, dynamic> map);
 
   @GET(EndPoints.patients)
   Future<GetPatientResponseModel> getPatients(

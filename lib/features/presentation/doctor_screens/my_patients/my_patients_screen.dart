@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/constants.dart';
+import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
@@ -25,7 +26,7 @@ class _MyPatientsScreenState extends State<MyPatientsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Patients'),
+        title: component.text(context.stringForKey(StringKeys.myPatients)),
         centerTitle: true,
       ),
       backgroundColor: AppColors.backgroundColor,

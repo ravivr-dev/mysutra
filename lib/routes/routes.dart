@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
-import 'package:my_sutra/features/presentation/common/home/widgets/my_following_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/widgets/patient_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
@@ -12,8 +13,9 @@ import 'package:my_sutra/features/presentation/common/registration/choose_accoun
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
-import 'package:my_sutra/features/presentation/doctor_screens/my_patients_screens/my_patients_screen.dart';
-import 'package:my_sutra/features/presentation/doctor_screens/my_patients_screens/doctor_past_appointment_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_following/doctor_my_following_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_patients/doctor_past_appointment_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_patients_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
@@ -117,8 +119,14 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => const PatientPastAppointmentsScreen());
 
-      case AppRoutes.myFollowing:
-        return MaterialPageRoute(builder: (_) => const MyFollowingScreen());
+      case AppRoutes.patientMyFollowing:
+        return MaterialPageRoute(
+            builder: (_) => const PatientMyFollowingScreen());
+
+      case AppRoutes.doctorMyFollowing:
+        final args = settings?.arguments as List<FollowerEntity>;
+        return MaterialPageRoute(
+            builder: (_) => DoctorMyFollowingScreen(followers: args));
 
       case AppRoutes.myPatients:
         final args = settings?.arguments as List<PatientEntity>;

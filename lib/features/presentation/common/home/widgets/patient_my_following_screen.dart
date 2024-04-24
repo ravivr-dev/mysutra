@@ -6,14 +6,14 @@ import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/generated/assets.dart';
 
-class MyFollowingScreen extends StatefulWidget {
-  const MyFollowingScreen({super.key});
+class PatientMyFollowingScreen extends StatefulWidget {
+  const PatientMyFollowingScreen({super.key});
 
   @override
-  State<MyFollowingScreen> createState() => _MyFollowingScreenState();
+  State<PatientMyFollowingScreen> createState() => _PatientMyFollowingScreenState();
 }
 
-class _MyFollowingScreenState extends State<MyFollowingScreen>
+class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: 2, vsync: this);

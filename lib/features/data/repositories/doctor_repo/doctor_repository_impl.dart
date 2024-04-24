@@ -3,10 +3,14 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/core/network/network_info.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
+import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repository_conv.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -92,6 +96,25 @@ class DoctorRepositoryImpl extends DoctorRepository {
 
         return Right(
             PatientRepoConv.getTimeSlotsResponseModelListToEntity(result.list));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<FollowerEntity>>> getFollowings(GetFollowingParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getFollowing({
+          'pagination': data.pagination,
+          'limit': data.limit,
+        });
+
+        return Right(
+            DoctorRepositoryConv.convertFollowingModelToEntity(result.data));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
