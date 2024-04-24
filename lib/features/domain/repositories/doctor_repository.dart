@@ -24,8 +24,6 @@ abstract class DoctorRepository {
 
   Future<Either<Failure, List<GetTimeSlotsResponseDataEntity>>> getTimeSlots(
       GetTimeSlotsParams data);
-  Future<Either<Failure, List<GetTimeSlotsResponseDataEntity>>> getTimeSlots(
-      GetTimeSlotsParams data);
 
   Future<Either<Failure, UserEntity>> getUserDetails();
 }
