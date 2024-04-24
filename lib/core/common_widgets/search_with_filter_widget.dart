@@ -7,14 +7,14 @@ class SearchWithFilter extends StatefulWidget {
   const SearchWithFilter({
     super.key,
     this.controller,
-    this.onChange,
+    this.onChanged,
     this.hintText,
     this.onTapFilter,
     this.backgroundColor,
     this.onTap,
   });
 
-  final Function(String onChange)? onChange;
+  final Function(String onChange)? onChanged;
   final TextEditingController? controller;
   final String? hintText;
   final void Function()? onTapFilter;
@@ -42,7 +42,7 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
             key: widget.key,
             onTap: widget.onTap,
             controller: widget.controller,
-            onChanged: (value) {},
+            onChanged: widget.onChanged,
             textAlignVertical: TextAlignVertical.center,
             style: theme.publicSansFonts.regularStyle(fontSize: 16),
             decoration: InputDecoration(

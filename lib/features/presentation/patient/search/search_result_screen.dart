@@ -73,7 +73,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   onTapFilter: () {},
                   hintText: 'Search for doctors',
                   backgroundColor: AppColors.white,
-                  onChange: (value) {
+                  onChanged: (value) {
                     _callSearchDoctorApi(search: value);
                   },
                 ),
