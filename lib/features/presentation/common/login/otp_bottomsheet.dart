@@ -18,6 +18,7 @@ import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart
 class OtpBottomsheet extends StatefulWidget {
   final LoginParams? loginData;
   final RegistrationParams? regData;
+
   const OtpBottomsheet({
     super.key,
     this.loginData,
@@ -88,25 +89,43 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Please enter the OTP received on your\nregistered mobile number',
+                    'Please enter the OTP received on your registered mobile number',
                     textAlign: TextAlign.center,
                     style: theme.publicSansFonts
                         .mediumStyle(fontSize: 12, fontColor: AppColors.grey92),
                   ),
                   const SizedBox(height: 30),
-                  Center(
-                    child: OTPTextField(
-                      length: 4,
-                      onChanged: (value) {
-                        otp = value;
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 72.5),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.white),
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: TextFormField(
+                      showCursor: false,
+                      style: theme.publicSansFonts.semiBoldStyle(
+                          fontSize: 22,
+                          letterSpacing: context.screenWidth / 8 - 10),
+                      maxLength: 4,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        counterText: '',
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (val) {
+                        otp = val;
                       },
-                      width: MediaQuery.of(context).size.width,
-                      textFieldAlignment: MainAxisAlignment.center,
-                      fieldWidth: 45,
-                      fieldStyle: FieldStyle.box,
-                      otpFieldStyle:
-                          OtpFieldStyle(backgroundColor: AppColors.greyF3),
-                      outlineBorderRadius: 20,
+                      validator: (val) {
+                        if (val != null && val.length <= 6) {
+                          widget.showErrorToast(
+                              context: context,
+                              message: 'Please enter a valid OTP!');
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   const SizedBox(height: 40),
