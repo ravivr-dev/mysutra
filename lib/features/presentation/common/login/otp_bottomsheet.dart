@@ -3,21 +3,19 @@ import 'dart:async';
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_sutra/core/common_widgets/custom_otp_field.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/verification_pending_bottom_sheet.dart';
 import '../../../../injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
-import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_text_field/style.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
-
 
 class OtpBottomsheet extends StatefulWidget {
   final LoginParams? loginData;
@@ -35,9 +33,9 @@ class OtpBottomsheet extends StatefulWidget {
 
 class _OtpBottomsheetState extends State<OtpBottomsheet> {
   final ValueNotifier<int> _timeCounter = ValueNotifier<int>(60);
-  String? otp;
   final int timerInitVal = 60;
   late Timer _resendOtpTimer;
+  final TextEditingController _otpController = TextEditingController();
 
   @override
   void initState() {
@@ -49,12 +47,14 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
   void dispose() {
     _resendOtpTimer.cancel();
     _timeCounter.dispose();
+    _otpController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: AppColors.white,
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Stack(
@@ -101,46 +101,17 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Please enter the OTP received on your registered mobile number',
-                    textAlign: TextAlign.center,
-                    style: theme.publicSansFonts
-                        .mediumStyle(fontSize: 12, fontColor: AppColors.grey92),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 45),
+                    child: component.text(
+                      'Please enter the OTP received on your registered mobile number',
+                      textAlign: TextAlign.center,
+                      style: theme.publicSansFonts.mediumStyle(
+                          fontSize: 12, fontColor: AppColors.grey92),
+                    ),
                   ),
                   const SizedBox(height: 30),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 72.5),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.white),
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextFormField(
-                      showCursor: false,
-                      style: theme.publicSansFonts.semiBoldStyle(
-                          fontSize: 22,
-                          letterSpacing: context.screenWidth / 8 - 10),
-                      maxLength: 4,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        counterText: '',
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (val) {
-                        otp = val;
-                      },
-                      validator: (val) {
-                        if (val != null && val.length <= 6) {
-                          widget.showErrorToast(
-                              context: context,
-                              message: 'Please enter a valid OTP!');
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
+                  CustomOtpField(otpController: _otpController),
                   const SizedBox(height: 40),
                   ValueListenableBuilder(
                     valueListenable: _timeCounter,
@@ -188,8 +159,10 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                         isLoading: state is OtpLoading,
                         text: context.stringForKey(StringKeys.verify),
                         onPressed: () {
-                          if (otp != null && otp!.length == 4) {
-                            context.read<OtpCubit>().verifyOtp(int.parse(otp!));
+                          if (_otpController.text.length == 4) {
+                            context
+                                .read<OtpCubit>()
+                                .verifyOtp(int.parse(_otpController.text));
                             // AiloitteNavigation.intentWithClearAllRoutes(
                             //     context, AppRoutes.selectAccountRoute);
                           } else {

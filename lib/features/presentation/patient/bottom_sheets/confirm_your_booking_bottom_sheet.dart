@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_sutra/core/common_widgets/custom_otp_field.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -179,36 +180,7 @@ class _ConfirmYourBookingBottomSheetState
   }
 
   Widget _buildOtpTextField() {
-    return Container(
-      height: 66,
-      margin: const EdgeInsets.symmetric(horizontal: 52.5),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: TextFormField(
-        showCursor: false,
-        controller: _otpController,
-        style: theme.publicSansFonts.semiBoldStyle(
-            fontSize: 22, letterSpacing: (context.screenWidth * .129)),
-        maxLength: 4,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        autofocus: true,
-        decoration: const InputDecoration(
-          counterText: '',
-          border: InputBorder.none,
-        ),
-        validator: (val) {
-          if (val != null && val.length <= 6) {
-            widget.showErrorToast(
-                context: context, message: 'Please enter a valid OTP!');
-          }
-          return null;
-        },
-      ),
-    );
+    return CustomOtpField(otpController: _otpController);
   }
 
   void _resendOtp() {
