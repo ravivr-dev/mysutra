@@ -16,6 +16,11 @@ class AppColors {
   static const Color greyEC = Color(0xffECECEC);
   static const Color transparent = Color(0x00000000);
   static const Color black24 = Color(0xff242424);
+  static const Color black000E08 = Color(0xff000E08);
+  static const Color blackF2F7FB = Color(0xffF2F7FB);
+  static const Color fillColor = Color(0xffF3F6F6);
+  static const Color textColor = Color(0xff797C7B);
+
 
   // old colors
   static const Color black33 = Color(0xff333333);
@@ -71,4 +76,6 @@ class AppColors {
   static const Color color0xFF2F1455 = Color(0xFF2F1455);
   static const Color color0xFFF3EBFF = Color(0xFFF3EBFF);
   static const Color color0xFF232323 = Color(0xFF232323);
+  static const Color green2BEF83 = Color(0xFF2BEF83);
+  static const Color grey797C7B = Color(0xFF797C7B);
 }

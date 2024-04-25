@@ -19,6 +19,7 @@ import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_pat
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
 import 'package:my_sutra/features/presentation/patient/schedule_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
@@ -136,6 +137,8 @@ class Routes {
       case AppRoutes.doctorPastAppointment:
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
+      case AppRoutes.chatScreen:
+        return MaterialPageRoute(builder: (_) => const ChatScreen());
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

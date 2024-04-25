@@ -60,6 +60,9 @@ dependencies:
     git:
       url: https://github.com/sahil-ailoitte/dropdown_textfield.git
       ref: master
+  flutter_chat_ui: ^1.6.12
+  file_picker: ^8.0.2
+  open_filex: ^4.4.0
 
 
 dev_dependencies:
@@ -80,6 +83,7 @@ flutter:
     - assets/i18n/
     - assets/images/
     - assets/anim/
+    - assets/message.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -4,6 +4,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class BookingSuccessfulScreen extends StatelessWidget {
   const BookingSuccessfulScreen({super.key});
@@ -63,15 +64,18 @@ class BookingSuccessfulScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: AppColors.white,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          component.text(context.stringForKey(StringKeys.chatNow),
-              style: theme.publicSansFonts.regularStyle(
-                fontColor: AppColors.color0xFF8338EC,
-              )),
-          component.assetImage(path: Assets.iconsChat)
-        ],
+      child: InkWell(
+        onTap: () => AiloitteNavigation.intent(context, AppRoutes.chatScreen),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            component.text(context.stringForKey(StringKeys.chatNow),
+                style: theme.publicSansFonts.regularStyle(
+                  fontColor: AppColors.color0xFF8338EC,
+                )),
+            component.assetImage(path: Assets.iconsChat)
+          ],
+        ),
       ),
     );
   }

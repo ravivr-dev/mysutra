@@ -5,6 +5,7 @@ class Assets {
   static const String animBatches = 'assets/anim/batches.json';
   static const String animHome = 'assets/anim/home.json';
   static const String animProfile = 'assets/anim/profile.json';
+  static const String assetsMessage = 'assets/message.json';
   static const String fontsPublicSansBlack = 'assets/fonts/PublicSans-Black.ttf';
   static const String fontsPublicSansBold = 'assets/fonts/PublicSans-Bold.ttf';
   static const String fontsPublicSansExtraBold = 'assets/fonts/PublicSans-ExtraBold.ttf';
@@ -15,11 +16,14 @@ class Assets {
   static const String fontsPublicSansSemiBold = 'assets/fonts/PublicSans-SemiBold.ttf';
   static const String fontsPublicSansThin = 'assets/fonts/PublicSans-Thin.ttf';
   static const String i18nEn = 'assets/i18n/en.json';
+  static const String iconsArrowBack = 'assets/icons/arrow_back.svg';
   static const String iconsArrowForward = 'assets/icons/arrow_forward.svg';
+  static const String iconsAttachment = 'assets/icons/attachment.svg';
   static const String iconsCalendar = 'assets/icons/calendar.svg';
   static const String iconsCalendar2 = 'assets/icons/calendar2.svg';
   static const String iconsCall = 'assets/icons/call.svg';
   static const String iconsCallReceivedIcon = 'assets/icons/call_received_icon.svg';
+  static const String iconsCamera = 'assets/icons/camera.svg';
   static const String iconsChat = 'assets/icons/chat.svg';
   static const String iconsCheckup = 'assets/icons/checkup.svg';
   static const String iconsClock = 'assets/icons/clock.svg';
@@ -34,6 +38,7 @@ class Assets {
   static const String iconsEditIcon = 'assets/icons/edit_icon.svg';
   static const String iconsEmail = 'assets/icons/email.svg';
   static const String iconsFeed = 'assets/icons/feed.svg';
+  static const String iconsFiles = 'assets/icons/files.svg';
   static const String iconsFilter = 'assets/icons/filter.svg';
   static const String iconsFreeze = 'assets/icons/freeze.svg';
   static const String iconsGps = 'assets/icons/gps.svg';
@@ -41,12 +46,15 @@ class Assets {
   static const String iconsHeart = 'assets/icons/heart.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsHome2 = 'assets/icons/home2.svg';
+  static const String iconsIcDefaultAvatar = 'assets/icons/ic_default_avatar.png';
+  static const String iconsIcPlay = 'assets/icons/ic_play.svg';
   static const String iconsImage = 'assets/icons/image.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
   static const String iconsLocation = 'assets/icons/location.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
   static const String iconsLogo1 = 'assets/icons/logo_1.png';
   static const String iconsMedal = 'assets/icons/medal.svg';
+  static const String iconsMicrophone = 'assets/icons/microphone.svg';
   static const String iconsPayment = 'assets/icons/payment.svg';
   static const String iconsPhone = 'assets/icons/phone.svg';
   static const String iconsPhone2 = 'assets/icons/phone2.svg';
@@ -70,5 +78,6 @@ class Assets {
   static const String imagesDefaultAvatar = 'assets/images/default_avatar.svg';
   static const String imagesLogout = 'assets/images/logout.svg';
   static const String imagesSplash = 'assets/images/splash.json';
+  static const String mysutraAssetsMessage = 'assets/message.json';
 
 }

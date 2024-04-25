@@ -131,20 +131,20 @@ extension StringFunctions on String {
   //   }
   // }
 
-  // bool get checkIfFileTypeIsImage {
-  //   return this == Constants.imageFileType ||
-  //       endsWith("jpg") ||
-  //       endsWith("jpeg") ||
-  //       endsWith("png");
-  // }
+  bool get checkIfFileTypeIsImage {
+    return this == Constants.imageFileType ||
+        endsWith("jpg") ||
+        endsWith("jpeg") ||
+        endsWith("png");
+  }
 
-  // bool get checkIfFileTypeIsVideo {
-  //   return this == Constants.videoFileType || endsWith("mp4");
-  // }
+  bool get checkIfFileTypeIsVideo {
+    return this == Constants.videoFileType || endsWith("mp4");
+  }
 
-  // bool get checkIfFileTypeIsDocumentPdf {
-  //   return this == Constants.documentFileType || endsWith("pdf");
-  // }
+  bool get checkIfFileTypeIsDocumentPdf {
+    return this == Constants.documentFileType || endsWith("pdf");
+  }
 
   DateTime? getStringLiteralToDateTimeObject() {
     return DateTime.tryParse(this);

@@ -1,12 +1,16 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/core/common_widgets/time_container.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 import '../../../../../../ailoitte_component_injector.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../generated/assets.dart';
 
 class PatientAppointmentBottomSheet extends StatelessWidget {
-  const PatientAppointmentBottomSheet({super.key});
+  final AppointmentEntity entity;
+  const PatientAppointmentBottomSheet({super.key, required this.entity});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,7 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
                   )
                 ],
               ),
-              TimeContainer(time:'')
+              TimeContainer(time: '')
             ],
           ),
           component.spacer(height: 4),
@@ -51,16 +55,21 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
             ),
           ),
           component.spacer(height: 36),
-          _buildItems(text: 'Join Video Consultation'),
-          _buildDivider(),
-          _buildItems(text: 'Send Message'),
-          _buildDivider(),
-          _buildItems(text: 'View patient history'),
-          _buildDivider(),
-          _buildItems(text: 'Reschedule Appointment'),
+          _buildItems(callback: () {}, text: 'Join Video Consultation'),
           _buildDivider(),
           _buildItems(
-              text: 'Cancel Appointment', textColor: AppColors.color0xFFFF1100),
+              callback: () => AiloitteNavigation.intentWithData(
+                  context, AppRoutes.chatScreen, entity),
+              text: 'Send Message'),
+          _buildDivider(),
+          _buildItems(callback: () {}, text: 'View patient history'),
+          _buildDivider(),
+          _buildItems(callback: () {}, text: 'Reschedule Appointment'),
+          _buildDivider(),
+          _buildItems(
+              callback: () {},
+              text: 'Cancel Appointment',
+              textColor: AppColors.color0xFFFF1100),
         ],
       ),
     );
@@ -70,9 +79,15 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
     return const Divider(color: AppColors.color0xFFEAECF0, height: 15);
   }
 
-  Widget _buildItems({required String text, Color? textColor}) {
-    return component.text(text,
-        style: theme.publicSansFonts.regularStyle(
-            fontSize: 16, fontColor: textColor ?? AppColors.color0xFF1E293B));
+  Widget _buildItems(
+      {required VoidCallback callback,
+      required String text,
+      Color? textColor}) {
+    return InkWell(
+      onTap: callback,
+      child: component.text(text,
+          style: theme.publicSansFonts.regularStyle(
+              fontSize: 16, fontColor: textColor ?? AppColors.color0xFF1E293B)),
+    );
   }
 }

@@ -54,6 +54,10 @@ class Constants {
   static const String email = 'email';
   static const String fees = 'fees';
   static const String about = 'about';
+  static const String imageFileType = "image";
+  static const String videoFileType = "video";
+  static const String audioFileType = "audio";
+  static const String documentFileType = "document";
 
   //Doctor Constants
   static const String userId = 'userId';
