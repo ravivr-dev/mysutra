@@ -40,7 +40,7 @@ extension AiloitteContextExtensions on BuildContext {
 
   Future<T?> showBottomSheet<T>(
     Widget widget, {
-    bool isDismissible = false,
+    bool isDismissible = true,
     double borderRadius = 20,
     Color? backgroundColor,
     bool isScrollControlled = false,
