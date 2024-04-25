@@ -31,8 +31,8 @@ class AppointmentModel {
   String date;
   String time;
   int? timeInMinutes;
-  String countryCode;
-  int phoneNumber;
+  String? countryCode;
+  int? phoneNumber;
   String? reason;
 
   AppointmentModel({
