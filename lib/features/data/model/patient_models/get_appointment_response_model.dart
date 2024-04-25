@@ -28,9 +28,12 @@ class AppointmentModel {
   String? username;
   bool? isVerified;
   String? specialization;
-  String? date;
-  String? time;
+  String date;
+  String time;
   int? timeInMinutes;
+  String countryCode;
+  int phoneNumber;
+  String? reason;
 
   AppointmentModel({
     this.id,
@@ -41,22 +44,27 @@ class AppointmentModel {
     this.username,
     this.isVerified,
     this.specialization,
-    this.date,
-    this.time,
+    required this.date,
+    required this.time,
     this.timeInMinutes,
+    this.reason,
+    required this.countryCode,
+    required this.phoneNumber,
   });
 
-  AppointmentModel.fromJson(Map<String, dynamic> json) {
-    id = json[Constants.id];
-    doctorId = json[Constants.doctorId];
-    userId = json[Constants.userId];
-    profilePic = json[Constants.profilePic];
-    fullName = json[Constants.fullName];
-    username = json[Constants.userName];
-    isVerified = json[Constants.isVerified];
-    specialization = json[Constants.specialization];
-    date = json[Constants.date];
-    time = json[Constants.time];
-    timeInMinutes = json[Constants.timeInMinutes];
-  }
+  AppointmentModel.fromJson(Map<String, dynamic> json)
+      : id = json[Constants.id],
+        doctorId = json[Constants.doctorId],
+        userId = json[Constants.userId],
+        profilePic = json[Constants.profilePic],
+        fullName = json[Constants.fullName],
+        username = json[Constants.userName],
+        isVerified = json[Constants.isVerified],
+        specialization = json[Constants.specialization],
+        date = json[Constants.date],
+        time = json[Constants.time],
+        timeInMinutes = json[Constants.timeInMinutes],
+        phoneNumber = json[Constants.phoneNumber],
+        countryCode = json[Constants.countryCode],
+        reason = json[Constants.reason];
 }

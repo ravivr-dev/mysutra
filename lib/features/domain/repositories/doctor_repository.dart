@@ -5,6 +5,8 @@ import 'package:my_sutra/features/domain/entities/patient_entities/patient_entit
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
+import '../entities/doctor_entities/get_doctor_appointment_entity.dart';
+import '../usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 import '../usecases/doctor_usecases/get_patient_usecase.dart';
 import '../usecases/doctor_usecases/get_time_slots_usecase.dart';
 import '../usecases/doctor_usecases/update_about_or_fees_usecase.dart';
@@ -26,4 +28,7 @@ abstract class DoctorRepository {
       GetTimeSlotsParams data);
 
   Future<Either<Failure, UserEntity>> getUserDetails();
+
+  Future<Either<Failure, GetDoctorAppointmentEntity>> getAppointments(
+      GetDoctorAppointmentsParams data);
 }

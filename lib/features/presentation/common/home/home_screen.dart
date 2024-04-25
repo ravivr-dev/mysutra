@@ -5,7 +5,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
-import 'package:my_sutra/features/presentation/patient/appointment_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 

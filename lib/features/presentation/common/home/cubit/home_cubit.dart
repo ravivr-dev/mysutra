@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 
+import '../../../../domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import '../../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../../domain/usecases/doctor_usecases/get_user_details_usercase.dart';
 import '../../../../domain/usecases/patient_usecases/get_appointments_usecase.dart';
@@ -12,11 +14,13 @@ class HomeCubit extends Cubit<HomeState> {
   final LocalDataSource localDataSource;
   final GetAppointmentUseCase getAppointmentUseCase;
   final GetUserDetailsUseCase getUserDetailsUseCase;
+  final GetDoctorAppointmentsUseCase getDoctorAppointmentUseCase;
 
   HomeCubit({
     required this.localDataSource,
     required this.getAppointmentUseCase,
     required this.getUserDetailsUseCase,
+    required this.getDoctorAppointmentUseCase,
   }) : super(HomeInitial());
 
   void getAppointments(
@@ -35,6 +39,19 @@ class HomeCubit extends Cubit<HomeState> {
     final result = await getUserDetailsUseCase.call();
     result.fold((l) => emit(GetUserDetailsErrorState(message: l.message)),
         (r) => emit(GetUserDetailsSuccessState(entity: r)));
+  }
+
+  void getDoctorAppointments({
+    required String date,
+    required int pagination,
+    required int limit,
+  }) async {
+    emit(GetDoctorAppointmentLoadingState());
+    final result = await getDoctorAppointmentUseCase.call(
+        GetDoctorAppointmentsParams(
+            date: date, pagination: pagination, limit: limit));
+    result.fold((l) => emit(GetDoctorAppointmentErrorState(message: l.message)),
+        (r) => emit(GetDoctorAppointmentSuccessState(entity: r)));
   }
 
 // FutureOr<void> _emitFailure(

@@ -40,3 +40,19 @@ final class GetUserDetailsSuccessState extends HomeState {
     required this.entity,
   });
 }
+
+final class GetDoctorAppointmentLoadingState extends HomeState {}
+
+final class GetDoctorAppointmentErrorState extends HomeState {
+  final String message;
+  GetDoctorAppointmentErrorState({
+    required this.message,
+  });
+}
+
+final class GetDoctorAppointmentSuccessState extends HomeState {
+  GetDoctorAppointmentEntity entity;
+  GetDoctorAppointmentSuccessState({
+    required this.entity,
+  });
+}
