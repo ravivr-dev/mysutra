@@ -109,7 +109,10 @@ class Routes {
       case AppRoutes.doctorDetail:
         final args = settings?.arguments as DoctorEntity;
         return MaterialPageRoute(
-            builder: (_) => DoctorResultScreen(doctorEntity: args));
+            builder: (_) => BlocProvider<SearchDoctorCubit>(
+                  create: (context) => sl<SearchDoctorCubit>(),
+                  child: DoctorResultScreen(doctorEntity: args),
+                ));
 
       case AppRoutes.bookingSuccessful:
         return MaterialPageRoute(

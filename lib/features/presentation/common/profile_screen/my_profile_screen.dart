@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/app_helper.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
@@ -42,14 +45,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: AppColors.transparent,
         title: component.text(context.stringForKey(StringKeys.myProfile)),
         actions: [
           IconButton(
-            onPressed: () {logoutDialog();},
+            onPressed: () {
+              logoutDialog();
+            },
             icon: const Icon(
               Icons.logout_outlined,
-              color: AppColors.black1C,
             ),
           ),
         ],
@@ -348,7 +351,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             textAlign: TextAlign.center,
           ),
           actionsPadding:
-          const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              const EdgeInsets.only(left: 20, right: 20, bottom: 20),
           actions: [
             Column(
               children: [
@@ -358,6 +361,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   onTap: () {
                     AiloitteNavigation.intentWithClearAllRoutes(
                         context, AppRoutes.loginRoute);
+                    context.read<MainCubit>().logout();
                   },
                 ),
                 const SizedBox(height: 15),

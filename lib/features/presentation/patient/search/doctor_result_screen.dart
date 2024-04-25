@@ -2,6 +2,7 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/generated/assets.dart';
@@ -36,11 +37,9 @@ class DoctorResultScreen extends StatelessWidget {
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
                 child: component.networkImage(
-                    fit: BoxFit.fill,
-                    url: doctorEntity.profilePic ?? '',
-                    errorWidget: Container(
-                        color: AppColors.grey92,
-                        child: const Icon(Icons.person))),
+                  fit: BoxFit.fill,
+                  url: doctorEntity.profilePic ?? '',
+                ),
               ),
             ),
             component.spacer(height: 12),
@@ -62,7 +61,10 @@ class DoctorResultScreen extends StatelessWidget {
             component.spacer(height: 12),
             Row(
               children: [
-                Expanded(child: _buildFollowButton()),
+                Expanded(
+                    child: _buildFollowButton(
+                        context: context,
+                        isFollowed: doctorEntity.isFollowing!)),
                 component.spacer(width: 12),
                 Expanded(child: _buildBookAppointmentButton(context)),
               ],
@@ -196,7 +198,8 @@ class DoctorResultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFollowButton() {
+  Widget _buildFollowButton(
+      {required BuildContext context, required bool isFollowed}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -206,11 +209,20 @@ class DoctorResultScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.add, color: AppColors.color0xFF8338EC),
+          Icon(
+            isFollowed ? Icons.check : Icons.add,
+            color: isFollowed
+                ? AppColors.color0xFF15C0B6
+                : AppColors.color0xFF8338EC,
+          ),
           component.text(
-            'Follow',
+            isFollowed
+                ? context.stringForKey(StringKeys.following)
+                : context.stringForKey(StringKeys.follow),
             style: theme.publicSansFonts.regularStyle(
-              fontColor: AppColors.color0xFF8338EC,
+              fontColor: isFollowed
+                  ? AppColors.color0xFF15C0B6
+                  : AppColors.color0xFF8338EC,
             ),
           )
         ],

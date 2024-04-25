@@ -57,7 +57,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             } else if (state is SearchDoctorLoaded) {
               doctorsList = state.data;
             } else if (state is FollowDoctorSuccessState) {
-              doctorsList[state.followedDoctorIndex].reInitIsFollowing();
+              doctorsList[state.followedDoctorIndex!].reInitIsFollowing();
               setState(() {});
             } else if (state is GetDoctorDetailsErrorState) {
               _showToast(message: state.message);

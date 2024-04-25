@@ -20,6 +20,7 @@ class StringKeys {
   static const String comments = 'comments';
   static const String reply = 'reply';
   static const String follow = 'follow';
+  static const String following = 'following';
   static const String rescheduleAppointment = 'reschedule_appointment';
   static const String cancelAppointment = 'cancel_appointment';
   static const String patientDetails = 'patient_details';
