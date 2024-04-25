@@ -16,6 +16,8 @@ import 'package:my_sutra/features/domain/entities/user_entities/generate_usernam
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
 class UserRepositoryImpl extends UserRepository {
@@ -174,6 +176,68 @@ class UserRepositoryImpl extends UserRepository {
         final result = await remoteDataSource.generateUsernames();
 
         return Right(GenerateUsernameEntity(userNames: result.userNames));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> changeEmail(ChangeEmailParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result =
+            await remoteDataSource.changeEmail({'email': params.email});
+        return Right(result.message ?? 'Verify OTP to Change Email');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyChangeEmail(int otp) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.verifyChangeEmail({'otp': otp});
+        return Right(result.message ?? 'Change Email Success');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> changePhoneNumber(
+      ChangePhoneNumberParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.changePhoneNumber({
+          'countryCode': params.countryCode,
+          'phoneNumber': params.newNumber
+        });
+        return Right(result.message ?? 'Verify OTP to Change Phone Number');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyChangePhoneNumber(int otp) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result =
+            await remoteDataSource.verifyChangePhoneNumber({'otp': otp});
+        return Right(result.message ?? 'Change Phone Number Success');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

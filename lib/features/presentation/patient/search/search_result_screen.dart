@@ -45,7 +45,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       appBar: AppBar(
           scrolledUnderElevation: 0.0,
           centerTitle: true,
-          backgroundColor: AppColors.transparent,
           title: component.text(context.stringForKey(StringKeys.searchResult),
               style: theme.publicSansFonts.mediumStyle(fontSize: 20))),
       body: SingleChildScrollView(
@@ -229,6 +228,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   }
 
   void _navigateToDoctorDetailScreen(DoctorEntity entity) {
-    AiloitteNavigation.intentWithData(context, AppRoutes.doctorDetail, entity);
+    // AiloitteNavigation.intentWithData(context, AppRoutes.doctorDetail, entity);
+    Navigator.pushNamed(context, AppRoutes.doctorDetail, arguments: entity)
+        .then((value) => setState(() {}));
   }
 }

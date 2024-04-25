@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 
+
 class TextFormFieldWidget extends StatefulWidget {
   const TextFormFieldWidget({
-    super.key,
+    Key? key,
     this.initialData,
     this.title,
     this.controller,
@@ -41,10 +42,11 @@ class TextFormFieldWidget extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.obscureIconColor,
     this.autoFocus = false,
+    this.filled = false,
     this.suffixIconConstraints,
     this.prefixIconConstraints,
     this.contentPadding,
-  });
+  }) : super(key: key);
   final String? initialData;
   final String? title;
   final Function(String onChange)? onChange;
@@ -80,6 +82,7 @@ class TextFormFieldWidget extends StatefulWidget {
   final bool isPassword;
   final bool showBorder;
   final bool autoFocus;
+  final bool filled;
   final BoxConstraints? prefixIconConstraints;
   final BoxConstraints? suffixIconConstraints;
   final EdgeInsets? contentPadding;
@@ -99,83 +102,85 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (widget.title != null) ...[
-            component.text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.title != null) ...[
+          InkWell(
+            onTap: () {},
+            child: component.text(
               widget.title,
               style: theme.publicSansFonts.semiBoldStyle(
                 fontSize: 14,
                 height: 22,
               ),
             ),
-            component.spacer(height: 4),
-          ],
-          TextFormField(
-            key: widget.key,
-            initialValue: widget.initialData,
-            focusNode: widget.focusNode,
-            readOnly: widget.readOnly,
-            enabled: widget.isEnabled,
-            controller: widget.controller,
-            textInputAction: widget.textInputAction,
-            onSaved: (newValue) => widget.onSaved,
-            onChanged: (value) {},
-            textAlignVertical: TextAlignVertical.center,
-            style: widget.style ??
+          ),
+          component.spacer(height: 4),
+        ],
+        TextFormField(
+          key: widget.key,
+          initialValue: widget.initialData,
+          obscureText: widget.isPassword,
+          focusNode: widget.focusNode,
+          readOnly: widget.readOnly,
+          enabled: widget.isEnabled,
+          controller: widget.controller,
+          textInputAction: widget.textInputAction,
+          onSaved: (newValue) => widget.onSaved,
+          onChanged: (value) {},
+          textAlignVertical: TextAlignVertical.center,
+          style: widget.style ??
+              theme.publicSansFonts.regularStyle(
+                fontSize: 18,
+              ),
+          cursorWidth: 1,
+          textCapitalization: widget.textCapitalization != null
+              ? widget.textCapitalization!
+              : widget.textInputType == TextInputType.text
+              ? TextCapitalization.sentences
+              : TextCapitalization.none,
+          inputFormatters: widget.inputFormatters,
+          keyboardType: widget.textInputType,
+          maxLines: widget.maxLines,
+          autofocus: widget.autoFocus,
+          onEditingComplete: () {},
+          onTap: widget.onTap,
+          maxLength: widget.maxLength,
+          validator: (text) =>
+          widget.validator != null ? widget.validator!(text ?? "") : null,
+          decoration: InputDecoration(
+            prefixIconConstraints: widget.prefixIconConstraints,
+            suffixIconConstraints: widget.suffixIconConstraints,
+            counterText: '',
+            isDense: true,
+            contentPadding: widget.contentPadding ??
+                EdgeInsets.symmetric(
+                  vertical: widget.verticalContentPadding,
+                  horizontal: widget.horizontalContentPadding,
+                ),
+            prefixIcon: widget.prefixWidget,
+            hintStyle: widget.hintTextStyle ??
                 theme.publicSansFonts.regularStyle(
                   fontSize: 18,
                 ),
-            cursorWidth: 1,
-            textCapitalization: widget.textCapitalization != null
-                ? widget.textCapitalization!
-                : widget.textInputType == TextInputType.text
-                    ? TextCapitalization.sentences
-                    : TextCapitalization.none,
-            inputFormatters: widget.inputFormatters,
-            keyboardType: widget.textInputType,
-            maxLines: widget.maxLines,
-            autofocus: widget.autoFocus,
-            onEditingComplete: () {},
-            onTap: widget.onTap,
-            maxLength: widget.maxLength,
-            validator: (text) =>
-                widget.validator != null ? widget.validator!(text ?? "") : null,
-            decoration: InputDecoration(
-              prefixIconConstraints: widget.prefixIconConstraints,
-              suffixIconConstraints: widget.suffixIconConstraints,
-              counterText: '',
-              isDense: true,
-              contentPadding: widget.contentPadding ??
-                  const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 20,
-                  ),
-              prefixIcon: widget.prefixWidget,
-              hintStyle: widget.hintTextStyle ??
-                  theme.publicSansFonts
-                      .regularStyle(fontSize: 18, fontColor: AppColors.blackAE),
-              hintText: widget.hintText ??
-                  "Please enter ${widget.title?.toLowerCase()}",
-              errorStyle: theme.publicSansFonts.regularStyle(
-                fontSize: 14,
-              ),
-              prefix: widget.prefix,
-              fillColor: AppColors.error,
-              border: _getBorder(),
-              focusedBorder: _getFocusedBorder(),
-              enabledBorder: _getEnabledBorder(),
-              errorBorder: _getErrorBorder(),
-              disabledBorder: _disabledBorder(),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: widget.suffixWidget,
+            hintText: widget.hintText ?? "",
+            errorStyle: theme.publicSansFonts.regularStyle(
+              fontSize: 14,
             ),
+            prefix: widget.prefix,
+            fillColor: widget.fillColor ?? AppColors.colorFF6161,
+            filled: widget.filled,
+            border: _getBorder(),
+            focusedBorder: _getFocusedBorder(),
+            enabledBorder: _getEnabledBorder(),
+            errorBorder: _getErrorBorder(),
+            disabledBorder: _disabledBorder(),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            suffixIcon: widget.suffixWidget,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -201,9 +206,9 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
 
   InputBorder _getFocusedBorder() {
     return OutlineInputBorder(
-      borderSide: const BorderSide(
-        width: 2,
-        color: AppColors.primaryColor,
+      borderSide: BorderSide(
+        width: 1,
+        color: widget.borderColor ?? AppColors.primaryColor,
       ),
       borderRadius: BorderRadius.circular(widget.borderRadius),
     );
@@ -213,7 +218,9 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     return OutlineInputBorder(
       borderSide: BorderSide(
         width: 1,
-        color: widget.fillColor != null ? Colors.transparent : AppColors.error,
+        color: widget.fillColor != null
+            ? Colors.transparent
+            : AppColors.colorFF6161,
       ),
       borderRadius: BorderRadius.circular(widget.borderRadius),
     );
@@ -225,4 +232,11 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       borderRadius: BorderRadius.circular(widget.borderRadius),
     );
   }
+
+// @override
+// void dispose() {
+//   super.dispose();
+//   _focus.removeListener(_onFocusChange);
+//   _focus.dispose();
+// }
 }

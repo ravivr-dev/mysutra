@@ -6,12 +6,11 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/core/utils/app_helper.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/change_data_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
@@ -145,14 +144,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   component.spacer(height: 12),
                 ],
                 _buildTileCard(
+                    isEmail: false,
                     icon: Assets.iconsPhone,
                     text: 'Mobile number',
-                    subText: '987654123'),
+                    subText: my?.phoneNumber.toString() ?? ''),
                 component.spacer(height: 12),
                 _buildTileCard(
+                    isEmail: true,
                     icon: Assets.iconsEmail,
                     text: 'Email Address',
-                    subText: 'hemuk9720@gmail.com'),
+                    subText: my?.email ?? ''),
               ],
             );
           },
@@ -230,6 +231,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _buildTileCard({
+    required bool isEmail,
     required String icon,
     required String text,
     required String subText,
@@ -248,6 +250,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 component.text(text,
                     style: theme.publicSansFonts.mediumStyle(
                       fontColor: AppColors.grey92,
+                      fontSize: 14,
                     )),
                 component.text(subText,
                     style: theme.publicSansFonts.semiBoldStyle(
@@ -257,11 +260,17 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ],
             ),
           ),
-          component.text('Change',
-              style: theme.publicSansFonts.semiBoldStyle(
-                fontColor: AppColors.color0xFF8338EC,
-                fontSize: 14,
-              )),
+          InkWell(
+            onTap: () {
+              AiloitteNavigation.intentWithData(context,
+                  AppRoutes.changeDataRoute, ChangeDataParams(isEmail));
+            },
+            child: component.text('Change',
+                style: theme.publicSansFonts.semiBoldStyle(
+                  fontColor: AppColors.color0xFF8338EC,
+                  fontSize: 14,
+                )),
+          ),
         ],
       ),
     );

@@ -8,6 +8,7 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
@@ -37,6 +38,14 @@ abstract class UserDataSource {
   Future<MyProfileResponseModel> getProfileDetails();
 
   Future<GenerateUsernameModel> generateUsernames();
+
+  Future<SuccessMessageModel> changePhoneNumber(Map<String, dynamic> map);
+
+  Future<SuccessMessageModel> verifyChangePhoneNumber(Map<String, dynamic> map);
+
+  Future<SuccessMessageModel> changeEmail(Map<String, dynamic> map);
+
+  Future<SuccessMessageModel> verifyChangeEmail(Map<String, dynamic> map);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -207,6 +216,70 @@ class UserDataSourceImpl extends UserDataSource {
   Future<GenerateUsernameModel> generateUsernames() async {
     try {
       return await client.generateUserNames().catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessMessageModel> changeEmail(Map<String, dynamic> map) async {
+    try {
+      return await client.changeEmail(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessMessageModel> verifyChangeEmail(Map<String, dynamic> map) async {
+    try {
+      return await client.verifyChangeEmail(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessMessageModel> changePhoneNumber(Map<String, dynamic> map) async {
+    try {
+      return await client.changePhoneNumber(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessMessageModel> verifyChangePhoneNumber(Map<String, dynamic> map) async {
+    try {
+      return await client.verifyChangePhoneNumber(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

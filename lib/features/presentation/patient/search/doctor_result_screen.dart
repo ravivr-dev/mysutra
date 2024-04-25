@@ -1,10 +1,13 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -59,15 +62,32 @@ class DoctorResultScreen extends StatelessWidget {
                   )),
             ),
             component.spacer(height: 12),
-            Row(
-              children: [
-                Expanded(
-                    child: _buildFollowButton(
-                        context: context,
-                        isFollowed: doctorEntity.isFollowing!)),
-                component.spacer(width: 12),
-                Expanded(child: _buildBookAppointmentButton(context)),
-              ],
+            BlocConsumer<SearchDoctorCubit, SearchDoctorState>(
+              listener: (context, state) {
+                if (state is FollowDoctorSuccessState) {
+                  doctorEntity.reInitIsFollowing();
+                }
+              },
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    Expanded(
+                        child: InkWell(
+                      onTap: () {
+                        context.read<SearchDoctorCubit>().followDoctor(
+                            params:
+                                FollowDoctorParams(doctorId: doctorEntity.id!));
+                        // doctorEntity.reInitIsFollowing();
+                      },
+                      child: _buildFollowButton(
+                          context: context,
+                          isFollowed: doctorEntity.isFollowing!),
+                    )),
+                    component.spacer(width: 12),
+                    Expanded(child: _buildBookAppointmentButton(context)),
+                  ],
+                );
+              },
             ),
             component.spacer(height: 24),
             Row(children: [
