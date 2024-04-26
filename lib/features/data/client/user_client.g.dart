@@ -52,13 +52,13 @@ class _UserRestClient implements UserRestClient {
   }
 
   @override
-  Future<UserModel> verifyOtp(int otp) async {
+  Future<OtpResponseUserModel> verifyOtp(int otp) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'otp': otp};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<OtpResponseUserModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -74,7 +74,7 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = UserModel.fromJson(_result.data!);
+    final value = OtpResponseUserModel.fromJson(_result.data!);
     return value;
   }
 
@@ -106,13 +106,13 @@ class _UserRestClient implements UserRestClient {
   }
 
   @override
-  Future<UserModel> getSelectedUserAccounts(String id) async {
+  Future<OtpResponseUserModel> getSelectedUserAccounts(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'userId': id};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<OtpResponseUserModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -128,7 +128,7 @@ class _UserRestClient implements UserRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = UserModel.fromJson(_result.data!);
+    final value = OtpResponseUserModel.fromJson(_result.data!);
     return value;
   }
 

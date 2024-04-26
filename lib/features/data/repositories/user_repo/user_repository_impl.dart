@@ -53,7 +53,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, UserModel>> verifyOtp(int otp) async {
+  Future<Either<Failure, OtpResponseUserModel>> verifyOtp(int otp) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.verifyOtp(otp);

@@ -56,13 +56,14 @@ abstract class UserRestClient {
   );
 
   @POST(EndPoints.verifyOtp)
-  Future<UserModel> verifyOtp(@Field("otp") int otp);
+  Future<OtpResponseUserModel> verifyOtp(@Field("otp") int otp);
 
   @GET(EndPoints.accounts)
   Future<UserAccountsModel> getUserAccounts();
 
   @POST(EndPoints.accounts)
-  Future<UserModel> getSelectedUserAccounts(@Field("userId") String id);
+  Future<OtpResponseUserModel> getSelectedUserAccounts(
+      @Field("userId") String id);
 
   @GET(EndPoints.userSpecialization)
   Future<SpecializationModel> getSpecialisation(

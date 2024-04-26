@@ -18,7 +18,7 @@ final class ResendRegOtpSuccess extends OtpState {
 }
 
 final class OtpSuccess extends OtpState {
-  final UserModel data;
+  final OtpResponseUserModel data;
 
   OtpSuccess(this.data);
 }

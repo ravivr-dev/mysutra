@@ -55,7 +55,7 @@ class Routes {
       case AppRoutes.createAccountRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<RegistrationCubit>()..generateUsernames(),
+            create: (context) => sl<RegistrationCubit>(),
             child: CreateAccountScreen(
               profession: args as String,
             ),
