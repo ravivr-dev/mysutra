@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
@@ -101,4 +102,24 @@ abstract class UserRestClient {
 
   @GET(EndPoints.userHome)
   Future<HomeResponseModel> getHomeData();
+
+  @PATCH(EndPoints.changeEmail)
+  Future<SuccessMessageModel> changeEmail(
+    @Body() Map<String, dynamic> map,
+  );
+
+  @PATCH(EndPoints.verifyChangeEmail)
+  Future<SuccessMessageModel> verifyChangeEmail(
+    @Body() Map<String, dynamic> map,
+  );
+
+  @PATCH(EndPoints.changePhoneNumber)
+  Future<SuccessMessageModel> changePhoneNumber(
+    @Body() Map<String, dynamic> map,
+  );
+
+  @PATCH(EndPoints.verifyChangePhoneNumber)
+  Future<SuccessMessageModel> verifyChangePhoneNumber(
+    @Body() Map<String, dynamic> map,
+  );
 }

@@ -16,7 +16,7 @@ final class FollowDoctorLoading extends SearchDoctorState {}
 
 final class FollowDoctorSuccessState extends SearchDoctorState {
   final FollowEntity followEntity;
-  final int followedDoctorIndex;
+  final int? followedDoctorIndex;
   FollowDoctorSuccessState({
     required this.followEntity,
     required this.followedDoctorIndex,

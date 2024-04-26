@@ -52,3 +52,45 @@ final class GetDoctorFollowingErrorState extends ProfileState {
 
   GetDoctorFollowingErrorState({required this.message});
 }
+
+final class ChangePhoneNumberLoadingState extends ProfileState {}
+
+final class ChangePhoneNumberLoadedState extends ProfileState {
+  final String message;
+
+  ChangePhoneNumberLoadedState({required this.message});
+}
+
+final class ChangePhoneNumberErrorState extends ProfileState {
+  final String message;
+
+  ChangePhoneNumberErrorState({required this.message});
+}
+
+final class ChangeEmailLoadingState extends ProfileState {}
+
+final class ChangeEmailLoadedState extends ProfileState {
+  final String message;
+
+  ChangeEmailLoadedState({required this.message});
+}
+
+final class ChangeEmailErrorState extends ProfileState {
+  final String message;
+
+  ChangeEmailErrorState({required this.message});
+}
+
+final class VerifyChangeLoadingState extends ProfileState {}
+
+final class VerifyChangeLoadedState extends ProfileState {
+  final String message;
+
+  VerifyChangeLoadedState({required this.message});
+}
+
+final class VerifyChangeErrorState extends ProfileState {
+  final String message;
+
+  VerifyChangeErrorState({required this.message});
+}

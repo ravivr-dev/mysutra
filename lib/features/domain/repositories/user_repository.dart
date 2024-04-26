@@ -6,6 +6,8 @@ import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import '../entities/user_entities/my_profile_entity.dart';
 import '../entities/user_entities/user_entity.dart';
@@ -33,4 +35,13 @@ abstract class UserRepository {
       String userName);
 
   Future<Either<Failure, UserEntity>> getHomeData();
+
+  Future<Either<Failure, String>> changeEmail(ChangeEmailParams params);
+
+  Future<Either<Failure, String>> verifyChangeEmail(int otp);
+
+  Future<Either<Failure, String>> changePhoneNumber(
+      ChangePhoneNumberParams params);
+
+  Future<Either<Failure, String>> verifyChangePhoneNumber(int otp);
 }

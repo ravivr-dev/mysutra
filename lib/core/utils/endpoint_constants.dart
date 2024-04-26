@@ -30,4 +30,8 @@ class EndPoints {
   static const String userProfile = '/user/profile';
   static const String generateUserName = '/user/generate-username';
   static const String userHome = '/user/home';
+  static const String changeEmail = '/user/change-email';
+  static const String verifyChangeEmail = '/user/change-email/verify-otp';
+  static const String changePhoneNumber = '/user/change-phone-number';
+  static const String verifyChangePhoneNumber = '/user/change-phone-number/verify-otp';
 }
