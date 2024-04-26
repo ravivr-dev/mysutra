@@ -99,21 +99,21 @@ abstract class UserRestClient {
 
   @PATCH(EndPoints.changeEmail)
   Future<SuccessMessageModel> changeEmail(
-    @Field() Map<String, dynamic> map,
+    @Body() Map<String, dynamic> map,
   );
 
   @PATCH(EndPoints.verifyChangeEmail)
   Future<SuccessMessageModel> verifyChangeEmail(
-    @Field() Map<String, dynamic> map,
+    @Body() Map<String, dynamic> map,
   );
 
   @PATCH(EndPoints.changePhoneNumber)
   Future<SuccessMessageModel> changePhoneNumber(
-    @Field() Map<String, dynamic> map,
+    @Body() Map<String, dynamic> map,
   );
 
   @PATCH(EndPoints.verifyChangePhoneNumber)
   Future<SuccessMessageModel> verifyChangePhoneNumber(
-    @Field() Map<String, dynamic> map,
+    @Body() Map<String, dynamic> map,
   );
 }

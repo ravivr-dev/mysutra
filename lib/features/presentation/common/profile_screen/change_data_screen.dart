@@ -26,63 +26,63 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        title: widget.args.isEmail
-            ? const Text('Change Email Address')
-            : const Text('Change Mobile Number'),
-        centerTitle: true,
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: showOTP
-            ? CustomButton(
-                text: 'Confirm',
-                onPressed: () {
-                  if (widget.args.isEmail) {
-                    context
-                        .read<ProfileCubit>()
-                        .changeEmail(newEmail: _valCtrl.text);
-                  } else {
-                    context.read<ProfileCubit>().changePhoneNumber(
-                        cc: _ccCtrl.text,
-                        phoneNumber: int.tryParse(_valCtrl.text)!);
-                  }
-                },
-              )
-            : CustomSmallOutlineButton(
-                text: 'Send OTP',
-                onPressed: () {
-                  if (widget.args.isEmail) {
-                    context
-                        .read<ProfileCubit>()
-                        .verifyChangeEmail(otp: int.tryParse(_otpCtrl.text)!);
-                  } else {
-                    context.read<ProfileCubit>().verifyChangePhoneNumber(
-                        otp: int.tryParse(_otpCtrl.text)!);
-                  }
-                },
-              ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, state) {
-          if (state is ChangeEmailLoadedState) {
-            widget.showSuccessToast(context: context, message: state.message);
-            showOTP = true;
-          }
-          if (state is ChangePhoneNumberLoadedState) {
-            widget.showSuccessToast(context: context, message: state.message);
-            showOTP = true;
-          }
-          if (state is VerifyChangeLoadedState) {
-            widget.showSuccessToast(context: context, message: state.message);
-            showOTP = false;
-          }
-        },
-        builder: (context, state) {
-          return SingleChildScrollView(
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is ChangeEmailLoadedState) {
+          widget.showSuccessToast(context: context, message: state.message);
+          showOTP = true;
+        }
+        if (state is ChangePhoneNumberLoadedState) {
+          widget.showSuccessToast(context: context, message: state.message);
+          showOTP = true;
+        }
+        if (state is VerifyChangeLoadedState) {
+          widget.showSuccessToast(context: context, message: state.message);
+          showOTP = false;
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: AppBar(
+            title: widget.args.isEmail
+                ? const Text('Change Email Address')
+                : const Text('Change Mobile Number'),
+            centerTitle: true,
+          ),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: showOTP
+                ? CustomButton(
+                    text: 'Confirm',
+                    onPressed: () {
+                      if (widget.args.isEmail) {
+                        context.read<ProfileCubit>().verifyChangeEmail(
+                            otp: int.tryParse(_otpCtrl.text)!);
+                      } else {
+                        context.read<ProfileCubit>().verifyChangePhoneNumber(
+                            otp: int.tryParse(_otpCtrl.text)!);
+                      }
+                    },
+                  )
+                : CustomSmallOutlineButton(
+                    text: 'Send OTP',
+                    onPressed: () {
+                      if (widget.args.isEmail) {
+                        context
+                            .read<ProfileCubit>()
+                            .changeEmail(newEmail: _valCtrl.text);
+                      } else {
+                        context.read<ProfileCubit>().changePhoneNumber(
+                            cc: _ccCtrl.text,
+                            phoneNumber: int.tryParse(_valCtrl.text)!);
+                      }
+                    },
+                  ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             child: Column(
               children: [
@@ -128,9 +128,9 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                   ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
