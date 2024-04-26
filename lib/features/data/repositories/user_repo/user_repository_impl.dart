@@ -92,6 +92,7 @@ class UserRepositoryImpl extends UserRepository {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getSelectedUserAccounts(id);
+        localDataSource.setAccessToken(result.data!.token!);
 
         return Right(result.data!);
       } else {
