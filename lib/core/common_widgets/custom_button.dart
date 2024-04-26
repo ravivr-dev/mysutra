@@ -1,3 +1,4 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -37,38 +38,35 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.maxFinite,
-      child: ElevatedButton(
-        onPressed: isLoading ? nullPress : onPressed,
-        style: ElevatedButton.styleFrom(
-          maximumSize: height != null ? Size(double.infinity, height!) : null,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 12),
-          ),
-          backgroundColor: buttonColor ?? AppColors.primaryColor,
+    return ElevatedButton(
+      onPressed: isLoading ? nullPress : onPressed,
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(context.screenWidth, height ?? 70),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 30),
         ),
-        child: isLoading
-            ? LoadingAnimationWidget.discreteCircle(
-                color: loaderColor ?? AppColors.white,
-                secondRingColor: AppColors.white.withOpacity(0.7),
-                thirdRingColor: AppColors.white.withOpacity(0.3),
-                size: 22,
-              )
-            : Padding(
-                padding: titlePadding ??
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                child: component.text(
-                  text ?? "",
-                  style: titleStyle ??
-                      theme.publicSansFonts.regularStyle(
-                        fontSize: fontSize ?? 18,
-                        height: 22,
-                        fontColor: textColor ?? AppColors.white,
-                      ),
-                ),
-              ),
+        backgroundColor: buttonColor ?? AppColors.primaryColor,
       ),
+      child: isLoading
+          ? LoadingAnimationWidget.discreteCircle(
+              color: loaderColor ?? AppColors.white,
+              secondRingColor: AppColors.white.withOpacity(0.7),
+              thirdRingColor: AppColors.white.withOpacity(0.3),
+              size: 22,
+            )
+          : Padding(
+              padding: titlePadding ??
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              child: component.text(
+                text ?? "",
+                style: titleStyle ??
+                    theme.publicSansFonts.semiBoldStyle(
+                      fontSize: fontSize,
+                      height: 22,
+                      fontColor: textColor ?? AppColors.white,
+                    ),
+              ),
+            ),
     );
   }
 
