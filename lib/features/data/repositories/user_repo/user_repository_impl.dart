@@ -98,6 +98,7 @@ class UserRepositoryImpl extends UserRepository {
         final result = await remoteDataSource.getSelectedUserAccounts(id);
         localDataSource.setAccessToken(result.data!.token!);
         localDataSource.setIsAccountSelected(true);
+        localDataSource.setUserRole(result.data?.role ?? "");
 
         return Right(result.data!);
       } else {
