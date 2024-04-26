@@ -6,6 +6,8 @@ class MySharedPref {
   static const accessToken = "access_token";
   static const userRole = "role";
   static const isDoctorVerified = 'is_doctor_verified';
+  static const _totalAccount = 'total_account';
+  static const _isAccountSelected = 'is_account_selected';
 
   final SharedPreferences _pref;
 
@@ -27,10 +29,28 @@ class MySharedPref {
     return _pref.getBool(isDoctorVerified);
   }
 
+  void setTotalUserAccounts(int totalAccount) {
+    _pref.setInt(_totalAccount, totalAccount);
+  }
+
+  int? get getTotalUserAccounts {
+    return _pref.getInt(_totalAccount);
+  }
+
+  void setIsAccountSelected(bool isSelected) {
+    _pref.setBool(_isAccountSelected, isSelected);
+  }
+
+  bool? get getIsAccountSelected {
+    return _pref.getBool(_isAccountSelected);
+  }
+
   void logout() {
     _pref.remove(accessToken);
     _pref.remove(userRole);
     _pref.remove(isDoctorVerified);
+    _pref.remove(_totalAccount);
+    _pref.remove(_isAccountSelected);
   }
 
   String? getUserRole() {

@@ -7,6 +7,7 @@ import 'package:my_sutra/core/common_widgets/custom_otp_field.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
+import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/verification_pending_bottom_sheet.dart';
 import '../../../../injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -68,7 +69,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     context: context, message: state.data.message ?? "");
 
                 if (state.data.totalUserAccounts == 1 ||
-                    widget.loginData != null) {
+                    widget.regData != null) {
                   if (state.data.data?.isVerified ?? true) {
                     AiloitteNavigation.intentWithClearAllRoutes(
                         context, AppRoutes.homeRoute);

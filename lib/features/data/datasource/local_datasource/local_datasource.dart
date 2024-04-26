@@ -14,6 +14,14 @@ abstract class LocalDataSource {
 
   bool get getIsDoctorVerified;
 
+  void setTotalUserAccounts(int totalAccount);
+
+  int? get getTotalUserAccounts;
+
+  void setIsAccountSelected(bool isSelected);
+
+  bool? get getIsAccountSelected;
+
   logout();
 }
 
@@ -53,5 +61,21 @@ class LocalDataSourceImpl extends LocalDataSource {
   @override
   void setIsDoctorVerified(bool isVerified) {
     return mySharedPref.setIsDoctorVerified(isVerified);
+  }
+
+  @override
+  int? get getTotalUserAccounts => mySharedPref.getTotalUserAccounts;
+
+  @override
+  void setTotalUserAccounts(int totalAccount) {
+    mySharedPref.setTotalUserAccounts(totalAccount);
+  }
+
+  @override
+  bool? get getIsAccountSelected => mySharedPref.getIsAccountSelected;
+
+  @override
+  void setIsAccountSelected(bool isSelected) {
+    return mySharedPref.setIsAccountSelected(isSelected);
   }
 }

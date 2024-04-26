@@ -32,27 +32,30 @@ class UserData {
   String? createdAt;
   String? updatedAt;
   String? token;
+  String? age;
 
-  UserData(
-      {this.id,
-      this.role,
-      this.profilePic,
-      this.fullName,
-      this.countryCode,
-      this.phoneNumber,
-      this.email,
-      this.specializationId,
-      this.specializationName,
-      this.registrationNumber,
-      this.socialProfileUrls,
-      this.dob,
-      this.gender,
-      this.location,
-      this.isVerified,
-      this.isBlocked,
-      this.createdAt,
-      this.updatedAt,
-      this.token});
+  UserData({
+    this.id,
+    this.role,
+    this.profilePic,
+    this.fullName,
+    this.countryCode,
+    this.phoneNumber,
+    this.email,
+    this.specializationId,
+    this.specializationName,
+    this.registrationNumber,
+    this.socialProfileUrls,
+    this.dob,
+    this.gender,
+    this.location,
+    this.isVerified,
+    this.isBlocked,
+    this.createdAt,
+    this.updatedAt,
+    this.token,
+    required this.age,
+  });
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -74,5 +77,6 @@ class UserData {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     token = json['token'];
+    age = json['age'];
   }
 }
