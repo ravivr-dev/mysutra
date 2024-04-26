@@ -17,6 +17,7 @@ class Assets {
   static const String i18nEn = 'assets/i18n/en.json';
   static const String iconsArrowForward = 'assets/icons/arrow_forward.svg';
   static const String iconsCalendar = 'assets/icons/calendar.svg';
+  static const String iconsCalendar2 = 'assets/icons/calendar2.svg';
   static const String iconsCall = 'assets/icons/call.svg';
   static const String iconsCallReceivedIcon = 'assets/icons/call_received_icon.svg';
   static const String iconsChat = 'assets/icons/chat.svg';
@@ -48,6 +49,7 @@ class Assets {
   static const String iconsMedal = 'assets/icons/medal.svg';
   static const String iconsPayment = 'assets/icons/payment.svg';
   static const String iconsPhone = 'assets/icons/phone.svg';
+  static const String iconsPhone2 = 'assets/icons/phone2.svg';
   static const String iconsReport = 'assets/icons/report.svg';
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSetting = 'assets/icons/setting.svg';
@@ -61,6 +63,7 @@ class Assets {
   static const String iconsUserCircle = 'assets/icons/user_circle.svg';
   static const String iconsVerify = 'assets/icons/verify.svg';
   static const String iconsVideo = 'assets/icons/video.svg';
+  static const String iconsVideo2 = 'assets/icons/video2.svg';
   static const String iconsVideoCallIcon = 'assets/icons/video_call_icon.svg';
   static const String iconsVirus = 'assets/icons/virus.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';

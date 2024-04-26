@@ -6,6 +6,7 @@ import 'package:my_sutra/features/data/model/user_models/following_response_mode
 import 'package:retrofit/http.dart';
 import '../../../core/utils/constants.dart';
 import '../datasource/local_datasource/local_datasource.dart';
+import '../model/doctor_models/get_doctor_appointment_model.dart';
 import '../model/doctor_models/get_time_slots_response_model.dart';
 import '../model/patient_models/get_patient_response_model.dart';
 import '../model/user_models/home_response_model.dart';
@@ -59,4 +60,8 @@ abstract class DoctorClient {
 
   @GET(EndPoints.home)
   Future<HomeResponseModel> getUserDetails();
+
+  @GET(EndPoints.doctorAppointments)
+  Future<GetDoctorAppointmentModel> getAppointments(
+      @Queries() Map<String, dynamic> map);
 }

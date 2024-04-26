@@ -41,6 +41,7 @@ class Constants {
   static const String count = 'count';
   static const String data = 'data';
   static const String doctorId = 'doctorId';
+  static const String reason = 'reason';
 
   //User Constants
   static const String user = 'user';
@@ -56,6 +57,9 @@ class Constants {
 
   //Doctor Constants
   static const String userId = 'userId';
+  static const String totalAppointments = 'totalAppointments';
+  static const String completedAppointments = 'completedAppointments';
+  static const String pendingAppointments = 'pendingAppointments';
 
 //
 }
