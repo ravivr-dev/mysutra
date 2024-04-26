@@ -38,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     '30 min',
     '60 min',
     '90 min',
-    '120 min'
+    // '120 min'
   ];
   final List<TimeOfDay> _timeOptions = [];
 
