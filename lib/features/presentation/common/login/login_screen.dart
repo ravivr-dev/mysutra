@@ -52,8 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state is LoginError) {
                 widget.showErrorToast(context: context, message: state.error);
               } else if (state is LoginSuccess) {
-                widget.showSuccessToast(
-                    context: context, message: state.message);
+                // widget.showSuccessToast(
+                //     context: context, message: state.message);
                 showOtpBottomSheet();
               }
             },
