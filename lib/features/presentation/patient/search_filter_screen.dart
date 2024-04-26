@@ -66,23 +66,23 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
             component.spacer(height: 30),
             _buildReviewWidget(star: 1),
             component.spacer(height: 30),
-            _buildHeader(value: context.stringForKey(StringKeys.location)),
-            component.spacer(height: 16),
-            _buildTextField(),
-            component.spacer(height: 8),
-            Row(
-              children: [
-                component.assetImage(path: Assets.iconsGps),
-                component.spacer(width: 8),
-                component.text(
-                    context.stringForKey(StringKeys.detectMyLocation),
-                    style: theme.publicSansFonts.semiBoldStyle(
-                      fontSize: 16,
-                      fontColor: AppColors.color0xFF8338EC,
-                    ))
-              ],
-            ),
-            component.spacer(height: 30),
+            // _buildHeader(value: context.stringForKey(StringKeys.location)),
+            // component.spacer(height: 16),
+            // _buildTextField(),
+            // component.spacer(height: 8),
+            // Row(
+            //   children: [
+            //     component.assetImage(path: Assets.iconsGps),
+            //     component.spacer(width: 8),
+            //     component.text(
+            //         context.stringForKey(StringKeys.detectMyLocation),
+            //         style: theme.publicSansFonts.semiBoldStyle(
+            //           fontSize: 16,
+            //           fontColor: AppColors.color0xFF8338EC,
+            //         ))
+            //   ],
+            // ),
+            // component.spacer(height: 30),
             _buildHeader(
                 value: context.stringForKey(StringKeys.yearOfExperience)),
             component.spacer(height: 16),
