@@ -180,6 +180,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                       }
                     },
                   ),
+                  component.spacer(height: 20),
                 ],
               ),
             ),
