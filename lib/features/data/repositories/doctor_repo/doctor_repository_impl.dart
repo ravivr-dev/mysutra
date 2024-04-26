@@ -86,7 +86,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, List<GetTimeSlotsResponseDataEntity>>> getTimeSlots(
+  Future<Either<Failure, GetTimeSlotsResponseEntity>> getTimeSlots(
       GetTimeSlotsParams data) async {
     try {
       if (await networkInfo.isConnected) {
@@ -95,8 +95,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
           'limit': data.limit,
         });
 
-        return Right(
-            DoctorRepositoryConv.getTimeSlotsResponseModelListToEntity(result.list));
+        return Right(DoctorRepositoryConv.convertTimeSlotModelToEntity(result));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

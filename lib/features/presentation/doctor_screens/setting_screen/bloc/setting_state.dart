@@ -27,9 +27,9 @@ final class UpdateAboutOrFeesErrorState extends SettingState {
 final class GetTimeSlotsLoadingState extends SettingState {}
 
 final class GetTimeSlotsSuccessState extends SettingState {
-  List<GetTimeSlotsResponseDataEntity> list;
+  GetTimeSlotsResponseEntity entity;
   GetTimeSlotsSuccessState({
-    required this.list,
+    required this.entity,
   });
 }
 

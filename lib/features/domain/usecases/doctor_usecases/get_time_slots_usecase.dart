@@ -5,13 +5,13 @@ import '../../../../core/usecase/usecase.dart';
 import '../../entities/doctor_entities/get_time_slots_response_data_entity.dart';
 
 class GetTimeSlotsUseCase
-    extends UseCase<List<GetTimeSlotsResponseDataEntity>, GetTimeSlotsParams> {
+    extends UseCase<GetTimeSlotsResponseEntity, GetTimeSlotsParams> {
   final DoctorRepository _doctorRepository;
 
   GetTimeSlotsUseCase(this._doctorRepository);
 
   @override
-  Future<Either<Failure, List<GetTimeSlotsResponseDataEntity>>> call(
+  Future<Either<Failure, GetTimeSlotsResponseEntity>> call(
       GetTimeSlotsParams params) {
     return _doctorRepository.getTimeSlots(params);
   }

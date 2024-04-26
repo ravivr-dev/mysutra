@@ -1,3 +1,13 @@
+class GetTimeSlotsResponseEntity {
+  final int? fees;
+  final List<GetTimeSlotsResponseDataEntity> list;
+
+  GetTimeSlotsResponseEntity({
+    required this.fees,
+    required this.list,
+  });
+}
+
 class GetTimeSlotsResponseDataEntity {
   String? id;
   String? userId;

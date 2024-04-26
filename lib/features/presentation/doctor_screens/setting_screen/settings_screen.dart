@@ -104,11 +104,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             } else if (state is UpdateAboutOrFeesErrorState) {
               _showToast(message: state.message);
             } else if (state is GetTimeSlotsSuccessState) {
-              if (state.list.isNotEmpty) {
-                _initSelectedDuration(state.list[0].slotType ?? '30_MINS');
-                _initSelectedDays(state.list);
-                _initTimingController(state.list);
+              _feesController.text = '${state.entity.fees ?? ''}';
+              if (state.entity.list.isNotEmpty) {
+                _initSelectedDuration(
+                    state.entity.list[0].slotType ?? '30_MINS');
+                _initSelectedDays(state.entity.list);
+                _initTimingController(state.entity.list);
               }
+            } else if (state is GetTimeSlotsErrorState) {
+              _showToast(message: state.message);
             }
           },
           builder: (BuildContext context, SettingState state) {

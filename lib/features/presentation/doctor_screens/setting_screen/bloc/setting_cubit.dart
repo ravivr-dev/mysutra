@@ -39,6 +39,6 @@ class SettingCubit extends Cubit<SettingState> {
     final result = await getTimeSlotsUseCase
         .call(GetTimeSlotsParams(pagination: pagination, limit: limit));
     result.fold((l) => emit(GetTimeSlotsErrorState(message: l.message)),
-        (r) => emit(GetTimeSlotsSuccessState(list: r)));
+        (r) => emit(GetTimeSlotsSuccessState(entity: r)));
   }
 }
