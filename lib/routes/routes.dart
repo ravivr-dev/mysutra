@@ -77,10 +77,10 @@ class Routes {
           builder: (_) => const FindDoctorScreen(),
         );
 
-      case AppRoutes.searchDoctorRoute:
-        return MaterialPageRoute(
-          builder: (_) => const AppointmentScreen(),
-        );
+      // case AppRoutes.searchDoctorRoute:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AppointmentScreen(),
+      //   );
 
       case AppRoutes.searchResultRoute:
         return MaterialPageRoute(
