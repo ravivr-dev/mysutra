@@ -24,7 +24,7 @@ import 'package:my_sutra/features/presentation/patient/schedule_appointment_scre
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/doctor_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
-import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
+import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/booking_successful_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
 import 'package:my_sutra/injection_container.dart';
@@ -136,6 +136,8 @@ class Routes {
       case AppRoutes.doctorPastAppointment:
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
+      case AppRoutes.searchFilterScreen:
+        return MaterialPageRoute(builder: (_) => const SearchFilterScreen());
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
