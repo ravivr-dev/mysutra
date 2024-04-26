@@ -235,7 +235,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       suggestions: specialisationList
                           .map((e) => SearchFieldListItem(e.name,
                               item: e.id,
-                              child: Text(
+                              child: component.text(
                                 e.name.capitalizeFirstLetterOfSentence,
                                 style: theme.publicSansFonts.regularStyle(
                                     fontSize: 18, fontColor: AppColors.black49),
@@ -282,8 +282,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     TextFormFieldWidget(
                       title: "Social Profile URL",
                       controller: _socialCtrl,
-                      validator: (value) =>
-                          value.isEmpty ? 'Please Enter Social Profile URL' : null,
+                      validator: (value) => value.isEmpty
+                          ? 'Please Enter Social Profile URL'
+                          : null,
                       suffixWidget: IconButton(
                         color: AppColors.primaryColor,
                         onPressed: () {
