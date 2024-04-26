@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_sutra/core/common_widgets/time_container.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
 
 import '../../../../../../ailoitte_component_injector.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../generated/assets.dart';
 
 class PatientAppointmentBottomSheet extends StatelessWidget {
-  const PatientAppointmentBottomSheet({super.key});
+  const PatientAppointmentBottomSheet({super.key, required this.entity});
+
+  final AppointmentEntity entity;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  component.text('Anika Rawat',
+                  component.text(entity.username,
                       style: theme.publicSansFonts.mediumStyle(
                         fontSize: 16,
                       )),
@@ -32,7 +35,7 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
                     children: [
                       component.assetImage(path: Assets.iconsPhone2),
                       component.spacer(width: 2),
-                      component.text('+91 9898767656',
+                      component.text('${entity.countryCode} ${entity.phoneNumber}',
                           style: theme.publicSansFonts.regularStyle(
                             fontColor: AppColors.black81,
                           ))
@@ -40,12 +43,12 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
                   )
                 ],
               ),
-              TimeContainer(time:'')
+              const TimeContainer(time: 'Nov 24, 9:00 AM'),
             ],
           ),
           component.spacer(height: 4),
           component.text(
-            'Reason for visit here',
+            entity.reason,
             style: theme.publicSansFonts.regularStyle(
               fontColor: AppColors.black81,
             ),
@@ -57,7 +60,10 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
           _buildDivider(),
           _buildItems(text: 'View patient history'),
           _buildDivider(),
-          _buildItems(text: 'Reschedule Appointment'),
+          InkWell(
+            onTap: () {},
+            child: _buildItems(text: 'Reschedule Appointment'),
+          ),
           _buildDivider(),
           _buildItems(
               text: 'Cancel Appointment', textColor: AppColors.color0xFFFF1100),

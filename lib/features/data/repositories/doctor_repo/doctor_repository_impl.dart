@@ -11,7 +11,9 @@ import 'package:my_sutra/features/domain/entities/patient_entities/patient_entit
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -97,8 +99,8 @@ class DoctorRepositoryImpl extends DoctorRepository {
           'limit': data.limit,
         });
 
-        return Right(
-            DoctorRepositoryConv.getTimeSlotsResponseModelListToEntity(result.list));
+        return Right(DoctorRepositoryConv.getTimeSlotsResponseModelListToEntity(
+            result.list));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
@@ -108,7 +110,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
   }
 
   @override
-  Future<Either<Failure,UserEntity>> getUserDetails() async{
+  Future<Either<Failure, UserEntity>> getUserDetails() async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getUserDetails();
@@ -123,7 +125,8 @@ class DoctorRepositoryImpl extends DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, List<FollowerEntity>>> getFollowings(GetFollowingParams data) async {
+  Future<Either<Failure, List<FollowerEntity>>> getFollowings(
+      GetFollowingParams data) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getFollowing({
@@ -154,6 +157,43 @@ class DoctorRepositoryImpl extends DoctorRepository {
 
         return Right(
             DoctorRepositoryConv.convertDoctorAppointmentModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> cancelAppointment(
+      CancelAppointmentParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource
+            .cancelAppointment({'appointmentId': params.appointmentId});
+
+        return Right(result.message ?? 'Appointment Cancel Success');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> rescheduleAppointment(
+      RescheduleAppointmentParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.rescheduleAppointment({
+          'appointmentId': params.appointmentId,
+          'date': params.date,
+          'time': params.time
+        });
+
+        return Right(result.message ?? 'Appointment Reschedule Success');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

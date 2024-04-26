@@ -4,7 +4,9 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/reschedule_appointment_usecase.dart';
 import '../entities/doctor_entities/get_doctor_appointment_entity.dart';
 import '../usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 import '../usecases/doctor_usecases/get_patient_usecase.dart';
@@ -31,4 +33,10 @@ abstract class DoctorRepository {
 
   Future<Either<Failure, GetDoctorAppointmentEntity>> getAppointments(
       GetDoctorAppointmentsParams data);
+
+  Future<Either<Failure, String>> cancelAppointment(
+      CancelAppointmentParams params);
+
+  Future<Either<Failure, String>> rescheduleAppointment(
+      RescheduleAppointmentParams params);
 }

@@ -52,8 +52,10 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
                     fontSize: 16,
                   )),
               InkWell(
-                  onTap: () => context
-                      .showBottomSheet(const PatientAppointmentBottomSheet()),
+                  onTap: () =>
+                      context.showBottomSheet(PatientAppointmentBottomSheet(
+                        entity: entity,
+                      )),
                   child: const Icon(Icons.more_horiz,
                       color: AppColors.color0xFFC4C4C4))
             ],
