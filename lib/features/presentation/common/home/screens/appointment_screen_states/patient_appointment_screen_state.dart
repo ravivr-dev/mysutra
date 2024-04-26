@@ -16,7 +16,7 @@ class _PatientAppointmentState extends _AppointmentScreenState {
         return Column(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 40),
+              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
               decoration: AppDeco.drawerDecoration,
               width: context.screenWidth,
               child: Column(
@@ -27,6 +27,7 @@ class _PatientAppointmentState extends _AppointmentScreenState {
                   const SizedBox(height: 16),
                   SearchWithFilter(
                     onTapFilter: () {},
+                    hintText: 'Search for doctors',
                     onTap: _navigateToSearchDoctorScreen,
                   ),
                   const SizedBox(height: 32),
@@ -81,8 +82,7 @@ class _PatientAppointmentState extends _AppointmentScreenState {
                                     component.text(
                                       "Dr. ${appointment.fullName}",
                                       style: theme.publicSansFonts.mediumStyle(
-                                          fontSize: 12,
-                                          height: 20,
+                                          fontSize: 16,
                                           fontColor: AppColors.blackColor),
                                     ),
                                     const SizedBox(width: 5),
@@ -93,18 +93,16 @@ class _PatientAppointmentState extends _AppointmentScreenState {
                                 component.text(
                                   appointment.specialization,
                                   style: theme.publicSansFonts.regularStyle(
-                                      fontSize: 10,
-                                      height: 20,
                                       fontColor: AppColors.black81),
                                 ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 8),
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     color: AppColors.blackF2,
                                   ),
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -116,10 +114,6 @@ class _PatientAppointmentState extends _AppointmentScreenState {
                                       const SizedBox(width: 5),
                                       component.text(
                                         "${_getLocalTime(appointment.date)}, ${appointment.time}",
-                                        style: theme.publicSansFonts
-                                            .regularStyle(
-                                                fontSize: 10,
-                                                fontColor: AppColors.black64),
                                       ),
                                     ],
                                   ),
