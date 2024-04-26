@@ -14,6 +14,7 @@ import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 
 import '../model/user_models/generate_username_model.dart';
+import '../model/user_models/home_response_model.dart';
 import '../model/user_models/my_profile_model.dart';
 
 part 'user_client.g.dart';
@@ -94,5 +95,9 @@ abstract class UserRestClient {
   Future<MyProfileResponseModel> getProfileDetails();
 
   @GET(EndPoints.generateUserName)
-  Future<GenerateUsernameModel> generateUserNames();
+  Future<GenerateUsernameModel> generateUserNames(
+      @Query('username') String username);
+
+  @GET(EndPoints.userHome)
+  Future<HomeResponseModel> getHomeData();
 }

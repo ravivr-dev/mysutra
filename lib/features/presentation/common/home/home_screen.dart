@@ -21,9 +21,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedScreen = 0;
 
-  final List<Widget> _screens = [
+  late final List<Widget> _screens = [
     BlocProvider<HomeCubit>(
-      create: (BuildContext context) => sl<HomeCubit>(),
+      create: (BuildContext context) => sl<HomeCubit>()..getHomeData(),
       child: const AppointmentScreen(),
     ),
     const PostScreen(),

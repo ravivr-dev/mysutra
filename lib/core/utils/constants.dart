@@ -54,6 +54,9 @@ class Constants {
   static const String email = 'email';
   static const String fees = 'fees';
   static const String about = 'about';
+  static const String gender = 'gender';
+  static const String age = 'age';
+  static const String userNameAvailable = 'userNameAvailable';
 
   //Doctor Constants
   static const String userId = 'userId';

@@ -2,10 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 
 import '../../../../domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import '../../../../domain/entities/patient_entities/appointment_entity.dart';
-import '../../../../domain/usecases/doctor_usecases/get_user_details_usercase.dart';
 import '../../../../domain/usecases/patient_usecases/get_appointments_usecase.dart';
 
 part 'home_state.dart';
@@ -13,13 +13,13 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final LocalDataSource localDataSource;
   final GetAppointmentUseCase getAppointmentUseCase;
-  final GetUserDetailsUseCase getUserDetailsUseCase;
+  final GetHomeDataUseCase getHomeDataUseCase;
   final GetDoctorAppointmentsUseCase getDoctorAppointmentUseCase;
 
   HomeCubit({
     required this.localDataSource,
     required this.getAppointmentUseCase,
-    required this.getUserDetailsUseCase,
+    required this.getHomeDataUseCase,
     required this.getDoctorAppointmentUseCase,
   }) : super(HomeInitial());
 
@@ -34,11 +34,11 @@ class HomeCubit extends Cubit<HomeState> {
         (r) => emit(GetAppointmentsSuccessState(appointmentEntities: r)));
   }
 
-  void getUserDetails() async {
-    emit(GetUserDetailsLoadingState());
-    final result = await getUserDetailsUseCase.call();
-    result.fold((l) => emit(GetUserDetailsErrorState(message: l.message)),
-        (r) => emit(GetUserDetailsSuccessState(entity: r)));
+  void getHomeData() async {
+    emit(GetHomeDataLoadingState());
+    final result = await getHomeDataUseCase.call();
+    result.fold((l) => emit(GetHomeDataErrorState(message: l.message)),
+        (r) => emit(GetHomeDataSuccessState(entity: r)));
   }
 
   void getDoctorAppointments({

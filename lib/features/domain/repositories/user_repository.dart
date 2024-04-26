@@ -8,6 +8,7 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import '../entities/user_entities/my_profile_entity.dart';
+import '../entities/user_entities/user_entity.dart';
 
 abstract class UserRepository {
   Future<Either<Failure, String>> login(
@@ -28,5 +29,8 @@ abstract class UserRepository {
 
   Future<Either<Failure, MyProfileEntity>> getProfileDetails();
 
-  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames();
+  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames(
+      String userName);
+
+  Future<Either<Failure, UserEntity>> getHomeData();
 }

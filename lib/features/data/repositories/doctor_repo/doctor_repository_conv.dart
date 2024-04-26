@@ -24,9 +24,14 @@ class DoctorRepositoryConv {
         .toList();
   }
 
-  static List<GetTimeSlotsResponseDataEntity>
-      getTimeSlotsResponseModelListToEntity(
-          List<GetTimeSlotsResponseData> model) {
+  static GetTimeSlotsResponseEntity convertTimeSlotModelToEntity(
+      GetTimeSlotsResponseModel data) {
+    return GetTimeSlotsResponseEntity(
+        fees: data.fees, list: convertTimeSlotModelListToEntity(data.list));
+  }
+
+  static List<GetTimeSlotsResponseDataEntity> convertTimeSlotModelListToEntity(
+      List<GetTimeSlotsResponseData> model) {
     return model
         .map((e) => GetTimeSlotsResponseDataEntity(
               id: e.id,

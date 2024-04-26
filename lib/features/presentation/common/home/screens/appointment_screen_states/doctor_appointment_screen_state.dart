@@ -4,35 +4,28 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
   GetDoctorAppointmentEntity? entity;
 
   @override
-  Widget _buildBody() {
-    return BlocConsumer<HomeCubit, HomeState>(
-      listener: (context, state) {
-        if (state is GetDoctorAppointmentSuccessState) {
-          _isLoading = false;
-          entity = state.entity;
-        }
-      },
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeaderWidget(),
-            _buildAppointmentRequestWidget(),
-            _buildAppointmentDateWidget(),
-            ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (_, index) {
-                return _buildAppointmentWidget(entity!.list[index]);
-              },
-              separatorBuilder: (_, __) {
-                return component.spacer(height: 12);
-              },
-              itemCount: entity?.list.length ?? 0,
-            )
-          ],
-        );
-      },
+  Widget _buildBody(HomeState state) {
+    if (state is GetDoctorAppointmentSuccessState) {
+      entity = state.entity;
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildHeaderWidget(),
+        _buildAppointmentRequestWidget(),
+        _buildAppointmentDateWidget(),
+        ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (_, index) {
+            return _buildAppointmentWidget(entity!.list[index]);
+          },
+          separatorBuilder: (_, __) {
+            return component.spacer(height: 12);
+          },
+          itemCount: entity?.list.length ?? 0,
+        )
+      ],
     );
   }
 

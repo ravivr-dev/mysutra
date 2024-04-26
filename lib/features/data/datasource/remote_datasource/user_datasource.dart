@@ -36,7 +36,9 @@ abstract class UserDataSource {
 
   Future<MyProfileResponseModel> getProfileDetails();
 
-  Future<GenerateUsernameModel> generateUsernames();
+  Future<GenerateUsernameModel> generateUsernames(String userName);
+
+  Future<HomeResponseModel> getHomeData();
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -206,7 +208,23 @@ class UserDataSourceImpl extends UserDataSource {
   @override
   Future<GenerateUsernameModel> generateUsernames() async {
     try {
-      return await client.generateUserNames().catchError((err) {
+      return await client.generateUserNames(userName).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<HomeResponseModel> getHomeData() async {
+    try {
+      return await client.getHomeData().catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

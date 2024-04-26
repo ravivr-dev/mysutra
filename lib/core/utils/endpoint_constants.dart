@@ -29,4 +29,5 @@ class EndPoints {
 // user endpoints (these endpoints are common for all type of user (doctor/patient/influencer))
   static const String userProfile = '/user/profile';
   static const String generateUserName = '/user/generate-username';
+  static const String userHome = '/user/home';
 }

@@ -18,6 +18,8 @@ import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entit
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
+import '../../../domain/entities/user_entities/user_entity.dart';
+
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
   final UserDataSource remoteDataSource;
@@ -176,7 +178,13 @@ class UserRepositoryImpl extends UserRepository {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.generateUsernames();
 
-        return Right(GenerateUsernameEntity(userNames: result.userNames));
+  @override
+  Future<Either<Failure, UserEntity>> getHomeData() async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getHomeData();
+
+        return Right(UserRepoConv.userModelToEntity(result.userModel));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

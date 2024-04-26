@@ -1,7 +1,8 @@
 enum UserRole {
   doctor(name: 'DOCTOR'),
   patient(name: 'PATIENT'),
-  influencer(name: 'INFLUENCER');
+  influencer(name: 'INFLUENCER'),
+  guest(name: 'GUEST');
 
   final String name;
 
@@ -14,6 +15,8 @@ enum UserRole {
       return UserRole.patient;
     } else if (role == UserRole.influencer.name) {
       return UserRole.influencer;
+    } else if (role == UserRole.guest.name) {
+      return UserRole.guest;
     }
     throw Exception('There is no User Role matched with this role $role');
   }
