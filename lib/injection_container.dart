@@ -68,7 +68,7 @@ Future<void> init() async {
       getHomeDataUseCase: sl<GetHomeDataUseCase>(),
       getDoctorAppointmentUseCase: sl<GetDoctorAppointmentsUseCase>()));
   sl.registerFactory(() => LoginCubit(sl<LoginUsecase>()));
-  sl.registerLazySingleton(() => SelectAccountCubit(
+  sl.registerFactory(() => SelectAccountCubit(
       sl<SelectAccountUsecase>(), sl<GetSelectedAccountUsecase>()));
   sl.registerFactory(() => OtpCubit(
       sl<LoginUsecase>(), sl<OtpUsecase>(), sl<RegistrationUsecase>()));
