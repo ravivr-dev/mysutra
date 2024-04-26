@@ -77,14 +77,19 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   },
                 ),
                 component.spacer(height: 30),
-                ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: doctorsList.length,
-                    separatorBuilder: (_, __) => component.spacer(height: 12),
-                    itemBuilder: (_, index) {
-                      return _buildCard(doctorsList[index], index);
-                    })
+                if (doctorsList.isEmpty)
+                  component.text('No Data Found',
+                      style: theme.publicSansFonts.mediumStyle(
+                          fontColor: AppColors.grey92, fontSize: 20))
+                else
+                  ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: doctorsList.length,
+                      separatorBuilder: (_, __) => component.spacer(height: 12),
+                      itemBuilder: (_, index) {
+                        return _buildCard(doctorsList[index], index);
+                      })
               ],
             );
           },
