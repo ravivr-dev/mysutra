@@ -16,7 +16,7 @@ class _DashboardHelperItemsState extends State<DashboardHelperItems> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 76,
+      height: 80,
       child: ListView(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
