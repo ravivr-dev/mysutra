@@ -122,7 +122,9 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
             ),
             const SizedBox(height: 8),
             component.text(
-              _userEntity?.fullName ?? _userEntity?.username,
+              (_userEntity?.fullName ?? '').isNotEmpty
+                  ? _userEntity?.fullName
+                  : _userEntity?.username,
               style: theme.publicSansFonts.semiBoldStyle(
                 fontColor: AppColors.blackColor,
                 fontSize: 24,
@@ -140,7 +142,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: component.networkImage(
-                url: _userEntity!.profilePic!,
+                url: _userEntity?.profilePic ?? '',
                 fit: BoxFit.cover,
                 errorWidget: const Icon(Icons.person)),
           ),
