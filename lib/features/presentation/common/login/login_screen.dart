@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          AiloitteNavigation.intentWithClearAllRoutes(
+                          AiloitteNavigation.intent(
                               context, AppRoutes.chooseAccountTypeRoute);
                         },
                         child: Text(
