@@ -12,7 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
+import 'package:my_sutra/core/extension/string_literal.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
@@ -31,7 +33,13 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final List<MessageItemEntity> _chatMessages = [];
+  final ScrollController _scrollController = ScrollController();
+  int _page = 1;
+  int _limit = 10;
+
   List<types.Message> _messages = [];
+
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
   );
@@ -90,6 +98,81 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  void _updateChatListMessageToMessageType() {
+    _chatMessages.forEach((element) {
+      if (element.mediaUrl != null && (element.mediaUrl ?? []).isNotEmpty) {
+        if (element.mediaUrl![0].checkIfFileTypeIsImage) {
+          _messages.add(
+            types.ImageMessage(
+              name: element.mediaUrl![0],
+
+              ///TODO split for name ,
+              size: num.parse(element.mediaUrl![0]),
+              uri: element.mediaUrl![0],
+              author: types.User(
+                id: element.sender?.senderId ?? "",
+                firstName: element.sender?.fullName,
+                // lastName: element.sender?.lastName,
+                imageUrl: element.sender != null &&
+                        element.sender?.profilePic != null &&
+                        element.sender!.profilePic!.trim().isNotEmpty
+                    ? element.sender!.profilePic
+                    : null,
+              ),
+              id: element.id.toString(),
+              createdAt: DateTime.parse(element.createdAt ?? '')
+                  .millisecondsSinceEpoch,
+            ),
+          );
+        } else {
+          _messages.add(
+            types.FileMessage(
+              name: element.mediaUrl![0],
+
+              ///TODO split for name ,
+              size: num.parse(element.mediaUrl![0]),
+              uri: element.mediaUrl![0],
+              author: types.User(
+                id: element.sender?.senderId ?? "",
+                firstName: element.sender?.fullName,
+                // lastName: element.sender?.lastName,
+                imageUrl: element.sender != null &&
+                        element.sender?.profilePic != null &&
+                        (element.sender?.profilePic ?? '').trim().isNotEmpty
+                    ? element.sender?.profilePic ?? ""
+                    : null,
+              ),
+              id: element.id.toString(),
+              createdAt: DateTime.parse(element.createdAt ?? '')
+                  .millisecondsSinceEpoch,
+            ),
+          );
+        }
+      } else {
+        _messages.add(
+          types.TextMessage(
+            author: types.User(
+              id: element.sender?.senderId ?? "",
+              firstName: element.sender?.fullName,
+              // lastName: element.sender?.lastName,
+              imageUrl: element.sender != null &&
+                      element.sender?.profilePic != null &&
+                      (element.sender?.profilePic ?? '').trim().isNotEmpty
+                  ? element.sender?.profilePic ?? ""
+                  : null,
+            ),
+            id: element.id.toString(),
+            text: element.message ?? '',
+            createdAt:
+                DateTime.parse(element.createdAt ?? '').millisecondsSinceEpoch,
+          ),
+        );
+      }
+    });
+
+    // _isMessageLoading = false;
   }
 
   void _handleFileSelection() async {

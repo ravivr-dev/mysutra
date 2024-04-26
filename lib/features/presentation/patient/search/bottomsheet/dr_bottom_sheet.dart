@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class DrBottomSheet extends StatelessWidget {
-  const DrBottomSheet({super.key});
+  final AppointmentEntity entity;
+  const DrBottomSheet({super.key, required this.entity});
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,14 @@ class DrBottomSheet extends StatelessWidget {
           component.text(context.stringForKey(StringKeys.rescheduleAppointment),
               style: theme.publicSansFonts.regularStyle(
                   fontSize: 16, fontColor: AppColors.color0xFF1E293B)),
+          component.spacer(height: 20),
+          InkWell(
+            onTap: () => AiloitteNavigation.intentWithData(
+                context, AppRoutes.chatScreen, entity),
+            child: component.text('Send Message',
+                style: theme.publicSansFonts.regularStyle(
+                    fontSize: 16, fontColor: AppColors.color0xFF1E293B)),
+          ),
           const Divider(color: AppColors.color0xFFEAECF0),
           component.text(context.stringForKey(StringKeys.cancelAppointment),
               style: theme.publicSansFonts.regularStyle(

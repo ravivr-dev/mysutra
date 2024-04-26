@@ -12,7 +12,9 @@ import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/repositories/user_repo/user_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
@@ -174,6 +176,60 @@ class UserRepositoryImpl extends UserRepository {
         final result = await remoteDataSource.generateUsernames();
 
         return Right(GenerateUsernameEntity(userNames: result.userNames));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> sendMessage(ChatEntity params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.sendMessages(params.toJson());
+
+        return Right('');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> clearMessage(String appointmentId) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.clearMessage(appointmentId);
+
+        return Right('');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, MessagesEntity>> getMessages(
+      String appointmentId, int? pagination, int? limit) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final Map<String, dynamic> data = {
+          "appointmentId": appointmentId,
+          if (limit != null) "limit": limit,
+          if (pagination != null) "pagination": pagination,
+        };
+        final result = await remoteDataSource.getMessages(data);
+
+        return Right(MessagesEntity(
+            message: result.message,
+            count: result.count,
+            chatMessages: UserRepoConv.convertChatModelToEntity(result.data??[])));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

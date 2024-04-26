@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:my_sutra/features/data/model/user_models/chat_model.dart';
+import 'package:my_sutra/features/data/model/user_models/create_chat_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
@@ -96,4 +98,16 @@ abstract class UserRestClient {
 
   @GET(EndPoints.generateUserName)
   Future<GenerateUsernameModel> generateUserNames();
+
+  @POST(EndPoints.userMessage)
+  Future<CreateChatModel> sendMessage(
+    @Body() final Map<String, dynamic> data,
+  );
+  @GET(EndPoints.userMessage)
+  Future<ChatModel> getMessages(
+    @Queries() final Map<String, dynamic> queries,
+  );
+
+  @PUT(EndPoints.clearMessage)
+  Future<dynamic> clearMessage(@Field("appointmentId") String appointmentId);
 }

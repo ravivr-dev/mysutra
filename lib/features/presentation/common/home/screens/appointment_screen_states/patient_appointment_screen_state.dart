@@ -45,7 +45,9 @@ class _PatientAppointmentState extends _AppointmentScreenState {
                   return InkWell(
                     onTap: () {
                       context.showBottomSheet(
-                        const DrBottomSheet(),
+                        DrBottomSheet(
+                          entity: appointment,
+                        ),
                         borderRadius: 22,
                       );
                     },
