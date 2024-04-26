@@ -173,10 +173,22 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames() async {
+  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames(
+      String userName) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDataSource.generateUsernames();
+        final result = await remoteDataSource.generateUsernames(userName);
+
+        return Right(GenerateUsernameEntity(
+            userNames: result.userNames,
+            userNameAvailable: result.userNameAvailable));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
 
   @override
   Future<Either<Failure, UserEntity>> getHomeData() async {

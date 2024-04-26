@@ -49,9 +49,9 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     });
   }
 
-  void generateUsernames() async {
+  void generateUsernames({required String userName}) async {
     emit(GenerateUserNamesLoadingState());
-    final result = await generateUsernamesUseCase.call();
+    final result = await generateUsernamesUseCase.call(userName);
     result.fold((l) => emit(GenerateUserNamesErrorState(message: l.message)),
         (r) => emit(GenerateUserNamesSuccessState(entity: r)));
   }

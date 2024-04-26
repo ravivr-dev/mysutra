@@ -11,7 +11,6 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
-import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -57,12 +56,8 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                   users = state.data;
                 } else if (state is SelectedAccountLoaded) {
                   UserHelper.init(role: state.data.role!);
-                  AiloitteNavigation.intentWithClearAllRoutesWithData(
-                      context,
-                      AppRoutes.homeRoute,
-                      HomeScreeArgs(
-                          name: state.data.fullName!,
-                          profileUrl: state.data.profilePic));
+                  AiloitteNavigation.intentWithClearAllRoutes(
+                      context, AppRoutes.homeRoute);
                 }
               },
               builder: (context, state) {

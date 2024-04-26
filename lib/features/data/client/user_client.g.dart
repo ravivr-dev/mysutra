@@ -283,9 +283,9 @@ class _UserRestClient implements UserRestClient {
   }
 
   @override
-  Future<GenerateUsernameModel> generateUserNames() async {
+  Future<GenerateUsernameModel> generateUserNames(String username) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'username': username};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(

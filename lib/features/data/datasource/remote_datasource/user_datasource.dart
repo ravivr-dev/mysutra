@@ -206,7 +206,7 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<GenerateUsernameModel> generateUsernames() async {
+  Future<GenerateUsernameModel> generateUsernames(String userName) async {
     try {
       return await client.generateUserNames(userName).catchError((err) {
         _processDio(err);
