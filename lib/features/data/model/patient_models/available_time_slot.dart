@@ -17,14 +17,14 @@ class AvailableTimeSlotResponse {
 }
 
 class AvailableTimeSlot {
-  final String doctorID;
+  final String id;
   final String day;
   final String slotType;
   final int startTime;
   final int endTime;
 
   AvailableTimeSlot({
-    required this.doctorID,
+    required this.id,
     required this.day,
     required this.startTime,
     required this.slotType,
@@ -32,7 +32,7 @@ class AvailableTimeSlot {
   });
 
   AvailableTimeSlot.fromJson(Map<String, dynamic> map)
-      : doctorID = map[Constants.id],
+      : id = map[Constants.id],
         day = map[Constants.day],
         slotType = map[Constants.slotType],
         startTime = map[Constants.startTime],

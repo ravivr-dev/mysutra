@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
+import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/booking_cancelled_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/reschedule_appointment_screen.dart';
@@ -123,7 +124,8 @@ class Routes {
             builder: (_) => const BookingSuccessfulScreen());
 
       case AppRoutes.bookingCancelled:
-        return MaterialPageRoute(builder: (_) => const BookingCancelledScreen());
+        return MaterialPageRoute(
+            builder: (_) => const BookingCancelledScreen());
 
       case AppRoutes.patientPastAppointment:
         return MaterialPageRoute(
@@ -158,8 +160,12 @@ class Routes {
                 ));
 
       case AppRoutes.rescheduleAppointment:
+        final args = settings?.arguments as String;
         return MaterialPageRoute(
-            builder: (_) => const RescheduleAppointmentScreen());
+            builder: (_) => BlocProvider(
+                  create: (context) => sl<HomeCubit>(),
+                  child:  RescheduleAppointmentScreen(appointmentId: args,),
+                ));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

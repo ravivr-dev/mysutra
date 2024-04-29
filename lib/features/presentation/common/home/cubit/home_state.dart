@@ -30,6 +30,7 @@ final class GetHomeDataLoadingState extends HomeState {}
 
 final class GetHomeDataErrorState extends HomeState {
   final String message;
+
   GetHomeDataErrorState({
     required this.message,
   });
@@ -37,6 +38,7 @@ final class GetHomeDataErrorState extends HomeState {
 
 final class GetHomeDataSuccessState extends HomeState {
   UserEntity entity;
+
   GetHomeDataSuccessState({
     required this.entity,
   });
@@ -69,9 +71,9 @@ final class GetAvailableSlotsErrorState extends HomeState {
 }
 
 final class GetAvailableSlotsLoadedState extends HomeState {
-  final String message;
+  final List<AvailableTimeSlotEntity> availableSlots;
 
-  GetAvailableSlotsLoadedState({required this.message});
+  GetAvailableSlotsLoadedState({required this.availableSlots});
 }
 
 final class CancelAppointmentLoadingState extends HomeState {}
@@ -86,4 +88,18 @@ final class CancelAppointmentLoadedState extends HomeState {
   final String message;
 
   CancelAppointmentLoadedState({required this.message});
+}
+
+final class RescheduleAppointmentLoadingState extends HomeState {}
+
+final class RescheduleAppointmentErrorState extends HomeState {
+  final String message;
+
+  RescheduleAppointmentErrorState({required this.message});
+}
+
+final class RescheduleAppointmentLoadedState extends HomeState {
+  final String message;
+
+  RescheduleAppointmentLoadedState({required this.message});
 }

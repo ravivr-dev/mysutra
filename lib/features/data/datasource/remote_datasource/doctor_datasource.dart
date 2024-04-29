@@ -5,6 +5,7 @@ import 'package:my_sutra/features/data/client/doctor_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_doctor_appointment_model.dart';
+import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/patient_models/get_patient_response_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
@@ -27,6 +28,8 @@ abstract class DoctorDataSource {
   Future<SuccessMessageModel> rescheduleAppointment(Map<String, dynamic> map);
 
   Future<SuccessMessageModel> cancelAppointment(Map<String, dynamic> map);
+
+  Future<AvailableTimeSlotResponse> getAvailableSlots(Map<String, dynamic> map);
 }
 
 class DoctorDataSourceImpl extends DoctorDataSource {
@@ -175,4 +178,33 @@ class DoctorDataSourceImpl extends DoctorDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<AvailableTimeSlotResponse> getAvailableSlots(Map<String, dynamic> map) async {
+    try{
+      return await client.getAvailableSlots(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              validateAuthentication: true, localDataSource: localDataSource));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  // @override
+  // Future<SuccessMessageModel> getAvailableSlots(Map<String, dynamic> map) async {
+  //   try{
+  //     return await client.getAvailableSlots(map).catchError((err) {
+  //       _processDio(err);
+  //     });
+  //   } on DioException catch (e) {
+  //     throw ServerException(
+  //         message: e.getErrorFromDio(
+  //             validateAuthentication: true, localDataSource: localDataSource));
+  //   } on Exception {
+  //     rethrow;
+  //   }
 }

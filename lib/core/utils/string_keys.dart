@@ -61,4 +61,5 @@ class StringKeys {
   static const String rateTheAppointment = 'rate_the_appointment';
   static const String downloadAttachedPrescription =
       'download_attached_prescription';
+  static const String goToHome = 'go_to_home';
 }

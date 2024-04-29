@@ -10,7 +10,7 @@ import '../entities/patient_entities/follow_entity.dart';
 import '../entities/patient_entities/schedule_appointment_response_entity.dart';
 import '../usecases/patient_usecases/confirm_appointment_usecase.dart';
 import '../usecases/patient_usecases/get_appointments_usecase.dart';
-import '../usecases/patient_usecases/get_available_slots_usecase.dart';
+import '../usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import '../usecases/patient_usecases/get_doctor_details_usecase.dart';
 import '../usecases/patient_usecases/schedule_appointment_usecase.dart';
 
@@ -21,7 +21,7 @@ abstract class PatientRepository {
   Future<Either<Failure, FollowEntity>> followDoctor(FollowDoctorParams data);
 
   Future<Either<Failure, List<AvailableTimeSlotEntity>>> getAvailableSlots(
-      GetAvailableSlotsParams data);
+      GetAvailableSlotsForPatientParams data);
 
   Future<Either<Failure, DoctorEntity>> getDoctorDetails(
       GetDoctorDetailsParams data);

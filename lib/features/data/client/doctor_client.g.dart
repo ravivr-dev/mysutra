@@ -258,7 +258,7 @@ class _DoctorClient implements DoctorClient {
     )
             .compose(
               _dio.options,
-              'doctor/appointment/cancel',
+              '/doctor/appointment/cancel',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -268,6 +268,35 @@ class _DoctorClient implements DoctorClient {
               baseUrl,
             ))));
     final value = SuccessMessageModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AvailableTimeSlotResponse> getAvailableSlots(
+      Map<String, dynamic> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(map);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AvailableTimeSlotResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/doctor/available-slots',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = AvailableTimeSlotResponse.fromJson(_result.data!);
     return value;
   }
 

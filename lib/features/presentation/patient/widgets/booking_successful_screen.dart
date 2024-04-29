@@ -4,6 +4,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class BookingSuccessfulScreen extends StatelessWidget {
   const BookingSuccessfulScreen({super.key});
@@ -48,6 +49,8 @@ class BookingSuccessfulScreen extends StatelessWidget {
                 )),
             component.spacer(height: 28),
             _buildChatButton(context),
+            component.spacer(height: 12),
+            _buildGoToHomeButton(context),
             component.spacer(height: 70)
           ],
         ),
@@ -72,6 +75,30 @@ class BookingSuccessfulScreen extends StatelessWidget {
               )),
           component.assetImage(path: Assets.iconsChat)
         ],
+      ),
+    );
+  }
+
+  Widget _buildGoToHomeButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        AiloitteNavigation.intent(context, AppRoutes.homeRoute);
+      },
+      child: Container(
+        height: 50,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.white,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            component.text(context.stringForKey(StringKeys.goToHome),
+                style: theme.publicSansFonts.regularStyle()),
+            component.assetImage(path: Assets.iconsArrowLeft)
+          ],
+        ),
       ),
     );
   }

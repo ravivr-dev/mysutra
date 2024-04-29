@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/schedule_appointment_response_entity.dart';
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
 import '../../../domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
-import '../../../domain/usecases/patient_usecases/get_available_slots_usecase.dart';
+import '../../../domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import '../../../domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 
 part 'appointment_state.dart';
 
 class AppointmentCubit extends Cubit<AppointmentState> {
-  final GetAvailableSlotsUseCase getAvailableSlotsUseCase;
+  final GetAvailableSlotsForPatientUseCase getAvailableSlotsUseCase;
   final ScheduleAppointmentUseCase scheduleAppointmentUseCase;
   final ConfirmAppointmentUseCase confirmAppointmentUseCase;
 
@@ -19,11 +19,11 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required this.confirmAppointmentUseCase,
   }) : super(AppointmentInitial());
 
-  void getAvailableSlots(
+  void getAvailableSlotsForPatients(
       {required String doctorId, required String date}) async {
     emit(GetAvailableAppointmnetLoadingState());
     final result = await getAvailableSlotsUseCase
-        .call(GetAvailableSlotsParams(doctorID: doctorId, date: date));
+        .call(GetAvailableSlotsForPatientParams(doctorID: doctorId, date: date));
     result.fold(
         (l) => emit(GetAvailableAppointmentErrorState(message: l.message)),
         (r) => emit(GetAvailableAppointmentSuccessState(timeSlots: r)));

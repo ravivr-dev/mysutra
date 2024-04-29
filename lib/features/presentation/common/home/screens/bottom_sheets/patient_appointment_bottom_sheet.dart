@@ -77,8 +77,8 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
                 _buildDivider(),
                 InkWell(
                   onTap: () {
-                    AiloitteNavigation.intent(
-                        context, AppRoutes.rescheduleAppointment);
+                    AiloitteNavigation.intentWithData(
+                        context, AppRoutes.rescheduleAppointment, entity.id);
                   },
                   child: _buildItems(text: 'Reschedule Appointment'),
                 ),

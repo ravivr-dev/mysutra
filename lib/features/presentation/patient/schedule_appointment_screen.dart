@@ -35,7 +35,7 @@ class ScheduleAppointmentScreen extends StatefulWidget {
 
 class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   final DateFormat _serverDateFormat = DateFormat('yyyy-MM-dd');
-  final List<String> _genderList = ['Male', 'Female'];
+  final List<String> _genderList = ['Male', 'Female', 'Others'];
   DateTime _selectedDate = DateTime.now();
   String? _selectedTimeSlot;
   List<AvailableTimeSlotEntity> _availableTImeSlots = [];
@@ -234,7 +234,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
       {required String doctorId, required String date}) {
     context
         .read<AppointmentCubit>()
-        .getAvailableSlots(doctorId: doctorId, date: date);
+        .getAvailableSlotsForPatients(doctorId: doctorId, date: date);
   }
 
   Widget _buildTextField({

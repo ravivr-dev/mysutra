@@ -1,6 +1,8 @@
 import 'package:my_sutra/features/data/model/doctor_models/get_doctor_appointment_model.dart';
+import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 
 import '../../../domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
 import '../../model/doctor_models/get_time_slots_response_model.dart';
@@ -71,5 +73,20 @@ class DoctorRepositoryConv {
               ))
           .toList(),
     );
+  }
+
+  static List<AvailableTimeSlotEntity> convertAvailableSlotModelToEntity(
+      AvailableTimeSlotResponse model) {
+    List<AvailableTimeSlotEntity> list = [];
+
+    for (AvailableTimeSlot e in model.timeSlots) {
+      list.add(AvailableTimeSlotEntity(
+          id: e.id,
+          day: e.day,
+          startTime: e.startTime,
+          slotType: e.slotType,
+          endTime: e.endTime));
+    }
+    return list;
   }
 }

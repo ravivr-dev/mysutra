@@ -86,7 +86,7 @@ class PatientRepoConv {
       List<AvailableTimeSlot> list) {
     return list
         .map((e) => AvailableTimeSlotEntity(
-            doctorID: e.doctorID,
+            id: e.id,
             day: e.day,
             startTime: e.startTime,
             slotType: e.slotType,
