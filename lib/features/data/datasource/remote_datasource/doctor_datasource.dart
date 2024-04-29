@@ -10,7 +10,6 @@ import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
 
 import '../../model/doctor_models/get_time_slots_response_model.dart';
-import '../../model/user_models/home_response_model.dart';
 
 abstract class DoctorDataSource {
   Future updateTimeSlots(Map<String, dynamic> map);
@@ -22,8 +21,6 @@ abstract class DoctorDataSource {
   Future<GetPatientResponseModel> getPatients(Map<String, dynamic> map);
 
   Future<GetTimeSlotsResponseModel> getTimeSlots(Map<String, dynamic> map);
-
-  Future<HomeResponseModel> getUserDetails();
 
   Future<GetDoctorAppointmentModel> getAppointments(Map<String, dynamic> map);
 
@@ -102,22 +99,6 @@ class DoctorDataSourceImpl extends DoctorDataSource {
       Map<String, dynamic> map) async {
     try {
       return await client.getTimeSlots(map).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<HomeResponseModel> getUserDetails() async {
-    try {
-      return await client.getUserDetails().catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

@@ -27,7 +27,7 @@ import 'package:my_sutra/features/presentation/patient/schedule_appointment_scre
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/doctor_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
-import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
+import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/booking_successful_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
 import 'package:my_sutra/injection_container.dart';
@@ -58,7 +58,7 @@ class Routes {
       case AppRoutes.createAccountRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<RegistrationCubit>()..generateUsernames(),
+            create: (context) => sl<RegistrationCubit>(),
             child: CreateAccountScreen(
               profession: args as String,
             ),
@@ -80,10 +80,10 @@ class Routes {
           builder: (_) => const FindDoctorScreen(),
         );
 
-      case AppRoutes.searchDoctorRoute:
-        return MaterialPageRoute(
-          builder: (_) => const AppointmentScreen(),
-        );
+      // case AppRoutes.searchDoctorRoute:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AppointmentScreen(),
+      //   );
 
       case AppRoutes.searchResultRoute:
         return MaterialPageRoute(
@@ -142,6 +142,8 @@ class Routes {
       case AppRoutes.doctorPastAppointment:
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
+      case AppRoutes.searchFilterScreen:
+        return MaterialPageRoute(builder: (_) => const SearchFilterScreen());
 
       case AppRoutes.changeDataRoute:
         return MaterialPageRoute(

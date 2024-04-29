@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -52,7 +54,11 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                   widget.showErrorToast(context: context, message: state.error);
                 } else if (state is SelectAccountLoaded) {
                   users = state.data;
-                } else if (state is SelectedAccountLoaded) {}
+                } else if (state is SelectedAccountLoaded) {
+                  UserHelper.init(role: state.data.role!);
+                  AiloitteNavigation.intentWithClearAllRoutes(
+                      context, AppRoutes.homeRoute);
+                }
               },
               builder: (context, state) {
                 if (state is SelectAccountLoading) {
@@ -66,61 +72,69 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
                   itemBuilder: (_, index) {
-                    return InkWell(
-                      onTap: () {
-                        context
-                            .read<SelectAccountCubit>()
-                            .getSelectedAccountData(users[index].id!);
-                      },
-                      child: Container(
-                        decoration: AppDeco.cardDecoration,
-                        padding: const EdgeInsets.all(12),
-                        margin: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundImage: NetworkImage(
-                                  users[index].profilePic ??
-                                      Constants.tempNetworkUrl),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    users[index].fullName ?? "",
-                                    style: theme.publicSansFonts
-                                        .semiBoldStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    users[index]
-                                            .role
-                                            ?.capitalizeFirstLetterOfEveryWord ??
-                                        "",
-                                    style: theme.publicSansFonts.regularStyle(
-                                        fontSize: 14,
-                                        fontColor: AppColors.black49),
-                                  ),
-                                  if (users[index].specializationName != null)
-                                    Text(
-                                      users[index].specializationName!,
-                                      style: theme.publicSansFonts.regularStyle(
-                                          fontSize: 14,
-                                          fontColor: AppColors.black49),
-                                    ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: AppColors.neutral,
-                              size: 16,
-                            ),
-                          ],
+                    final user = users[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        component.text(
+                          '${user.role![0]}${user.role!.substring(1).toLowerCase()}',
+                          style: theme.publicSansFonts.regularStyle(
+                            fontColor: AppColors.black49,
+                          ),
                         ),
-                      ),
+                        InkWell(
+                          onTap: () {
+                            context
+                                .read<SelectAccountCubit>()
+                                .getSelectedAccountData(users[index].id!);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.backgroundColor,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.all(12),
+                            margin: const EdgeInsets.symmetric(vertical: 12),
+                            child: Row(
+                              children: [
+                                component.networkImage(
+                                  url: users[index].profilePic ??
+                                      Constants.tempNetworkUrl,
+                                  borderRadius: 6,
+                                  height: 48,
+                                  width: 48,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        users[index].fullName ?? "",
+                                        style: theme.publicSansFonts
+                                            .semiBoldStyle(fontSize: 18),
+                                      ),
+                                      component.text(
+                                        "${_isAgeAvailable(user.age) ? '${user.age} years,' : ''} ${Utils.capFirstLetter(user.gender ?? '')}",
+                                        style: theme.publicSansFonts
+                                            .regularStyle(
+                                                fontSize: 14,
+                                                fontColor: AppColors.black49),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward,
+                                  color: AppColors.neutral,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   },
                 );
@@ -152,5 +166,9 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
         ],
       ),
     );
+  }
+
+  bool _isAgeAvailable(String? age) {
+    return age != null && age.isNotEmpty;
   }
 }

@@ -45,6 +45,17 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is LoggedIn) {
+          final totalAccount = localDataSource.getTotalUserAccounts;
+          final isAccountSelected = localDataSource.getIsAccountSelected;
+          if (totalAccount == null) {
+            _handleNavigation();
+            return;
+          } else if (totalAccount > 1 && isAccountSelected != true) {
+            AiloitteNavigation.intentWithClearAllRoutes(
+                context, AppRoutes.selectAccountRoute);
+            return;
+          }
+
           //todo need to refactor this don't use localdatasource directly here
           final role = localDataSource.getUserRole();
           if (role.isNotEmpty) {

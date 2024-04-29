@@ -34,11 +34,11 @@ class SettingCubit extends Cubit<SettingState> {
         (r) => emit(UpdateAboutOrFeesSuccessState()));
   }
 
-  void getTimeSlots({int pagination = 1, int limit = 10}) async {
+  void getTimeSlots({int pagination = 1, int limit = 20}) async {
     emit(GetTimeSlotsLoadingState());
     final result = await getTimeSlotsUseCase
         .call(GetTimeSlotsParams(pagination: pagination, limit: limit));
     result.fold((l) => emit(GetTimeSlotsErrorState(message: l.message)),
-        (r) => emit(GetTimeSlotsSuccessState(list: r)));
+        (r) => emit(GetTimeSlotsSuccessState(entity: r)));
   }
 }

@@ -42,6 +42,7 @@ class CreateAccountScreen extends StatefulWidget {
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _nameCtrl = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _countryCode = TextEditingController();
   final TextEditingController _mobCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
@@ -62,6 +63,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   List<String> _userNames = [];
   String? _selectedUserName;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isUserNameAvailable = true;
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void didChangeDependencies() {
@@ -74,8 +77,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   }
 
   @override
+  void initState() {
+    _focusNode.addListener(_onFocusNodeChanges);
+    super.initState();
+  }
+
+  @override
   void dispose() {
     urlList.dispose();
+    _userNameController.dispose();
+    _focusNode.removeListener(() {});
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -96,8 +108,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               profilePic = state.file;
               profilePicKey = state.data.key;
             } else if (state is GenerateUserNamesSuccessState) {
+              _isUserNameAvailable = state.entity.userNameAvailable;
               _userNames = state.entity.userNames;
             } else if (state is GenerateUserNamesErrorState) {
+              _isUserNameAvailable = false;
               widget.showErrorToast(context: context, message: state.message);
             }
           },
@@ -196,17 +210,32 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       ),
                     ),
                   const SizedBox(height: 20),
+                  if (widget.profession == "Doctor") ...[
+                    TextFormFieldWidget(
+                      validator: (value) =>
+                          value.isEmpty ? 'Please Enter Full Name' : null,
+                      title: "Full Name",
+                      controller: _nameCtrl,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
                   TextFormFieldWidget(
-                    validator: (value) =>
-                        value.isEmpty ? 'Please Enter Full Name' : null,
-                    title: "Full Name",
-                    controller: _nameCtrl,
+                    validator: (value) => value.isEmpty
+                        ? 'Please Enter UserName'
+                        : !_isUserNameAvailable && _selectedUserName == null
+                            ? 'UserName is not Available'
+                            : null,
+                    title: "User Name",
+                    focusNode: _focusNode,
+                    controller: _userNameController,
                   ),
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: _userNames.map((e) => _buildUserName(e)).toList(),
-                  ),
+                  if (!_isUserNameAvailable)
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children:
+                          _userNames.map((e) => _buildUserName(e)).toList(),
+                    ),
                   TextFormWithCountryCode(
                     title: context.stringForKey(StringKeys.mobileNumber),
                     countryCode: _countryCode,
@@ -235,7 +264,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       suggestions: specialisationList
                           .map((e) => SearchFieldListItem(e.name,
                               item: e.id,
-                              child: Text(
+                              child: component.text(
                                 e.name.capitalizeFirstLetterOfSentence,
                                 style: theme.publicSansFonts.regularStyle(
                                     fontSize: 18, fontColor: AppColors.black49),
@@ -282,8 +311,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     TextFormFieldWidget(
                       title: "Social Profile URL",
                       controller: _socialCtrl,
-                      validator: (value) =>
-                          value.isEmpty ? 'Please Enter Social Profile URL' : null,
+                      validator: (value) => value.isEmpty
+                          ? 'Please Enter Social Profile URL'
+                          : null,
                       suffixWidget: IconButton(
                         color: AppColors.primaryColor,
                         onPressed: () {
@@ -334,12 +364,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   CustomButton(
                     isLoading: state is RegistrationLoading,
                     onPressed: () {
-                      if (_selectedUserName == null) {
-                        widget.showErrorToast(
-                            context: context,
-                            message: 'Please Select Any UserName');
-                        return;
-                      }
+                      // if (_selectedUserName == null && !_isUserNameAvailable) {
+                      //   widget.showErrorToast(
+                      //       context: context,
+                      //       message: 'Please Select Any UserName');
+                      //   return;
+                      // }
                       if (_formKey.currentState!.validate()) {
                         context.read<RegistrationCubit>().registration(
                               RegistrationParams(
@@ -356,7 +386,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                   socialUrls: urlList.value.isNotEmpty
                                       ? urlList.value
                                       : null,
-                                  userName: _selectedUserName!),
+                                  userName: _isUserNameAvailable
+                                      ? _userNameController.text
+                                      : _selectedUserName!),
                             );
                       }
                     },
@@ -387,6 +419,18 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
       ),
     );
+  }
+
+  void _onFocusNodeChanges() {
+    if (!_focusNode.hasFocus && _userNameController.text.isNotEmpty) {
+      _callUserNameApi();
+    }
+  }
+
+  void _callUserNameApi() {
+    context
+        .read<RegistrationCubit>()
+        .generateUsernames(userName: _userNameController.text);
   }
 
   Widget _buildUserName(String userName) {
@@ -435,7 +479,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   experience: int.tryParse(_expCtrl.text),
                   age: _ageCtrl.text,
                   socialUrls: urlList.value.isNotEmpty ? urlList.value : null,
-                  userName: _selectedUserName!),
+                  userName: _isUserNameAvailable
+                      ? _userNameController.text
+                      : _selectedUserName!),
             ),
           );
         });

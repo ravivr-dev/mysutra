@@ -43,6 +43,9 @@ class UserRepoConv {
       username: model.username,
       profilePic: model.profilePic,
       isVerified: model.isVerified,
+      role: model.role,
+      gender: model.gender,
+      age: model.age,
     );
   }
 }

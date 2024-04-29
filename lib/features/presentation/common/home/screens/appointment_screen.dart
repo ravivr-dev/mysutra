@@ -12,6 +12,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/bottom_sheets/patient_appointment_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/search/bottomsheet/dr_bottom_sheet.dart';
@@ -38,6 +39,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   final List<AppointmentEntity> _appointments = [];
   final ScrollController _scrollController = ScrollController();
   int _page = 1;
+  UserEntity? _userEntity;
 
   ///This is for pagination
   bool _isLoading = false;
@@ -52,7 +54,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
     return isPatient ? _PatientAppointmentState() : _DoctorAppointmentState();
   }
 
-  Widget _buildBody();
+  Widget _buildBody(HomeState state);
 
   void _callAppointmentApi();
 
@@ -75,14 +77,31 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: CustomInkwell(
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: _buildBody(),
-        ),
-      ),
+    return BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state is GetHomeDataSuccessState) {
+          _userEntity = state.entity;
+        } else if (state is GetAppointmentsSuccessState) {
+          //todo will have to improve the code for pagination
+          _isLoading = false;
+          _appointments.clear();
+          _appointments.addAll(state.appointmentEntities);
+        } else if (state is GetDoctorAppointmentSuccessState) {
+          _isLoading = false;
+        }
+      },
+      buildWhen: (previousState, newState) => previousState != newState,
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          body: CustomInkwell(
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: _buildBody(state),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -102,9 +121,11 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              "Sahil Gopal",
-              style: theme.publicSansFonts.mediumStyle(
+            component.text(
+              (_userEntity?.fullName ?? '').isNotEmpty
+                  ? _userEntity?.fullName
+                  : _userEntity?.username,
+              style: theme.publicSansFonts.semiBoldStyle(
                 fontColor: AppColors.blackColor,
                 fontSize: 24,
                 height: 28,
@@ -120,10 +141,10 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              Constants.tempNetworkUrl,
-              fit: BoxFit.cover,
-            ),
+            child: component.networkImage(
+                url: _userEntity?.profilePic ?? '',
+                fit: BoxFit.cover,
+                errorWidget: const Icon(Icons.person)),
           ),
         ),
       ],

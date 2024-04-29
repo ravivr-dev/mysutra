@@ -20,6 +20,8 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_use
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
+import '../../../domain/entities/user_entities/user_entity.dart';
+
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
   final UserDataSource remoteDataSource;
@@ -53,7 +55,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, UserModel>> verifyOtp(int otp) async {
+  Future<Either<Failure, OtpResponseUserModel>> verifyOtp(int otp) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.verifyOtp(otp);
@@ -62,6 +64,7 @@ class UserRepositoryImpl extends UserRepository {
           localDataSource.setUserRole(result.data?.role ?? "");
           UserHelper.init(role: result.data!.role!);
           localDataSource.setIsDoctorVerified(result.data?.isVerified ?? true);
+          localDataSource.setTotalUserAccounts(result.totalUserAccounts!);
         }
 
         return Right(result);
@@ -93,6 +96,9 @@ class UserRepositoryImpl extends UserRepository {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getSelectedUserAccounts(id);
+        localDataSource.setAccessToken(result.data!.token!);
+        localDataSource.setIsAccountSelected(true);
+        localDataSource.setUserRole(result.data?.role ?? "");
 
         return Right(result.data!);
       } else {
@@ -170,12 +176,30 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames() async {
+  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames(
+      String userName) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDataSource.generateUsernames();
+        final result = await remoteDataSource.generateUsernames(userName);
 
-        return Right(GenerateUsernameEntity(userNames: result.userNames));
+        return Right(GenerateUsernameEntity(
+            userNames: result.userNames,
+            userNameAvailable: result.userNameAvailable));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getHomeData() async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getHomeData();
+
+        return Right(UserRepoConv.userModelToEntity(result.userModel));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
