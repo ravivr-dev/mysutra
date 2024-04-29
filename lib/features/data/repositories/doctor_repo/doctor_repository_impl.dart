@@ -9,9 +9,9 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/cancel_appointment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/reschedule_appointment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 
 import '../../../../core/error/exceptions.dart';

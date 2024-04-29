@@ -4,6 +4,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/booking_cancelled_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/reschedule_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/widgets/patient_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
@@ -121,6 +122,9 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => const BookingSuccessfulScreen());
 
+      case AppRoutes.bookingCancelled:
+        return MaterialPageRoute(builder: (_) => const BookingCancelledScreen());
+
       case AppRoutes.patientPastAppointment:
         return MaterialPageRoute(
             builder: (_) => const PatientPastAppointmentsScreen());
@@ -142,6 +146,7 @@ class Routes {
       case AppRoutes.doctorPastAppointment:
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
+
       case AppRoutes.searchFilterScreen:
         return MaterialPageRoute(builder: (_) => const SearchFilterScreen());
 

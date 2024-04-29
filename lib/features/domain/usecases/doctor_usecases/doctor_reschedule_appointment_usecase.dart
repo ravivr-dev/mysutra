@@ -3,11 +3,11 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 
-class RescheduleAppointmentsUseCase
+class DoctorRescheduleAppointmentsUseCase
     extends UseCase<String, RescheduleAppointmentParams> {
   final DoctorRepository _doctorRepository;
 
-  RescheduleAppointmentsUseCase(this._doctorRepository);
+  DoctorRescheduleAppointmentsUseCase(this._doctorRepository);
 
   @override
   Future<Either<Failure, String>> call(RescheduleAppointmentParams params) {

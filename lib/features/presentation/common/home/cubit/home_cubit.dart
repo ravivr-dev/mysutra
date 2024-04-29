@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 
@@ -15,12 +16,14 @@ class HomeCubit extends Cubit<HomeState> {
   final GetAppointmentUseCase getAppointmentUseCase;
   final GetHomeDataUseCase getHomeDataUseCase;
   final GetDoctorAppointmentsUseCase getDoctorAppointmentUseCase;
+  final DoctorCancelAppointmentsUseCase doctorCancelAppointmentsUseCase;
 
   HomeCubit({
     required this.localDataSource,
     required this.getAppointmentUseCase,
     required this.getHomeDataUseCase,
     required this.getDoctorAppointmentUseCase,
+    required this.doctorCancelAppointmentsUseCase,
   }) : super(HomeInitial());
 
   void getAppointments(
@@ -57,6 +60,14 @@ class HomeCubit extends Cubit<HomeState> {
   void getRescheduleAvailableSlotsForDoctors() {}
 
   void getRescheduleAvailableSlotsForPatients() {}
+
+  void cancelAppointmentForDoctor({required String appointmentId}) async {
+    final result = await doctorCancelAppointmentsUseCase
+        .call(CancelAppointmentParams(appointmentId: appointmentId));
+
+    result.fold((l) => emit(CancelAppointmentErrorState(message: l.message)),
+        (r) => emit(CancelAppointmentLoadedState(message: r)));
+  }
 
 // FutureOr<void> _emitFailure(
 //   Failure failure,

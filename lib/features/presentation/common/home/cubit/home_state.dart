@@ -68,4 +68,22 @@ final class GetAvailableSlotsErrorState extends HomeState {
   GetAvailableSlotsErrorState({required this.message});
 }
 
-final class GetAvailableSlotsLoadedState extends HomeState {}
+final class GetAvailableSlotsLoadedState extends HomeState {
+  final String message;
+
+  GetAvailableSlotsLoadedState({required this.message});
+}
+
+final class CancelAppointmentLoadingState extends HomeState {}
+
+final class CancelAppointmentErrorState extends HomeState {
+  final String message;
+
+  CancelAppointmentErrorState({required this.message});
+}
+
+final class CancelAppointmentLoadedState extends HomeState {
+  final String message;
+
+  CancelAppointmentLoadedState({required this.message});
+}

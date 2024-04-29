@@ -112,7 +112,7 @@ class PatientRepoConv {
       List<AppointmentModel> list) {
     return list
         .map((e) => AppointmentEntity(
-              id: e.id,
+              id: e.id ?? '',
               doctorId: e.doctorId,
               userId: e.userId,
               profilePic: e.profilePic,

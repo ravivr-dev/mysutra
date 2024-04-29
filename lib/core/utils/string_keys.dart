@@ -46,6 +46,8 @@ class StringKeys {
   static const String bookingSuccessful = 'booking_successful';
   static const String yourBookingHasBeenConfirmed =
       'your_booking_has_been_confirmed';
+  static const String bookingCancelled = 'booking_cancelled';
+  static const String yourBookingHasBeenCancelled = 'your_booking_has_been_cancelled';
   static const String confirmYourBooking = 'confirmYourBooking';
   static const String pleaseConfirmYourBookingByText =
       'please_confirm_your_booking_by_text';

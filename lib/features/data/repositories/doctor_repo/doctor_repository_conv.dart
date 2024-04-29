@@ -54,7 +54,7 @@ class DoctorRepositoryConv {
       count: model.count,
       list: model.list
           .map((e) => AppointmentEntity(
-                id: e.id,
+                id: e.id ?? '',
                 doctorId: e.doctorId,
                 userId: e.userId,
                 profilePic: e.profilePic,

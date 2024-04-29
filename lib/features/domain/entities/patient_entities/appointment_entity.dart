@@ -1,6 +1,6 @@
 /// We are not getting fullName of (patient from doctor side) in this please show username if you want to show patient name anywhere
 class AppointmentEntity {
-  String? id;
+  String id;
   String? doctorId;
   String? userId;
   String? username;
