@@ -4,6 +4,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/reschedule_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/widgets/patient_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
@@ -148,6 +149,10 @@ class Routes {
                   create: (context) => sl<ProfileCubit>(),
                   child: ChangeDataScreen(args: args as ChangeDataParams),
                 ));
+
+      case AppRoutes.rescheduleAppointment:
+        return MaterialPageRoute(
+            builder: (_) => const RescheduleAppointmentScreen());
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

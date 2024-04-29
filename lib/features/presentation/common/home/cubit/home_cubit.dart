@@ -54,6 +54,10 @@ class HomeCubit extends Cubit<HomeState> {
         (r) => emit(GetDoctorAppointmentSuccessState(entity: r)));
   }
 
+  void getRescheduleAvailableSlotsForDoctors() {}
+
+  void getRescheduleAvailableSlotsForPatients() {}
+
 // FutureOr<void> _emitFailure(
 //   Failure failure,
 // ) async {

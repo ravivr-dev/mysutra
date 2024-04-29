@@ -23,6 +23,7 @@ class AppRoutes {
   static const String doctorPastAppointment = '/doctor_screens/my_patients/doctor_past_appointment_screen';
 
   static const String changeDataRoute = '/common/profile_screen/change_data_screen';
+  static const String rescheduleAppointment = '/common/home/screens/reschedule_appointment_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

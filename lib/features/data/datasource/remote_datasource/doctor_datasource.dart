@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/doctor_client.dart';
