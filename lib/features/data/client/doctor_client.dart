@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
+import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';
 import '../../../core/utils/constants.dart';
 import '../datasource/local_datasource/local_datasource.dart';
@@ -58,5 +60,21 @@ abstract class DoctorClient {
 
   @GET(EndPoints.doctorAppointments)
   Future<GetDoctorAppointmentModel> getAppointments(
-      @Queries() Map<String, dynamic> map);
+    @Queries() Map<String, dynamic> map,
+  );
+
+  @POST(EndPoints.doctorAppointmentReSchedule)
+  Future<SuccessMessageModel> rescheduleAppointment(
+    @Body() Map<String, dynamic> map,
+  );
+
+  @POST(EndPoints.doctorAppointmentCancel)
+  Future<SuccessMessageModel> cancelAppointment(
+    @Body() Map<String, dynamic> map,
+  );
+
+  @GET(EndPoints.doctorAvailableSlots)
+  Future<AvailableTimeSlotResponse> getAvailableSlots(
+    @Queries() Map<String, dynamic> map,
+  );
 }

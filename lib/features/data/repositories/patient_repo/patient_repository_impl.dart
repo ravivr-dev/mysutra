@@ -20,7 +20,7 @@ import '../../../domain/entities/patient_entities/schedule_appointment_response_
 import '../../../domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
 import '../../../domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
 import '../../../domain/usecases/patient_usecases/get_appointments_usecase.dart';
-import '../../../domain/usecases/patient_usecases/get_available_slots_usecase.dart';
+import '../../../domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import '../../../domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
 import '../../../domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 
@@ -72,7 +72,7 @@ class PatientRepositoryImpl extends PatientRepository {
 
   @override
   Future<Either<Failure, List<AvailableTimeSlotEntity>>> getAvailableSlots(
-      GetAvailableSlotsParams data) async {
+      GetAvailableSlotsForPatientParams data) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getAvailableSlots({

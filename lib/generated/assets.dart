@@ -16,8 +16,10 @@ class Assets {
   static const String fontsPublicSansThin = 'assets/fonts/PublicSans-Thin.ttf';
   static const String i18nEn = 'assets/i18n/en.json';
   static const String iconsArrowForward = 'assets/icons/arrow_forward.svg';
+  static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
   static const String iconsCalendar = 'assets/icons/calendar.svg';
   static const String iconsCalendar2 = 'assets/icons/calendar2.svg';
+  static const String iconsCalenderCancelled = 'assets/icons/calender_cancelled.svg';
   static const String iconsCall = 'assets/icons/call.svg';
   static const String iconsCallReceivedIcon = 'assets/icons/call_received_icon.svg';
   static const String iconsChat = 'assets/icons/chat.svg';

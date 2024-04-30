@@ -45,6 +45,8 @@
   "chat_now": "Chat Now",
   "booking_successful": "Booking Successful",
   "your_booking_has_been_confirmed": "Your booking has been confirmed",
+  "booking_cancelled": "Booking Cancelled",
+  "your_booking_has_been_cancelled": "Your booking has been Cancelled",
   "confirmYourBooking": "Confirm your booking",
   "please_confirm_your_booking_by_text": "Please Confirm your booking by entering OTP Sent on your number",
   "send_me_a_new_code": "Send me a new code",

@@ -46,6 +46,8 @@ class StringKeys {
   static const String bookingSuccessful = 'booking_successful';
   static const String yourBookingHasBeenConfirmed =
       'your_booking_has_been_confirmed';
+  static const String bookingCancelled = 'booking_cancelled';
+  static const String yourBookingHasBeenCancelled = 'your_booking_has_been_cancelled';
   static const String confirmYourBooking = 'confirmYourBooking';
   static const String pleaseConfirmYourBookingByText =
       'please_confirm_your_booking_by_text';
@@ -59,6 +61,7 @@ class StringKeys {
   static const String rateTheAppointment = 'rate_the_appointment';
   static const String downloadAttachedPrescription =
       'download_attached_prescription';
+  static const String goToHome = 'go_to_home';
   static const String confirmBooking = 'confirm_booking';
   static const String newAppointment = 'new_appointment';
   static const String areYouSure = 'are_you_sure?';
