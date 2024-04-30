@@ -8,9 +8,9 @@ import 'package:my_sutra/core/common_widgets/time_container.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
-import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
@@ -50,8 +50,8 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   _AppointmentScreenState();
 
   factory _AppointmentScreenState.init() {
-    final isPatient = UserHelper.role == UserRole.patient;
-    return isPatient ? _PatientAppointmentState() : _DoctorAppointmentState();
+    final isDoctor = UserHelper.role == UserRole.doctor;
+    return isDoctor ? _DoctorAppointmentState() : _PatientAppointmentState();
   }
 
   Widget _buildBody(HomeState state);
@@ -175,16 +175,11 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   }
 
   String _getAppointmentTime(String date, String time) {
-    return '${_getLocalTime(date)}, $time';
+    return '${Utils.getMonthDay(date)}, $time';
   }
 
   void _reInitPage() {
     _page = 1;
-  }
-
-  String _getLocalTime(String date) {
-    final dateTime = DateTime.parse(date);
-    return DateFormat('MMM dd').format(dateTime);
   }
 
   String get _getServerDate {
