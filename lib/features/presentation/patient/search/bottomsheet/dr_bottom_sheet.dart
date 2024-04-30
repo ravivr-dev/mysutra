@@ -1,11 +1,22 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/bottom_sheets/cancel_appointment_bottom_sheet.dart';
+import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
+
+import '../../../../../injection_container.dart';
+import '../../../../domain/entities/patient_entities/appointment_entity.dart';
+import '../../schedule_appointment_screen.dart';
 
 class DrBottomSheet extends StatelessWidget {
-  const DrBottomSheet({super.key});
+  final AppointmentEntity appointment;
+
+  const DrBottomSheet({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +30,7 @@ class DrBottomSheet extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              component.text('Dr Rita Rawat',
+              component.text('Dr ${appointment.fullName}',
                   style: theme.publicSansFonts.semiBoldStyle(
                     fontSize: 18,
                     fontColor: AppColors.color0xFF1E293B,
@@ -38,26 +49,53 @@ class DrBottomSheet extends StatelessWidget {
                       size: 20,
                     ),
                     component.spacer(width: 3),
-                    component.text('Nov 24, 9:00 AM')
+                    component.text(
+                        '${Utils.getMonthDay(appointment.date)}, ${appointment.time}')
                   ],
                 ),
               )
             ],
           ),
-          component.text('Aaradhay Healthcare',
+          component.text(appointment.specialization,
               style: theme.publicSansFonts
                   .regularStyle(fontColor: AppColors.black81)),
           component.spacer(height: 40),
-          component.text(context.stringForKey(StringKeys.rescheduleAppointment),
-              style: theme.publicSansFonts.regularStyle(
-                  fontSize: 16, fontColor: AppColors.color0xFF1E293B)),
+          InkWell(
+            onTap: () => _onRescheduleAppointmentClick(context),
+            child: component.text(
+                context.stringForKey(StringKeys.rescheduleAppointment),
+                style: theme.publicSansFonts.regularStyle(
+                    fontSize: 16, fontColor: AppColors.color0xFF1E293B)),
+          ),
           const Divider(color: AppColors.color0xFFEAECF0),
-          component.text(context.stringForKey(StringKeys.cancelAppointment),
-              style: theme.publicSansFonts.regularStyle(
-                  fontSize: 16, fontColor: AppColors.color0xFFFF1100)),
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              context.showBottomSheet(
+                BlocProvider<AppointmentCubit>(
+                  create: (context) => sl<AppointmentCubit>(),
+                  child: CancelAppointmentBottomSheet(
+                      appointmentId: appointment.id!),
+                ),
+                borderRadius: 12,
+              );
+            },
+            child: component.text(
+                context.stringForKey(StringKeys.cancelAppointment),
+                style: theme.publicSansFonts.regularStyle(
+                    fontSize: 16, fontColor: AppColors.color0xFFFF1100)),
+          ),
           component.spacer(height: 15)
         ],
       ),
     );
+  }
+
+  void _onRescheduleAppointmentClick(BuildContext context) {
+    AiloitteNavigation.intentWithoutBack(
+        context,
+        AppRoutes.scheduleAppointment,
+        ScheduleAppointmentScreenArgs(
+            doctorId: appointment.doctorId!, appointmentId: appointment.id!));
   }
 }

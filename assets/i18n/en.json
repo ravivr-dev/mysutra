@@ -55,5 +55,11 @@
   "my_following": "My Following",
   "my_patients": "My Patients",
   "rate_the_appointment": "Rate the appointment",
-  "download_attached_prescription": "Download attached prescription"
+  "download_attached_prescription": "Download attached prescription",
+  "confirm_booking": "Confirm booking",
+  "new_appointment": "New Appointment",
+  "are_you_sure?": "Are you sure?",
+  "you_want_to_cancel_this_appointment": "You want to cancel this appointment",
+  "no_do_not_cancel": "No, Don't Cancel",
+  "yes_cancel": "Yes, Cancel"
 }

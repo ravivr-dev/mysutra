@@ -19,6 +19,7 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_patient_us
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_time_slots_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
@@ -93,7 +94,8 @@ Future<void> init() async {
   sl.registerFactory(() => AppointmentCubit(
       getAvailableSlotsUseCase: sl<GetAvailableSlotsUseCase>(),
       scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
-      confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>()));
+      confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
+      cancelAppointmentUseCase: sl<CancelAppointmentUseCase>()));
   sl.registerFactory(() => ProfileCubit(
         getDoctorFollowingUseCase: sl<GetDoctorFollowingUseCase>(),
         getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
@@ -121,6 +123,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetAvailableSlotsUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => ScheduleAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => ConfirmAppointmentUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => CancelAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => GetProfileDetailsUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetTimeSlotsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetPatientUseCaseUseCase(sl<DoctorRepository>()));

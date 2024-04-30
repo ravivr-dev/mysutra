@@ -187,8 +187,11 @@ class DoctorResultScreen extends StatelessWidget {
   }
 
   void _bookAppointment(BuildContext context, String doctorID) {
-    AiloitteNavigation.intentWithData(context, AppRoutes.scheduleAppointment,
-        ScheduleAppointmentScreenArgs(doctorId: doctorID));
+    AiloitteNavigation.intentWithData(
+        context,
+        AppRoutes.scheduleAppointment,
+        ScheduleAppointmentScreenArgs(
+            doctorId: doctorID, isNewAppointment: true));
   }
 
   Widget _buildBookAppointmentButton(BuildContext context) {

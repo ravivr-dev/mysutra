@@ -104,10 +104,11 @@ class Routes {
         final args = settings?.arguments as ScheduleAppointmentScreenArgs;
 
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<AppointmentCubit>(
-                  create: (context) => sl<AppointmentCubit>(),
-                  child: ScheduleAppointmentScreen(args: args),
-                ));
+            builder: (_) => MultiBlocProvider(providers: [
+                  BlocProvider(create: (_) => sl<AppointmentCubit>()),
+                  BlocProvider(create: (_) => sl<RegistrationCubit>())
+                ], child: ScheduleAppointmentScreen(args: args)));
+
       case AppRoutes.doctorDetail:
         final args = settings?.arguments as DoctorEntity;
         return MaterialPageRoute(

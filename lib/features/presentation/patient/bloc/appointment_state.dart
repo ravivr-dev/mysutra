@@ -47,3 +47,14 @@ final class ConfirmAppointmentErrorState extends AppointmentState {
     required this.message,
   });
 }
+
+final class CancelAppointmentLoadingState extends AppointmentState {}
+
+final class CancelAppointmentSuccessState extends AppointmentState {}
+
+final class CancelAppointmentErrorState extends AppointmentState {
+  final String message;
+  CancelAppointmentErrorState({
+    required this.message,
+  });
+}

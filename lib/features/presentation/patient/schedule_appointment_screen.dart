@@ -6,11 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_dropdown.dart';
+import 'package:my_sutra/core/common_widgets/user_name_textfield.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
+import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bottom_sheets/confirm_your_booking_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
@@ -20,12 +23,10 @@ import '../../domain/entities/patient_entities/available_time_slot_entity.dart';
 
 class ScheduleAppointmentScreen extends StatefulWidget {
   final ScheduleAppointmentScreenArgs args;
-  final bool isNewAppointment;
 
   const ScheduleAppointmentScreen({
     super.key,
     required this.args,
-    this.isNewAppointment = true,
   });
 
   @override
@@ -70,7 +71,12 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
         if (state is GetAvailableAppointmentSuccessState) {
           _availableTImeSlots = state.timeSlots;
         } else if (state is ScheduleAppointmentSuccessState) {
-          _showConfirmBottomSheet(state.entity.token);
+          if (widget.args.isNewAppointment) {
+            _showConfirmBottomSheet(state.entity.token!);
+            return;
+          }
+          _showToast(message: 'Appointment Updated Successfully');
+          AiloitteNavigation.back(context);
         }
       },
       builder: (context, state) {
@@ -85,104 +91,142 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                   color: AppColors.color0xFF00082F.withOpacity(.27)),
             ),
             title: component.text(
-                context.stringForKey(StringKeys.rescheduleAppointment),
+                context.stringForKey(widget.args.isNewAppointment
+                    ? StringKeys.newAppointment
+                    : StringKeys.rescheduleAppointment),
                 style: theme.publicSansFonts.mediumStyle(
                   fontSize: 20,
                 )),
           ),
-          body: SingleChildScrollView(
+          body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  WeekPicker(
-                    onDateTimeSelected: (dateTime) {
-                      _initSelectedDate(dateTime);
-                    },
-                  ),
-                  component.spacer(height: 24),
-                  _buildText(
-                      value: context.stringForKey(StringKeys.availableTime)),
-                  component.spacer(height: 16),
-                  Wrap(
-                      spacing: 8,
-                      runSpacing: 12,
-                      children: List.generate(
-                          _availableTImeSlots.length,
-                          (index) =>
-                              _buildTimeWidget(_availableTImeSlots[index]))),
-                  component.spacer(height: 24),
-                  _buildText(
-                      value: context.stringForKey(StringKeys.patientDetails),
-                      fontSize: 16),
-                  component.spacer(height: 16),
-                  _buildText(value: context.stringForKey(StringKeys.fullName)),
-                  component.spacer(height: 10),
-                  _buildTextField(
-                      controller: _nameController, errorText: 'Name'),
-                  _buildText(value: context.stringForKey(StringKeys.age)),
-                  component.spacer(height: 10),
-                  _buildTextField(controller: _ageController, errorText: 'Age'),
-                  _buildText(
-                      value: context.stringForKey(StringKeys.phoneNumber)),
-                  component.spacer(height: 10),
-                  _buildTextField(
-                      controller: _phoneNumberController,
-                      textInputType: TextInputType.number,
-                      maxLength: 10,
-                      errorText: 'Phone Number'),
-                  _buildText(value: context.stringForKey(StringKeys.email)),
-                  component.spacer(height: 10),
-                  _buildTextField(
-                      controller: _emailController, errorText: 'Email'),
-                  _buildText(value: context.stringForKey(StringKeys.gender)),
-                  component.spacer(height: 10),
-                  CustomDropdown(
-                    onChanged: (value) {
-                      _selectedGender = value.value;
-                    },
-                    validator: (value) {
-                      return _selectedGender == null
-                          ? 'Please Select Gender'
-                          : null;
-                    },
-                    dropDownList: List.generate(
-                      _genderList.length,
-                      (index) => DropDownValueModel(
-                          name: _genderList[index], value: _genderList[index]),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          WeekPicker(
+                            onDateTimeSelected: (dateTime) {
+                              _initSelectedDate(dateTime);
+                            },
+                          ),
+                          component.spacer(height: 24),
+                          _buildText(
+                              value: context
+                                  .stringForKey(StringKeys.availableTime)),
+                          component.spacer(height: 16),
+                          Wrap(
+                              spacing: 8,
+                              runSpacing: 12,
+                              children: List.generate(
+                                  _availableTImeSlots.length,
+                                  (index) => _buildTimeWidget(
+                                      _availableTImeSlots[index]))),
+                          if (widget.args.isNewAppointment) ...[
+                            component.spacer(height: 24),
+                            _buildText(
+                                value: context
+                                    .stringForKey(StringKeys.patientDetails),
+                                fontSize: 16),
+                            component.spacer(height: 16),
+                            _buildText(
+                                value:
+                                    context.stringForKey(StringKeys.fullName)),
+                            component.spacer(height: 10),
+                            if (UserHelper.role == UserRole.guest)
+                              BlocProvider(
+                                create: (_) => sl<RegistrationCubit>(),
+                                child: UserNameTextField(
+                                    userNameController: _nameController),
+                              )
+                            else
+                              _buildTextField(
+                                  controller: _nameController,
+                                  errorText: 'Name'),
+                            _buildText(
+                                value: context.stringForKey(StringKeys.age)),
+                            component.spacer(height: 10),
+                            _buildTextField(
+                                controller: _ageController, errorText: 'Age'),
+                            _buildText(
+                                value: context
+                                    .stringForKey(StringKeys.phoneNumber)),
+                            component.spacer(height: 10),
+                            _buildTextField(
+                                controller: _phoneNumberController,
+                                textInputType: TextInputType.number,
+                                maxLength: 10,
+                                errorText: 'Phone Number'),
+                            _buildText(
+                                value: context.stringForKey(StringKeys.email)),
+                            component.spacer(height: 10),
+                            _buildTextField(
+                                controller: _emailController,
+                                errorText: 'Email'),
+                            _buildText(
+                                value: context.stringForKey(StringKeys.gender)),
+                            component.spacer(height: 10),
+                            CustomDropdown(
+                              onChanged: (value) {
+                                _selectedGender =
+                                    '${value.value}'.toUpperCase();
+                              },
+                              validator: (value) {
+                                return _selectedGender == null
+                                    ? 'Please Select Gender'
+                                    : null;
+                              },
+                              dropDownList: List.generate(
+                                _genderList.length,
+                                (index) => DropDownValueModel(
+                                    name: _genderList[index],
+                                    value: _genderList[index]),
+                              ),
+                              height: 95,
+                              borderRadius: 90,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 33),
+                            ),
+                            _buildText(
+                                value: context.stringForKey(
+                                    widget.args.isNewAppointment
+                                        ? StringKeys.reasonForVisit
+                                        : StringKeys.writeYourProblem)),
+                            component.spacer(height: 10),
+                            _buildTextField(
+                                maxLines: 5,
+                                controller: _reasonController,
+                                errorText: 'Reason'),
+                          ],
+                          component.spacer(height: 30),
+                        ],
+                      ),
                     ),
-                    height: 95,
-                    borderRadius: 90,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 33),
                   ),
-                  _buildText(
-                      value: context.stringForKey(widget.isNewAppointment
-                          ? StringKeys.reasonForVisit
-                          : StringKeys.writeYourProblem)),
-                  component.spacer(height: 10),
-                  _buildTextField(
-                      maxLines: 5,
-                      controller: _reasonController,
-                      errorText: 'Reason'),
-                  component.spacer(height: 30),
-                  CustomButton(
-                    text: context.stringForKey(StringKeys.proceedToPay),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (_selectedTimeSlot == null) {
-                          _showToast(message: 'Please Select Available Time');
-                          return;
-                        }
-                        _scheduleAppointment();
+                ),
+                CustomButton(
+                  text: context.stringForKey(
+                    widget.args.isNewAppointment
+                        ? StringKeys.proceedToPay
+                        : StringKeys.confirmBooking,
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (_selectedTimeSlot == null) {
+                        _showToast(message: 'Please Select Available Time');
+                        return;
                       }
-                    },
-                  ),
-                  component.spacer(height: 20),
-                ],
-              ),
+                      _scheduleAppointment();
+                    }
+                  },
+                ),
+                component.spacer(height: 20),
+              ],
             ),
           ),
         );
@@ -216,17 +260,21 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   }
 
   void _scheduleAppointment() {
+    final isNewAppointment = widget.args.isNewAppointment;
     context.read<AppointmentCubit>().scheduleAppointment(
             data: ScheduleAppointmentParams(
-          doctorID: widget.args.doctorId,
+          doctorID: isNewAppointment ? widget.args.doctorId : null,
           date: _getServerDate,
-          patientNumber: int.parse(_phoneNumberController.text.trim()),
-          patientAge: _ageController.text,
-          patientGender: _selectedGender!,
-          patientEmail: _emailController.text,
-          patientName: _nameController.text,
-          patientProblem: _reasonController.text,
+          patientNumber: isNewAppointment
+              ? int.parse(_phoneNumberController.text.trim())
+              : null,
+          patientAge: isNewAppointment ? _ageController.text : null,
+          patientGender: isNewAppointment ? _selectedGender! : null,
+          patientEmail: isNewAppointment ? _emailController.text : null,
+          patientName: isNewAppointment ? _nameController.text : null,
+          patientProblem: isNewAppointment ? _reasonController.text : null,
           time: _selectedTimeSlot!,
+          appointmentId: isNewAppointment ? null : widget.args.appointmentId,
         ));
   }
 
@@ -309,8 +357,12 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
 
 class ScheduleAppointmentScreenArgs {
   final String doctorId;
+  bool isNewAppointment;
+  final String? appointmentId;
 
   ScheduleAppointmentScreenArgs({
     required this.doctorId,
-  });
+    bool? isNewAppointment,
+    this.appointmentId,
+  }) : isNewAppointment = isNewAppointment ?? false;
 }
