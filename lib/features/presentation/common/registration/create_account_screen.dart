@@ -19,7 +19,6 @@ import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/otp_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
@@ -69,9 +68,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   void didChangeDependencies() {
     if (widget.profession == "Doctor") {
-      context
-          .read<RegistrationCubit>()
-          .getSpecialisations(GeneralPagination(start: 1, limit: 100));
+      context.read<RegistrationCubit>().getSpecialisations();
     }
     super.didChangeDependencies();
   }
@@ -217,7 +214,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       title: "Full Name",
                       controller: _nameCtrl,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                   ],
                   TextFormFieldWidget(
                     validator: (value) => value.isEmpty
@@ -229,6 +226,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     focusNode: _focusNode,
                     controller: _userNameController,
                   ),
+                  if (!_isUserNameAvailable) component.spacer(height: 10),
                   if (!_isUserNameAvailable)
                     Wrap(
                       spacing: 10,
@@ -236,11 +234,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       children:
                           _userNames.map((e) => _buildUserName(e)).toList(),
                     ),
+                  component.spacer(height: 20),
                   TextFormWithCountryCode(
                     title: context.stringForKey(StringKeys.mobileNumber),
                     countryCode: _countryCode,
                     controller: _mobCtrl,
                   ),
+                  component.spacer(height: 20),
                   TextFormFieldWidget(
                     title: "Email",
                     validator: (value) =>
@@ -248,6 +248,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     controller: _emailCtrl,
                     textCapitalization: TextCapitalization.none,
                   ),
+                  component.spacer(height: 20),
                   if (widget.profession == "Doctor") ...[
                     // TextFormFieldWidget(
                     //   title: "Specialization",
@@ -271,6 +272,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               )))
                           .toList(),
                     ),
+                    component.spacer(height: 20),
                     TextFormFieldWidget(
                       title: "Professional Registration number",
                       validator: (value) => value.isEmpty
@@ -278,6 +280,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           : null,
                       controller: _regNumCtrl,
                     ),
+                    component.spacer(height: 20),
                     TextFormFieldWidget(
                       hintText: "Experience",
                       title: "Total year of experience",
@@ -293,6 +296,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         ),
                       ),
                     ),
+                    component.spacer(height: 20),
                   ] else if (widget.profession == "Influencer") ...[
                     TextFormFieldWidget(
                       title: "Age",
@@ -308,6 +312,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         ),
                       ),
                     ),
+                    component.spacer(height: 20),
                     TextFormFieldWidget(
                       title: "Social Profile URL",
                       controller: _socialCtrl,

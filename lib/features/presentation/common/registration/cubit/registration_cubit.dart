@@ -25,8 +25,9 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       this.uploadDocUsecase, this.generateUsernamesUseCase)
       : super(RegistrationInitial());
 
-  getSpecialisations(GeneralPagination params) async {
-    final result = await specialisationUsecase.call(params);
+  getSpecialisations({int start = 1, int limit = 100}) async {
+    final result = await specialisationUsecase
+        .call(GeneralPagination(start: start, limit: limit));
 
     result.fold((l) => _emitFailure(l), (data) {
       emit(SpecializationLoaded(data));
