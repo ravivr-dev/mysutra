@@ -21,6 +21,8 @@ void main() async {
   runApp(const MyApp());
 }
 
+final GlobalKey<NavigatorState> navigationKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -33,10 +35,10 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: const [
           AiloitteMyLocalizationsDelegate(),
         ],
+        navigatorKey: navigationKey,
         onGenerateRoute: Routes.onGenerateRoute,
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.splashRoutes,
-        
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(
