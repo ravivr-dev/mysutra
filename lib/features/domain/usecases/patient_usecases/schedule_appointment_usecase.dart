@@ -18,15 +18,16 @@ class ScheduleAppointmentUseCase extends UseCase<
 }
 
 class ScheduleAppointmentParams {
-  final String doctorID;
+  final String? doctorID;
   final String date;
   final String time;
-  final String patientName;
-  final String patientAge;
-  final String patientGender;
-  final int patientNumber;
-  final String patientEmail;
-  final String patientProblem;
+  final String? patientName;
+  final String? patientAge;
+  final String? patientGender;
+  final int? patientNumber;
+  final String? patientEmail;
+  final String? patientProblem;
+  final String? appointmentId;
 
   ScheduleAppointmentParams({
     required this.doctorID,
@@ -38,5 +39,6 @@ class ScheduleAppointmentParams {
     required this.patientName,
     required this.patientProblem,
     required this.time,
+    required this.appointmentId,
   });
 }

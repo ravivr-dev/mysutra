@@ -74,4 +74,7 @@ abstract class PatientRestClient {
   @GET(EndPoints.appointments)
   Future<GetAppointmentResponseModel> getAppointments(
       @Queries() Map<String, dynamic> map);
+
+  @POST(EndPoints.cancelAppointment)
+  Future<dynamic> cancelAppointment(@Body() Map<String, dynamic> map);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 class DoctorPastAppointmentScreen extends StatelessWidget {
@@ -51,8 +50,8 @@ class DoctorPastAppointmentScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        component.networkImage(
-            url: Constants.tempNetworkUrl,
+        component.assetImage(
+            path: Assets.imagesDefaultAvatar,
             height: 72,
             width: 72,
             borderRadius: 8),

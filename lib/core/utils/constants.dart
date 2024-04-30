@@ -7,9 +7,6 @@ class Constants {
 
   static const String authorization = "Authorization";
 
-  static const tempNetworkUrl =
-      "https://source.unsplash.com/random?profile-picture";
-
   static const serverDateFormat = "yyyy-MM-dd";
 
   static const errorInternet = "Your internet is not working it seems";
@@ -58,6 +55,9 @@ class Constants {
   static const String videoFileType = "video";
   static const String audioFileType = "audio";
   static const String documentFileType = "document";
+  static const String gender = 'gender';
+  static const String age = 'age';
+  static const String userNameAvailable = 'userNameAvailable';
 
   //Doctor Constants
   static const String userId = 'userId';

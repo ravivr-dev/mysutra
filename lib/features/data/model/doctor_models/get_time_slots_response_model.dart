@@ -4,11 +4,13 @@ class GetTimeSlotsResponseModel {
   final String message;
   final int count;
   final List<GetTimeSlotsResponseData> list;
+  final int? fees;
 
   GetTimeSlotsResponseModel({
     required this.message,
     required this.count,
     required this.list,
+    required this.fees,
   });
 
   GetTimeSlotsResponseModel.fromJson(Map<String, dynamic> json)
@@ -16,7 +18,8 @@ class GetTimeSlotsResponseModel {
         count = json[Constants.count],
         list = (json[Constants.data] as List)
             .map((e) => GetTimeSlotsResponseData.fromJson(e))
-            .toList();
+            .toList(),
+        fees = json[Constants.fees];
 }
 
 class GetTimeSlotsResponseData {

@@ -1,3 +1,4 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -10,7 +11,7 @@ import 'package:my_sutra/generated/assets.dart';
 
 class TextFormWithCountryCode extends StatefulWidget {
   const TextFormWithCountryCode({
-    super.key,
+    Key? key,
     required this.controller,
     required this.countryCode,
     this.isMandatory = true,
@@ -23,13 +24,18 @@ class TextFormWithCountryCode extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.hintTextStyle,
     this.title,
-  });
+    this.filled = false,
+    this.horizontalContentPadding = 20,
+    this.verticalContentPadding = 14,
+    this.borderRadius = 30,
+  }) : super(key: key);
 
   final TextEditingController controller;
   final TextEditingController countryCode;
   final TextStyle? textStyle;
   final bool isMandatory;
   final Color? fillColor;
+  final bool filled;
   final bool isEnabled;
   final FocusNode? nextFocusNode;
   final FocusNode? focusNode;
@@ -37,6 +43,9 @@ class TextFormWithCountryCode extends StatefulWidget {
   final Function(String text)? onDone;
   final TextStyle? hintTextStyle;
   final String? title;
+  final double horizontalContentPadding;
+  final double verticalContentPadding;
+  final double borderRadius;
 
   @override
   State<TextFormWithCountryCode> createState() =>
@@ -57,15 +66,21 @@ class _TextFormWithCountryCodeState extends State<TextFormWithCountryCode> {
     return TextFormFieldWidget(
       title: widget.title,
       prefixWidget: _getCountryPicker(),
-      style:
-          widget.textStyle ?? theme.publicSansFonts.regularStyle(fontSize: 16),
+      style: widget.textStyle ??
+          theme.publicSansFonts.regularStyle(
+            fontSize: 16,
+          ),
       validator: (value) => value.trim().validateMobile(),
       textInputType: TextInputType.number,
       fillColor: widget.fillColor,
+      filled: widget.filled,
       controller: widget.controller,
       borderColor: widget.fillColor == null
           ? Colors.white.withOpacity(0.06)
           : AppColors.blackColor.withOpacity(0.08),
+      borderRadius: widget.borderRadius,
+      horizontalContentPadding: widget.horizontalContentPadding,
+      verticalContentPadding: widget.verticalContentPadding,
       suffixWidget: null,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
@@ -84,7 +99,8 @@ class _TextFormWithCountryCodeState extends State<TextFormWithCountryCode> {
   Widget _getCountryPicker() {
     return Container(
       alignment: Alignment.center,
-      width: 120,
+      width: context.screenWidth / 3,
+      padding: const EdgeInsets.only(left: 20),
       child: IgnorePointer(
         child: CountryPickerDropdown(
           onTap: () => FocusScope.of(context).requestFocus(
@@ -105,21 +121,21 @@ class _TextFormWithCountryCodeState extends State<TextFormWithCountryCode> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ClipOval(
-                    child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: CountryPickerUtils.getDefaultFlagImage(country),
-                    ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(3),
+                    child: CountryPickerUtils.getDefaultFlagImage(country),
                   ),
+                  component.spacer(width: 4),
                   component.text(
                     '+${country.phoneCode}',
                     overflow: TextOverflow.ellipsis,
-                    style: theme.publicSansFonts.semiBoldStyle(
+                    style: theme.publicSansFonts.regularStyle(
                       fontSize: 16,
+                      fontColor: AppColors.black01,
                     ),
                   ),
-                  component.assetImage(path: Assets.iconsDropdown)
+                  component.spacer(width: 6),
+                  component.assetImage(path: Assets.iconsDropdown),
                 ],
               ),
             );

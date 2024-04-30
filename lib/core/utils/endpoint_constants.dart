@@ -17,18 +17,28 @@ class EndPoints {
   static const String scheduleAppointment = '/patient/appointment/schedule';
   static const String confirmAppointment = '/patient/appointment/confirm';
   static const String appointments = '/patient/appointments';
+  static const String cancelAppointment = 'patient/appointment/cancel';
 
   // doctor endpoints
   static const String timeSlots = '/doctor/time-slots';
   static const String profile = '/doctor/profile';
   static const String patients = '/doctor/patients';
   static const String home = '/doctor/home';
-  static const String doctorFollowing = '/doctor/followings';
   static const String doctorAppointments = '/doctor/appointments';
+  static const String doctorAppointmentReSchedule = '/doctor/appointment/re-schedule';
+  static const String doctorAppointmentCancel = '/doctor/appointment/cancel';
+  static const String doctorAvailableSlots = '/doctor/available-slots';
 
 // user endpoints (these endpoints are common for all type of user (doctor/patient/influencer))
   static const String userProfile = '/user/profile';
   static const String generateUserName = '/user/generate-username';
   static const String userMessage = '/user/message';
   static const String clearMessage = '/user/message/clear';
+  static const String userHome = '/user/home';
+  static const String changeEmail = '/user/change-email';
+  static const String verifyChangeEmail = '/user/change-email/verify-otp';
+  static const String changePhoneNumber = '/user/change-phone-number';
+  static const String verifyChangePhoneNumber =
+      '/user/change-phone-number/verify-otp';
+  static const String userFollowing = '/user/followings';
 }

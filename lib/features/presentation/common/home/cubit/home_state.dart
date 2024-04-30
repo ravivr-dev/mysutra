@@ -20,23 +20,26 @@ final class GetAppointmentsErrorState extends HomeState {
 
 final class GetAppointmentsSuccessState extends HomeState {
   List<AppointmentEntity> appointmentEntities;
+
   GetAppointmentsSuccessState({
     required this.appointmentEntities,
   });
 }
 
-final class GetUserDetailsLoadingState extends HomeState {}
+final class GetHomeDataLoadingState extends HomeState {}
 
-final class GetUserDetailsErrorState extends HomeState {
+final class GetHomeDataErrorState extends HomeState {
   final String message;
-  GetUserDetailsErrorState({
+
+  GetHomeDataErrorState({
     required this.message,
   });
 }
 
-final class GetUserDetailsSuccessState extends HomeState {
+final class GetHomeDataSuccessState extends HomeState {
   UserEntity entity;
-  GetUserDetailsSuccessState({
+
+  GetHomeDataSuccessState({
     required this.entity,
   });
 }
@@ -45,6 +48,7 @@ final class GetDoctorAppointmentLoadingState extends HomeState {}
 
 final class GetDoctorAppointmentErrorState extends HomeState {
   final String message;
+
   GetDoctorAppointmentErrorState({
     required this.message,
   });
@@ -52,7 +56,50 @@ final class GetDoctorAppointmentErrorState extends HomeState {
 
 final class GetDoctorAppointmentSuccessState extends HomeState {
   GetDoctorAppointmentEntity entity;
+
   GetDoctorAppointmentSuccessState({
     required this.entity,
   });
+}
+
+final class GetAvailableSlotsLoadingState extends HomeState {}
+
+final class GetAvailableSlotsErrorState extends HomeState {
+  final String message;
+
+  GetAvailableSlotsErrorState({required this.message});
+}
+
+final class GetAvailableSlotsLoadedState extends HomeState {
+  final List<AvailableTimeSlotEntity> availableSlots;
+
+  GetAvailableSlotsLoadedState({required this.availableSlots});
+}
+
+final class CancelAppointmentLoadingState extends HomeState {}
+
+final class CancelAppointmentErrorState extends HomeState {
+  final String message;
+
+  CancelAppointmentErrorState({required this.message});
+}
+
+final class CancelAppointmentLoadedState extends HomeState {
+  final String message;
+
+  CancelAppointmentLoadedState({required this.message});
+}
+
+final class RescheduleAppointmentLoadingState extends HomeState {}
+
+final class RescheduleAppointmentErrorState extends HomeState {
+  final String message;
+
+  RescheduleAppointmentErrorState({required this.message});
+}
+
+final class RescheduleAppointmentLoadedState extends HomeState {
+  final String message;
+
+  RescheduleAppointmentLoadedState({required this.message});
 }

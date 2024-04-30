@@ -18,7 +18,13 @@ import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
+
+import '../../../domain/entities/user_entities/user_data_entity.dart';
+import '../../../domain/entities/user_entities/user_entity.dart';
+import '../../../domain/usecases/user_usecases/get_following_usecase.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
@@ -53,7 +59,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, UserModel>> verifyOtp(int otp) async {
+  Future<Either<Failure, OtpResponseUserModel>> verifyOtp(int otp) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.verifyOtp(otp);
@@ -62,6 +68,7 @@ class UserRepositoryImpl extends UserRepository {
           localDataSource.setUserRole(result.data?.role ?? "");
           UserHelper.init(role: result.data!.role!);
           localDataSource.setIsDoctorVerified(result.data?.isVerified ?? true);
+          localDataSource.setTotalUserAccounts(result.totalUserAccounts!);
         }
 
         return Right(result);
@@ -93,6 +100,9 @@ class UserRepositoryImpl extends UserRepository {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getSelectedUserAccounts(id);
+        localDataSource.setAccessToken(result.data!.token!);
+        localDataSource.setIsAccountSelected(true);
+        localDataSource.setUserRole(result.data?.role ?? "");
 
         return Right(result.data!);
       } else {
@@ -170,12 +180,112 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames() async {
+  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames(
+      String userName) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDataSource.generateUsernames();
+        final result = await remoteDataSource.generateUsernames(userName);
 
-        return Right(GenerateUsernameEntity(userNames: result.userNames));
+        return Right(GenerateUsernameEntity(
+            userNames: result.userNames,
+            userNameAvailable: result.userNameAvailable));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getHomeData() async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getHomeData();
+
+        return Right(UserRepoConv.userModelToEntity(result.userModel));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> changeEmail(ChangeEmailParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result =
+            await remoteDataSource.changeEmail({'email': params.email});
+        return Right(result.message ?? 'Verify OTP to Change Email');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyChangeEmail(int otp) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.verifyChangeEmail({'otp': otp});
+        return Right(result.message ?? 'Change Email Success');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> changePhoneNumber(
+      ChangePhoneNumberParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.changePhoneNumber({
+          'countryCode': params.countryCode,
+          'phoneNumber': params.newNumber
+        });
+        return Right(result.message ?? 'Verify OTP to Change Phone Number');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyChangePhoneNumber(int otp) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result =
+            await remoteDataSource.verifyChangePhoneNumber({'otp': otp});
+        return Right(result.message ?? 'Change Phone Number Success');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserDataEntity>>> getFollowings(
+      GetFollowingParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getFollowing({
+          'pagination': data.pagination,
+          'limit': data.limit,
+        });
+
+        return Right(
+            UserRepoConv.convertUserDataModelToEntity(result.userDataList));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

@@ -8,14 +8,19 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation
 import 'package:my_sutra/features/domain/entities/user_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import '../entities/user_entities/my_profile_entity.dart';
+import '../entities/user_entities/user_data_entity.dart';
+import '../entities/user_entities/user_entity.dart';
+import '../usecases/user_usecases/get_following_usecase.dart';
 
 abstract class UserRepository {
   Future<Either<Failure, String>> login(
       {required String countryCode, required String phoneNumber});
 
-  Future<Either<Failure, UserModel>> verifyOtp(int otp);
+  Future<Either<Failure, OtpResponseUserModel>> verifyOtp(int otp);
 
   Future<Either<Failure, List<UserData>>> getUserAccounts();
 
@@ -30,11 +35,27 @@ abstract class UserRepository {
 
   Future<Either<Failure, MyProfileEntity>> getProfileDetails();
 
-  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames();
+
 
   Future<Either<Failure, String>> sendMessage(ChatEntity params);
   Future<Either<Failure, MessagesEntity>> getMessages(
       String appointmentId, int? pagination, int? limit);
 
   Future<Either<Failure, String>> clearMessage(String appointmentId);
+  Future<Either<Failure, GenerateUsernameEntity>> generateUsernames(
+      String userName);
+
+  Future<Either<Failure, UserEntity>> getHomeData();
+
+  Future<Either<Failure, String>> changeEmail(ChangeEmailParams params);
+
+  Future<Either<Failure, String>> verifyChangeEmail(int otp);
+
+  Future<Either<Failure, String>> changePhoneNumber(
+      ChangePhoneNumberParams params);
+
+  Future<Either<Failure, String>> verifyChangePhoneNumber(int otp);
+
+  Future<Either<Failure, List<UserDataEntity>>> getFollowings(
+      GetFollowingParams data);
 }

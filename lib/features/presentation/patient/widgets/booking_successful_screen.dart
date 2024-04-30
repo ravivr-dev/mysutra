@@ -49,6 +49,8 @@ class BookingSuccessfulScreen extends StatelessWidget {
                 )),
             component.spacer(height: 28),
             _buildChatButton(context),
+            component.spacer(height: 12),
+            _buildGoToHomeButton(context),
             component.spacer(height: 70)
           ],
         ),
@@ -74,6 +76,30 @@ class BookingSuccessfulScreen extends StatelessWidget {
                   fontColor: AppColors.color0xFF8338EC,
                 )),
             component.assetImage(path: Assets.iconsChat)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoToHomeButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        AiloitteNavigation.intent(context, AppRoutes.homeRoute);
+      },
+      child: Container(
+        height: 50,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.white,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            component.text(context.stringForKey(StringKeys.goToHome),
+                style: theme.publicSansFonts.regularStyle()),
+            component.assetImage(path: Assets.iconsArrowLeft)
           ],
         ),
       ),

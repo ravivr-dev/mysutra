@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/change_data_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
@@ -42,14 +44,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: AppColors.transparent,
         title: component.text(context.stringForKey(StringKeys.myProfile)),
         actions: [
           IconButton(
-            onPressed: () {logoutDialog();},
+            onPressed: () {
+              logoutDialog();
+            },
             icon: const Icon(
               Icons.logout_outlined,
-              color: AppColors.black1C,
             ),
           ),
         ],
@@ -66,9 +68,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               my = state.entity;
             }
 
-            if (state is GetDoctorFollowingLoadedState) {
-              _goToDoctorFollowingScreen(state.followers);
-            } else if (state is GetDoctorFollowingErrorState) {
+            if (state is GetFollowingLoadedState) {
+              if (userRole == UserRole.doctor) {
+                _goToDoctorFollowingScreen(state.myFollowings);
+              } else {
+                AiloitteNavigation.intentWithData(
+                    context, AppRoutes.patientMyFollowing, state.myFollowings);
+              }
+            } else if (state is GetFollowingErrorState) {
               _showToast(message: state.message);
             }
           },
@@ -109,16 +116,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     value: 'My Following',
                     icons: Assets.iconsUserAdd,
                     onTap: () {
-                      if (userRole == UserRole.doctor) {
-                        context
-                            .read<ProfileCubit>()
-                            .getDoctorFollowing(pagination: 1, limit: 35);
-                        // AiloitteNavigation.intent(
-                        //     context, AppRoutes.doctorMyFollowing);
-                      } else {
-                        AiloitteNavigation.intent(
-                            context, AppRoutes.patientMyFollowing);
-                      }
+                      context
+                          .read<ProfileCubit>()
+                          .getFollowing(pagination: 1, limit: 35);
                     }),
                 component.spacer(height: 12),
                 if (userRole == UserRole.doctor) ...[
@@ -142,14 +142,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   component.spacer(height: 12),
                 ],
                 _buildTileCard(
+                    isEmail: false,
                     icon: Assets.iconsPhone,
                     text: 'Mobile number',
-                    subText: '987654123'),
+                    subText: my?.phoneNumber.toString() ?? ''),
                 component.spacer(height: 12),
                 _buildTileCard(
+                    isEmail: true,
                     icon: Assets.iconsEmail,
                     text: 'Email Address',
-                    subText: 'hemuk9720@gmail.com'),
+                    subText: my?.email ?? ''),
               ],
             );
           },
@@ -227,6 +229,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _buildTileCard({
+    required bool isEmail,
     required String icon,
     required String text,
     required String subText,
@@ -245,6 +248,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 component.text(text,
                     style: theme.publicSansFonts.mediumStyle(
                       fontColor: AppColors.grey92,
+                      fontSize: 14,
                     )),
                 component.text(subText,
                     style: theme.publicSansFonts.semiBoldStyle(
@@ -254,11 +258,17 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ],
             ),
           ),
-          component.text('Change',
-              style: theme.publicSansFonts.semiBoldStyle(
-                fontColor: AppColors.color0xFF8338EC,
-                fontSize: 14,
-              )),
+          InkWell(
+            onTap: () {
+              AiloitteNavigation.intentWithData(context,
+                  AppRoutes.changeDataRoute, ChangeDataParams(isEmail));
+            },
+            child: component.text('Change',
+                style: theme.publicSansFonts.semiBoldStyle(
+                  fontColor: AppColors.color0xFF8338EC,
+                  fontSize: 14,
+                )),
+          ),
         ],
       ),
     );
@@ -311,7 +321,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     context.read<ProfileCubit>().getProfileDetails();
   }
 
-  void _goToDoctorFollowingScreen(List<FollowerEntity> followers) {
+  void _goToDoctorFollowingScreen(List<UserDataEntity> followers) {
     AiloitteNavigation.intentWithData(
         context, AppRoutes.doctorMyFollowing, followers);
   }
@@ -348,7 +358,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             textAlign: TextAlign.center,
           ),
           actionsPadding:
-          const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              const EdgeInsets.only(left: 20, right: 20, bottom: 20),
           actions: [
             Column(
               children: [
@@ -358,6 +368,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   onTap: () {
                     AiloitteNavigation.intentWithClearAllRoutes(
                         context, AppRoutes.loginRoute);
+                    context.read<MainCubit>().logout();
                   },
                 ),
                 const SizedBox(height: 15),

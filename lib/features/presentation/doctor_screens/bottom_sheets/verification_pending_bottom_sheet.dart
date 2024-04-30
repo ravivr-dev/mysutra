@@ -15,14 +15,14 @@ class VerificationPendingBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (state is GetUserDetailsSuccessState) {
-          if (state.entity.isVerified) {
+        if (state is GetHomeDataSuccessState) {
+          if (state.entity.isVerified == true) {
             AiloitteNavigation.intentWithClearAllRoutes(
                 context, AppRoutes.homeRoute);
           } else {
             _showToast(context, 'You are not verified Yet');
           }
-        } else if (state is GetUserDetailsErrorState) {
+        } else if (state is GetHomeDataErrorState) {
           _showToast(context, state.message);
         }
       },
@@ -66,7 +66,7 @@ class VerificationPendingBottomSheet extends StatelessWidget {
             component.spacer(height: 28),
             InkWell(
               onTap: () {
-                context.read<HomeCubit>().getUserDetails();
+                context.read<HomeCubit>().getHomeData();
               },
               child: component.text(
                 'Open Home',

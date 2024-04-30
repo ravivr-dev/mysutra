@@ -32,6 +32,7 @@ class CustomDropdown extends StatelessWidget {
       height: height ?? 48,
       child: DropDownTextField(
         clearOption: false,
+        listSpace: -20,
         dropDownIconProperty: IconProperty(
             icon: Icons.keyboard_arrow_down, color: AppColors.color0xFF989898),
         onChanged: (val) => onChanged?.call(val),

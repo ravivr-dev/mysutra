@@ -1,6 +1,7 @@
+/// In case of UpdateAppointment We will not get this token we will only get (message and data)
 class ScheduleAppointmentResponseModel {
   final String message;
-  final String token;
+  final String? token;
 
   ScheduleAppointmentResponseModel({
     required this.message,

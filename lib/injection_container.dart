@@ -13,27 +13,35 @@ import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repositor
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_time_slots_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_user_details_usercase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_profile_details_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
@@ -68,12 +76,18 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => MainCubit(sl<LocalDataSource>()));
   sl.registerFactory(() => HomeCubit(
-      localDataSource: sl<LocalDataSource>(),
-      getAppointmentUseCase: sl<GetAppointmentUseCase>(),
-      getUserDetailsUseCase: sl<GetUserDetailsUseCase>(),
-      getDoctorAppointmentUseCase: sl<GetDoctorAppointmentsUseCase>()));
+        localDataSource: sl<LocalDataSource>(),
+        getAppointmentUseCase: sl<GetAppointmentUseCase>(),
+        getHomeDataUseCase: sl<GetHomeDataUseCase>(),
+        getDoctorAppointmentUseCase: sl<GetDoctorAppointmentsUseCase>(),
+        doctorCancelAppointmentsUseCase: sl<DoctorCancelAppointmentsUseCase>(),
+        getAvailableSlotsForDoctorUseCase:
+            sl<GetAvailableSlotsForDoctorUseCase>(),
+        doctorRescheduleAppointmentsUseCase:
+            sl<DoctorRescheduleAppointmentsUseCase>(),
+      ));
   sl.registerFactory(() => LoginCubit(sl<LoginUsecase>()));
-  sl.registerLazySingleton(() => SelectAccountCubit(
+  sl.registerFactory(() => SelectAccountCubit(
       sl<SelectAccountUsecase>(), sl<GetSelectedAccountUsecase>()));
   sl.registerFactory(() => OtpCubit(
       sl<LoginUsecase>(), sl<OtpUsecase>(), sl<RegistrationUsecase>()));
@@ -92,13 +106,19 @@ Future<void> init() async {
       updateAboutOrFeesUseCase: sl<UpdateAboutOrFeesUseCase>(),
       getTimeSlotsUseCase: sl<GetTimeSlotsUseCase>()));
   sl.registerFactory(() => AppointmentCubit(
-      getAvailableSlotsUseCase: sl<GetAvailableSlotsUseCase>(),
+      getAvailableSlotsUseCase: sl<GetAvailableSlotsForPatientUseCase>(),
       scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
-      confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>()));
+      confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
+      cancelAppointmentUseCase: sl<CancelAppointmentUseCase>()));
   sl.registerFactory(() => ProfileCubit(
-      getDoctorFollowingUseCase: sl<GetDoctorFollowingUseCase>(),
-      getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
-      getPatientUseCaseUseCase: sl<GetPatientUseCaseUseCase>()));
+        getFollowingUseCase: sl<GetFollowingUseCase>(),
+        getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
+        getPatientUseCaseUseCase: sl<GetPatientUseCaseUseCase>(),
+        changeEmailUseCase: sl<ChangeEmailUseCase>(),
+        verifyChangeEmailUseCase: sl<VerifyChangeEmailUseCase>(),
+        changePhoneNumberUseCase: sl<ChangePhoneNumberUseCase>(),
+        verifyChangePhoneNumberUseCase: sl<VerifyChangePhoneNumberUseCase>(),
+      ));
   sl.registerFactory(() => ChatCubit(
       sendMessageUsecase: sl<SendMessageUsecase>(),
       clearMessagesUseCase: sl<ClearMessagesUseCase>(),
@@ -118,26 +138,37 @@ Future<void> init() async {
   sl.registerFactory(() => UpdateTimeSlotsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => UpdateAboutOrFeesUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetDoctorDetailsUseCase(sl<PatientRepository>()));
-  sl.registerFactory(() => GetAvailableSlotsUseCase(sl<PatientRepository>()));
+  sl.registerFactory(
+      () => GetAvailableSlotsForPatientUseCase(sl<PatientRepository>()));
+  sl.registerFactory(
+      () => GetAvailableSlotsForDoctorUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => ScheduleAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => ConfirmAppointmentUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => CancelAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => GetProfileDetailsUseCase(sl<UserRepository>()));
+  sl.registerFactory(() => GetFollowingUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetTimeSlotsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetPatientUseCaseUseCase(sl<DoctorRepository>()));
   sl.registerLazySingleton(
-      () => GetDoctorFollowingUseCase(sl<DoctorRepository>()));
-  sl.registerLazySingleton(
       () => GenerateUsernamesUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetAppointmentUseCase(sl<PatientRepository>()));
-  sl.registerFactory(() => GetUserDetailsUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => GetHomeDataUseCase(sl<UserRepository>()));
   sl.registerFactory(
       () => GetDoctorAppointmentsUseCase(sl<DoctorRepository>()));
+  sl.registerLazySingleton(() => ChangeEmailUseCase(sl<UserRepository>()));
+  sl.registerLazySingleton(
+      () => VerifyChangeEmailUseCase(sl<UserRepository>()));
+  sl.registerLazySingleton(
+      () => ChangePhoneNumberUseCase(sl<UserRepository>()));
+  sl.registerLazySingleton(
+      () => VerifyChangePhoneNumberUseCase(sl<UserRepository>()));
   sl.registerFactory(
-      () => SendMessageUsecase(sl<UserRepository>()));
+      () => DoctorCancelAppointmentsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(
-      () => ClearMessagesUseCase(sl<UserRepository>()));
-  sl.registerFactory(
-      () => GetMessageUseCase(sl<UserRepository>()));
+      () => DoctorRescheduleAppointmentsUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => SendMessageUsecase(sl<UserRepository>()));
+  sl.registerFactory(() => ClearMessagesUseCase(sl<UserRepository>()));
+  sl.registerFactory(() => GetMessageUseCase(sl<UserRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

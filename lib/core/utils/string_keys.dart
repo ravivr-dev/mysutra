@@ -20,6 +20,7 @@ class StringKeys {
   static const String comments = 'comments';
   static const String reply = 'reply';
   static const String follow = 'follow';
+  static const String following = 'following';
   static const String rescheduleAppointment = 'reschedule_appointment';
   static const String cancelAppointment = 'cancel_appointment';
   static const String patientDetails = 'patient_details';
@@ -45,6 +46,8 @@ class StringKeys {
   static const String bookingSuccessful = 'booking_successful';
   static const String yourBookingHasBeenConfirmed =
       'your_booking_has_been_confirmed';
+  static const String bookingCancelled = 'booking_cancelled';
+  static const String yourBookingHasBeenCancelled = 'your_booking_has_been_cancelled';
   static const String confirmYourBooking = 'confirmYourBooking';
   static const String pleaseConfirmYourBookingByText =
       'please_confirm_your_booking_by_text';
@@ -58,4 +61,12 @@ class StringKeys {
   static const String rateTheAppointment = 'rate_the_appointment';
   static const String downloadAttachedPrescription =
       'download_attached_prescription';
+  static const String goToHome = 'go_to_home';
+  static const String confirmBooking = 'confirm_booking';
+  static const String newAppointment = 'new_appointment';
+  static const String areYouSure = 'are_you_sure?';
+  static const String uouWantToCancelThisAppointment =
+      'you_want_to_cancel_this_appointment?';
+  static const String noDoNotCancel = "no_do_not_cancel";
+  static const String yesCancel = "yes_cancel";
 }

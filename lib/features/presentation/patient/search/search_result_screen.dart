@@ -6,12 +6,13 @@ import 'package:my_sutra/core/common_widgets/search_with_filter_widget.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
-import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+import '../../../../generated/assets.dart';
 import '../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class SearchResultScreen extends StatefulWidget {
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
   final TextEditingController _searchController = TextEditingController();
+  SearchFilterArgs? _doctorFilterDetails;
 
   @override
   void didChangeDependencies() {
@@ -45,7 +47,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       appBar: AppBar(
           scrolledUnderElevation: 0.0,
           centerTitle: true,
-          backgroundColor: AppColors.transparent,
           title: component.text(context.stringForKey(StringKeys.searchResult),
               style: theme.publicSansFonts.mediumStyle(fontSize: 20))),
       body: SingleChildScrollView(
@@ -57,7 +58,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             } else if (state is SearchDoctorLoaded) {
               doctorsList = state.data;
             } else if (state is FollowDoctorSuccessState) {
-              doctorsList[state.followedDoctorIndex].reInitIsFollowing();
+              doctorsList[state.followedDoctorIndex!].reInitIsFollowing();
               setState(() {});
             } else if (state is GetDoctorDetailsErrorState) {
               _showToast(message: state.message);
@@ -70,7 +71,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               children: [
                 SearchWithFilter(
                   controller: _searchController,
-                  onTapFilter: () {},
+                  filter: _doctorFilterDetails,
+                  onTapFilter: (data) {
+                    _initFilterData(data);
+                    _callSearchDoctorApi(
+                      specializationId: data.specializationId,
+                      reviews: data.reviews,
+                      experience: data.experience,
+                    );
+                  },
                   hintText: 'Search for doctors',
                   backgroundColor: AppColors.white,
                   onChanged: (value) {
@@ -78,20 +87,31 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   },
                 ),
                 component.spacer(height: 30),
-                ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: doctorsList.length,
-                    separatorBuilder: (_, __) => component.spacer(height: 12),
-                    itemBuilder: (_, index) {
-                      return _buildCard(doctorsList[index], index);
-                    })
+                if (doctorsList.isEmpty)
+                  component.text('No Data Found',
+                      style: theme.publicSansFonts.mediumStyle(
+                          fontColor: AppColors.grey92, fontSize: 20))
+                else
+                  ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: doctorsList.length,
+                      separatorBuilder: (_, __) => component.spacer(height: 12),
+                      itemBuilder: (_, index) {
+                        return _buildCard(doctorsList[index], index);
+                      })
               ],
             );
           },
         ),
       ),
     );
+  }
+
+  void _initFilterData(SearchFilterArgs args) {
+    setState(() {
+      _doctorFilterDetails = args;
+    });
   }
 
   Widget _buildCard(DoctorEntity data, int index) {
@@ -201,11 +221,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             ),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                data.profilePic ?? Constants.tempNetworkUrl,
+              child: component.networkImage(
+                url: data.profilePic ?? '',
                 fit: BoxFit.fill,
                 width: 70,
                 height: 70,
+                errorWidget:
+                    component.assetImage(path: Assets.imagesDefaultAvatar),
               ),
             ),
           ],
@@ -214,10 +236,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     );
   }
 
-  void _callSearchDoctorApi({String? search}) {
-    context
-        .read<SearchDoctorCubit>()
-        .getData(SearchDoctorParams(search: search));
+  void _callSearchDoctorApi(
+      {String? search,
+      int? reviews,
+      int? experience,
+      String? specializationId}) {
+    context.read<SearchDoctorCubit>().getData(SearchDoctorParams(
+        search: search,
+        reviews: reviews,
+        experience: experience,
+        specializationId: specializationId));
   }
 
   void _getDoctorDetails(String doctorId) {
@@ -229,6 +257,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   }
 
   void _navigateToDoctorDetailScreen(DoctorEntity entity) {
-    AiloitteNavigation.intentWithData(context, AppRoutes.doctorDetail, entity);
+    // AiloitteNavigation.intentWithData(context, AppRoutes.doctorDetail, entity);
+    Navigator.pushNamed(context, AppRoutes.doctorDetail, arguments: entity)
+        .then((value) => setState(() {}));
   }
 }

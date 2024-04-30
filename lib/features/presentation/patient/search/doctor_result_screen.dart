@@ -1,9 +1,13 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -36,11 +40,9 @@ class DoctorResultScreen extends StatelessWidget {
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
                 child: component.networkImage(
-                    fit: BoxFit.fill,
-                    url: doctorEntity.profilePic ?? '',
-                    errorWidget: Container(
-                        color: AppColors.grey92,
-                        child: const Icon(Icons.person))),
+                  fit: BoxFit.fill,
+                  url: doctorEntity.profilePic ?? '',
+                ),
               ),
             ),
             component.spacer(height: 12),
@@ -60,12 +62,32 @@ class DoctorResultScreen extends StatelessWidget {
                   )),
             ),
             component.spacer(height: 12),
-            Row(
-              children: [
-                Expanded(child: _buildFollowButton()),
-                component.spacer(width: 12),
-                Expanded(child: _buildBookAppointmentButton(context)),
-              ],
+            BlocConsumer<SearchDoctorCubit, SearchDoctorState>(
+              listener: (context, state) {
+                if (state is FollowDoctorSuccessState) {
+                  doctorEntity.reInitIsFollowing();
+                }
+              },
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    Expanded(
+                        child: InkWell(
+                      onTap: () {
+                        context.read<SearchDoctorCubit>().followDoctor(
+                            params:
+                                FollowDoctorParams(doctorId: doctorEntity.id!));
+                        // doctorEntity.reInitIsFollowing();
+                      },
+                      child: _buildFollowButton(
+                          context: context,
+                          isFollowed: doctorEntity.isFollowing!),
+                    )),
+                    component.spacer(width: 12),
+                    Expanded(child: _buildBookAppointmentButton(context)),
+                  ],
+                );
+              },
             ),
             component.spacer(height: 24),
             Row(children: [
@@ -165,8 +187,11 @@ class DoctorResultScreen extends StatelessWidget {
   }
 
   void _bookAppointment(BuildContext context, String doctorID) {
-    AiloitteNavigation.intentWithData(context, AppRoutes.scheduleAppointment,
-        ScheduleAppointmentScreenArgs(doctorId: doctorID));
+    AiloitteNavigation.intentWithData(
+        context,
+        AppRoutes.scheduleAppointment,
+        ScheduleAppointmentScreenArgs(
+            doctorId: doctorID, isNewAppointment: true));
   }
 
   Widget _buildBookAppointmentButton(BuildContext context) {
@@ -196,7 +221,8 @@ class DoctorResultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFollowButton() {
+  Widget _buildFollowButton(
+      {required BuildContext context, required bool isFollowed}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -206,11 +232,20 @@ class DoctorResultScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.add, color: AppColors.color0xFF8338EC),
+          Icon(
+            isFollowed ? Icons.check : Icons.add,
+            color: isFollowed
+                ? AppColors.color0xFF15C0B6
+                : AppColors.color0xFF8338EC,
+          ),
           component.text(
-            'Follow',
+            isFollowed
+                ? context.stringForKey(StringKeys.following)
+                : context.stringForKey(StringKeys.follow),
             style: theme.publicSansFonts.regularStyle(
-              fontColor: AppColors.color0xFF8338EC,
+              fontColor: isFollowed
+                  ? AppColors.color0xFF15C0B6
+                  : AppColors.color0xFF8338EC,
             ),
           )
         ],

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
-
+import 'package:my_sutra/core/utils/app_colors.dart';
 
 class IconContainer extends StatelessWidget {
   final String icon;
-  final Color backgroundColor;
-  final String? title;
+  final Color firstColor;
+  final Color secondColor;
+
+  final String title;
   final Function()? onTap;
+
   const IconContainer({
     super.key,
     required this.icon,
-    required this.backgroundColor,
-    this.title,
+    required this.firstColor,
+    required this.secondColor,
+    required this.title,
     this.onTap,
   });
 
@@ -22,15 +26,16 @@ class IconContainer extends StatelessWidget {
         InkWell(
           onTap: onTap,
           child: Container(
-            height: 40,
-            width: 40,
+            height: 50,
+            width: 50,
             // foregroundDecoration: BoxDecoration(
             //   color: backgroundColor,
             //   borderRadius: BorderRadius.circular(6),
             // ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: backgroundColor,
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(colors: [firstColor, secondColor]),
+              // color: backgroundColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.shade100,
@@ -42,18 +47,18 @@ class IconContainer extends StatelessWidget {
             child: component.assetImage(path: icon),
           ),
         ),
-        if (title != null) ...[
-          const SizedBox(height: 16),
-          SizedBox(
-            width: 80,
-            child: Text(
-              title!,
-              textAlign: TextAlign.center,
-              style:
-                  theme.publicSansFonts.mediumStyle(fontSize: 12, height: 20),
-            ),
-          )
-        ]
+        // if (title != null) ...[
+        const SizedBox(height: 10),
+        SizedBox(
+          width: 80,
+          child: component.text(
+            title,
+            textAlign: TextAlign.center,
+            style: theme.publicSansFonts.mediumStyle(
+                fontSize: 12, fontColor: AppColors.color0xFF1E293B),
+          ),
+        )
+        // ]
       ],
     );
   }

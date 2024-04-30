@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
+import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/booking_cancelled_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/reschedule_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/widgets/patient_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/select_account.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/change_data_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
@@ -26,7 +31,7 @@ import 'package:my_sutra/features/presentation/patient/schedule_appointment_scre
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/doctor_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
-import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
+import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/booking_successful_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
 import 'package:my_sutra/injection_container.dart';
@@ -57,7 +62,7 @@ class Routes {
       case AppRoutes.createAccountRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<RegistrationCubit>()..generateUsernames(),
+            create: (context) => sl<RegistrationCubit>(),
             child: CreateAccountScreen(
               profession: args as String,
             ),
@@ -79,10 +84,10 @@ class Routes {
           builder: (_) => const FindDoctorScreen(),
         );
 
-      case AppRoutes.searchDoctorRoute:
-        return MaterialPageRoute(
-          builder: (_) => const AppointmentScreen(),
-        );
+      // case AppRoutes.searchDoctorRoute:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AppointmentScreen(),
+      //   );
 
       case AppRoutes.searchResultRoute:
         return MaterialPageRoute(
@@ -104,29 +109,39 @@ class Routes {
         final args = settings?.arguments as ScheduleAppointmentScreenArgs;
 
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<AppointmentCubit>(
-                  create: (context) => sl<AppointmentCubit>(),
-                  child: ScheduleAppointmentScreen(args: args),
-                ));
+            builder: (_) => MultiBlocProvider(providers: [
+                  BlocProvider(create: (_) => sl<AppointmentCubit>()),
+                  BlocProvider(create: (_) => sl<RegistrationCubit>())
+                ], child: ScheduleAppointmentScreen(args: args)));
+
       case AppRoutes.doctorDetail:
         final args = settings?.arguments as DoctorEntity;
         return MaterialPageRoute(
-            builder: (_) => DoctorResultScreen(doctorEntity: args));
+            builder: (_) => BlocProvider<SearchDoctorCubit>(
+                  create: (context) => sl<SearchDoctorCubit>(),
+                  child: DoctorResultScreen(doctorEntity: args),
+                ));
 
       case AppRoutes.bookingSuccessful:
         return MaterialPageRoute(
             builder: (_) => const BookingSuccessfulScreen());
+
+      case AppRoutes.bookingCancelled:
+        return MaterialPageRoute(
+            builder: (_) => const BookingCancelledScreen());
 
       case AppRoutes.patientPastAppointment:
         return MaterialPageRoute(
             builder: (_) => const PatientPastAppointmentsScreen());
 
       case AppRoutes.patientMyFollowing:
+        final args = settings?.arguments as List<UserDataEntity>;
+
         return MaterialPageRoute(
-            builder: (_) => const PatientMyFollowingScreen());
+            builder: (_) => PatientMyFollowingScreen(myFollowing: args));
 
       case AppRoutes.doctorMyFollowing:
-        final args = settings?.arguments as List<FollowerEntity>;
+        final args = settings?.arguments as List<UserDataEntity>;
         return MaterialPageRoute(
             builder: (_) => DoctorMyFollowingScreen(followers: args));
 
@@ -151,6 +166,29 @@ class Routes {
                     ),
                   ],
                   child: const ChatScreen(),
+                ));
+
+      case AppRoutes.searchFilterScreen:
+        final data = settings?.arguments as SearchFilterArgs?;
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (_) => sl<RegistrationCubit>()..getSpecialisations(),
+                  child: SearchFilterScreen(args: data),
+                ));
+
+      case AppRoutes.changeDataRoute:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<ProfileCubit>(
+                  create: (context) => sl<ProfileCubit>(),
+                  child: ChangeDataScreen(args: args as ChangeDataParams),
+                ));
+
+      case AppRoutes.rescheduleAppointment:
+        final args = settings?.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => sl<HomeCubit>(),
+                  child:  RescheduleAppointmentScreen(appointmentId: args,),
                 ));
 
       // case AppRoutes.myBatchesRoute:

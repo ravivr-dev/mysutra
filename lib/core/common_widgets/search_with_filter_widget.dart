@@ -1,7 +1,11 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/generated/assets.dart';
+
+import '../../features/presentation/patient/search_filter_screen.dart';
+import '../../routes/routes_constants.dart';
 
 class SearchWithFilter extends StatefulWidget {
   const SearchWithFilter({
@@ -12,14 +16,16 @@ class SearchWithFilter extends StatefulWidget {
     this.onTapFilter,
     this.backgroundColor,
     this.onTap,
+    this.filter,
   });
 
   final Function(String onChange)? onChanged;
   final TextEditingController? controller;
   final String? hintText;
-  final void Function()? onTapFilter;
+  final void Function(SearchFilterArgs args)? onTapFilter;
   final Color? backgroundColor;
   final VoidCallback? onTap;
+  final SearchFilterArgs? filter;
 
   @override
   State<SearchWithFilter> createState() => _SearchWithFilterState();
@@ -52,7 +58,7 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
               ),
               prefixIcon: const Icon(Icons.search, color: AppColors.black24),
               hintStyle: theme.publicSansFonts
-                  .regularStyle(fontSize: 18, fontColor: AppColors.blackAE),
+                  .regularStyle(fontSize: 14, fontColor: AppColors.selected),
               hintText: widget.hintText ?? "Search",
               filled: true,
               fillColor: widget.backgroundColor ?? AppColors.backgroundColor,
@@ -65,21 +71,28 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
             ),
           ),
         ),
-        if (widget.onTapFilter != null) ...[
-          const SizedBox(width: 8),
-          InkWell(
-            onTap: widget.onTapFilter,
-            child: Container(
-              height: 48,
-              width: 48,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(radius),
-                color: widget.backgroundColor ?? AppColors.backgroundColor,
-              ),
-              child: component.assetImage(path: Assets.iconsFilter),
+        const SizedBox(width: 8),
+        InkWell(
+          //todo please check this one where should we call onTapFilter
+          onTap: () async {
+            if (widget.onTapFilter != null) {
+              final result = await AiloitteNavigation.intentWithData(
+                  context, AppRoutes.searchFilterScreen, widget.filter);
+              if (result != null && result is SearchFilterArgs) {
+                widget.onTapFilter?.call(result);
+              }
+            }
+          },
+          child: Container(
+            height: 48,
+            width: 48,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(radius),
+              color: widget.backgroundColor ?? AppColors.backgroundColor,
             ),
+            child: component.assetImage(path: Assets.iconsFilter),
           ),
-        ],
+        ),
       ],
     );
   }

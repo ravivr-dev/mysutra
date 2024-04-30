@@ -27,6 +27,8 @@ abstract class PatientDataSource {
       {required Map<String, dynamic> map, required String token});
 
   Future<GetAppointmentResponseModel> getAppointments(Map<String, dynamic> map);
+
+  Future<dynamic> cancelAppointment(Map<String, dynamic> map);
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -34,7 +36,6 @@ class PatientDataSourceImpl extends PatientDataSource {
   final LocalDataSource localDataSource;
 
   PatientDataSourceImpl({required this.client, required this.localDataSource});
-
 
   void _processDio(err) {
     if (err is DioException) {
@@ -46,8 +47,6 @@ class PatientDataSourceImpl extends PatientDataSource {
       throw ServerException(message: Constants.errorUnknown);
     }
   }
-
-
 
   @override
   Future<SearchDoctorModel> searchDoctors(SearchDoctorParams data) async {
@@ -152,9 +151,26 @@ class PatientDataSourceImpl extends PatientDataSource {
   }
 
   @override
-  Future<GetAppointmentResponseModel> getAppointments(Map<String, dynamic> map) async {
+  Future<GetAppointmentResponseModel> getAppointments(
+      Map<String, dynamic> map) async {
     try {
       return await client.getAppointments(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<dynamic> cancelAppointment(Map<String, dynamic> map) async {
+    try {
+      return await client.cancelAppointment(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

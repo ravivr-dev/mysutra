@@ -17,9 +17,10 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/schedule_appointment_response_entity.dart';
+import '../../../domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
 import '../../../domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
 import '../../../domain/usecases/patient_usecases/get_appointments_usecase.dart';
-import '../../../domain/usecases/patient_usecases/get_available_slots_usecase.dart';
+import '../../../domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import '../../../domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
 import '../../../domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 
@@ -71,7 +72,7 @@ class PatientRepositoryImpl extends PatientRepository {
 
   @override
   Future<Either<Failure, List<AvailableTimeSlotEntity>>> getAvailableSlots(
-      GetAvailableSlotsParams data) async {
+      GetAvailableSlotsForPatientParams data) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getAvailableSlots({
@@ -112,18 +113,20 @@ class PatientRepositoryImpl extends PatientRepository {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.scheduleAppointment({
-          'doctorId': data.doctorID,
+          if (data.doctorID != null) 'doctorId': data.doctorID,
           'date': data.date,
           'time': data.time,
-          'patientDetails': {
-            'username': data.patientName,
-            'age': data.patientAge,
-            'gender': data.patientGender,
-            'countryCode': '+91',
-            'phoneNumber': data.patientNumber,
-            'email': data.patientEmail,
-            'problem': data.patientProblem
-          },
+          if (data.appointmentId != null) 'appointmentId': data.appointmentId,
+          if (data.patientNumber != null && data.patientName != null)
+            'patientDetails': {
+              'username': data.patientName,
+              'age': data.patientAge,
+              'gender': data.patientGender,
+              'countryCode': '+91',
+              'phoneNumber': data.patientNumber,
+              'email': data.patientEmail,
+              'problem': data.patientProblem
+            },
         });
 
         return Right(ScheduleAppointmentResponseEntity(
@@ -170,6 +173,23 @@ class PatientRepositoryImpl extends PatientRepository {
           'pagination': data.pagination,
           'limit': data.limit,
         });
+
+        return Right(PatientRepoConv.appointmentModelListToEntity(result.data));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> cancelAppointment(
+      CancelAppointmentParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource
+            .getAppointments({'appointmentId': data.appointmentId});
 
         return Right(PatientRepoConv.appointmentModelListToEntity(result.data));
       } else {

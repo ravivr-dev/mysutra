@@ -151,8 +151,7 @@ class _TextSearchFieldState extends State<TextSearchField> {
               hintStyle: widget.hintTextStyle ??
                   theme.publicSansFonts
                       .regularStyle(fontSize: 18, fontColor: AppColors.blackAE),
-              hintText: widget.hintText ??
-                  "Please enter ${widget.title?.toLowerCase()}",
+              hintText: widget.hintText ?? "Please enter ${widget.title ?? ''}",
               errorStyle: theme.publicSansFonts.regularStyle(
                 fontSize: 14,
               ),

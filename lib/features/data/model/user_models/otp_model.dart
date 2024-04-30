@@ -1,15 +1,29 @@
-class UserModel {
+import 'package:my_sutra/core/utils/constants.dart';
+
+class OtpResponseUserModel {
   String? message;
   UserData? data;
   int? totalUserAccounts;
 
-  UserModel({this.message, this.data, this.totalUserAccounts});
+  OtpResponseUserModel({this.message, this.data, this.totalUserAccounts});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  OtpResponseUserModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     data = json['data'] != null ? UserData.fromJson(json['data']) : null;
     totalUserAccounts = json['totalUserAccounts'];
   }
+}
+
+class ResponseModel {
+  final String message;
+  final int count;
+  final List<UserData> userDataList;
+
+  ResponseModel.fromJson(Map<String, dynamic> json)
+      : message = json['message'],
+        userDataList =
+            (json['data'] as List).map((e) => UserData.fromJson(e)).toList(),
+        count = json['count'];
 }
 
 class UserData {
@@ -21,7 +35,7 @@ class UserData {
   int? phoneNumber;
   String? email;
   String? specializationId;
-  String? specializationName;
+  String? specialization;
   String? registrationNumber;
   List<String>? socialProfileUrls;
   String? dob;
@@ -32,27 +46,35 @@ class UserData {
   String? createdAt;
   String? updatedAt;
   String? token;
+  String? age;
+  String? userName;
+  bool? isFollowing;
+  int? totalFollowers;
 
-  UserData(
-      {this.id,
-      this.role,
-      this.profilePic,
-      this.fullName,
-      this.countryCode,
-      this.phoneNumber,
-      this.email,
-      this.specializationId,
-      this.specializationName,
-      this.registrationNumber,
-      this.socialProfileUrls,
-      this.dob,
-      this.gender,
-      this.location,
-      this.isVerified,
-      this.isBlocked,
-      this.createdAt,
-      this.updatedAt,
-      this.token});
+  UserData({
+    this.id,
+    this.role,
+    this.profilePic,
+    this.fullName,
+    this.countryCode,
+    this.phoneNumber,
+    this.email,
+    this.specializationId,
+    this.specialization,
+    this.registrationNumber,
+    this.socialProfileUrls,
+    this.dob,
+    this.gender,
+    this.location,
+    this.isVerified,
+    this.isBlocked,
+    this.createdAt,
+    this.updatedAt,
+    this.token,
+    required this.age,
+    required this.userName,
+    required this.isFollowing,
+  });
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -63,9 +85,9 @@ class UserData {
     phoneNumber = json['phoneNumber'];
     email = json['email'];
     specializationId = json['specializationId'];
-    specializationName = json['specializationName'];
-    registrationNumber = json['specialization'];
-    socialProfileUrls = json['socialProfileUrls'].cast<String>();
+    specialization = json['specialization'];
+    registrationNumber = json['registrationNumber'];
+    socialProfileUrls = json['socialProfileUrls']?.cast<String>();
     dob = json['dob'];
     gender = json['gender'];
     location = json['location'];
@@ -74,5 +96,9 @@ class UserData {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     token = json['token'];
+    age = json['age'];
+    userName = json[Constants.userName];
+    isFollowing = json['isFollowing'];
+    totalFollowers = json['totalFollowers'];
   }
 }

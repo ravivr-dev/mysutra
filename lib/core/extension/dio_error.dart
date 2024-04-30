@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/extension/auth_error_handler.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/main.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 const String errorInternet = "Your internet is not working it seems";
 const String errorNoInternet = "No internet available";
@@ -20,6 +23,14 @@ extension MyDioError on DioException {
   String getErrorFromDio(
       {bool validateAuthentication = true,
       required final LocalDataSource localDataSource}) {
+    ///We don't want to redirect to LoginScreen in case of GUEST user
+    if (response != null &&
+        response!.statusCode == 401 &&
+        (UserHelper.role == UserRole.guest &&
+            (localDataSource.getAccessToken() ?? '').isNotEmpty)) {
+      navigationKey.currentState
+          ?.pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
+    }
     if (type == DioExceptionType.connectionTimeout ||
         type == DioExceptionType.receiveTimeout ||
         type == DioExceptionType.sendTimeout) {
