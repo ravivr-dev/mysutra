@@ -10,8 +10,9 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
-import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+import '../../../../generated/assets.dart';
 import '../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class SearchResultScreen extends StatefulWidget {
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
   final TextEditingController _searchController = TextEditingController();
+  SearchFilterArgs? _doctorFilterDetails;
 
   @override
   void didChangeDependencies() {
@@ -69,7 +71,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               children: [
                 SearchWithFilter(
                   controller: _searchController,
-                  onTapFilter: () {},
+                  filter: _doctorFilterDetails,
+                  onTapFilter: (data) {
+                    _initFilterData(data);
+                    _callSearchDoctorApi(
+                      specializationId: data.specializationId,
+                      reviews: data.reviews,
+                      experience: data.experience,
+                    );
+                  },
                   hintText: 'Search for doctors',
                   backgroundColor: AppColors.white,
                   onChanged: (value) {
@@ -96,6 +106,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         ),
       ),
     );
+  }
+
+  void _initFilterData(SearchFilterArgs args) {
+    setState(() {
+      _doctorFilterDetails = args;
+    });
   }
 
   Widget _buildCard(DoctorEntity data, int index) {
@@ -220,10 +236,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     );
   }
 
-  void _callSearchDoctorApi({String? search}) {
-    context
-        .read<SearchDoctorCubit>()
-        .getData(SearchDoctorParams(search: search));
+  void _callSearchDoctorApi(
+      {String? search,
+      int? reviews,
+      int? experience,
+      String? specializationId}) {
+    context.read<SearchDoctorCubit>().getData(SearchDoctorParams(
+        search: search,
+        reviews: reviews,
+        experience: experience,
+        specializationId: specializationId));
   }
 
   void _getDoctorDetails(String doctorId) {

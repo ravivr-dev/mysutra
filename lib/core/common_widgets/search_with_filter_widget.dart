@@ -4,6 +4,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/generated/assets.dart';
 
+import '../../features/presentation/patient/search_filter_screen.dart';
 import '../../routes/routes_constants.dart';
 
 class SearchWithFilter extends StatefulWidget {
@@ -15,14 +16,16 @@ class SearchWithFilter extends StatefulWidget {
     this.onTapFilter,
     this.backgroundColor,
     this.onTap,
+    this.filter,
   });
 
   final Function(String onChange)? onChanged;
   final TextEditingController? controller;
   final String? hintText;
-  final void Function()? onTapFilter;
+  final void Function(SearchFilterArgs args)? onTapFilter;
   final Color? backgroundColor;
   final VoidCallback? onTap;
+  final SearchFilterArgs? filter;
 
   @override
   State<SearchWithFilter> createState() => _SearchWithFilterState();
@@ -71,8 +74,14 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
         const SizedBox(width: 8),
         InkWell(
           //todo please check this one where should we call onTapFilter
-          onTap: () {
-            AiloitteNavigation.intent(context, AppRoutes.searchFilterScreen);
+          onTap: () async {
+            if (widget.onTapFilter != null) {
+              final result = await AiloitteNavigation.intentWithData(
+                  context, AppRoutes.searchFilterScreen, widget.filter);
+              if (result != null && result is SearchFilterArgs) {
+                widget.onTapFilter?.call(result);
+              }
+            }
           },
           child: Container(
             height: 48,

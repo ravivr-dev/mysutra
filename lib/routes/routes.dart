@@ -145,7 +145,12 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
       case AppRoutes.searchFilterScreen:
-        return MaterialPageRoute(builder: (_) => const SearchFilterScreen());
+        final data = settings?.arguments as SearchFilterArgs?;
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (_) => sl<RegistrationCubit>()..getSpecialisations(),
+                  child: SearchFilterScreen(args: data),
+                ));
 
       case AppRoutes.changeDataRoute:
         return MaterialPageRoute(
