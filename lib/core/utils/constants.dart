@@ -7,9 +7,6 @@ class Constants {
 
   static const String authorization = "Authorization";
 
-  static const tempNetworkUrl =
-      "https://source.unsplash.com/random?profile-picture";
-
   static const serverDateFormat = "yyyy-MM-dd";
 
   static const errorInternet = "Your internet is not working it seems";

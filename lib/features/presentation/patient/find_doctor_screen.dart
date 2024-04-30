@@ -4,14 +4,12 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
-import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/calendar_widget.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
+import 'package:my_sutra/generated/assets.dart';
 
-
-
-////////  THis screen is not using anywhere for now 
+////////  THis screen is not using anywhere for now
 class FindDoctorScreen extends StatefulWidget {
   const FindDoctorScreen({super.key});
 
@@ -34,7 +32,7 @@ class _FindDoctorScreenState extends State<FindDoctorScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
- const ScreenTopHandler(),
+                  const ScreenTopHandler(),
                   Text(
                     "Let's find your\ndoctor",
                     style: theme.publicSansFonts.mediumStyle(
@@ -65,10 +63,10 @@ class _FindDoctorScreenState extends State<FindDoctorScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CircleAvatar(
-                          radius: 18,
-                          backgroundImage:
-                              NetworkImage(Constants.tempNetworkUrl),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(18),
+                          child: component.assetImage(
+                              path: Assets.imagesDefaultAvatar),
                         ),
                         const SizedBox(width: 12),
                         Expanded(

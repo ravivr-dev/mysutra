@@ -1,14 +1,10 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
-import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
-import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -60,7 +56,7 @@ class _MyPatientsScreenState extends State<MyPatientsScreen> {
         children: [
           Stack(alignment: AlignmentDirectional.bottomEnd, children: [
             component.networkImage(
-              url: patient.profilePic ?? Constants.tempNetworkUrl,
+              url: patient.profilePic ?? '',
               height: 72,
               width: 72,
               borderRadius: 8,

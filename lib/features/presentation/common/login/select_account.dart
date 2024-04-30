@@ -7,11 +7,11 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
-import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
+import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class SelectAccountScreen extends StatefulWidget {
@@ -98,12 +98,13 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                             child: Row(
                               children: [
                                 component.networkImage(
-                                  url: users[index].profilePic ??
-                                      Constants.tempNetworkUrl,
-                                  borderRadius: 6,
-                                  height: 48,
-                                  width: 48,
-                                ),
+                                    url: users[index].profilePic ?? '',
+                                    borderRadius: 6,
+                                    height: 48,
+                                    width: 48,
+                                    errorWidget: component.assetImage(
+                                      path: Assets.imagesDefaultAvatar,
+                                    )),
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
