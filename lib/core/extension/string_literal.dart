@@ -1,6 +1,5 @@
 import 'dart:math';
 
-
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -140,6 +139,12 @@ extension StringFunctions on String {
 
   bool get checkIfFileTypeIsVideo {
     return this == Constants.videoFileType || endsWith("mp4");
+  }
+
+  bool get checkIfFileTypeIsAudio {
+    return this == Constants.audioFileType ||
+        endsWith("mp3") ||
+        endsWith("wav");
   }
 
   bool get checkIfFileTypeIsDocumentPdf {

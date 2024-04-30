@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/widgets/patient_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
@@ -138,7 +139,19 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
       case AppRoutes.chatScreen:
-        return MaterialPageRoute(builder: (_) => const ChatScreen());
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => sl<RegistrationCubit>(),
+                    ),
+                    BlocProvider(
+                      create: (context) => sl<ChatCubit>(),
+                    ),
+                  ],
+                  child: const ChatScreen(),
+                ));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

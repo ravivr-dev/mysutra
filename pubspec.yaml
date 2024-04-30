@@ -63,6 +63,7 @@ dependencies:
   flutter_chat_ui: ^1.6.12
   file_picker: ^8.0.2
   open_filex: ^4.4.0
+  flutter_link_previewer: ^3.2.2
 
 
 dev_dependencies:

@@ -11,7 +11,7 @@ import 'package:my_sutra/features/domain/entities/user_entities/chat_entity.dart
 
 part 'chat_state.dart';
 
-class ChatCubit extends Cubit<ChatState> {
+class ChatCubit extends Cubit<ChattingState> {
   final SendMessageUsecase sendMessageUsecase;
   final GetMessageUseCase getMessageUseCase;
   final ClearMessagesUseCase clearMessagesUseCase;
@@ -44,10 +44,10 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   clearChatMessages(String appointmentId) async {
-    emit(ChatLoading());
+    emit(ClearChatLoading());
     final result = await clearMessagesUseCase(appointmentId);
 
-    result.fold((l) => _emitFailure(l), (data) {
+    result.fold((l) => _emitClearChatFailure(l), (data) {
       emit(
         ClearMessageSuccess(data),
       );
@@ -63,6 +63,17 @@ class ChatCubit extends Cubit<ChatState> {
       emit(ChatError(failure.message));
     } else {
       emit(ChatError(failure.message));
+    }
+  }
+  FutureOr<void> _emitClearChatFailure(
+    Failure failure,
+  ) async {
+    if (failure is ServerFailure) {
+      emit(ClearChatErrorState(failure.message));
+    } else if (failure is CacheFailure) {
+      emit(ClearChatErrorState(failure.message));
+    } else {
+      emit(ClearChatErrorState(failure.message));
     }
   }
 }

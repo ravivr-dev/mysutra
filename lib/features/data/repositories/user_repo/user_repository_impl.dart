@@ -190,7 +190,7 @@ class UserRepositoryImpl extends UserRepository {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.sendMessages(params.toJson());
 
-        return Right('');
+        return Right(result.message ?? '');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
@@ -205,7 +205,7 @@ class UserRepositoryImpl extends UserRepository {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.clearMessage(appointmentId);
 
-        return Right('');
+        return Right(result['message']);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
@@ -229,7 +229,8 @@ class UserRepositoryImpl extends UserRepository {
         return Right(MessagesEntity(
             message: result.message,
             count: result.count,
-            chatMessages: UserRepoConv.convertChatModelToEntity(result.data??[])));
+            chatMessages:
+                UserRepoConv.convertChatModelToEntity(result.data ?? [])));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

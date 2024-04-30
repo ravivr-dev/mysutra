@@ -56,6 +56,11 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.da
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 
+import 'features/domain/usecases/user_usecases/clear_messages_use_case.dart';
+import 'features/domain/usecases/user_usecases/get_message_use_case.dart';
+import 'features/domain/usecases/user_usecases/send_message_use_case.dart';
+import 'features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -94,6 +99,10 @@ Future<void> init() async {
       getDoctorFollowingUseCase: sl<GetDoctorFollowingUseCase>(),
       getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
       getPatientUseCaseUseCase: sl<GetPatientUseCaseUseCase>()));
+  sl.registerFactory(() => ChatCubit(
+      sendMessageUsecase: sl<SendMessageUsecase>(),
+      clearMessagesUseCase: sl<ClearMessagesUseCase>(),
+      getMessageUseCase: sl<GetMessageUseCase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -123,6 +132,12 @@ Future<void> init() async {
   sl.registerFactory(() => GetUserDetailsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(
       () => GetDoctorAppointmentsUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(
+      () => SendMessageUsecase(sl<UserRepository>()));
+  sl.registerFactory(
+      () => ClearMessagesUseCase(sl<UserRepository>()));
+  sl.registerFactory(
+      () => GetMessageUseCase(sl<UserRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

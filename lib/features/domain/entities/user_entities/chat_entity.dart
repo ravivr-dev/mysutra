@@ -25,8 +25,8 @@ class ChatEntity {
     data['appointmentId'] = appointmentId;
     data['sentTo'] = sentTo;
     data['messageType'] = messageType;
-    data['message'] = message;
-    data['mediaUrl'] = mediaUrl;
+    if ((message ?? '').isNotEmpty) data['message'] = message;
+    if ((mediaUrl ?? []).isNotEmpty) data['mediaUrl'] = mediaUrl;
     return data;
   }
 }

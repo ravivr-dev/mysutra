@@ -1,7 +1,10 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/utils/app_colors.dart';
 
 extension WidgetFunction on Widget {
   void dismissKeyboard() {
@@ -46,6 +49,50 @@ extension WidgetFunction on Widget {
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       fontSize: 16.0,
+    );
+  }
+
+  void showProgressDialog(BuildContext context, final String progressTitle) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return PopScope(
+            canPop: false,
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.blackColor.withOpacity(.4),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(
+                          strokeWidth: 4,
+                        ),
+                        component.spacer(height: 20),
+                        component.text(
+                          progressTitle,
+                          style: theme.publicSansFonts.semiBoldStyle(
+                            fontSize: 16,
+                            fontColor: AppColors.greyD9,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ));
+      },
     );
   }
 }

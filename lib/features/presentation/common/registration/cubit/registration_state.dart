@@ -17,6 +17,7 @@ final class RegistrationSuccess extends RegistrationState {
 
   RegistrationSuccess(this.message);
 }
+
 final class UploadDocument extends RegistrationState {
   final UploadDocModel data;
   final XFile file;
@@ -44,3 +45,5 @@ final class GenerateUserNamesErrorState extends RegistrationState {
     required this.message,
   });
 }
+
+final class UploadDocLoading extends RegistrationState {}

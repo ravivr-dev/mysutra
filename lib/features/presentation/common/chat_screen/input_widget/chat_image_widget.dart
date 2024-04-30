@@ -223,10 +223,10 @@ class _ChatImageWidgetState extends State<ChatImageWidget> {
           borderRadius: BorderRadius.circular(18),
         ),
         padding: const EdgeInsetsDirectional.fromSTEB(
-          3,
-          3,
-          5,
-          3,
+          6,
+          6,
+          6,
+          6,
         ),
         constraints: BoxConstraints(
           maxHeight: messageWidth.toDouble(),

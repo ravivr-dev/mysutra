@@ -56,6 +56,7 @@ class UserRepoConv {
       list.add(MessageItemEntity(
         id: e.sId ?? "",
         mediaUrl: e.mediaUrl,
+        message: e.message,
         messageType: e.messageType,
         createdAt: e.createdAt,
         updatedAt: e.updatedAt,

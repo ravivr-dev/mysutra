@@ -316,6 +316,7 @@ class _UserRestClient implements UserRestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data);
+    print(jsonEncode(_data));
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<CreateChatModel>(Options(
       method: 'POST',

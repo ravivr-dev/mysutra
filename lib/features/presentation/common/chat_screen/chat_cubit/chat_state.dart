@@ -1,38 +1,45 @@
 part of 'chat_cubit.dart';
 
-class ChatState extends Equatable {
-  const ChatState();
+class ChattingState extends Equatable {
+  const ChattingState();
 
   @override
   List<Object> get props => [];
 }
 
-final class ChatInitial extends ChatState {}
+final class ChatInitial extends ChattingState {}
 
-final class ChatError extends ChatState {
+final class ChatError extends ChattingState {
   final String error;
 
   const ChatError(this.error);
 }
 
-final class ChatLoading extends ChatState {}
+final class ChatLoading extends ChattingState {}
 
-final class ClearChatLoading extends ChatState {}
-final class SendMsgLoading extends ChatState {}
+final class ClearChatLoading extends ChattingState {}
 
-final class SendMessageSuccess extends ChatState {
+final class ClearChatErrorState extends ChattingState {
+  final String error;
+
+  const ClearChatErrorState(this.error);
+}
+
+final class SendMsgLoading extends ChattingState {}
+
+final class SendMessageSuccess extends ChattingState {
   final String message;
 
   const SendMessageSuccess(this.message);
 }
 
-final class ClearMessageSuccess extends ChatState {
+final class ClearMessageSuccess extends ChattingState {
   final String message;
 
   const ClearMessageSuccess(this.message);
 }
 
-final class GetChatMessagesSuccess extends ChatState {
+final class GetChatMessagesSuccess extends ChattingState {
   final MessagesEntity messageList;
 
   const GetChatMessagesSuccess(this.messageList);
