@@ -40,10 +40,15 @@ abstract class _RescheduleAppointmentScreenState
 
   Widget _buildBody(HomeState state);
 
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state is RescheduleAppointmentLoadedState) {
+          widget.showSuccessToast(context: context, message: state.message);
+          AiloitteNavigation.intent(context, AppRoutes.homeRoute);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -66,10 +71,10 @@ abstract class _RescheduleAppointmentScreenState
     );
   }
 
-  // void _getDoctorAvailableSlots(
-  //     {required String doctorId, required String date}) {
-  //   context
-  //       .read<AppointmentCubit>()
-  //       .getAvailableSlotsForPatients(doctorId: doctorId, date: date);
-  // }
+// void _getDoctorAvailableSlots(
+//     {required String doctorId, required String date}) {
+//   context
+//       .read<AppointmentCubit>()
+//       .getAvailableSlotsForPatients(doctorId: doctorId, date: date);
+// }
 }

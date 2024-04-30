@@ -66,10 +66,6 @@ class _DoctorRescheduleState extends _RescheduleAppointmentScreenState {
     if (state is GetAvailableSlotsLoadedState) {
       _availableTImeSlots = state.availableSlots;
     }
-    if (state is RescheduleAppointmentLoadedState) {
-      widget.showSuccessToast(context: context, message: state.message);
-      AiloitteNavigation.intent(context, AppRoutes.homeRoute);
-    }
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: SingleChildScrollView(
