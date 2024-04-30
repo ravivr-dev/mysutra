@@ -5,6 +5,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
@@ -105,10 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          // AiloitteNavigation.intentWithClearAllRoutes(
-                          //     context, AppRoutes.searchDoctorRoute);
+                          UserHelper.init(role: 'GUEST');
                           AiloitteNavigation.intentWithClearAllRoutes(
-                              context, AppRoutes.searchResultRoute);
+                              context, AppRoutes.homeRoute);
                         },
                         child: Text(
                           "Login as Guest",
