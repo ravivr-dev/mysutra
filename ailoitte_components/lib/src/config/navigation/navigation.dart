@@ -24,10 +24,10 @@ extension AiloitteNavigation on BuildContext {
   }
 
   /// Function to navigate to new screen without data passing
-  static intent(BuildContext context, String nameRouted) {
+  static Future<T?> intent<T>(BuildContext context, String nameRouted) {
     log(nameRouted, name: "navigation");
 
-    Navigator.pushNamed(context, nameRouted);
+    return Navigator.pushNamed(context, nameRouted);
   }
 
   /// Function to navigate to new screen by replacing it with new screen
@@ -63,14 +63,14 @@ extension AiloitteNavigation on BuildContext {
   }
 
   /// Function to navigate to new screen and passing some data
-  static intentWithData(
+  static Future<T?> intentWithData<T>(
     BuildContext context,
     String nameRouted,
     Object? argumentClass,
   ) {
     log(nameRouted, name: "navigation");
 
-    Navigator.pushNamed(
+    return Navigator.pushNamed(
       context,
       nameRouted,
       arguments: argumentClass,
