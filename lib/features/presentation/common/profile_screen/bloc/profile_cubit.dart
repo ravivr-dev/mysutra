@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_following_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
 import '../../../../domain/entities/patient_entities/patient_entity.dart';
 import '../../../../domain/entities/user_entities/my_profile_entity.dart';
+import '../../../../domain/entities/user_entities/user_data_entity.dart';
 import '../../../../domain/usecases/doctor_usecases/get_patient_usecase.dart';
 import '../../../../domain/usecases/user_usecases/get_profile_details_usecase.dart';
 
@@ -16,7 +16,7 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final GetProfileDetailsUseCase getProfileDetailsUseCase;
   final GetPatientUseCaseUseCase getPatientUseCaseUseCase;
-  final GetDoctorFollowingUseCase getDoctorFollowingUseCase;
+  final GetFollowingUseCase getFollowingUseCase;
   final ChangeEmailUseCase changeEmailUseCase;
   final ChangePhoneNumberUseCase changePhoneNumberUseCase;
   final VerifyChangeEmailUseCase verifyChangeEmailUseCase;
@@ -27,7 +27,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     required this.changePhoneNumberUseCase,
     required this.verifyChangeEmailUseCase,
     required this.verifyChangePhoneNumberUseCase,
-    required this.getDoctorFollowingUseCase,
+    required this.getFollowingUseCase,
     required this.getProfileDetailsUseCase,
     required this.getPatientUseCaseUseCase,
   }) : super(ProfileInitial());
@@ -39,12 +39,13 @@ class ProfileCubit extends Cubit<ProfileState> {
         (r) => emit(GetProfileDetailsSuccessState(entity: r)));
   }
 
-  void getDoctorFollowing({required int pagination, required int limit}) async {
-    emit(GetDoctorFollowingLoadingState());
-    final result = await getDoctorFollowingUseCase
-        .call(GetFollowingParams(pagination: pagination, limit: limit));
-    result.fold((l) => emit(GetDoctorFollowingErrorState(message: l.message)),
-        (r) => emit(GetDoctorFollowingLoadedState(followers: r)));
+  void getFollowing(
+      {String? role, required int pagination, required int limit}) async {
+    emit(GetFollowingLoadingState());
+    final result = await getFollowingUseCase.call(
+        GetFollowingParams(pagination: pagination, limit: limit, role: role));
+    result.fold((l) => emit(GetFollowingErrorState(message: l.message)),
+        (r) => emit(GetFollowingLoadedState(myFollowings: r)));
   }
 
   void getPatients({

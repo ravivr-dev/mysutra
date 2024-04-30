@@ -24,7 +24,6 @@ class EndPoints {
   static const String profile = '/doctor/profile';
   static const String patients = '/doctor/patients';
   static const String home = '/doctor/home';
-  static const String doctorFollowing = '/doctor/followings';
   static const String doctorAppointments = '/doctor/appointments';
 
 // user endpoints (these endpoints are common for all type of user (doctor/patient/influencer))
@@ -34,5 +33,7 @@ class EndPoints {
   static const String changeEmail = '/user/change-email';
   static const String verifyChangeEmail = '/user/change-email/verify-otp';
   static const String changePhoneNumber = '/user/change-phone-number';
-  static const String verifyChangePhoneNumber = '/user/change-phone-number/verify-otp';
+  static const String verifyChangePhoneNumber =
+      '/user/change-phone-number/verify-otp';
+  static const String userFollowing = '/user/followings';
 }

@@ -7,8 +7,8 @@ import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/change_data_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/bottom_sheets/about_me_bottomsheet.dart';
@@ -68,9 +68,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               my = state.entity;
             }
 
-            if (state is GetDoctorFollowingLoadedState) {
-              _goToDoctorFollowingScreen(state.followers);
-            } else if (state is GetDoctorFollowingErrorState) {
+            if (state is GetFollowingLoadedState) {
+              if (userRole == UserRole.doctor) {
+                _goToDoctorFollowingScreen(state.myFollowings);
+              } else {
+                AiloitteNavigation.intentWithData(
+                    context, AppRoutes.patientMyFollowing, state.myFollowings);
+              }
+            } else if (state is GetFollowingErrorState) {
               _showToast(message: state.message);
             }
           },
@@ -111,16 +116,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     value: 'My Following',
                     icons: Assets.iconsUserAdd,
                     onTap: () {
-                      if (userRole == UserRole.doctor) {
-                        context
-                            .read<ProfileCubit>()
-                            .getDoctorFollowing(pagination: 1, limit: 35);
-                        // AiloitteNavigation.intent(
-                        //     context, AppRoutes.doctorMyFollowing);
-                      } else {
-                        AiloitteNavigation.intent(
-                            context, AppRoutes.patientMyFollowing);
-                      }
+                      context
+                          .read<ProfileCubit>()
+                          .getFollowing(pagination: 1, limit: 35);
                     }),
                 component.spacer(height: 12),
                 if (userRole == UserRole.doctor) ...[
@@ -323,7 +321,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     context.read<ProfileCubit>().getProfileDetails();
   }
 
-  void _goToDoctorFollowingScreen(List<FollowerEntity> followers) {
+  void _goToDoctorFollowingScreen(List<UserDataEntity> followers) {
     AiloitteNavigation.intentWithData(
         context, AppRoutes.doctorMyFollowing, followers);
   }

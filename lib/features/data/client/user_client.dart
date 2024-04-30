@@ -122,4 +122,7 @@ abstract class UserRestClient {
   Future<SuccessMessageModel> verifyChangePhoneNumber(
     @Body() Map<String, dynamic> map,
   );
+
+  @GET(EndPoints.userFollowing)
+  Future<ResponseModel> getFollowings(@Queries() Map<String, dynamic> map);
 }

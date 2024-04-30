@@ -20,7 +20,9 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_use
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
+import '../../../domain/entities/user_entities/user_data_entity.dart';
 import '../../../domain/entities/user_entities/user_entity.dart';
+import '../../../domain/usecases/user_usecases/get_following_usecase.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
@@ -262,6 +264,26 @@ class UserRepositoryImpl extends UserRepository {
         final result =
             await remoteDataSource.verifyChangePhoneNumber({'otp': otp});
         return Right(result.message ?? 'Change Phone Number Success');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserDataEntity>>> getFollowings(
+      GetFollowingParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getFollowing({
+          'pagination': data.pagination,
+          'limit': data.limit,
+        });
+
+        return Right(
+            UserRepoConv.convertUserDataModelToEntity(result.userDataList));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

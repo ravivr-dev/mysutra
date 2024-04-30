@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/widgets/patient_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
@@ -126,11 +126,13 @@ class Routes {
             builder: (_) => const PatientPastAppointmentsScreen());
 
       case AppRoutes.patientMyFollowing:
+        final args = settings?.arguments as List<UserDataEntity>;
+
         return MaterialPageRoute(
-            builder: (_) => const PatientMyFollowingScreen());
+            builder: (_) => PatientMyFollowingScreen(myFollowing: args));
 
       case AppRoutes.doctorMyFollowing:
-        final args = settings?.arguments as List<FollowerEntity>;
+        final args = settings?.arguments as List<UserDataEntity>;
         return MaterialPageRoute(
             builder: (_) => DoctorMyFollowingScreen(followers: args));
 

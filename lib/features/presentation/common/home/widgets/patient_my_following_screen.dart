@@ -6,11 +6,17 @@ import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/generated/assets.dart';
 
+import '../../../../domain/entities/user_entities/user_data_entity.dart';
+
+//todo ask influencer design from Himanshu
 class PatientMyFollowingScreen extends StatefulWidget {
-  const PatientMyFollowingScreen({super.key});
+  final List<UserDataEntity> myFollowing;
+
+  const PatientMyFollowingScreen({super.key, required this.myFollowing});
 
   @override
-  State<PatientMyFollowingScreen> createState() => _PatientMyFollowingScreenState();
+  State<PatientMyFollowingScreen> createState() =>
+      _PatientMyFollowingScreenState();
 }
 
 class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
@@ -64,11 +70,11 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
         controller: _tabController,
         children: [
           ListView.separated(
-            itemCount: 10,
+            itemCount: widget.myFollowing.length,
             padding: const EdgeInsets.symmetric(vertical: 10),
             shrinkWrap: true,
             itemBuilder: (_, index) {
-              return _buildDoctorsCard();
+              return _buildDoctorsCard(widget.myFollowing[index]);
             },
             separatorBuilder: (_, index) {
               return component.spacer(height: 12);
@@ -80,7 +86,7 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
     );
   }
 
-  Widget _buildDoctorsCard() {
+  Widget _buildDoctorsCard(UserDataEntity entity) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(12),
@@ -89,11 +95,13 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: component.assetImage(
-                path: Assets.iconsDummyDoctor,
+            child: component.networkImage(
+                url: entity.profilePic,
                 height: 72,
                 width: 72,
-                borderRadius: 8),
+                borderRadius: 8,
+                errorWidget:
+                    component.assetImage(path: Assets.imagesDefaultAvatar)),
           ),
           component.spacer(width: 8),
           Expanded(
@@ -102,12 +110,12 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 component.text(
-                  'Dr. Rita Rawat',
+                  'Dr. ${entity.fullName}',
                   style: theme.publicSansFonts.mediumStyle(fontSize: 16),
                 ),
                 component.spacer(height: 4),
                 component.text(
-                  'Sexologist',
+                  entity.specialization,
                   style: theme.publicSansFonts.regularStyle(
                     fontColor: AppColors.black81,
                   ),
@@ -119,7 +127,7 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
                         path: Assets.iconsGroup,
                         color: AppColors.color0xFF8338EC),
                     component.text(
-                      '25.6 k Followers',
+                      '${entity.totalFollowers} Followers',
                       style: theme.publicSansFonts.regularStyle(
                         fontColor: AppColors.color0xFF8338EC,
                       ),
@@ -134,7 +142,7 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
       ),
     );
   }
-
+//todo ask about this button should we make it dynamic here (means can use follow- unfollow from here)
   Widget _buildFollowingButton() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),

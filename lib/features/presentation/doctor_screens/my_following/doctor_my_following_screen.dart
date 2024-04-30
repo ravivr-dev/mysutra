@@ -4,15 +4,18 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 import 'package:my_sutra/generated/assets.dart';
 
+import '../../../domain/entities/user_entities/user_data_entity.dart';
+
 class DoctorMyFollowingScreen extends StatefulWidget {
-  final List<FollowerEntity> followers;
-   const DoctorMyFollowingScreen({super.key, required this.followers});
+  final List<UserDataEntity> followers;
+
+  const DoctorMyFollowingScreen({super.key, required this.followers});
 
   @override
-  State<DoctorMyFollowingScreen> createState() => _DoctorMyFollowingScreenState();
+  State<DoctorMyFollowingScreen> createState() =>
+      _DoctorMyFollowingScreenState();
 }
 
 class _DoctorMyFollowingScreenState extends State<DoctorMyFollowingScreen> {
@@ -66,23 +69,23 @@ class _DoctorMyFollowingScreenState extends State<DoctorMyFollowingScreen> {
       //   controller: _tabController,
       //   children: [
           ListView.separated(
-            itemCount: widget.followers.length,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            shrinkWrap: true,
-            itemBuilder: (_, index) {
-              return _buildDoctorsCard(widget.followers[index]);
-            },
-            separatorBuilder: (_, index) {
-              return component.spacer(height: 12);
-            },
-          ),
-          // const SizedBox.shrink(),
-        // ],
+        itemCount: widget.followers.length,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        shrinkWrap: true,
+        itemBuilder: (_, index) {
+          return _buildDoctorsCard(widget.followers[index]);
+        },
+        separatorBuilder: (_, index) {
+          return component.spacer(height: 12);
+        },
+      ),
+      // const SizedBox.shrink(),
+      // ],
       // ),
     );
   }
 
-  Widget _buildDoctorsCard(FollowerEntity follower) {
+  Widget _buildDoctorsCard(UserDataEntity follower) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(12),
@@ -104,12 +107,12 @@ class _DoctorMyFollowingScreenState extends State<DoctorMyFollowingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 component.text(
-                  follower.fullName.capitalizeFirstLetterOfEveryWord,
+                  follower.fullName?.capitalizeFirstLetterOfEveryWord,
                   style: theme.publicSansFonts.mediumStyle(fontSize: 16),
                 ),
                 component.spacer(height: 4),
                 component.text(
-                  follower.specialization.capitalizeFirstLetterOfEveryWord,
+                  follower.specialization?.capitalizeFirstLetterOfEveryWord,
                   style: theme.publicSansFonts.regularStyle(
                     fontColor: AppColors.black81,
                   ),

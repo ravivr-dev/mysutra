@@ -49,6 +49,8 @@ abstract class UserDataSource {
   Future<SuccessMessageModel> changeEmail(Map<String, dynamic> map);
 
   Future<SuccessMessageModel> verifyChangeEmail(Map<String, dynamic> map);
+
+  Future<ResponseModel> getFollowing(Map<String, dynamic> map);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -264,7 +266,8 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<SuccessMessageModel> verifyChangeEmail(Map<String, dynamic> map) async {
+  Future<SuccessMessageModel> verifyChangeEmail(
+      Map<String, dynamic> map) async {
     try {
       return await client.verifyChangeEmail(map).catchError((err) {
         _processDio(err);
@@ -280,7 +283,8 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<SuccessMessageModel> changePhoneNumber(Map<String, dynamic> map) async {
+  Future<SuccessMessageModel> changePhoneNumber(
+      Map<String, dynamic> map) async {
     try {
       return await client.changePhoneNumber(map).catchError((err) {
         _processDio(err);
@@ -296,9 +300,26 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<SuccessMessageModel> verifyChangePhoneNumber(Map<String, dynamic> map) async {
+  Future<SuccessMessageModel> verifyChangePhoneNumber(
+      Map<String, dynamic> map) async {
     try {
       return await client.verifyChangePhoneNumber(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ResponseModel> getFollowing(Map<String, dynamic> map) async {
+    try {
+      return await client.getFollowings(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

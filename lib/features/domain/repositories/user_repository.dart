@@ -10,7 +10,9 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_use
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import '../entities/user_entities/my_profile_entity.dart';
+import '../entities/user_entities/user_data_entity.dart';
 import '../entities/user_entities/user_entity.dart';
+import '../usecases/user_usecases/get_following_usecase.dart';
 
 abstract class UserRepository {
   Future<Either<Failure, String>> login(
@@ -44,4 +46,7 @@ abstract class UserRepository {
       ChangePhoneNumberParams params);
 
   Future<Either<Failure, String>> verifyChangePhoneNumber(int otp);
+
+  Future<Either<Failure, List<UserDataEntity>>> getFollowings(
+      GetFollowingParams data);
 }

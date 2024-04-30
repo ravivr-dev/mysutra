@@ -4,7 +4,9 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 
 import '../../../domain/entities/user_entities/my_profile_entity.dart';
+import '../../../domain/entities/user_entities/user_data_entity.dart';
 import '../../model/user_models/home_response_model.dart';
+import '../../model/user_models/otp_model.dart';
 
 class UserRepoConv {
   static List<SpecializationEntity> convSpecialisationModelToEntity(
@@ -17,6 +19,23 @@ class UserRepoConv {
           name: e.name ?? "", id: e.id ?? "", image: e.imageUrl ?? ""));
     }
     return list;
+  }
+
+  static List<UserDataEntity> convertUserDataModelToEntity(
+      List<UserData> data) {
+    return data
+        .map((e) => UserDataEntity(
+            id: e.id!,
+            role: e.role!,
+            profilePic: e.profilePic ?? '',
+            fullName: e.fullName,
+            userName: e.userName,
+            isVerified: e.isVerified ?? false,
+            specialization: e.specialization,
+            isFollowing: e.isFollowing ?? false,
+            totalFollowers: e.totalFollowers ?? 0,
+            socialProfileUrls: e.socialProfileUrls))
+        .toList();
   }
 
   static MyProfileEntity myProfileModelToEntity(MyProfileModel model) {

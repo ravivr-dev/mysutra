@@ -14,6 +14,18 @@ class OtpResponseUserModel {
   }
 }
 
+class ResponseModel {
+  final String message;
+  final int count;
+  final List<UserData> userDataList;
+
+  ResponseModel.fromJson(Map<String, dynamic> json)
+      : message = json['message'],
+        userDataList =
+            (json['data'] as List).map((e) => UserData.fromJson(e)).toList(),
+        count = json['count'];
+}
+
 class UserData {
   String? id;
   String? role;
@@ -23,7 +35,7 @@ class UserData {
   int? phoneNumber;
   String? email;
   String? specializationId;
-  String? specializationName;
+  String? specialization;
   String? registrationNumber;
   List<String>? socialProfileUrls;
   String? dob;
@@ -36,6 +48,8 @@ class UserData {
   String? token;
   String? age;
   String? userName;
+  bool? isFollowing;
+  int? totalFollowers;
 
   UserData({
     this.id,
@@ -46,7 +60,7 @@ class UserData {
     this.phoneNumber,
     this.email,
     this.specializationId,
-    this.specializationName,
+    this.specialization,
     this.registrationNumber,
     this.socialProfileUrls,
     this.dob,
@@ -59,6 +73,7 @@ class UserData {
     this.token,
     required this.age,
     required this.userName,
+    required this.isFollowing,
   });
 
   UserData.fromJson(Map<String, dynamic> json) {
@@ -70,9 +85,9 @@ class UserData {
     phoneNumber = json['phoneNumber'];
     email = json['email'];
     specializationId = json['specializationId'];
-    specializationName = json['specializationName'];
-    registrationNumber = json['specialization'];
-    socialProfileUrls = json['socialProfileUrls'].cast<String>();
+    specialization = json['specialization'];
+    registrationNumber = json['registrationNumber'];
+    socialProfileUrls = json['socialProfileUrls']?.cast<String>();
     dob = json['dob'];
     gender = json['gender'];
     location = json['location'];
@@ -83,5 +98,7 @@ class UserData {
     token = json['token'];
     age = json['age'];
     userName = json[Constants.userName];
+    isFollowing = json['isFollowing'];
+    totalFollowers = json['totalFollowers'];
   }
 }

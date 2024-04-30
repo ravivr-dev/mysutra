@@ -39,18 +39,18 @@ final class GetPatientErrorState extends ProfileState {
   });
 }
 
-final class GetDoctorFollowingLoadingState extends ProfileState {}
+final class GetFollowingLoadingState extends ProfileState {}
 
-final class GetDoctorFollowingLoadedState extends ProfileState {
-  final List<FollowerEntity> followers;
+final class GetFollowingLoadedState extends ProfileState {
+  final List<UserDataEntity> myFollowings;
 
-  GetDoctorFollowingLoadedState({required this.followers});
+  GetFollowingLoadedState({required this.myFollowings});
 }
 
-final class GetDoctorFollowingErrorState extends ProfileState {
+final class GetFollowingErrorState extends ProfileState {
   final String message;
 
-  GetDoctorFollowingErrorState({required this.message});
+  GetFollowingErrorState({required this.message});
 }
 
 final class ChangePhoneNumberLoadingState extends ProfileState {}
