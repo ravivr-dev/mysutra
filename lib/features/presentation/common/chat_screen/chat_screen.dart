@@ -148,18 +148,18 @@ class _ChatScreenState extends State<ChatScreen> {
         if ((element.message ?? '').isNotEmpty) {
           _buildMsg(element);
         }
-        final _fileSize = await getFileSize(element.mediaUrl![0], 1);
+        final fileSize = await getFileSize(element.mediaUrl![0], 1);
 
         if (element.mediaUrl![0].checkIfFileTypeIsImage) {
           _messages.add(
             types.ImageMessage(
               name: element.mediaUrl![0].split('/').last,
-              size: num.parse(_fileSize),
+              size: num.parse(fileSize),
               uri: element.mediaUrl![0],
               author: types.User(
                 id: element.sender?.senderId ?? "",
                 firstName: element.sender?.fullName?.split(' ').first,
-                lastName: element.sender?.fullName?.split(' ').last,
+                lastName: element.sender?.fullName?.split(' ').last ?? '',
                 imageUrl: element.sender != null &&
                         element.sender?.profilePic != null &&
                         element.sender!.profilePic!.trim().isNotEmpty
@@ -175,7 +175,7 @@ class _ChatScreenState extends State<ChatScreen> {
           _messages.add(
             types.AudioMessage(
               name: element.mediaUrl![0].split('/').last,
-              size: num.parse(_fileSize),
+              size: num.parse(fileSize),
               uri: element.mediaUrl![0],
 
               ///TODO need to add audio duration
@@ -199,12 +199,12 @@ class _ChatScreenState extends State<ChatScreen> {
           _messages.add(
             types.FileMessage(
               name: element.mediaUrl![0].split('/').last,
-              size: num.parse(_fileSize),
+              size: num.parse(fileSize),
               uri: element.mediaUrl![0],
               author: types.User(
                 id: element.sender?.senderId ?? "",
                 firstName: element.sender?.fullName,
-                // lastName: element.sender?.lastName,
+                lastName: element.sender?.fullName?.split(' ').last ?? '',
                 imageUrl: element.sender != null &&
                         element.sender?.profilePic != null &&
                         (element.sender?.profilePic ?? '').trim().isNotEmpty
@@ -231,7 +231,7 @@ class _ChatScreenState extends State<ChatScreen> {
         author: types.User(
           id: element.sender?.senderId ?? "",
           firstName: element.sender?.fullName,
-          // lastName: element.sender?.lastName,
+          lastName: element.sender?.fullName?.split(' ').last ?? '',
           imageUrl: element.sender != null &&
                   element.sender?.profilePic != null &&
                   (element.sender?.profilePic ?? '').trim().isNotEmpty
@@ -420,124 +420,131 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ChatAppBar(
-        title: appointmentEntity?.fullName ?? '',
-        status: 'Active now',
-        deleteCallback: () {
-          if (_chatMessages.isNotEmpty) {
-            context
-                .read<ChatCubit>()
-                .clearChatMessages(appointmentEntity?.id ?? '');
-          }
-        },
-      ),
-      body: BlocConsumer<ChatCubit, ChattingState>(
-        listener: (context, state) {
-          if (state is SendMsgLoading) {
-          } else if (state is ChatLoading) {
-          } else if (state is ClearChatLoading) {
-            widget.showProgressDialog(context, "Please wait...");
-          } else if (state is ChatError) {
-            widget.showErrorToast(context: context, message: state.error);
-          } else if (state is ClearChatErrorState) {
-            widget.showErrorToast(context: context, message: state.error);
-            AiloitteNavigation.back(context);
-          } else if (state is ClearMessageSuccess) {
-            widget.showErrorToast(context: context, message: state.message);
-            AiloitteNavigation.back(context);
-            AiloitteNavigation.back(context);
-          } else if (state is SendMessageSuccess) {
-            _callChatDataFromServer();
-          } else if (state is GetChatMessagesSuccess) {
-            _chatMessages.clear();
-            _chatMessages.addAll(state.messageList.chatMessages ?? []);
-            _updateChatListMessageToMessageType();
-          }
-        },
-        builder: (context, state) {
-          return Chat(
-            theme: DefaultChatTheme(
-              backgroundColor: AppColors.backgroundColor,
-              sentMessageBodyTextStyle: theme.publicSansFonts.regularStyle(
-                fontSize: 12,
-                height: 12,
-                fontColor: AppColors.white,
-              ),
-              receivedMessageBodyTextStyle: theme.publicSansFonts.mediumStyle(
-                fontSize: 16,
-                fontColor: AppColors.black000E08,
-              ),
-              secondaryColor: AppColors.blackF2F7FB,
-              primaryColor: AppColors.primaryColor,
-            ),
-            messages: _messages,
-            onAttachmentPressed: _handleAttachmentPressed,
-            onMessageTap: _handleMessageTap,
-            onPreviewDataFetched: _handlePreviewDataFetched,
-            onSendPressed: _handleSendPressed,
-            showUserAvatars: true,
-            showUserNames: true,
-            user: _user,
-            dateHeaderBuilder: (date) {
-              return _getDateHeader(date);
+    return BlocBuilder<ChatCubit, ChattingState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: ChatAppBar(
+            title: appointmentEntity?.fullName ?? '',
+            status: 'Active now',
+            hasChatData: _chatMessages.isNotEmpty,
+            deleteCallback: () {
+              if (_chatMessages.isNotEmpty) {
+                context
+                    .read<ChatCubit>()
+                    .clearChatMessages(appointmentEntity?.id ?? '');
+              }
             },
-            avatarBuilder: (avatar) {
-              return UserAvatarWidget(
-                author: avatar,
-              );
+          ),
+          body: BlocConsumer<ChatCubit, ChattingState>(
+            listener: (context, state) {
+              if (state is SendMsgLoading) {
+              } else if (state is ChatLoading) {
+              } else if (state is ClearChatLoading) {
+                widget.showProgressDialog(context, "Please wait...");
+              } else if (state is ChatError) {
+                widget.showErrorToast(context: context, message: state.error);
+              } else if (state is ClearChatErrorState) {
+                widget.showErrorToast(context: context, message: state.error);
+                AiloitteNavigation.back(context);
+              } else if (state is ClearMessageSuccess) {
+                widget.showErrorToast(context: context, message: state.message);
+                AiloitteNavigation.back(context);
+                AiloitteNavigation.back(context);
+              } else if (state is SendMessageSuccess) {
+                _callChatDataFromServer();
+              } else if (state is GetChatMessagesSuccess) {
+                _chatMessages.clear();
+                _chatMessages.addAll(state.messageList.chatMessages ?? []);
+                _updateChatListMessageToMessageType();
+              }
             },
-            bubbleBuilder: (child,
-                {required message, required nextMessageInGroup}) {
-              return BubbleWidget(
-                message: message,
-                nextMessageInGroup: nextMessageInGroup,
-                user: _user,
-                child: child,
-              );
-            },
-            customStatusBuilder: (message, {required BuildContext context}) {
-              return const SizedBox.shrink();
-            },
-            audioMessageBuilder: (audioMessage, {required messageWidth}) {
-              return AudioMessageWidget(
-                audioMessage: audioMessage,
-                user: _user,
-              );
-            },
-            textMessageBuilder: (testMessage,
-                {int messageWidth = 0, bool showName = true}) {
-              return TextMessageWidget(
-                usePreviewData: true,
-                user: _user,
-                emojiEnlargementBehavior: EmojiEnlargementBehavior.multi,
-                message: testMessage,
-                hideBackgroundOnEmojiMessages: true,
-                showName: true,
-                showUserAvatars: true,
-              );
-            },
-            imageMessageBuilder: (
-              fileMessage, {
-              int messageWidth = 0,
-            }) {
-              return Container(
-                color: AppColors.backgroundColor,
-                child: Column(
-                  children: [
-                    ChatImageWidget(
-                      user: _user,
-                      message: fileMessage,
-                      showUserAvatars: true,
-                    ),
-                  ],
+            builder: (context, state) {
+              return Chat(
+                theme: DefaultChatTheme(
+                  backgroundColor: AppColors.backgroundColor,
+                  sentMessageBodyTextStyle: theme.publicSansFonts.regularStyle(
+                    fontSize: 12,
+                    height: 12,
+                    fontColor: AppColors.white,
+                  ),
+                  receivedMessageBodyTextStyle:
+                      theme.publicSansFonts.mediumStyle(
+                    fontSize: 16,
+                    fontColor: AppColors.black000E08,
+                  ),
+                  secondaryColor: AppColors.blackF2F7FB,
+                  primaryColor: AppColors.primaryColor,
                 ),
+                messages: _messages,
+                onAttachmentPressed: _handleAttachmentPressed,
+                onMessageTap: _handleMessageTap,
+                onPreviewDataFetched: _handlePreviewDataFetched,
+                onSendPressed: _handleSendPressed,
+                showUserAvatars: true,
+                showUserNames: true,
+                user: _user,
+                dateHeaderBuilder: (date) {
+                  return _getDateHeader(date);
+                },
+                avatarBuilder: (avatar) {
+                  return UserAvatarWidget(
+                    author: avatar,
+                  );
+                },
+                bubbleBuilder: (child,
+                    {required message, required nextMessageInGroup}) {
+                  return BubbleWidget(
+                    message: message,
+                    nextMessageInGroup: nextMessageInGroup,
+                    user: _user,
+                    child: child,
+                  );
+                },
+                customStatusBuilder: (message,
+                    {required BuildContext context}) {
+                  return const SizedBox.shrink();
+                },
+                audioMessageBuilder: (audioMessage, {required messageWidth}) {
+                  return AudioMessageWidget(
+                    audioMessage: audioMessage,
+                    user: _user,
+                  );
+                },
+                textMessageBuilder: (testMessage,
+                    {int messageWidth = 0, bool showName = true}) {
+                  return TextMessageWidget(
+                    usePreviewData: true,
+                    user: _user,
+                    emojiEnlargementBehavior: EmojiEnlargementBehavior.multi,
+                    message: testMessage,
+                    hideBackgroundOnEmojiMessages: true,
+                    showName: true,
+                    showUserAvatars: true,
+                  );
+                },
+                imageMessageBuilder: (
+                  fileMessage, {
+                  int messageWidth = 0,
+                }) {
+                  return Container(
+                    color: AppColors.backgroundColor,
+                    child: Column(
+                      children: [
+                        ChatImageWidget(
+                          user: _user,
+                          message: fileMessage,
+                          showUserAvatars: true,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                customBottomWidget: _getCustomButtonWidget(),
               );
             },
-            customBottomWidget: _getCustomButtonWidget(),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

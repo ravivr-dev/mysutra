@@ -9,9 +9,11 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String status;
   final VoidCallback deleteCallback;
+  final bool hasChatData;
   const ChatAppBar(
       {super.key,
       this.profileUrl,
+      this.hasChatData = false,
       required this.title,
       required this.status,
       required this.deleteCallback});
@@ -92,15 +94,16 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
           const Spacer(),
-          InkWell(
-            onTap: deleteCallback,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: component.text('Clear Chat',
-                  style: theme.publicSansFonts.regularStyle(
-                      fontColor: AppColors.color0xFFFF1100, fontSize: 16)),
-            ),
-          )
+          if (hasChatData)
+            InkWell(
+              onTap: deleteCallback,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: component.text('Clear Chat',
+                    style: theme.publicSansFonts.regularStyle(
+                        fontColor: AppColors.color0xFFFF1100, fontSize: 16)),
+              ),
+            )
         ],
       ),
     );
