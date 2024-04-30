@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Utils {
   static String getTimeFromMinutes(int minutes) {
     final hour = minutes ~/ 60;
@@ -9,5 +11,10 @@ class Utils {
     return text.isNotEmpty
         ? '${text[0]}${text.substring(1).toLowerCase()}'
         : text;
+  }
+
+  static String getMonthDay(String date) {
+    final dateTime = DateTime.parse(date);
+    return DateFormat('MMM dd').format(dateTime);
   }
 }
