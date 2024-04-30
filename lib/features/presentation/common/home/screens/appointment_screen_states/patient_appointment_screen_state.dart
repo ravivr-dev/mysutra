@@ -16,7 +16,7 @@ class _PatientAppointmentState extends _AppointmentScreenState {
               _buildAppBar(),
               const SizedBox(height: 16),
               SearchWithFilter(
-                onTapFilter: () {},
+                onTapFilter: (searchModel) {},
                 hintText: 'Search for doctors',
                 onTap: _navigateToSearchDoctorScreen,
               ),
@@ -33,86 +33,89 @@ class _PatientAppointmentState extends _AppointmentScreenState {
             itemCount: _appointments.length,
             itemBuilder: (context, index) {
               final appointment = _appointments[index];
-              return InkWell(
-                onTap: () {
-                  context.showBottomSheet(
-                    const DrBottomSheet(),
-                    borderRadius: 22,
-                  );
-                },
-                child: Container(
-                  decoration: AppDeco.cardDecoration,
-                  padding: const EdgeInsets.all(12),
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            Constants.tempNetworkUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+              return Container(
+                decoration: AppDeco.cardDecoration,
+                padding: const EdgeInsets.all(12),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: component.networkImage(
+                            url: appointment.profilePic ?? '',
+                            fit: BoxFit.cover,
+                            errorWidget: component.assetImage(
+                                path: Assets.imagesDefaultAvatar)),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              component.text(
+                                "Dr. ${appointment.fullName}",
+                                style: theme.publicSansFonts.mediumStyle(
+                                    fontSize: 16,
+                                    fontColor: AppColors.blackColor),
+                              ),
+                              const SizedBox(width: 5),
+                              component.assetImage(path: Assets.iconsVerify),
+                            ],
+                          ),
+                          component.text(
+                            appointment.specialization,
+                            style: theme.publicSansFonts
+                                .regularStyle(fontColor: AppColors.black81),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: AppColors.blackF2,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                component.text(
-                                  "Dr. ${appointment.fullName}",
-                                  style: theme.publicSansFonts.mediumStyle(
-                                      fontSize: 16,
-                                      fontColor: AppColors.blackColor),
+                                const Icon(
+                                  Icons.schedule_outlined,
+                                  size: 11,
+                                  color: AppColors.black81,
                                 ),
                                 const SizedBox(width: 5),
-                                component.assetImage(path: Assets.iconsVerify),
+                                component.text(
+                                  "${Utils.getMonthDay(appointment.date)}, ${appointment.time}",
+                                ),
                               ],
                             ),
-                            component.text(
-                              appointment.specialization,
-                              style: theme.publicSansFonts
-                                  .regularStyle(fontColor: AppColors.black81),
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColors.blackF2,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(
-                                    Icons.schedule_outlined,
-                                    size: 11,
-                                    color: AppColors.black81,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  component.text(
-                                    "${_getLocalTime(appointment.date)}, ${appointment.time}",
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      component.assetImage(path: Assets.iconsThreeDots),
-                    ],
-                  ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          context.showBottomSheet(
+                            DrBottomSheet(
+                              appointment: appointment,
+                            ),
+                            borderRadius: 22,
+                          );
+                        },
+                        child:
+                            component.assetImage(path: Assets.iconsThreeDots)),
+                  ],
                 ),
               );
             }),
