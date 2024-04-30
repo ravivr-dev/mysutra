@@ -133,20 +133,25 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
             ),
           ],
         ),
-        Container(
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: component.networkImage(
-                url: _userEntity?.profilePic ?? '',
-                fit: BoxFit.cover,
-                errorWidget: const Icon(Icons.person)),
-          ),
-        ),
+        // Container(
+        //   width: 38,
+        //   height: 38,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(8),
+        //   ),
+        //   child: ClipRRect(
+        //     borderRadius: BorderRadius.circular(8),
+        //     child:
+        component.networkImage(
+            url: _userEntity?.profilePic ?? '',
+            height: 38,
+            width: 38,
+            borderRadius: 4,
+            fit: BoxFit.fill,
+            errorWidget:
+                component.assetImage(path: Assets.imagesDefaultAvatar)),
+        // ),
+        // ),
       ],
     );
   }

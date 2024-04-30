@@ -69,4 +69,6 @@ class StringKeys {
       'you_want_to_cancel_this_appointment?';
   static const String noDoNotCancel = "no_do_not_cancel";
   static const String yesCancel = "yes_cancel";
+  static const String changeEmailAddress = 'change_email_address';
+  static const String changeMobileNumber = 'change_mobile_number';
 }

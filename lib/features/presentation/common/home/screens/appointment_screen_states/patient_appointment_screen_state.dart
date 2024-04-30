@@ -41,21 +41,22 @@ class _PatientAppointmentState extends _AppointmentScreenState {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: component.networkImage(
+                    // Container(
+                    //   width: 70,
+                    //   height: 70,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(8),
+                    //   ),
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(8),
+                    //     child:
+                        component.networkImage(
                             url: appointment.profilePic ?? '',
                             fit: BoxFit.cover,
                             errorWidget: component.assetImage(
                                 path: Assets.imagesDefaultAvatar)),
-                      ),
-                    ),
+                    //   ),
+                    // ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(

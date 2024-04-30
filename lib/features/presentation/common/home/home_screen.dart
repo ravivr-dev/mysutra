@@ -55,13 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: AppColors.black33,
         showUnselectedLabels: true,
         items: [
-          _buildBottomBarItem(icon: Assets.iconsHome2, label: 'Home', index: 0),
+          _buildBottomBarItem(icon: Assets.assetsIconsHome2, label: 'Home', index: 0),
           _buildBottomBarItem(icon: Assets.iconsFeed, label: 'Feed', index: 1),
           const BottomNavigationBarItem(
               icon: Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: CircleAvatar(
-                    radius: 16,
+                    radius: 20,
                     backgroundColor: AppColors.primaryColor,
                     child: Icon(Icons.add, color: AppColors.white)),
               ),
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BottomNavigationBarItem(
         icon: component.assetImage(
             path: icon,
-            color: isSelected ? AppColors.primaryColor : AppColors.black39),
+            color: isSelected ? AppColors.primaryColor : AppColors.grey92),
         label: label);
   }
 }

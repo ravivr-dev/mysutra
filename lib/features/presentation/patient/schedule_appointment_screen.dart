@@ -23,10 +23,12 @@ import '../../domain/entities/patient_entities/available_time_slot_entity.dart';
 
 class ScheduleAppointmentScreen extends StatefulWidget {
   final ScheduleAppointmentScreenArgs args;
+  final bool isNewAppointment;
 
   const ScheduleAppointmentScreen({
     super.key,
     required this.args,
+    this.isNewAppointment = true,
   });
 
   @override
@@ -152,7 +154,9 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                 value: context.stringForKey(StringKeys.age)),
                             component.spacer(height: 10),
                             _buildTextField(
-                                controller: _ageController, errorText: 'Age'),
+                                controller: _ageController,
+                                errorText: 'Age',
+                                textInputType: TextInputType.number),
                             _buildText(
                                 value: context
                                     .stringForKey(StringKeys.phoneNumber)),

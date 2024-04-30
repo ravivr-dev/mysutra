@@ -1,3 +1,4 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -5,9 +6,12 @@ import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_small_outline_buttom.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
+import 'package:my_sutra/core/config/navigation.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class ChangeDataScreen extends StatefulWidget {
   const ChangeDataScreen({super.key, required this.args});
@@ -25,6 +29,14 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
   bool showOTP = false;
 
   @override
+  void dispose() {
+    _ccCtrl.dispose();
+    _valCtrl.dispose();
+    _otpCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
@@ -38,7 +50,9 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
         }
         if (state is VerifyChangeLoadedState) {
           widget.showSuccessToast(context: context, message: state.message);
-          showOTP = false;
+          // showOTP = false;
+          // AiloitteNavigation.intent(context, AppRoutes.homeRoute);
+          Navigator.of(context).pop();
         }
       },
       builder: (context, state) {
@@ -46,8 +60,10 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
           backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
             title: widget.args.isEmail
-                ? const Text('Change Email Address')
-                : const Text('Change Mobile Number'),
+                ? component
+                    .text(context.stringForKey(StringKeys.changeEmailAddress))
+                : component
+                    .text(context.stringForKey(StringKeys.changeMobileNumber)),
             centerTitle: true,
           ),
           floatingActionButton: Padding(
@@ -124,6 +140,7 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                     textInputType: TextInputType.number,
                     filled: true,
                     controller: _otpCtrl,
+                    autoFocus: true,
                     style: theme.publicSansFonts.regularStyle(fontSize: 16),
                   ),
               ],

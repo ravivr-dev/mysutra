@@ -4,6 +4,7 @@ class AppRoutes {
   static const String chooseAccountTypeRoute = "/choose_account_type_screen";
   static const String createAccountRoute = "/create_account_screen";
   static const String selectAccountRoute = "/select_account_screen";
+  static const String myProfileRoute = "/common/profile_screen/my_profile_screen";
 
   // patient routes
   static const String findDoctorRoute = "/find_doctor_screen";

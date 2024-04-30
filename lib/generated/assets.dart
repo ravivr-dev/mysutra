@@ -5,6 +5,7 @@ class Assets {
   static const String animBatches = 'assets/anim/batches.json';
   static const String animHome = 'assets/anim/home.json';
   static const String animProfile = 'assets/anim/profile.json';
+  static const String assetsIconsHome2 = 'assets/icons/home_2.svg';
   static const String fontsPublicSansBlack = 'assets/fonts/PublicSans-Black.ttf';
   static const String fontsPublicSansBold = 'assets/fonts/PublicSans-Bold.ttf';
   static const String fontsPublicSansExtraBold = 'assets/fonts/PublicSans-ExtraBold.ttf';
