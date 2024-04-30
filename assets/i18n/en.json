@@ -63,5 +63,8 @@
   "are_you_sure?": "Are you sure?",
   "you_want_to_cancel_this_appointment": "You want to cancel this appointment",
   "no_do_not_cancel": "No, Don't Cancel",
-  "yes_cancel": "Yes, Cancel"
+  "yes_cancel": "Yes, Cancel",
+  "go_to_home": "Go to Home",
+  "change_email_address": "Change Email Address",
+  "change_mobile_number": "Change Mobile Number"
 }

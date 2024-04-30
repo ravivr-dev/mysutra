@@ -283,6 +283,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     component.spacer(height: 20),
                     TextFormFieldWidget(
                       hintText: "Experience",
+                      textInputType: TextInputType.number,
                       title: "Total year of experience",
                       validator: (value) =>
                           value.isEmpty ? 'Please Enter Experience' : null,

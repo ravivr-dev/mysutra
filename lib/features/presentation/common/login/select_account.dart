@@ -116,13 +116,21 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                                         style: theme.publicSansFonts
                                             .semiBoldStyle(fontSize: 18),
                                       ),
-                                      component.text(
-                                        "${_isAgeAvailable(user.age) ? '${user.age} years,' : ''} ${Utils.capFirstLetter(user.gender ?? '')}",
-                                        style: theme.publicSansFonts
-                                            .regularStyle(
-                                                fontSize: 14,
-                                                fontColor: AppColors.black49),
-                                      ),
+                                      if (user.role != 'DOCTOR')
+                                        component.text(
+                                          "${_isAgeAvailable(user.age) ? '${user.age} years,' : ''} ${Utils.capFirstLetter(user.gender ?? '')}",
+                                          style: theme.publicSansFonts
+                                              .regularStyle(
+                                                  fontSize: 14,
+                                                  fontColor: AppColors.black49),
+                                        ),
+                                      if (user.role == 'DOCTOR')
+                                        component.text('${user.specialization}'.capitalizeFirstLetterOfEveryWord,
+                                            style: theme.publicSansFonts
+                                                .regularStyle(
+                                                    fontSize: 14,
+                                                    fontColor:
+                                                        AppColors.black49)),
                                     ],
                                   ),
                                 ),

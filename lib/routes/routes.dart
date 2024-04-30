@@ -15,6 +15,7 @@ import 'package:my_sutra/features/presentation/common/login/login_screen.dart';
 import 'package:my_sutra/features/presentation/common/login/select_account.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/change_data_screen.dart';
+import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
@@ -188,7 +189,16 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
                   create: (context) => sl<HomeCubit>(),
-                  child:  RescheduleAppointmentScreen(appointmentId: args,),
+                  child: RescheduleAppointmentScreen(
+                    appointmentId: args,
+                  ),
+                ));
+
+      case AppRoutes.myProfileRoute:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => sl<ProfileCubit>(),
+                  child: const MyProfileScreen(),
                 ));
 
       // case AppRoutes.myBatchesRoute:

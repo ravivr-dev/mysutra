@@ -29,12 +29,20 @@ class MyProfileScreen extends StatefulWidget {
 class _MyProfileScreenState extends State<MyProfileScreen> {
   MyProfileEntity? my;
 
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     _getProfileDetails();
+  //   });
+  //   super.initState();
+  // }
+
   @override
-  void initState() {
+  void didChangeDependencies() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _getProfileDetails();
     });
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
@@ -84,11 +92,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 component.networkImage(
-                  url: my?.profilePic ?? '',
-                  height: 80,
-                  width: 80,
-                  fit: BoxFit.fill,
-                ),
+                    url: my?.profilePic ?? '',
+                    height: 80,
+                    width: 80,
+                    fit: BoxFit.fill,
+                    borderRadius: 4,
+                    errorWidget:
+                        component.assetImage(path: Assets.imagesDefaultAvatar)),
                 component.spacer(height: 16),
                 if (userRole == UserRole.patient)
                   _buildUserName()
@@ -260,8 +270,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           ),
           InkWell(
             onTap: () {
-              AiloitteNavigation.intentWithData(context,
-                  AppRoutes.changeDataRoute, ChangeDataParams(isEmail));
+              // AiloitteNavigation.intentWithData(context,
+              //     AppRoutes.changeDataRoute, ChangeDataParams(isEmail));
+              Navigator.of(context)
+                  .pushNamed(AppRoutes.changeDataRoute,
+                      arguments: ChangeDataParams(isEmail))
+                  .then((value) => _getProfileDetails());
             },
             child: component.text('Change',
                 style: theme.publicSansFonts.semiBoldStyle(
