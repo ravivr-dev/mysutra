@@ -68,9 +68,7 @@ class AiloitteImageWidgetState extends State<AiloitteImageWidget> {
               fit: widget.fit ?? BoxFit.fill,
               errorWidget: (context, url, error) {
                 dev.log('GET IMAGE ERROR\nInvalid URL');
-                return widget.errorWidget ?? SizedBox(
-                  child: SvgPicture.asset('assets/placeholder.svg'),
-                );
+                return widget.errorWidget ?? const SizedBox.shrink();
               },
               placeholder: (context, url) {
                 return widget.loaderWidget ?? Container();
