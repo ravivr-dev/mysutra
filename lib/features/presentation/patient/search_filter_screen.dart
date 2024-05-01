@@ -123,10 +123,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                 onChanged: (model) => _experience = model.value,
 
                 /// i+1 because i would be start from 0
-                dropDownList: List.generate(
-                    30,
-                    (i) => DropDownValueModel(
-                        name: '${i + 1} years', value: i + 1)),
+                dropDownList: List.generate(30,
+                    (i) => DropDownValueModel(name: '${i + 1}', value: i + 1)),
                 height: 70,
                 borderRadius: 90,
                 hintText: '${_experience ?? ''}',
