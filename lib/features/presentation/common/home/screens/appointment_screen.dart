@@ -122,10 +122,10 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
             ),
             const SizedBox(height: 8),
             component.text(
-              (_userEntity?.fullName ?? '').isNotEmpty
-                  ? _userEntity?.fullName
-                  : _userEntity?.username,
-              style: theme.publicSansFonts.semiBoldStyle(
+              UserHelper.role == UserRole.guest
+                  ? 'Guest'
+                  : _userEntity?.fullName ?? _userEntity?.username,
+              style: theme.publicSansFonts.mediumStyle(
                 fontColor: AppColors.blackColor,
                 fontSize: 24,
                 height: 28,
