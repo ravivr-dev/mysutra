@@ -68,7 +68,7 @@ class DrBottomSheet extends StatelessWidget {
                 style: theme.publicSansFonts.regularStyle(
                     fontSize: 16, fontColor: AppColors.color0xFF1E293B)),
           ),
-          component.spacer(height: 10),
+          const Divider(color: AppColors.color0xFFEAECF0),
           InkWell(
             onTap: () => AiloitteNavigation.intentWithData(
                 context, AppRoutes.chatScreen, appointment),
@@ -84,7 +84,7 @@ class DrBottomSheet extends StatelessWidget {
                 BlocProvider<AppointmentCubit>(
                   create: (context) => sl<AppointmentCubit>(),
                   child: CancelAppointmentBottomSheet(
-                      appointmentId: appointment.id!),
+                      appointmentId: appointment.id),
                 ),
                 borderRadius: 12,
               );
@@ -105,6 +105,6 @@ class DrBottomSheet extends StatelessWidget {
         context,
         AppRoutes.scheduleAppointment,
         ScheduleAppointmentScreenArgs(
-            doctorId: appointment.doctorId!, appointmentId: appointment.id!));
+            doctorId: appointment.doctorId!, appointmentId: appointment.id));
   }
 }
