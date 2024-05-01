@@ -16,11 +16,13 @@ import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/bottom_sheets/patient_appointment_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/search/bottomsheet/dr_bottom_sheet.dart';
+import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import '../../../../domain/entities/patient_entities/appointment_entity.dart';
+import '../../../patient/search_filter_screen.dart';
 
 part 'appointment_screen_states/doctor_appointment_screen_state.dart';
 
@@ -202,9 +204,5 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       _page++;
       _callAppointmentApi();
     }
-  }
-
-  void _navigateToSearchDoctorScreen() {
-    AiloitteNavigation.intent(context, AppRoutes.searchResultRoute);
   }
 }

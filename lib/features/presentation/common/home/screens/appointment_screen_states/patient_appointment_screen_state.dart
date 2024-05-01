@@ -1,6 +1,8 @@
 part of 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
 
 class _PatientAppointmentState extends _AppointmentScreenState {
+  SearchFilterArgs? args;
+
   @override
   Widget _buildBody(state) {
     return Column(
@@ -16,8 +18,13 @@ class _PatientAppointmentState extends _AppointmentScreenState {
               _buildAppBar(),
               const SizedBox(height: 16),
               SearchWithFilter(
-                onTapFilter: (searchModel) {},
+                onTapFilter: (searchModel) {
+                  args = searchModel;
+                  _navigateToSearchDoctorScreen(args: args);
+                },
+                filter: args,
                 hintText: 'Search for doctors',
+                readOnly: true,
                 onTap: _navigateToSearchDoctorScreen,
               ),
               const SizedBox(height: 32),
@@ -129,5 +136,10 @@ class _PatientAppointmentState extends _AppointmentScreenState {
     context
         .read<HomeCubit>()
         .getAppointments(date: _getServerDate, pagination: _page, limit: 10);
+  }
+
+  void _navigateToSearchDoctorScreen({SearchFilterArgs? args}) {
+    AiloitteNavigation.intentWithData(
+        context, AppRoutes.searchResultRoute, SearchResultArgs(filter: args));
   }
 }

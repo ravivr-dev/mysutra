@@ -16,7 +16,9 @@ import '../../../../generated/assets.dart';
 import '../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 
 class SearchResultScreen extends StatefulWidget {
-  const SearchResultScreen({super.key});
+  final SearchResultArgs? args;
+
+  const SearchResultScreen({super.key, required this.args});
 
   @override
   State<SearchResultScreen> createState() => _SearchResultScreenState();
@@ -24,11 +26,14 @@ class SearchResultScreen extends StatefulWidget {
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
   final TextEditingController _searchController = TextEditingController();
-  SearchFilterArgs? _doctorFilterDetails;
+  late SearchFilterArgs? _doctorFilterDetails = widget.args?.filter;
 
   @override
   void didChangeDependencies() {
-    _callSearchDoctorApi();
+    _callSearchDoctorApi(
+        reviews: _doctorFilterDetails?.reviews,
+        experience: _doctorFilterDetails?.experience,
+        specializationId: _doctorFilterDetails?.specializationId);
     super.didChangeDependencies();
   }
 
@@ -261,4 +266,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     Navigator.pushNamed(context, AppRoutes.doctorDetail, arguments: entity)
         .then((value) => setState(() {}));
   }
+}
+
+class SearchResultArgs {
+  final SearchFilterArgs? filter;
+
+  SearchResultArgs({this.filter});
 }
