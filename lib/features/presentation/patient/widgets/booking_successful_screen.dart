@@ -15,7 +15,7 @@ class BookingSuccessfulScreen extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         leading: InkWell(
-          onTap: () => AiloitteNavigation.back(context),
+          onTap: () => _goToHomeScreen(context),
           child: Icon(
             Icons.arrow_back,
             color: AppColors.color0xFF00082F.withOpacity(.27),
@@ -82,11 +82,13 @@ class BookingSuccessfulScreen extends StatelessWidget {
     );
   }
 
+  void _goToHomeScreen(BuildContext context) {
+    AiloitteNavigation.intentWithClearAllRoutes(context, AppRoutes.homeRoute);
+  }
+
   Widget _buildGoToHomeButton(BuildContext context) {
     return InkWell(
-      onTap: () {
-        AiloitteNavigation.intent(context, AppRoutes.homeRoute);
-      },
+      onTap: () => _goToHomeScreen,
       child: Container(
         height: 50,
         padding: const EdgeInsets.symmetric(horizontal: 16),
