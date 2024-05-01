@@ -250,6 +250,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     textCapitalization: TextCapitalization.none,
                   ),
                   component.spacer(height: 20),
+                  TextFormFieldWidget(
+                    title: "Age",
+                    controller: _ageCtrl,
+                    validator: (value) =>
+                        value.isEmpty ? 'Please Enter Age' : null,
+                    suffixWidget: Padding(
+                      padding: const EdgeInsets.only(top: 10, right: 20),
+                      child: Text(
+                        "Years",
+                        style: theme.publicSansFonts
+                            .regularStyle(fontSize: 16, height: 22),
+                      ),
+                    ),
+                  ),
+                  component.spacer(height: 20),
                   if (widget.profession == "Doctor") ...[
                     // TextFormFieldWidget(
                     //   title: "Specialization",
@@ -300,21 +315,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ),
                     component.spacer(height: 20),
                   ] else if (widget.profession == "Influencer") ...[
-                    TextFormFieldWidget(
-                      title: "Age",
-                      controller: _ageCtrl,
-                      validator: (value) =>
-                          value.isEmpty ? 'Please Enter Age' : null,
-                      suffixWidget: Padding(
-                        padding: const EdgeInsets.only(top: 10, right: 20),
-                        child: Text(
-                          "Years",
-                          style: theme.publicSansFonts
-                              .regularStyle(fontSize: 16, height: 22),
-                        ),
-                      ),
-                    ),
-                    component.spacer(height: 20),
                     TextFormFieldWidget(
                       title: "Social Profile URL",
                       controller: _socialCtrl,
