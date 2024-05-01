@@ -50,7 +50,6 @@ class Assets {
   static const String iconsHeart = 'assets/icons/heart.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsHome2 = 'assets/icons/home2.svg';
-  static const String iconsIcDefaultAvatar = 'assets/icons/ic_default_avatar.png';
   static const String iconsIcPlay = 'assets/icons/ic_play.svg';
   static const String iconsImage = 'assets/icons/image.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';

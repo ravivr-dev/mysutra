@@ -48,7 +48,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                 imageRadius: 20,
                 url: profileUrl ?? '',
                 errorWidget: component.assetImage(
-                  path: Assets.iconsIcDefaultAvatar,
+                  path: Assets.imagesDefaultAvatar,
                   isCircular: true,
                   fit: BoxFit.cover,
                   imageRadius: 20,
