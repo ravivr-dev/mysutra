@@ -7,6 +7,7 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class CancelAppointmentBottomSheet extends StatelessWidget {
   final String appointmentId;
@@ -20,7 +21,8 @@ class CancelAppointmentBottomSheet extends StatelessWidget {
         if (state is CancelAppointmentSuccessState) {
           showErrorToast(
               context: context, message: 'Appointment Canceled Successfully');
-          Navigator.pop(context);
+          AiloitteNavigation.intentWithoutBack(
+              context, AppRoutes.bookingCancelled, null);
         } else if (state is CancelAppointmentErrorState) {
           showErrorToast(context: context, message: state.message);
         }
