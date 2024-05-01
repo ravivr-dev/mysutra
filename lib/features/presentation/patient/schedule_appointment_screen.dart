@@ -8,7 +8,6 @@ import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_dropdown.dart';
 import 'package:my_sutra/core/common_widgets/user_name_textfield.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
-import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
@@ -136,18 +135,13 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                             component.spacer(height: 16),
                             _buildText(
                                 value:
-                                    context.stringForKey(StringKeys.fullName)),
+                                    context.stringForKey(StringKeys.username)),
                             component.spacer(height: 10),
-                            if (UserHelper.role == UserRole.guest)
-                              BlocProvider(
-                                create: (_) => sl<RegistrationCubit>(),
-                                child: UserNameTextField(
-                                    userNameController: _nameController),
-                              )
-                            else
-                              _buildTextField(
-                                  controller: _nameController,
-                                  errorText: 'Name'),
+                            BlocProvider(
+                              create: (_) => sl<RegistrationCubit>(),
+                              child: UserNameTextField(
+                                  userNameController: _nameController),
+                            ),
                             _buildText(
                                 value: context.stringForKey(StringKeys.age)),
                             component.spacer(height: 10),
