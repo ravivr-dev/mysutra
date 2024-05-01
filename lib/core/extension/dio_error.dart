@@ -26,7 +26,7 @@ extension MyDioError on DioException {
     ///We don't want to redirect to LoginScreen in case of GUEST user
     if (response != null &&
         response!.statusCode == 401 &&
-        (UserHelper.role == UserRole.guest &&
+        (UserHelper.role != UserRole.guest ||
             (localDataSource.getAccessToken() ?? '').isNotEmpty)) {
       navigationKey.currentState
           ?.pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
