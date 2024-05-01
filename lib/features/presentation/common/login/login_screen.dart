@@ -80,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: context.stringForKey(StringKeys.mobileNumber),
                         countryCode: _countryCode,
                         controller: _mobCtrl,
+                        fillColor: AppColors.greyD9,
                       ),
                     ],
                   ),
