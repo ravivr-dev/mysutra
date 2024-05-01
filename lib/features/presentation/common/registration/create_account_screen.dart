@@ -207,7 +207,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       ),
                     ),
                   const SizedBox(height: 20),
-                  if (widget.profession == "Doctor") ...[
+                  if (widget.profession == "Doctor" ||
+                      widget.profession == 'Influencer') ...[
                     TextFormFieldWidget(
                       validator: (value) =>
                           value.isEmpty ? 'Please Enter Full Name' : null,
