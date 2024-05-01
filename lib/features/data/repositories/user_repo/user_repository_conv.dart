@@ -55,6 +55,7 @@ class UserRepoConv {
       phoneNumber: model.phoneNumber,
       email: model.email,
       about: model.about,
+      username: model.username!,
     );
   }
 

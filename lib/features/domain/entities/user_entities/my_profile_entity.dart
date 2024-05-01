@@ -14,6 +14,7 @@ class MyProfileEntity {
   final int? phoneNumber;
   final String? email;
   String? about;
+  final String username;
 
   MyProfileEntity({
     required this.id,
@@ -29,6 +30,7 @@ class MyProfileEntity {
     required this.phoneNumber,
     required this.email,
     required this.about,
+    required this.username,
   });
 
   set setAbout(String about) {

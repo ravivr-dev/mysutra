@@ -25,22 +25,7 @@ class MyProfileModel {
   final int? phoneNumber;
   final String? email;
   final String? about;
-
-  MyProfileModel({
-    required this.id,
-    required this.profilePic,
-    required this.fullName,
-    required this.specialization,
-    required this.fees,
-    required this.role,
-    required this.isVerified,
-    required this.totalExperience,
-    required this.totalFollowers,
-    required this.countryCode,
-    required this.phoneNumber,
-    required this.email,
-    required this.about,
-  });
+  final String? username;
 
   MyProfileModel.fromJson(Map<String, dynamic> json)
       : id = json[Constants.id],
@@ -57,7 +42,8 @@ class MyProfileModel {
         phoneNumber = json[Constants.phoneNumber],
         email = json[Constants.email],
         fees = json[Constants.fees],
-        about = json[Constants.about];
+        about = json[Constants.about],
+        username = json[Constants.userName];
 }
 
 class Specialization {
@@ -68,5 +54,5 @@ class Specialization {
 
   Specialization.fromJson(Map<String, dynamic> json)
       : id = json[Constants.id],
-        name = json[Constants.user];
+        name = json[Constants.name];
 }
