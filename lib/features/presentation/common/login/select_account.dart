@@ -35,7 +35,8 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
             padding: AppDeco.screenPadding,
             child: Text(
               "Select Account",
-              style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
+              style: theme.publicSansFonts
+                  .mediumStyle(fontSize: 25, fontColor: AppColors.black21),
             ),
           ),
           Padding(
@@ -125,7 +126,9 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                                                   fontColor: AppColors.black49),
                                         ),
                                       if (user.role == 'DOCTOR')
-                                        component.text('${user.specialization}'.capitalizeFirstLetterOfEveryWord,
+                                        component.text(
+                                            '${user.specialization}'
+                                                .capitalizeFirstLetterOfEveryWord,
                                             style: theme.publicSansFonts
                                                 .regularStyle(
                                                     fontSize: 14,
