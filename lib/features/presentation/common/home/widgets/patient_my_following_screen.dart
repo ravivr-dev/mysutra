@@ -1,6 +1,8 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/common_widgets/follow_button.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
@@ -8,7 +10,6 @@ import 'package:my_sutra/generated/assets.dart';
 
 import '../../../../domain/entities/user_entities/user_data_entity.dart';
 
-//todo ask influencer design from Himanshu
 class PatientMyFollowingScreen extends StatefulWidget {
   final List<UserDataEntity> myFollowing;
 
@@ -23,6 +24,10 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: 2, vsync: this);
+  late final List<UserDataEntity> _doctorList =
+      _getFilteredList(UserRole.doctor);
+  late final List<UserDataEntity> _inFluencerList =
+      _getFilteredList(UserRole.influencer);
 
   @override
   void dispose() {
@@ -38,13 +43,17 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
         elevation: 0,
         leading: InkWell(
           onTap: () => AiloitteNavigation.back(context),
-          child: Icon(Icons.arrow_back,
-              color: AppColors.color0xFF00082F.withOpacity(.27)),
+          child: Icon(
+            Icons.arrow_back,
+            color: AppColors.color0xFF00082F.withOpacity(.27),
+          ),
         ),
-        title: component.text(context.stringForKey(StringKeys.myFollowing),
-            style: theme.publicSansFonts.mediumStyle(
-              fontSize: 20,
-            )),
+        title: component.text(
+          context.stringForKey(StringKeys.myFollowing),
+          style: theme.publicSansFonts.mediumStyle(
+            fontSize: 20,
+          ),
+        ),
         bottom: TabBar(
           controller: _tabController,
           dividerHeight: 0.0,
@@ -62,31 +71,50 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
             ),
             Tab(
               text: context.stringForKey(StringKeys.influencers),
-            )
+            ),
           ],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          ListView.separated(
-            itemCount: widget.myFollowing.length,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            shrinkWrap: true,
-            itemBuilder: (_, index) {
-              return _buildDoctorsCard(widget.myFollowing[index]);
-            },
-            separatorBuilder: (_, index) {
-              return component.spacer(height: 12);
-            },
-          ),
-          const SizedBox.shrink(),
+          _buildDoctorWidgets(list: _doctorList),
+          _buildDoctorWidgets(list: _inFluencerList, isDoctor: false)
         ],
       ),
     );
   }
 
-  Widget _buildDoctorsCard(UserDataEntity entity) {
+  List<UserDataEntity> _getFilteredList(UserRole role) {
+    return widget.myFollowing
+        .where((element) => element.role == role.name)
+        .toList();
+  }
+
+  Widget _buildEmptyText({required String role}) {
+    return Center(
+        child: component.text('No $role Found',
+            style: theme.publicSansFonts.mediumStyle(fontSize: 20)));
+  }
+
+  Widget _buildDoctorWidgets(
+      {required List<UserDataEntity> list, bool isDoctor = true}) {
+    return list.isEmpty
+        ? _buildEmptyText(role: isDoctor ? 'Doctor' : 'Influencer')
+        : ListView.separated(
+            itemCount: list.length,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            shrinkWrap: true,
+            itemBuilder: (_, index) {
+              return _buildDoctorsCard(list[index], isDoctor: isDoctor);
+            },
+            separatorBuilder: (_, index) {
+              return component.spacer(height: 12);
+            },
+          );
+  }
+
+  Widget _buildDoctorsCard(UserDataEntity entity, {required bool isDoctor}) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(12),
@@ -114,13 +142,15 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
                   style: theme.publicSansFonts.mediumStyle(fontSize: 16),
                 ),
                 component.spacer(height: 4),
-                component.text(
-                  entity.specialization,
-                  style: theme.publicSansFonts.regularStyle(
-                    fontColor: AppColors.black81,
+                if (isDoctor) ...[
+                  component.text(
+                    entity.specialization,
+                    style: theme.publicSansFonts.regularStyle(
+                      fontColor: AppColors.black81,
+                    ),
                   ),
-                ),
-                component.spacer(height: 4),
+                  component.spacer(height: 4),
+                ],
                 Row(
                   children: [
                     component.assetImage(
