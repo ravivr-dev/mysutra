@@ -75,9 +75,7 @@ class _TextFormWithCountryCodeState extends State<TextFormWithCountryCode> {
       fillColor: widget.fillColor,
       filled: widget.filled,
       controller: widget.controller,
-      borderColor: widget.fillColor == null
-          ? Colors.white.withOpacity(0.06)
-          : AppColors.blackColor.withOpacity(0.08),
+      borderColor: widget.fillColor ?? AppColors.blackColor.withOpacity(0.08),
       borderRadius: widget.borderRadius,
       horizontalContentPadding: widget.horizontalContentPadding,
       verticalContentPadding: widget.verticalContentPadding,
