@@ -32,15 +32,20 @@ class SearchDoctorCubit extends Cubit<SearchDoctorState> {
   }
 
   Future<void> followDoctor(
-      {required FollowDoctorParams params,
-       int? followedDoctorIndex}) async {
+      {required FollowDoctorParams params, int? followedDoctorIndex}) async {
     emit(FollowDoctorLoading());
     final result = await followDoctorUseCase.call(params);
 
     result.fold(
-        (l) => emit(FolowDoctorErrorState(message: l.message)),
-        (r) => emit(FollowDoctorSuccessState(
-            followEntity: r, followedDoctorIndex: followedDoctorIndex)));
+      (l) => emit(FolowDoctorErrorState(message: l.message)),
+      (r) => emit(
+        FollowDoctorSuccessState(
+          followEntity: r,
+          followedDoctorIndex: followedDoctorIndex,
+          doctorId: params.doctorId,
+        ),
+      ),
+    );
   }
 
   void getDoctorDetails({required String doctorId}) async {

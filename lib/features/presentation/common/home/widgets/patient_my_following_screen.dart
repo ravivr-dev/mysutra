@@ -170,28 +170,19 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
               ],
             ),
           ),
-          _buildFollowingButton(),
+          _buildFollowingButton(entity),
         ],
       ),
     );
   }
-//todo ask about this button should we make it dynamic here (means can use follow- unfollow from here)
-  Widget _buildFollowingButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: AppColors.color0xFFF5F5F5,
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.check, color: AppColors.color0xFF15C0B6),
-          component.text('Following',
-              style: theme.publicSansFonts.regularStyle(
-                fontColor: AppColors.color0xFF15C0B6,
-              ))
-        ],
-      ),
+
+  Widget _buildFollowingButton(UserDataEntity entity) {
+    return FollowButton(
+      followingUserId: entity.id,
+      isFollowing: entity.isFollowing,
+      onFollowingChanged: (_) {
+        entity.reInitIsFollowing();
+      },
     );
   }
 }

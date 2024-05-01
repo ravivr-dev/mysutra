@@ -7,7 +7,7 @@ class UserDataEntity {
   final List<String>? socialProfileUrls;
   final bool isVerified;
   final String? userName;
-  final bool? isFollowing;
+  bool isFollowing;
   final int? totalFollowers;
 
   UserDataEntity({
@@ -22,4 +22,8 @@ class UserDataEntity {
     required this.isVerified,
     required this.totalFollowers,
   });
+
+  void reInitIsFollowing() {
+    isFollowing = !isFollowing;
+  }
 }
