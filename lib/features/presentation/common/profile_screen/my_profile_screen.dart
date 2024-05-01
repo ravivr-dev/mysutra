@@ -29,144 +29,161 @@ class MyProfileScreen extends StatefulWidget {
 class _MyProfileScreenState extends State<MyProfileScreen> {
   MyProfileEntity? my;
 
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-  //     _getProfileDetails();
-  //   });
-  //   super.initState();
-  // }
-
   @override
-  void didChangeDependencies() {
+  void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _getProfileDetails();
     });
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final userRole = UserHelper.role;
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        centerTitle: true,
-        title: component.text(context.stringForKey(StringKeys.myProfile)),
-        actions: [
-          IconButton(
-            onPressed: () {
-              logoutDialog();
-            },
-            icon: const Icon(
-              Icons.logout_outlined,
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
-        child: BlocConsumer<ProfileCubit, ProfileState>(
-          listener: (context, state) {
-            if (state is GetPatientSuccessState) {
-              _goToMyPatientScreen(state.patients);
-            } else if (state is GetPatientErrorState) {
-              _showToast(message: 'Not Able To Show Patient Please Try Again');
-            } else if (state is GetProfileDetailsSuccessState) {
-              my = state.entity;
-            }
-
-            if (state is GetFollowingLoadedState) {
-              if (userRole == UserRole.doctor) {
-                _goToDoctorFollowingScreen(state.myFollowings);
-              } else {
-                AiloitteNavigation.intentWithData(
-                    context, AppRoutes.patientMyFollowing, state.myFollowings);
-              }
-            } else if (state is GetFollowingErrorState) {
-              _showToast(message: state.message);
-            }
-          },
-          builder: (BuildContext context, ProfileState state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                component.networkImage(
-                    url: my?.profilePic ?? '',
-                    height: 80,
-                    width: 80,
-                    fit: BoxFit.fill,
-                    borderRadius: 4,
-                    errorWidget:
-                        component.assetImage(path: Assets.imagesDefaultAvatar)),
-                component.spacer(height: 16),
-                if (userRole == UserRole.patient)
-                  _buildUserName()
-                else
-                  ..._buildDoctorDetailsWidgets(context),
-                component.spacer(height: 12),
-                const Divider(color: AppColors.dividerColor),
-                component.spacer(height: 12),
-                if (userRole != UserRole.influencer)
-                  _buildCard(
-                      value: userRole == UserRole.patient
-                          ? 'My Doctors'
-                          : 'My Patients',
-                      onTap: () {
-                        if (userRole == UserRole.doctor) {
-                          //todo make it dynamic (implement pagination)
-                          context
-                              .read<ProfileCubit>()
-                              .getPatients(pagination: 1, limit: 25);
-                        }
-                      },
-                      icons: Assets.iconsUserCircle),
-                component.spacer(height: 12),
-                _buildCard(
-                    value: 'My Following',
-                    icons: Assets.iconsUserAdd,
-                    onTap: () {
-                      context
-                          .read<ProfileCubit>()
-                          .getFollowing(pagination: 1, limit: 35);
-                    }),
-                component.spacer(height: 12),
-                if (userRole == UserRole.doctor) ...[
-                  _buildCard(
-                      value: 'Settings',
-                      icons: Assets.iconsSetting,
-                      onTap: () {
-                        AiloitteNavigation.intent(
-                            context, AppRoutes.settingRoute);
-                      }),
-                  component.spacer(height: 12),
-                ],
-                if (userRole == UserRole.patient) ...[
-                  _buildCard(
-                      value: 'Past Appointments',
-                      icons: Assets.iconsClock,
-                      onTap: () {
-                        AiloitteNavigation.intent(
-                            context, AppRoutes.patientPastAppointment);
-                      }),
-                  component.spacer(height: 12),
-                ],
-                _buildTileCard(
-                    isEmail: false,
-                    icon: Assets.iconsPhone,
-                    text: 'Mobile number',
-                    subText: my?.phoneNumber.toString() ?? ''),
-                component.spacer(height: 12),
-                _buildTileCard(
-                    isEmail: true,
-                    icon: Assets.iconsEmail,
-                    text: 'Email Address',
-                    subText: my?.email ?? ''),
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is GetPatientSuccessState) {
+          _goToMyPatientScreen(state.patients);
+        } else if (state is GetPatientErrorState) {
+          _showToast(message: 'Not Able To Show Patient Please Try Again');
+        } else if (state is GetProfileDetailsSuccessState) {
+          my = state.entity;
+        } else if (state is GetFollowingLoadedState) {
+          if (userRole == UserRole.doctor) {
+            _goToDoctorFollowingScreen(state.myFollowings);
+          } else {
+            AiloitteNavigation.intentWithData(
+                context, AppRoutes.patientMyFollowing, state.myFollowings);
+          }
+        } else if (state is GetFollowingErrorState) {
+          _showToast(message: state.message);
+        }
+      },
+      builder: (context, state) {
+        if (userRole != UserRole.guest ||
+            state is GetProfileDetailsSuccessState) {
+          return Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            appBar: AppBar(
+              centerTitle: true,
+              title: component.text(context.stringForKey(StringKeys.myProfile)),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    logoutDialog();
+                  },
+                  icon: const Icon(
+                    Icons.logout_outlined,
+                  ),
+                ),
               ],
-            );
-          },
-        ),
-      ),
+            ),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  /// don't remove this container i was facing some isue after removing this so will have to debug
+                  _buildProfileWidget(),
+                  component.spacer(height: 16),
+                  if (userRole != UserRole.doctor)
+                    _buildUserName()
+                  else
+                    ..._buildDoctorDetailsWidgets(context),
+                  component.spacer(height: 12),
+                  const Divider(color: AppColors.dividerColor),
+                  component.spacer(height: 12),
+                  if (userRole != UserRole.influencer)
+                    _buildCard(
+                        value: userRole == UserRole.doctor
+                            ? 'My Patients'
+                            : 'My Doctors',
+                        onTap: () {
+                          if (userRole == UserRole.doctor) {
+                            //todo make it dynamic (implement pagination)
+                            context
+                                .read<ProfileCubit>()
+                                .getPatients(pagination: 1, limit: 25);
+                          }
+                        },
+                        icons: Assets.iconsUserCircle),
+                  component.spacer(height: 12),
+                  _buildCard(
+                      value: 'My Following',
+                      icons: Assets.iconsUserAdd,
+                      onTap: () {
+                        context
+                            .read<ProfileCubit>()
+                            .getFollowing(pagination: 1, limit: 35);
+                      }),
+                  component.spacer(height: 12),
+                  if (userRole == UserRole.doctor) ...[
+                    _buildCard(
+                        value: 'Settings',
+                        icons: Assets.iconsSetting,
+                        onTap: () {
+                          AiloitteNavigation.intent(
+                              context, AppRoutes.settingRoute);
+                        }),
+                    component.spacer(height: 12),
+                  ],
+                  if (userRole == UserRole.patient ||
+                      userRole == UserRole.guest) ...[
+                    _buildCard(
+                        value: 'Past Appointments',
+                        icons: Assets.iconsClock,
+                        onTap: () {
+                          AiloitteNavigation.intent(
+                              context, AppRoutes.patientPastAppointment);
+                        }),
+                    component.spacer(height: 12),
+                  ],
+                  _buildTileCard(
+                      isEmail: false,
+                      icon: Assets.iconsPhone,
+                      text: 'Mobile number',
+                      subText: my?.phoneNumber.toString() ?? ''),
+                  component.spacer(height: 12),
+                  _buildTileCard(
+                      isEmail: true,
+                      icon: Assets.iconsEmail,
+                      text: 'Email Address',
+                      subText: my?.email ?? ''),
+                ],
+              ),
+            ),
+          );
+        } else if (userRole == UserRole.guest) {
+          return SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                _buildProfileWidget(),
+                component.spacer(height: 10),
+                _buildUserName(name: 'Guest'),
+              ],
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildProfileWidget() {
+    return Container(
+      height: 130,
+      width: 130,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+          color: AppColors.grey92.withOpacity(.1),
+          borderRadius: BorderRadius.circular(12)),
+      child: component.networkImage(
+          url: my?.profilePic ?? '',
+          errorWidget: component.assetImage(path: Assets.imagesDefaultAvatar)),
     );
   }
 
@@ -228,9 +245,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     ];
   }
 
-  Widget _buildUserName() {
+  Widget _buildUserName({String? name}) {
     return component.text(
-      my?.fullName,
+      my?.fullName ?? my?.username ?? name,
       style: theme.publicSansFonts.mediumStyle(
         fontSize: 25,
         fontColor: AppColors.black37,
