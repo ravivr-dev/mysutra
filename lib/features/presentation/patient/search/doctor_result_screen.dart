@@ -132,7 +132,7 @@ class DoctorResultScreen extends StatelessWidget {
                 )),
             component.spacer(height: 8),
             component.text(
-                '${doctorEntity.timings.firstTimeSlot?.day ?? ''}-${doctorEntity.timings.lastTimeSlot?.day} (${Utils.getTimeFromMinutes(doctorEntity.timings.firstTimeSlot?.startTime ?? 0)} - ${Utils.getTimeFromMinutes(doctorEntity.timings.lastTimeSlot?.endTime ?? 0)})',
+                '${doctorEntity.timings.firstTimeSlot?.day ?? ''}-${doctorEntity.timings.lastTimeSlot?.day ?? ''} (${Utils.getTimeFromMinutes(doctorEntity.timings.firstTimeSlot?.startTime ?? 0)} - ${Utils.getTimeFromMinutes(doctorEntity.timings.lastTimeSlot?.endTime ?? 0)})',
                 style: theme.publicSansFonts.regularStyle(
                   fontColor: AppColors.black81,
                 )),
