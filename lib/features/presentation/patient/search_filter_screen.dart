@@ -58,6 +58,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
             widget.showErrorToast(context: context, message: state.error);
           }
         }, builder: (_, __) {
+          String? speciality = _getDefaultSpeciality();
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -69,8 +70,11 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                 onSuggestionTap: (value) {
                   _selectedSpecification = value.item;
                 },
-                hintText:
-                    _getDefaultSpeciality() ?? 'Please Select Specialization',
+                hintTextStyle: speciality != null
+                    ? theme.publicSansFonts.regularStyle(
+                        fontSize: 18, fontColor: AppColors.black49)
+                    : null,
+                hintText: speciality ?? 'Please Select Specialization',
                 maxLength: 100,
                 suggestions: _specialisationList
                     .map((e) => SearchFieldListItem(e.name,
