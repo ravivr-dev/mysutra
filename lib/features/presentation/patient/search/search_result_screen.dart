@@ -247,10 +247,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       int? experience,
       String? specializationId}) {
     context.read<SearchDoctorCubit>().getData(SearchDoctorParams(
-        search: search,
-        reviews: reviews,
-        experience: experience,
-        specializationId: specializationId));
+          search: search,
+          reviews: reviews,
+          experience: experience,
+          specializationId: specializationId,
+          start: 1,
+          limit: 100,
+        ));
   }
 
   void _getDoctorDetails(String doctorId) {
