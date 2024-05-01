@@ -141,7 +141,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  component.text(data.fullName,
+                  component.text(data.fullName?.capitalizeFirstLetter,
                       style: theme.publicSansFonts.mediumStyle(
                         fontSize: 16,
                       )),
