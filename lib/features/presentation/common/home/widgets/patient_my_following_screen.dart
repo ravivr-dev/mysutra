@@ -55,9 +55,10 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
           ),
         ),
         bottom: TabBar(
+          padding: const EdgeInsets.only(left: 15),
           controller: _tabController,
-          dividerHeight: 0.0,
           isScrollable: true,
+          dividerColor: AppColors.backgroundColor,
           tabAlignment: TabAlignment.start,
           labelStyle: theme.publicSansFonts.mediumStyle(
             fontColor: AppColors.blackTokens,
