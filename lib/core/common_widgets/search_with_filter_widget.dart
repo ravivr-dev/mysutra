@@ -17,6 +17,7 @@ class SearchWithFilter extends StatefulWidget {
     this.backgroundColor,
     this.onTap,
     this.filter,
+    this.readOnly = false,
   });
 
   final Function(String onChange)? onChanged;
@@ -26,6 +27,7 @@ class SearchWithFilter extends StatefulWidget {
   final Color? backgroundColor;
   final VoidCallback? onTap;
   final SearchFilterArgs? filter;
+  final bool readOnly;
 
   @override
   State<SearchWithFilter> createState() => _SearchWithFilterState();
@@ -48,6 +50,7 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
             key: widget.key,
             onTap: widget.onTap,
             controller: widget.controller,
+            readOnly: widget.readOnly,
             onChanged: widget.onChanged,
             textAlignVertical: TextAlignVertical.center,
             style: theme.publicSansFonts.regularStyle(fontSize: 16),
