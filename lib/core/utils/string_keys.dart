@@ -47,7 +47,8 @@ class StringKeys {
   static const String yourBookingHasBeenConfirmed =
       'your_booking_has_been_confirmed';
   static const String bookingCancelled = 'booking_cancelled';
-  static const String yourBookingHasBeenCancelled = 'your_booking_has_been_cancelled';
+  static const String yourBookingHasBeenCancelled =
+      'your_booking_has_been_cancelled';
   static const String confirmYourBooking = 'confirmYourBooking';
   static const String pleaseConfirmYourBookingByText =
       'please_confirm_your_booking_by_text';
@@ -71,4 +72,5 @@ class StringKeys {
   static const String yesCancel = "yes_cancel";
   static const String changeEmailAddress = 'change_email_address';
   static const String changeMobileNumber = 'change_mobile_number';
+  static const String username = 'user_name';
 }
