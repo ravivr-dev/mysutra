@@ -54,15 +54,13 @@ class _MyPatientsScreenState extends State<MyPatientsScreen> {
           borderRadius: BorderRadius.circular(12), color: AppColors.white),
       child: Row(
         children: [
-          Stack(alignment: AlignmentDirectional.bottomEnd, children: [
-            component.networkImage(
+          component.networkImage(
               url: patient.profilePic ?? '',
               height: 72,
               width: 72,
               borderRadius: 8,
-            ),
-            component.assetImage(path: Assets.iconsVideoCallIcon),
-          ]),
+              errorWidget:
+                  component.assetImage(path: Assets.imagesDefaultAvatar)),
           component.spacer(
             width: 8,
           ),
