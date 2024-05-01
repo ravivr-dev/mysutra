@@ -64,6 +64,7 @@ class Constants {
   static const String totalAppointments = 'totalAppointments';
   static const String completedAppointments = 'completedAppointments';
   static const String pendingAppointments = 'pendingAppointments';
+  static const String name = 'name';
 
 //
 }
