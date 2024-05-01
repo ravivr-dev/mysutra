@@ -202,6 +202,7 @@ class UserRepositoryImpl extends UserRepository {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getHomeData();
+        UserHelper.init(role: result.userModel.role);
 
         return Right(UserRepoConv.userModelToEntity(result.userModel));
       } else {
