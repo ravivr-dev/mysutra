@@ -91,10 +91,14 @@ class Routes {
       //   );
 
       case AppRoutes.searchResultRoute:
+        final args = settings?.arguments as SearchResultArgs?;
+
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => sl<SearchDoctorCubit>(),
-            child: const SearchResultScreen(),
+            child: SearchResultScreen(
+              args: args,
+            ),
           ),
         );
       case AppRoutes.settingRoute:
