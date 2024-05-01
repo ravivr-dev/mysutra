@@ -2,9 +2,15 @@ import 'package:intl/intl.dart';
 
 class Utils {
   static String getTimeFromMinutes(int minutes) {
-    final hour = minutes ~/ 60;
-    final minute = minutes - (hour * 60);
-    return '${'$hour'.padLeft(2, '0')}:${'$minute'.padLeft(2, '0')} ${hour < 12 ? 'AM' : 'PM'}';
+    int hour = minutes ~/ 60;
+    int remainingMinutes = minutes - (hour * 60);
+    String amPM = hour >= 12 ? 'PM' : 'AM';
+    return '${changeTimeIn12HoursFormat(hour, remainingMinutes)} $amPM';
+  }
+
+  static String changeTimeIn12HoursFormat(int hours, int minutes) {
+    hours = hours % 12;
+    return '${'${hours == 0 ? '12' : hours}'.padLeft(2, '0')}:${'$minutes'.padLeft(2, '0')}';
   }
 
   static String capFirstLetter(String text) {

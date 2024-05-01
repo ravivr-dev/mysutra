@@ -439,9 +439,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             (element.hour == (moreThan?.hour ?? 0)
                 ? element.minute > (moreThan?.minute ?? 0)
                 : false)))
-        .map((e) =>
-            '${e.hour.toString().padLeft(2, '0')}:${e.minute.toString().padLeft(2, '0')} ${e.period.name.toUpperCase()}')
-        .toList();
+        .map((e) {
+
+      return '${Utils.changeTimeIn12HoursFormat(e.hour, e.minute)} ${e.period.name.toUpperCase()}';
+    }).toList();
   }
 
   TimeOfDay _getTimeOfDayFromString(String value) {
@@ -451,9 +452,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     int minutes = int.parse(timeParts[1]);
 
     // Adjust hours for AM/PM
-    // if (parts[1].toLowerCase() == 'pm') {
-    //   hours += 12;
-    // }
+    if (parts[1].toLowerCase() == 'pm') {
+      hours += 12;
+    }
 
     return TimeOfDay(hour: hours, minute: minutes);
   }
