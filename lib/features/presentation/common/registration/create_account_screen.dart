@@ -318,22 +318,30 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     TextFormFieldWidget(
                       title: "Social Profile URL",
                       controller: _socialCtrl,
-                      validator: (value) => value.isEmpty
+                      validator: (value) => urlList.value.isEmpty
                           ? 'Please Enter Social Profile URL'
                           : null,
-                      suffixWidget: IconButton(
-                        color: AppColors.primaryColor,
-                        onPressed: () {
-                          if (_socialCtrl.text.trim().isNotEmpty) {
-                            urlList.value.add(_socialCtrl.text.trim());
-                            urlList.value = [...urlList.value];
-                            _socialCtrl.clear();
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.add_rounded,
-                          size: 30,
-                        ),
+                    ),
+                    TextButton.icon(
+                      onPressed: () {
+                        if (_socialCtrl.text.trim().isNotEmpty) {
+                          urlList.value.add(_socialCtrl.text.trim());
+                          urlList.value = [...urlList.value];
+                          _socialCtrl.clear();
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.zero,
+                      ),
+                      label: component.text('Add more',
+                          style: theme.publicSansFonts.semiBoldStyle(
+                            fontColor: AppColors.color0xFF8338EC,
+                            fontSize: 16,
+                          )),
+                      icon: const Icon(
+                        Icons.add_rounded,
+                        size: 30,
                       ),
                     ),
                     const SizedBox(height: 10),
