@@ -48,8 +48,8 @@ class BookingSuccessfulScreen extends StatelessWidget {
                   fontColor: AppColors.black81,
                 )),
             component.spacer(height: 28),
-            _buildChatButton(context),
-            component.spacer(height: 12),
+            // _buildChatButton(context),
+            // component.spacer(height: 12),
             _buildGoToHomeButton(context),
             component.spacer(height: 70)
           ],
@@ -58,29 +58,29 @@ class BookingSuccessfulScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChatButton(BuildContext context) {
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.white,
-      ),
-      child: InkWell(
-        onTap: () => AiloitteNavigation.intent(context, AppRoutes.chatScreen),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            component.text(context.stringForKey(StringKeys.chatNow),
-                style: theme.publicSansFonts.regularStyle(
-                  fontColor: AppColors.color0xFF8338EC,
-                )),
-            component.assetImage(path: Assets.iconsChat)
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildChatButton(BuildContext context) {
+  //   return Container(
+  //     height: 50,
+  //     padding: const EdgeInsets.symmetric(horizontal: 16),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(10),
+  //       color: AppColors.white,
+  //     ),
+  //     child: InkWell(
+  //       onTap: () => AiloitteNavigation.intent(context, AppRoutes.chatScreen),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           component.text(context.stringForKey(StringKeys.chatNow),
+  //               style: theme.publicSansFonts.regularStyle(
+  //                 fontColor: AppColors.color0xFF8338EC,
+  //               )),
+  //           component.assetImage(path: Assets.iconsChat)
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _goToHomeScreen(BuildContext context) {
     AiloitteNavigation.intentWithClearAllRoutes(context, AppRoutes.homeRoute);

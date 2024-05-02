@@ -70,14 +70,14 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
                     fontColor: AppColors.black81,
                   ),
                 ),
-                component.spacer(height: 36),
-                _buildItems(callback: () {}, text: 'Join Video Consultation'),
-                _buildDivider(),
-                _buildItems(
-                    callback: () => AiloitteNavigation.intentWithData(
-                        context, AppRoutes.chatScreen, entity),
-                    text: 'Send Message'),
-                _buildDivider(),
+                // component.spacer(height: 36),
+                // _buildItems(callback: () {}, text: 'Join Video Consultation'),
+                // _buildDivider(),
+                // _buildItems(
+                //     callback: () => AiloitteNavigation.intentWithData(
+                //         context, AppRoutes.chatScreen, entity),
+                //     text: 'Send Message'),
+                // _buildDivider(),
                 _buildItems(callback: () {}, text: 'View patient history'),
                 _buildDivider(),
                 _buildItems(
