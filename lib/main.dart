@@ -23,6 +23,8 @@ void main() async {
 
 final GlobalKey<NavigatorState> navigationKey = GlobalKey<NavigatorState>();
 
+final routeObserver = RouteObserver();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: const [
           AiloitteMyLocalizationsDelegate(),
         ],
+        navigatorObservers: [routeObserver],
         navigatorKey: navigationKey,
         onGenerateRoute: Routes.onGenerateRoute,
         debugShowCheckedModeBanner: false,

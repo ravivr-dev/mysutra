@@ -1,7 +1,19 @@
 part of 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
 
-class _PatientAppointmentState extends _AppointmentScreenState {
+class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
   SearchFilterArgs? args;
+
+  @override
+  void didChangeDependencies() {
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didPopNext() {
+    _callAppointmentApi();
+    super.didPopNext();
+  }
 
   @override
   Widget _buildBody(state) {

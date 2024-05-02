@@ -20,6 +20,7 @@ import 'package:my_sutra/features/presentation/patient/search/search_result_scre
 import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/main.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import '../../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../patient/search_filter_screen.dart';
