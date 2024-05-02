@@ -25,7 +25,7 @@ class RegistrationParams {
   final String? registrationNumber;
   final int? experience;
   final String? age;
-  final String userName;
+  final String? userName;
 
   final List<String>? socialUrls;
 

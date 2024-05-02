@@ -179,7 +179,7 @@ class _UserRestClient implements UserRestClient {
     String? age,
     int? experience,
     List<String>? socialUrls,
-    String userName,
+    String? userName,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

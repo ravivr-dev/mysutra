@@ -30,6 +30,7 @@ import 'package:searchfield/searchfield.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   final String profession;
+
   const CreateAccountScreen({
     super.key,
     required this.profession,
@@ -45,6 +46,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _countryCode = TextEditingController();
   final TextEditingController _mobCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
+
   // final TextEditingController _specializationCtrl = TextEditingController();
   final TextEditingController _regNumCtrl = TextEditingController();
   final TextEditingController _expCtrl = TextEditingController();
@@ -149,7 +151,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     style: theme.publicSansFonts.semiBoldStyle(fontSize: 25),
                   ),
                   const SizedBox(height: 20),
-                  if (widget.profession != "User")
+                  if (widget.profession == "User")
+                    _buildPatientScreen()
+                  else ...[
                     Center(
                       child: InkWell(
                         onTap: () {
@@ -206,9 +210,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               ),
                       ),
                     ),
-                  const SizedBox(height: 20),
-                  if (widget.profession == "Doctor" ||
-                      widget.profession == 'Influencer') ...[
+                    const SizedBox(height: 20),
+                    // if (widget.profession == "Doctor" ||
+                    //     widget.profession == 'Influencer') ...[
                     TextFormFieldWidget(
                       validator: (value) =>
                           value.isEmpty ? 'Please Enter Full Name' : null,
@@ -216,94 +220,45 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       controller: _nameCtrl,
                     ),
                     const SizedBox(height: 20),
-                  ],
-                  TextFormFieldWidget(
-                    validator: (value) => value.isEmpty
-                        ? 'Please Enter UserName'
-                        : !_isUserNameAvailable && _selectedUserName == null
-                            ? 'UserName is not Available'
-                            : null,
-                    title: "User Name",
-                    focusNode: _focusNode,
-                    controller: _userNameController,
-                  ),
-                  if (!_isUserNameAvailable) component.spacer(height: 10),
-                  if (!_isUserNameAvailable)
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children:
-                          _userNames.map((e) => _buildUserName(e)).toList(),
-                    ),
-                  component.spacer(height: 20),
-                  TextFormWithCountryCode(
-                    title: context.stringForKey(StringKeys.mobileNumber),
-                    countryCode: _countryCode,
-                    controller: _mobCtrl,
-                  ),
-                  component.spacer(height: 20),
-                  TextFormFieldWidget(
-                    title: "Email",
-                    validator: (value) =>
-                        value.isEmpty ? 'Please Enter Email' : null,
-                    controller: _emailCtrl,
-                    textCapitalization: TextCapitalization.none,
-                  ),
-                  component.spacer(height: 20),
-                  TextFormFieldWidget(
-                    title: "Age",
-                    controller: _ageCtrl,
-                    validator: (value) =>
-                        value.isEmpty ? 'Please Enter Age' : null,
-                    suffixWidget: Padding(
-                      padding: const EdgeInsets.only(top: 10, right: 20),
-                      child: Text(
-                        "Years",
-                        style: theme.publicSansFonts
-                            .regularStyle(fontSize: 16, height: 22),
-                      ),
-                    ),
-                  ),
-                  component.spacer(height: 20),
-                  if (widget.profession == "Doctor") ...[
-                    // TextFormFieldWidget(
-                    //   title: "Specialization",
-                    //   controller: _specializationCtrl,
-                    // ),
-                    TextSearchField(
-                      textCapitalization: TextCapitalization.words,
-                      title: "Specialization",
-                      validator: (value) =>
-                          value.isEmpty ? 'Please Select Specialization' : null,
-                      onSuggestionTap: (value) {
-                        selectedSpecification = value.item;
-                      },
-                      suggestions: specialisationList
-                          .map((e) => SearchFieldListItem(e.name,
-                              item: e.id,
-                              child: component.text(
-                                e.name.capitalizeFirstLetterOfSentence,
-                                style: theme.publicSansFonts.regularStyle(
-                                    fontSize: 18, fontColor: AppColors.black49),
-                              )))
-                          .toList(),
-                    ),
-                    component.spacer(height: 20),
+                    // ],
                     TextFormFieldWidget(
-                      title: "Professional Registration number",
                       validator: (value) => value.isEmpty
-                          ? 'Please Enter Registration Number'
-                          : null,
-                      controller: _regNumCtrl,
+                          ? 'Please Enter UserName'
+                          : !_isUserNameAvailable && _selectedUserName == null
+                              ? 'UserName is not Available'
+                              : null,
+                      title: "User Name",
+                      focusNode: _focusNode,
+                      controller: _userNameController,
+                    ),
+                    if (!_isUserNameAvailable) component.spacer(height: 10),
+                    if (!_isUserNameAvailable)
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children:
+                            _userNames.map((e) => _buildUserName(e)).toList(),
+                      ),
+                    component.spacer(height: 20),
+                    TextFormWithCountryCode(
+                      title: context.stringForKey(StringKeys.mobileNumber),
+                      countryCode: _countryCode,
+                      controller: _mobCtrl,
                     ),
                     component.spacer(height: 20),
                     TextFormFieldWidget(
-                      hintText: "Experience",
-                      textInputType: TextInputType.number,
-                      title: "Total year of experience",
+                      title: "Email",
                       validator: (value) =>
-                          value.isEmpty ? 'Please Enter Experience' : null,
-                      controller: _expCtrl,
+                          value.isEmpty ? 'Please Enter Email' : null,
+                      controller: _emailCtrl,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    component.spacer(height: 20),
+                    TextFormFieldWidget(
+                      title: "Age",
+                      controller: _ageCtrl,
+                      validator: (value) =>
+                          value.isEmpty ? 'Please Enter Age' : null,
                       suffixWidget: Padding(
                         padding: const EdgeInsets.only(top: 10, right: 20),
                         child: Text(
@@ -314,66 +269,119 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       ),
                     ),
                     component.spacer(height: 20),
-                  ] else if (widget.profession == "Influencer") ...[
-                    TextFormFieldWidget(
-                      title: "Social Profile URL",
-                      controller: _socialCtrl,
-                      validator: (value) => urlList.value.isEmpty
-                          ? 'Please Enter Social Profile URL'
-                          : null,
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        if (_socialCtrl.text.trim().isNotEmpty) {
-                          urlList.value.add(_socialCtrl.text.trim());
-                          urlList.value = [...urlList.value];
-                          _socialCtrl.clear();
-                        }
-                      },
-                      style: TextButton.styleFrom(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.zero,
+                    if (widget.profession == "Doctor") ...[
+                      // TextFormFieldWidget(
+                      //   title: "Specialization",
+                      //   controller: _specializationCtrl,
+                      // ),
+                      TextSearchField(
+                        textCapitalization: TextCapitalization.words,
+                        title: "Specialization",
+                        validator: (value) => value.isEmpty
+                            ? 'Please Select Specialization'
+                            : null,
+                        onSuggestionTap: (value) {
+                          selectedSpecification = value.item;
+                        },
+                        suggestions: specialisationList
+                            .map((e) => SearchFieldListItem(e.name,
+                                item: e.id,
+                                child: component.text(
+                                  e.name.capitalizeFirstLetterOfSentence,
+                                  style: theme.publicSansFonts.regularStyle(
+                                      fontSize: 18,
+                                      fontColor: AppColors.black49),
+                                )))
+                            .toList(),
                       ),
-                      label: component.text('Add more',
-                          style: theme.publicSansFonts.semiBoldStyle(
-                            fontColor: AppColors.color0xFF8338EC,
-                            fontSize: 16,
-                          )),
-                      icon: const Icon(
-                        Icons.add_rounded,
-                        size: 30,
+                      component.spacer(height: 20),
+                      TextFormFieldWidget(
+                        title: "Professional Registration number",
+                        validator: (value) => value.isEmpty
+                            ? 'Please Enter Registration Number'
+                            : null,
+                        controller: _regNumCtrl,
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    ValueListenableBuilder(
-                        valueListenable: urlList,
-                        builder: (BuildContext context, List<String> list,
-                            Widget? child) {
-                          return Wrap(
-                            runSpacing: 0,
-                            spacing: 8,
-                            children: list
-                                .map((e) => InputChip(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: const BorderSide(
+                      component.spacer(height: 20),
+                      TextFormFieldWidget(
+                        hintText: "Experience",
+                        textInputType: TextInputType.number,
+                        title: "Total year of experience",
+                        validator: (value) =>
+                            value.isEmpty ? 'Please Enter Experience' : null,
+                        controller: _expCtrl,
+                        suffixWidget: Padding(
+                          padding: const EdgeInsets.only(top: 10, right: 20),
+                          child: Text(
+                            "Years",
+                            style: theme.publicSansFonts
+                                .regularStyle(fontSize: 16, height: 22),
+                          ),
+                        ),
+                      ),
+                      component.spacer(height: 20),
+                    ] else if (widget.profession == "Influencer") ...[
+                      TextFormFieldWidget(
+                        title: "Social Profile URL",
+                        controller: _socialCtrl,
+                        validator: (value) => urlList.value.isEmpty
+                            ? 'Please Enter Social Profile URL'
+                            : null,
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          if (_socialCtrl.text.trim().isNotEmpty) {
+                            urlList.value.add(_socialCtrl.text.trim());
+                            urlList.value = [...urlList.value];
+                            _socialCtrl.clear();
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.zero,
+                        ),
+                        label: component.text('Add more',
+                            style: theme.publicSansFonts.semiBoldStyle(
+                              fontColor: AppColors.color0xFF8338EC,
+                              fontSize: 16,
+                            )),
+                        icon: const Icon(
+                          Icons.add_rounded,
+                          size: 30,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ValueListenableBuilder(
+                          valueListenable: urlList,
+                          builder: (BuildContext context, List<String> list,
+                              Widget? child) {
+                            return Wrap(
+                              runSpacing: 0,
+                              spacing: 8,
+                              children: list
+                                  .map((e) => InputChip(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          side: const BorderSide(
+                                              color: AppColors.primaryColor),
+                                        ),
+                                        label: Text(e),
+                                        labelStyle: const TextStyle(
+                                            fontWeight: FontWeight.bold,
                                             color: AppColors.primaryColor),
-                                      ),
-                                      label: Text(e),
-                                      labelStyle: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.primaryColor),
-                                      backgroundColor: AppColors.primaryColor
-                                          .withOpacity(0.15),
-                                      deleteIconColor: AppColors.primaryColor,
-                                      onDeleted: () {
-                                        urlList.value.remove(e);
-                                        urlList.value = [...urlList.value];
-                                      },
-                                    ))
-                                .toList(),
-                          );
-                        }),
+                                        backgroundColor: AppColors.primaryColor
+                                            .withOpacity(0.15),
+                                        deleteIconColor: AppColors.primaryColor,
+                                        onDeleted: () {
+                                          urlList.value.remove(e);
+                                          urlList.value = [...urlList.value];
+                                        },
+                                      ))
+                                  .toList(),
+                            );
+                          }),
+                    ],
                   ],
                   const SizedBox(height: 70),
                   CustomButton(
@@ -386,25 +394,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       //   return;
                       // }
                       if (_formKey.currentState!.validate()) {
-                        context.read<RegistrationCubit>().registration(
-                              RegistrationParams(
-                                  role: giveRole(),
-                                  profilePic: profilePicKey,
-                                  fullName: _nameCtrl.text,
-                                  countryCode: _countryCode.text,
-                                  phoneNumber: int.tryParse(_mobCtrl.text),
-                                  email: _emailCtrl.text,
-                                  specializationId: selectedSpecification,
-                                  registrationNumber: _regNumCtrl.text,
-                                  experience: int.tryParse(_expCtrl.text),
-                                  age: _ageCtrl.text,
-                                  socialUrls: urlList.value.isNotEmpty
-                                      ? urlList.value
-                                      : null,
-                                  userName: _isUserNameAvailable
-                                      ? _userNameController.text
-                                      : _selectedUserName!),
-                            );
+                        _callRegistrationApi(
+                            isPatient: widget.profession == "User");
                       }
                     },
                     text: "Continue",
@@ -434,6 +425,28 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
       ),
     );
+  }
+
+  void _callRegistrationApi({bool isPatient = false}) {
+    context.read<RegistrationCubit>().registration(
+          RegistrationParams(
+              role: giveRole(),
+              profilePic: profilePicKey,
+              fullName: isPatient ? null : _nameCtrl.text,
+              countryCode: _countryCode.text,
+              phoneNumber: int.tryParse(_mobCtrl.text),
+              email: isPatient ? null : _emailCtrl.text,
+              specializationId: selectedSpecification,
+              registrationNumber: isPatient ? null : _regNumCtrl.text,
+              experience: int.tryParse(_expCtrl.text),
+              age: isPatient ? null : _ageCtrl.text,
+              socialUrls: urlList.value.isNotEmpty ? urlList.value : null,
+              userName: isPatient
+                  ? null
+                  : _isUserNameAvailable
+                      ? _userNameController.text
+                      : _selectedUserName!),
+        );
   }
 
   void _onFocusNodeChanges() {
@@ -518,6 +531,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             },
             onChange: onChange);
       },
+    );
+  }
+
+  Widget _buildPatientScreen() {
+    return TextFormWithCountryCode(
+      title: context.stringForKey(StringKeys.mobileNumber),
+      countryCode: _countryCode,
+      controller: _mobCtrl,
     );
   }
 

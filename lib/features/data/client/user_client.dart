@@ -1,4 +1,4 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -88,7 +88,7 @@ abstract class UserRestClient {
     @Field("age") String? age,
     @Field("totalExperience") int? experience,
     @Field("socialProfileUrls") List<String>? socialUrls,
-    @Field("username") String userName,
+    @Field("username") String? userName,
   );
 
   @POST(EndPoints.uploadFile)
