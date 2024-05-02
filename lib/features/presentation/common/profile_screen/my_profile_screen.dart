@@ -7,6 +7,7 @@ import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
@@ -248,9 +249,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     ];
   }
 
-  Widget _buildUserName({String? name}) {
+  Widget _buildUserName() {
     return component.text(
-      my?.fullName ?? my?.username ?? name,
+      Utils.getNameOrUsername(my?.fullName, my?.username),
       style: theme.publicSansFonts.mediumStyle(
         fontSize: 25,
         fontColor: AppColors.black37,
