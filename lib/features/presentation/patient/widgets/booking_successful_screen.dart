@@ -88,7 +88,7 @@ class BookingSuccessfulScreen extends StatelessWidget {
 
   Widget _buildGoToHomeButton(BuildContext context) {
     return InkWell(
-      onTap: () => _goToHomeScreen,
+      onTap: () => _goToHomeScreen(context),
       child: Container(
         height: 50,
         padding: const EdgeInsets.symmetric(horizontal: 16),
