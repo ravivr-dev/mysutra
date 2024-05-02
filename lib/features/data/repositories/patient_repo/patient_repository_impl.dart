@@ -125,7 +125,7 @@ class PatientRepositoryImpl extends PatientRepository {
               'countryCode': '+91',
               'phoneNumber': data.patientNumber,
               'email': data.patientEmail,
-              'problem': data.patientProblem
+              // 'problem': data.patientProblem
             },
         });
 

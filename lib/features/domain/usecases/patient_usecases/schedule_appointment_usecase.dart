@@ -26,7 +26,7 @@ class ScheduleAppointmentParams {
   final String? patientGender;
   final int? patientNumber;
   final String? patientEmail;
-  final String? patientProblem;
+  // final String? patientProblem;
   final String? appointmentId;
 
   ScheduleAppointmentParams({
@@ -37,7 +37,7 @@ class ScheduleAppointmentParams {
     required this.patientGender,
     required this.patientEmail,
     required this.patientName,
-    required this.patientProblem,
+    // required this.patientProblem,
     required this.time,
     required this.appointmentId,
   });

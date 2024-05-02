@@ -44,7 +44,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _reasonController = TextEditingController();
+  // final TextEditingController _reasonController = TextEditingController();
   String? _selectedGender;
 
   @override
@@ -190,16 +190,16 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 20, horizontal: 33),
                             ),
-                            _buildText(
-                                value: context.stringForKey(
-                                    widget.args.isNewAppointment
-                                        ? StringKeys.reasonForVisit
-                                        : StringKeys.writeYourProblem)),
-                            component.spacer(height: 10),
-                            _buildTextField(
-                                maxLines: 5,
-                                controller: _reasonController,
-                                errorText: 'Reason'),
+                            // _buildText(
+                            //     value: context.stringForKey(
+                            //         widget.args.isNewAppointment
+                            //             ? StringKeys.reasonForVisit
+                            //             : StringKeys.writeYourProblem)),
+                            // component.spacer(height: 10),
+                            // _buildTextField(
+                            //     maxLines: 5,
+                            //     controller: _reasonController,
+                            //     errorText: 'Reason'),
                           ],
                           component.spacer(height: 30),
                         ],
@@ -349,7 +349,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
     _ageController.dispose();
     _phoneNumberController.dispose();
     _emailController.dispose();
-    _reasonController.dispose();
+    // _reasonController.dispose();
   }
 }
 
