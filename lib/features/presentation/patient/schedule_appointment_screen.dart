@@ -76,6 +76,8 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
           }
           _showToast(message: 'Appointment Updated Successfully');
           AiloitteNavigation.back(context);
+        } else if (state is ScheduleAppointmentErrorState) {
+          _showToast(message: state.message);
         }
       },
       builder: (context, state) {
