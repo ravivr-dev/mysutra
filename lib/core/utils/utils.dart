@@ -23,4 +23,11 @@ class Utils {
     final dateTime = DateTime.parse(date);
     return DateFormat('MMM dd').format(dateTime);
   }
+
+  static String? getNameOrUsername(String? name, String? username) {
+    if (name != null && name.isNotEmpty) {
+      return name;
+    }
+    return username;
+  }
 }

@@ -74,6 +74,8 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
                   itemBuilder: (_, index) {
                     final user = users[index];
+                    final name = Utils.getNameOrUsername(
+                        users[index].fullName, users[index].userName);
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -112,8 +114,8 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        users[index].fullName ?? "",
+                                      component.text(
+                                        name,
                                         style: theme.publicSansFonts
                                             .semiBoldStyle(fontSize: 18),
                                       ),
