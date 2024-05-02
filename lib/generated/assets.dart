@@ -53,6 +53,7 @@ class Assets {
   static const String iconsIcPlay = 'assets/icons/ic_play.svg';
   static const String iconsImage = 'assets/icons/image.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
+  static const String iconsLearningManagement = 'assets/icons/learning_management.svg';
   static const String iconsLocation = 'assets/icons/location.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
   static const String iconsLogo1 = 'assets/icons/logo_1.png';

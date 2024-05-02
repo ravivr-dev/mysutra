@@ -9,19 +9,26 @@ import 'package:my_sutra/features/presentation/common/home/screens/appointment_s
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 
+import '../../../../core/models/user_helper.dart';
 import '../../../../injection_container.dart';
+
+part 'home_screen_states/doctor_home_screen_state.dart';
+
+part 'home_screen_states/influencer_home_screen_state.dart';
+
+part 'home_screen_states/patient_home_screen_state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState.init();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+abstract class _HomeScreenState extends State<HomeScreen> {
   int _selectedScreen = 0;
 
-  late final List<Widget> _screens = [
+  final List<Widget> _screens = [
     BlocProvider<HomeCubit>(
       create: (BuildContext context) => sl<HomeCubit>()..getHomeData(),
       child: const AppointmentScreen(),
@@ -34,6 +41,28 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const MyProfileScreen(),
     )
   ];
+  late final List<BottomNavigationBarItem> _bottomNavigationBarList =
+      _getNavigationBarList();
+
+  _HomeScreenState();
+
+  factory _HomeScreenState.init() {
+    if (UserHelper.role == UserRole.doctor) {
+      return _DoctorHomeScreenState();
+    } else if (UserHelper.role == UserRole.influencer) {
+      return _InfluencerHomeScreenState();
+    }
+    return _PatientHomeScreenState();
+  }
+
+  @override
+  void initState() {
+    _reInitScreens();
+    super.initState();
+  }
+
+  /// this method is for change screens and bottomNavigationBar (like in case of influencer we want to show 3 screen in navbar so we can reinit the value of _screens)
+  void _reInitScreens();
 
   @override
   Widget build(BuildContext context) {
@@ -54,25 +83,27 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: AppColors.primaryColor,
         unselectedItemColor: AppColors.black33,
         showUnselectedLabels: true,
-        items: [
-          _buildBottomBarItem(icon: Assets.assetsIconsHome2, label: 'Home', index: 0),
-          _buildBottomBarItem(icon: Assets.iconsFeed, label: 'Feed', index: 1),
-          const BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: AppColors.primaryColor,
-                    child: Icon(Icons.add, color: AppColors.white)),
-              ),
-              label: ''),
-          _buildBottomBarItem(
-              icon: Assets.iconsPayment, label: 'Payments', index: 3),
-          _buildBottomBarItem(
-              icon: Assets.iconsUser2, label: 'My Profile', index: 4),
-        ],
+        items: _bottomNavigationBarList,
       ),
     );
+  }
+
+  List<BottomNavigationBarItem> _getNavigationBarList() {
+    return [
+      _buildBottomBarItem(icon: Assets.assetsIconsHome2, label: 'Home'),
+      _buildBottomBarItem(icon: Assets.iconsFeed, label: 'Feed'),
+      const BottomNavigationBarItem(
+          icon: Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: CircleAvatar(
+                radius: 20,
+                backgroundColor: AppColors.primaryColor,
+                child: Icon(Icons.add, color: AppColors.white)),
+          ),
+          label: ''),
+      _buildBottomBarItem(icon: Assets.iconsPayment, label: 'Payments'),
+      _buildBottomBarItem(icon: Assets.iconsUser2, label: 'My Profile'),
+    ];
   }
 
   BottomNavigationBarItem _buildBottomBarItem(
