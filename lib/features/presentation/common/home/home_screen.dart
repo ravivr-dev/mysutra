@@ -107,12 +107,11 @@ abstract class _HomeScreenState extends State<HomeScreen> {
   }
 
   BottomNavigationBarItem _buildBottomBarItem(
-      {required String icon, required String label, required int index}) {
-    final isSelected = index == _selectedScreen;
+      {required String icon, required String label}) {
     return BottomNavigationBarItem(
-        icon: component.assetImage(
-            path: icon,
-            color: isSelected ? AppColors.primaryColor : AppColors.grey92),
+        icon: component.assetImage(path: icon),
+        activeIcon:
+            component.assetImage(path: icon, color: AppColors.primaryColor),
         label: label);
   }
 }
