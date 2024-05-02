@@ -27,7 +27,8 @@ extension MyDioError on DioException {
     if (response != null &&
         response!.statusCode == 401 &&
         (UserHelper.role != UserRole.guest ||
-            (localDataSource.getAccessToken() ?? '').isNotEmpty)) {
+            (UserHelper.role == UserRole.guest &&
+                (localDataSource.getAccessToken() ?? '').isNotEmpty))) {
       navigationKey.currentState
           ?.pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
     }
