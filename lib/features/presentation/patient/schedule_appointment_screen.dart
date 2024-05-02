@@ -270,7 +270,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
           patientGender: isNewAppointment ? _selectedGender! : null,
           patientEmail: isNewAppointment ? _emailController.text : null,
           patientName: isNewAppointment ? _nameController.text : null,
-          patientProblem: isNewAppointment ? _reasonController.text : null,
+          // patientProblem: isNewAppointment ? _reasonController.text : null,
           time: _selectedTimeSlot!,
           appointmentId: isNewAppointment ? null : widget.args.appointmentId,
         ));
