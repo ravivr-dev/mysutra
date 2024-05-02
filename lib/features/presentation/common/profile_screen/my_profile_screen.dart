@@ -60,115 +60,118 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         }
       },
       builder: (context, state) {
-        if (userRole != UserRole.guest ||
-            state is GetProfileDetailsSuccessState) {
-          return Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            appBar: AppBar(
-              centerTitle: true,
-              title: component.text(context.stringForKey(StringKeys.myProfile)),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    logoutDialog();
-                  },
-                  icon: const Icon(
-                    Icons.logout_outlined,
-                  ),
+        // if (userRole != UserRole.guest ||
+        //     state is GetProfileDetailsSuccessState) {
+        return Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: AppBar(
+            centerTitle: true,
+            title: component.text(context.stringForKey(StringKeys.myProfile)),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  logoutDialog();
+                },
+                icon: const Icon(
+                  Icons.logout_outlined,
                 ),
-              ],
-            ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  /// don't remove this container i was facing some isue after removing this so will have to debug
-                  _buildProfileWidget(),
-                  component.spacer(height: 16),
-                  if (userRole != UserRole.doctor)
-                    _buildUserName()
-                  else
-                    ..._buildDoctorDetailsWidgets(context),
-                  component.spacer(height: 12),
-                  const Divider(color: AppColors.dividerColor),
-                  component.spacer(height: 12),
-                  if (userRole != UserRole.influencer)
-                    _buildCard(
-                        value: userRole == UserRole.doctor
-                            ? 'My Patients'
-                            : 'My Doctors',
-                        onTap: () {
-                          if (userRole == UserRole.doctor) {
-                            //todo make it dynamic (implement pagination)
-                            context
-                                .read<ProfileCubit>()
-                                .getPatients(pagination: 1, limit: 25);
-                          }
-                        },
-                        icons: Assets.iconsUserCircle),
-                  component.spacer(height: 12),
+              ),
+            ],
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                /// don't remove this container i was facing some isue after removing this so will have to debug
+                _buildProfileWidget(),
+                component.spacer(height: 16),
+                if (userRole != UserRole.doctor)
+                  _buildUserName()
+                else
+                  ..._buildDoctorDetailsWidgets(context),
+                component.spacer(height: 12),
+                const Divider(color: AppColors.dividerColor),
+                component.spacer(height: 12),
+                if (userRole != UserRole.influencer)
                   _buildCard(
-                      value: 'My Following',
-                      icons: Assets.iconsUserAdd,
+                      value: userRole == UserRole.doctor
+                          ? 'My Patients'
+                          : 'My Doctors',
                       onTap: () {
-                        context
-                            .read<ProfileCubit>()
-                            .getFollowing(pagination: 1, limit: 35);
+                        if (userRole == UserRole.doctor) {
+                          //todo make it dynamic (implement pagination)
+                          context
+                              .read<ProfileCubit>()
+                              .getPatients(pagination: 1, limit: 25);
+                        }
+                      },
+                      icons: Assets.iconsUserCircle),
+                component.spacer(height: 12),
+                _buildCard(
+                    value: 'My Following',
+                    icons: Assets.iconsUserAdd,
+                    onTap: () {
+                      context
+                          .read<ProfileCubit>()
+                          .getFollowing(pagination: 1, limit: 35);
+                    }),
+                component.spacer(height: 12),
+                if (userRole == UserRole.doctor) ...[
+                  _buildCard(
+                      value: 'Settings',
+                      icons: Assets.iconsSetting,
+                      onTap: () {
+                        AiloitteNavigation.intent(
+                            context, AppRoutes.settingRoute);
                       }),
                   component.spacer(height: 12),
-                  if (userRole == UserRole.doctor) ...[
-                    _buildCard(
-                        value: 'Settings',
-                        icons: Assets.iconsSetting,
-                        onTap: () {
-                          AiloitteNavigation.intent(
-                              context, AppRoutes.settingRoute);
-                        }),
-                    component.spacer(height: 12),
-                  ],
-                  if (userRole == UserRole.patient ||
-                      userRole == UserRole.guest) ...[
-                    _buildCard(
-                        value: 'Past Appointments',
-                        icons: Assets.iconsClock,
-                        onTap: () {
-                          AiloitteNavigation.intent(
-                              context, AppRoutes.patientPastAppointment);
-                        }),
-                    component.spacer(height: 12),
-                  ],
-                  _buildTileCard(
-                      isEmail: false,
-                      icon: Assets.iconsPhone,
-                      text: 'Mobile number',
-                      subText: my?.phoneNumber.toString() ?? ''),
-                  component.spacer(height: 12),
-                  _buildTileCard(
-                      isEmail: true,
-                      icon: Assets.iconsEmail,
-                      text: 'Email Address',
-                      subText: my?.email ?? ''),
                 ],
-              ),
-            ),
-          );
-        } else if (userRole == UserRole.guest) {
-          return SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                _buildProfileWidget(),
-                component.spacer(height: 10),
-                _buildUserName(name: 'Guest'),
+                if (userRole ==
+                        UserRole
+                            .patient /*||
+                      userRole == UserRole.guest*/
+                    ) ...[
+                  _buildCard(
+                      value: 'Past Appointments',
+                      icons: Assets.iconsClock,
+                      onTap: () {
+                        AiloitteNavigation.intent(
+                            context, AppRoutes.patientPastAppointment);
+                      }),
+                  component.spacer(height: 12),
+                ],
+                _buildTileCard(
+                    isEmail: false,
+                    icon: Assets.iconsPhone,
+                    text: 'Mobile number',
+                    subText: my?.phoneNumber.toString() ?? ''),
+                component.spacer(height: 12),
+                _buildTileCard(
+                    isEmail: true,
+                    icon: Assets.iconsEmail,
+                    text: 'Email Address',
+                    subText: my?.email ?? ''),
               ],
             ),
-          );
-        }
-        return const SizedBox.shrink();
+          ),
+        );
+        // } else if (userRole == UserRole.guest) {
+        //   return SizedBox(
+        //     width: double.infinity,
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       crossAxisAlignment: CrossAxisAlignment.center,
+        //       mainAxisSize: MainAxisSize.max,
+        //       children: [
+        //         _buildProfileWidget(),
+        //         component.spacer(height: 10),
+        //         _buildUserName(name: 'Guest'),
+        //       ],
+        //     ),
+        //   );
+        // }
+        // return const SizedBox.shrink();
       },
     );
   }
