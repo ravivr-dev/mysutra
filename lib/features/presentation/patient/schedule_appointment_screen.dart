@@ -251,6 +251,9 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
 
   void _initSelectedDate(DateTime dateTime) {
     _selectedDate = dateTime;
+    _getDoctorAvailableSlots(
+        doctorId: widget.args.doctorId,
+        date: _serverDateFormat.format(_selectedDate));
   }
 
   String get _getServerDate {
