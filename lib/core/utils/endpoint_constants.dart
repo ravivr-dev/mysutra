@@ -17,7 +17,7 @@ class EndPoints {
   static const String scheduleAppointment = '/patient/appointment/schedule';
   static const String confirmAppointment = '/patient/appointment/confirm';
   static const String appointments = '/patient/appointments';
-  static const String cancelAppointment = 'patient/appointment/cancel';
+  static const String cancelAppointment = '/patient/appointment/cancel';
 
   // doctor endpoints
   static const String timeSlots = '/doctor/time-slots';

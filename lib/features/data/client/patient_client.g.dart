@@ -245,7 +245,7 @@ class _PatientRestClient implements PatientRestClient {
     )
         .compose(
           _dio.options,
-          'patient/appointment/cancel',
+          '/patient/appointment/cancel',
           queryParameters: queryParameters,
           data: _data,
         )

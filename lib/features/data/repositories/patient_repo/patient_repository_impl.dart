@@ -189,9 +189,9 @@ class PatientRepositoryImpl extends PatientRepository {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource
-            .getAppointments({'appointmentId': data.appointmentId});
+            .cancelAppointment({'appointmentId': data.appointmentId});
 
-        return Right(PatientRepoConv.appointmentModelListToEntity(result.data));
+        return Right(result);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
