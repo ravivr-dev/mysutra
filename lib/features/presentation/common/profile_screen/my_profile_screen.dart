@@ -211,7 +211,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         ],
       ),
       component.text(
-          '${my?.specialization?.name ?? ''} | ${my?.totalExperience} year experience',
+          '${my?.specialization?.name ?? ''} | ${my?.totalExperience} year experience'.capitalizeFirstLetterOfEveryWord,
           style: theme.publicSansFonts.regularStyle(
             fontColor: AppColors.color0xFF526371,
           )),

@@ -218,6 +218,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           value.isEmpty ? 'Please Enter Full Name' : null,
                       title: "Full Name",
                       controller: _nameCtrl,
+                      hintText: 'Enter Full Name',
+                      hintTextStyle: theme.publicSansFonts.regularStyle(
+                          fontSize: 16, fontColor: AppColors.grey92),
                     ),
                     const SizedBox(height: 20),
                     // ],
@@ -228,6 +231,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               ? 'UserName is not Available'
                               : null,
                       title: "User Name",
+                      hintText: 'Enter User Name',
+                      hintTextStyle: theme.publicSansFonts.regularStyle(
+                          fontSize: 16, fontColor: AppColors.grey92),
                       focusNode: _focusNode,
                       controller: _userNameController,
                     ),
@@ -242,6 +248,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     component.spacer(height: 20),
                     TextFormWithCountryCode(
                       title: context.stringForKey(StringKeys.mobileNumber),
+                      hintText: 'Enter Mobile Number',
+                      hintTextStyle: theme.publicSansFonts.regularStyle(
+                          fontSize: 16, fontColor: AppColors.grey92),
                       countryCode: _countryCode,
                       controller: _mobCtrl,
                     ),
@@ -250,6 +259,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       title: "Email",
                       validator: (value) =>
                           value.isEmpty ? 'Please Enter Email' : null,
+                      hintText: 'Enter Email Address',
+                      hintTextStyle: theme.publicSansFonts.regularStyle(
+                          fontSize: 16, fontColor: AppColors.grey92),
                       controller: _emailCtrl,
                       textCapitalization: TextCapitalization.none,
                     ),
@@ -257,6 +269,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     TextFormFieldWidget(
                       title: "Age",
                       controller: _ageCtrl,
+                      textInputType: TextInputType.number,
+                      hintText: 'Enter Age',
+                      hintTextStyle: theme.publicSansFonts.regularStyle(
+                          fontSize: 16, fontColor: AppColors.grey92),
                       validator: (value) =>
                           value.isEmpty ? 'Please Enter Age' : null,
                       suffixWidget: Padding(
@@ -277,6 +293,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       TextSearchField(
                         textCapitalization: TextCapitalization.words,
                         title: "Specialization",
+                        hintTextStyle: theme.publicSansFonts.regularStyle(
+                            fontSize: 16, fontColor: AppColors.grey92),
                         validator: (value) => value.isEmpty
                             ? 'Please Select Specialization'
                             : null,
@@ -300,11 +318,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         validator: (value) => value.isEmpty
                             ? 'Please Enter Registration Number'
                             : null,
+                        hintText: 'Enter Registration Number',
+                        hintTextStyle: theme.publicSansFonts.regularStyle(
+                            fontSize: 16, fontColor: AppColors.grey92),
                         controller: _regNumCtrl,
                       ),
                       component.spacer(height: 20),
                       TextFormFieldWidget(
                         hintText: "Experience",
+                        hintTextStyle: theme.publicSansFonts.regularStyle(
+                            fontSize: 16, fontColor: AppColors.grey92),
                         textInputType: TextInputType.number,
                         title: "Total year of experience",
                         validator: (value) =>

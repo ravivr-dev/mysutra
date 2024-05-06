@@ -70,6 +70,8 @@ abstract class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.backgroundColor,
       body: _screens[_selectedScreen],
       bottomNavigationBar: BottomNavigationBar(
+        unselectedLabelStyle:
+            theme.publicSansFonts.regularStyle(fontColor: AppColors.grey92),
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedScreen,
         onTap: (index) {
@@ -81,7 +83,7 @@ abstract class _HomeScreenState extends State<HomeScreen> {
           });
         },
         selectedItemColor: AppColors.primaryColor,
-        unselectedItemColor: AppColors.black33,
+        unselectedItemColor: AppColors.grey92,
         showUnselectedLabels: true,
         items: _bottomNavigationBarList,
       ),

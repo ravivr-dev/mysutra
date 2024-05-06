@@ -141,11 +141,20 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  component.text(data.fullName?.capitalizeFirstLetter,
-                      style: theme.publicSansFonts.mediumStyle(
-                        fontSize: 16,
-                      )),
-                  component.text(data.specialization,
+                  Row(
+                    children: [
+                      component.text(data.fullName?.capitalizeFirstLetter,
+                          style: theme.publicSansFonts.mediumStyle(
+                            fontSize: 16,
+                          )),
+                      if (data.isVerified != null) ...[
+                        component.spacer(width: 4),
+                        component.assetImage(
+                            height: 14, width: 14, path: Assets.iconsVerify),
+                      ]
+                    ],
+                  ),
+                  component.text('${data.specialization}'.capitalizeFirstLetterOfEveryWord,
                       style: theme.publicSansFonts.regularStyle(
                         fontSize: 14,
                         fontColor: AppColors.black81,

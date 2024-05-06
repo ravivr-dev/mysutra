@@ -76,6 +76,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     AiloitteNavigation.intentWithClearAllRoutes(
                         context, AppRoutes.homeRoute);
                   } else {
+                    AiloitteNavigation.back(context);
                     context.showBottomSheet(
                       BlocProvider(
                         create: (_) => sl<HomeCubit>(),
@@ -156,7 +157,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 31),
                     child: SafeArea(
                       child: CustomButton(
                         isLoading: state is OtpLoading,

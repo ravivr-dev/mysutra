@@ -123,7 +123,7 @@ class _TextSearchFieldState extends State<TextSearchField> {
             focusNode: widget.focusNode,
             emptyWidget: widget.emptyWidget ?? const SizedBox(),
             readOnly: widget.readOnly,
-            itemHeight: 100,
+            itemHeight: 35,
             enabled: widget.isEnabled,
             controller: widget.controller,
             textInputAction: widget.textInputAction,
@@ -151,7 +151,7 @@ class _TextSearchFieldState extends State<TextSearchField> {
               hintStyle: widget.hintTextStyle ??
                   theme.publicSansFonts
                       .regularStyle(fontSize: 18, fontColor: AppColors.blackAE),
-              hintText: widget.hintText ?? "Please enter ${widget.title ?? ''}",
+              hintText: widget.hintText ?? "Please Enter ${widget.title ?? ''}",
               errorStyle: theme.publicSansFonts.regularStyle(
                 fontSize: 14,
               ),
