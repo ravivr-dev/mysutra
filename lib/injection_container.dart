@@ -50,6 +50,7 @@ import 'package:my_sutra/features/presentation/common/registration/cubit/registr
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_sutra/core/components/config/theme/theme.dart';
 import 'package:my_sutra/core/components/custom_widgets/custom_widgets.dart';
@@ -123,6 +124,8 @@ Future<void> init() async {
       sendMessageUsecase: sl<SendMessageUsecase>(),
       clearMessagesUseCase: sl<ClearMessagesUseCase>(),
       getMessageUseCase: sl<GetMessageUseCase>()));
+  sl.registerFactory(
+      () => PostsCubit(uploadDocumentUsecase: sl<UploadDocumentUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));

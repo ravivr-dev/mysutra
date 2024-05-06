@@ -6,6 +6,8 @@ import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/create_post_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 
@@ -34,7 +36,10 @@ abstract class _HomeScreenState extends State<HomeScreen> {
       child: const AppointmentScreen(),
     ),
     const PostScreen(),
-    const SizedBox.shrink(),
+    BlocProvider(
+      create: (context) => sl<PostsCubit>(),
+      child: const CreatePostScreen(),
+    ),
     Container(),
     BlocProvider(
       create: (BuildContext context) => sl<ProfileCubit>(),
@@ -75,9 +80,9 @@ abstract class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedScreen,
         onTap: (index) {
-          if (index == 2) {
-            return;
-          }
+          // if (index == 2) {
+          //   return;
+          // }
           setState(() {
             _selectedScreen = index;
           });
