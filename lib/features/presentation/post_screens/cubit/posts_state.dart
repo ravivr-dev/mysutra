@@ -17,3 +17,17 @@ final class UploadDocumentError extends PostsState {
 
   UploadDocumentError(this.message);
 }
+
+final class CreatePostLoading extends PostsState {}
+
+final class CreatePostLoaded extends PostsState {
+  final String message;
+
+  CreatePostLoaded({required this.message});
+}
+
+final class CreatePostError extends PostsState {
+  final String error;
+
+  CreatePostError({required this.error});
+}

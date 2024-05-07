@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class CreatePostScreen extends StatefulWidget {
   final bool isEditing;
@@ -20,8 +23,9 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final TextEditingController _postController = TextEditingController();
-  final List<String> images = [];
-  XFile? image;
+  final List<MediaUrl> mediaUrls = [];
+  final List<String> taggedUserIds = [];
+  XFile? media;
 
   // bool _isKeyboardOpen = false;
 
@@ -36,15 +40,28 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return BlocConsumer<PostsCubit, PostsState>(
       listener: (context, state) {
         if (state is UploadDocument) {
-          images.add(state.data.fileUrl!);
+          mediaUrls
+              .add(MediaUrl(mediaType: 'IMAGE_URL', url: state.data.fileUrl!));
+        }
+        if (state is CreatePostLoaded) {
+          widget.showSuccessToast(context: context, message: state.message);
+          AiloitteNavigation.intentWithClearAllRoutes(
+              context, AppRoutes.homeRoute);
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            leading: const Icon(Icons.close, color: AppColors.black01),
-            title: component.text(context.stringForKey(StringKeys.createPost)),
+            leading: IconButton(
+                onPressed: () {
+                  AiloitteNavigation.intentWithClearAllRoutes(
+                      context, AppRoutes.homeRoute);
+                },
+                icon: const Icon(Icons.close, color: AppColors.black01)),
+            title: widget.isEditing
+                ? component.text(context.stringForKey(StringKeys.editPost))
+                : component.text(context.stringForKey(StringKeys.createPost)),
             backgroundColor: AppColors.white,
           ),
           body: Column(
@@ -138,10 +155,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
           ),
           const Spacer(),
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: AppColors.color0xFF8338EC,
-            child: component.assetImage(path: Assets.iconsSend),
+          InkWell(
+            onTap: () {
+              context.read<PostsCubit>().createPost(
+                  content: _postController.text,
+                  mediaUrls: mediaUrls,
+                  taggedUserIds: []);
+            },
+            child: CircleAvatar(
+              radius: 30,
+              backgroundColor: AppColors.color0xFF8338EC,
+              child: component.assetImage(path: Assets.iconsSend),
+            ),
           )
         ],
       ),
@@ -160,7 +185,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         separatorBuilder: (_, __) {
           return component.spacer(width: 10);
         },
-        itemCount: images.length,
+        itemCount: mediaUrls.length,
       ),
     );
   }
@@ -172,7 +197,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           clipBehavior: Clip.hardEdge,
           borderRadius: BorderRadius.circular(20),
           child: component.networkImage(
-            url: images[index],
+            url: mediaUrls[index].url,
             height: 153,
             width: 153,
             fit: BoxFit.fill,
@@ -187,7 +212,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             backgroundColor: AppColors.black01.withOpacity(.3),
             child: IconButton(
                 onPressed: () {
-                  images.remove(images[index]);
+                  mediaUrls.remove(mediaUrls[index]);
                   setState(() {});
                 },
                 icon: const Icon(
@@ -208,9 +233,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return UploadImageBottomSheet(
-            showRemovePhoto: image != null,
+            showRemovePhoto: media != null,
             removePhoto: () {
-              image = null;
+              media = null;
               setState(() {});
               Navigator.pop(context);
             },

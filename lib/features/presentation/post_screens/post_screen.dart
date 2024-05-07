@@ -18,25 +18,39 @@ class _PostScreenState extends State<PostScreen> {
   final TextEditingController _commentController = TextEditingController();
 
   @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        titleSpacing: 0,
-        backgroundColor: AppColors.backgroundColor,
-        leading: Icon(Icons.arrow_back,
-            color: AppColors.color0xFF00082F.withOpacity(.27)),
-        title: component.text(context.stringForKey(StringKeys.post),
-            style: theme.publicSansFonts.mediumStyle(fontSize: 20)),
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   titleSpacing: 0,
+      //   backgroundColor: AppColors.backgroundColor,
+      //   leading: Icon(Icons.arrow_back,
+      //       color: AppColors.color0xFF00082F.withOpacity(.27)),
+      //   title: component.text(context.stringForKey(StringKeys.post),
+      //       style: theme.publicSansFonts.mediumStyle(fontSize: 20)),
+      // ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildPostWidget(),
-            component.spacer(height: 12),
-            _buildCommentWidget()
-          ],
+        child: SafeArea(
+          top: true,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: Column(
+              children: [
+                _buildHeaderWidget(),
+                component.spacer(height: 23),
+                _buildPostWidget(),
+                component.spacer(height: 12),
+                _buildCommentWidget()
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -117,7 +131,6 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget _buildPostWidget() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -168,6 +181,15 @@ class _PostScreenState extends State<PostScreen> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildHeaderWidget() {
+    return Row(
+      children: [
+        component.assetImage(
+            height: 40, width: 100, fit: BoxFit.fill, path: Assets.iconsLogo1)
+      ],
     );
   }
 }
