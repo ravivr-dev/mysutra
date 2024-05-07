@@ -8,6 +8,7 @@ class MySharedPref {
   static const isDoctorVerified = 'is_doctor_verified';
   static const _totalAccount = 'total_account';
   static const _isAccountSelected = 'is_account_selected';
+  static const _userProfilePic = 'user_profile_pic';
 
   final SharedPreferences _pref;
 
@@ -19,6 +20,14 @@ class MySharedPref {
 
   String? getAccessToken() {
     return _pref.getString(accessToken);
+  }
+
+  void setUserProfilePic(String url) {
+    _pref.setString(_userProfilePic, url);
+  }
+
+  String? getUserProfilePic() {
+    return _pref.getString(_userProfilePic);
   }
 
   void setIsDoctorVerified(bool isVerified) {

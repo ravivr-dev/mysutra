@@ -205,6 +205,10 @@ class UserRepositoryImpl extends UserRepository {
         UserHelper.init(role: result.userModel.role);
         localDataSource.setUserRole(result.userModel.role);
 
+        if (result.userModel.profilePic != null) {
+          localDataSource.setUserProfilePic(result.userModel.profilePic!);
+        }
+
         return Right(UserRepoConv.userModelToEntity(result.userModel));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));

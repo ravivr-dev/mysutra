@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
@@ -42,4 +43,10 @@ abstract class PostRestClient {
 
   @POST(EndPoints.post)
   Future<SuccessMessageModel> newPost(@Body() Map<String, dynamic> data);
+
+  @GET(EndPoints.post)
+  Future<PostModel> getPosts(@Queries() Map<String, dynamic> map);
+
+  @PUT(EndPoints.post)
+  Future<SuccessMessageModel> editPost(@Queries() Map<String, dynamic> map);
 }
