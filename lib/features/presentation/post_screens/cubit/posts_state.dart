@@ -4,6 +4,20 @@ abstract class PostsState {}
 
 final class PostsInitial extends PostsState {}
 
+final class GetPostsLoading extends PostsState {}
+
+final class GetPostsLoaded extends PostsState {
+  final List<PostEntity> posts;
+
+  GetPostsLoaded({required this.posts});
+}
+
+final class GetPostsError extends PostsState {
+  final String error;
+
+  GetPostsError({required this.error});
+}
+
 final class UploadDocLoading extends PostsState {}
 
 final class UploadDocument extends PostsState {
@@ -30,4 +44,18 @@ final class CreatePostError extends PostsState {
   final String error;
 
   CreatePostError({required this.error});
+}
+
+final class LikeDislikePostLoading extends PostsState {}
+
+final class LikeDislikePostLoaded extends PostsState {
+  final String message;
+
+  LikeDislikePostLoaded({required this.message});
+}
+
+final class LikeDislikePostError extends PostsState {
+  final String error;
+
+  LikeDislikePostError({required this.error});
 }

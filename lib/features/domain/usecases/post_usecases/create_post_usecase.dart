@@ -18,7 +18,7 @@ class CreatePostUsecase extends UseCase<String, CreatePostParams> {
 
 class CreatePostParams {
   final String content;
-  final List<MediaUrl> mediaUrls;
+  final List<MediaUrlEntity> mediaUrls;
   final List<String> taggedUserIds;
 
   CreatePostParams(

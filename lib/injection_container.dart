@@ -34,6 +34,8 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_de
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
@@ -130,8 +132,11 @@ Future<void> init() async {
       clearMessagesUseCase: sl<ClearMessagesUseCase>(),
       getMessageUseCase: sl<GetMessageUseCase>()));
   sl.registerFactory(() => PostsCubit(
-      uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
-      createPostUsecase: sl<CreatePostUsecase>()));
+        uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
+        createPostUsecase: sl<CreatePostUsecase>(),
+        likeUnlikeUsecase: sl<LikeDislikePostUsecase>(),
+        getPostsUsecase: sl<GetPostsUsecase>(),
+      ));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -180,6 +185,8 @@ Future<void> init() async {
   sl.registerFactory(() => GetMessageUseCase(sl<UserRepository>()));
 
   sl.registerFactory(() => CreatePostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => GetPostsUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => LikeDislikePostUsecase(sl<PostRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

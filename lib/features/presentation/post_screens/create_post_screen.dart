@@ -23,7 +23,7 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final TextEditingController _postController = TextEditingController();
-  final List<MediaUrl> mediaUrls = [];
+  final List<MediaUrlEntity> mediaUrls = [];
   final List<String> taggedUserIds = [];
   XFile? media;
 
@@ -41,7 +41,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       listener: (context, state) {
         if (state is UploadDocument) {
           mediaUrls
-              .add(MediaUrl(mediaType: 'IMAGE_URL', url: state.data.fileUrl!));
+              .add(MediaUrlEntity(mediaType: 'IMAGE_URL', url: state.data.fileUrl!));
         }
         if (state is CreatePostLoaded) {
           widget.showSuccessToast(context: context, message: state.message);
@@ -160,7 +160,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               context.read<PostsCubit>().createPost(
                   content: _postController.text,
                   mediaUrls: mediaUrls,
-                  taggedUserIds: []);
+                  taggedUserIds: taggedUserIds);
             },
             child: CircleAvatar(
               radius: 30,

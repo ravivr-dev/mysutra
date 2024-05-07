@@ -49,4 +49,7 @@ abstract class PostRestClient {
 
   @PUT(EndPoints.post)
   Future<SuccessMessageModel> editPost(@Queries() Map<String, dynamic> map);
+
+  @POST(EndPoints.postLikeDislike)
+  Future<SuccessMessageModel> likeDislikePost(@Queries() Map<String, dynamic> map);
 }

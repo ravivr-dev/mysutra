@@ -1,9 +1,9 @@
 class PostEntity {
   String id;
-  UserId userId;
+  UserIdEntity userId;
   bool isFollowing;
   String content;
-  List<MediaUrl> mediaUrls;
+  List<MediaUrlEntity> mediaUrls;
   List<String> taggedUserIds;
   int totalLikes;
   int totalComments;
@@ -29,11 +29,11 @@ class PostEntity {
 
 }
 
-class MediaUrl {
+class MediaUrlEntity {
   String mediaType;
   String url;
 
-  MediaUrl({
+  MediaUrlEntity({
     required this.mediaType,
     required this.url,
   });
@@ -43,7 +43,7 @@ class MediaUrl {
   };
 }
 
-class UserId {
+class UserIdEntity {
   String id;
   String role;
   String profilePic;
@@ -51,7 +51,7 @@ class UserId {
   String username;
   bool isVerified;
 
-  UserId({
+  UserIdEntity({
     required this.id,
     required this.role,
     required this.profilePic,

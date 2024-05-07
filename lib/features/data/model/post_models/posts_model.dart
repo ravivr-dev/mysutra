@@ -32,10 +32,10 @@ class PostModel {
 
 class PostData {
   final String id;
-  final UserId userId;
+  final UserIdModel userId;
   final bool isFollowing;
   final String content;
-  final List<MediaUrl> mediaUrls;
+  final List<MediaUrlModel> mediaUrls;
   final List<String> taggedUserIds;
   final int totalLikes;
   final int totalComments;
@@ -66,11 +66,11 @@ class PostData {
 
   factory PostData.fromJson(Map<String, dynamic> json) => PostData(
         id: json["_id"],
-        userId: UserId.fromJson(json["userId"]),
+        userId: UserIdModel.fromJson(json["userId"]),
         isFollowing: json["isFollowing"],
         content: json["content"],
-        mediaUrls: List<MediaUrl>.from(
-            json["mediaUrls"].map((x) => MediaUrl.fromJson(x))),
+        mediaUrls: List<MediaUrlModel>.from(
+            json["mediaUrls"].map((x) => MediaUrlModel.fromJson(x))),
         taggedUserIds: List<String>.from(json["taggedUserIds"].map((x) => x)),
         totalLikes: json["totalLikes"],
         totalComments: json["totalComments"],
@@ -96,21 +96,21 @@ class PostData {
       };
 }
 
-class MediaUrl {
+class MediaUrlModel {
   final String mediaType;
   final String url;
 
-  MediaUrl({
+  MediaUrlModel({
     required this.mediaType,
     required this.url,
   });
 
-  factory MediaUrl.fromRawJson(String str) =>
-      MediaUrl.fromJson(json.decode(str));
+  factory MediaUrlModel.fromRawJson(String str) =>
+      MediaUrlModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory MediaUrl.fromJson(Map<String, dynamic> json) => MediaUrl(
+  factory MediaUrlModel.fromJson(Map<String, dynamic> json) => MediaUrlModel(
         mediaType: json["mediaType"],
         url: json["url"],
       );
@@ -121,7 +121,7 @@ class MediaUrl {
       };
 }
 
-class UserId {
+class UserIdModel {
   final String id;
   final String role;
   final String profilePic;
@@ -129,7 +129,7 @@ class UserId {
   final String username;
   final bool isVerified;
 
-  UserId({
+  UserIdModel({
     required this.id,
     required this.role,
     required this.profilePic,
@@ -138,11 +138,11 @@ class UserId {
     required this.isVerified,
   });
 
-  factory UserId.fromRawJson(String str) => UserId.fromJson(json.decode(str));
+  factory UserIdModel.fromRawJson(String str) => UserIdModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory UserId.fromJson(Map<String, dynamic> json) => UserId(
+  factory UserIdModel.fromJson(Map<String, dynamic> json) => UserIdModel(
         id: json["_id"],
         role: json["role"],
         profilePic: json["profilePic"],
