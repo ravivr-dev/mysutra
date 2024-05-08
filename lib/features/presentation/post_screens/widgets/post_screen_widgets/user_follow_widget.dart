@@ -27,13 +27,15 @@ class UserFollowWidget extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           borderRadius: BorderRadius.circular(4),
           child: component.networkImage(
-              url: userIdEntity.profilePic,
-              height: 24,
-              width: 24,
-              fit: BoxFit.fill),
+            url: userIdEntity.profilePic ?? '',
+            height: 24,
+            width: 24,
+            fit: BoxFit.fill,
+            errorWidget: component.assetImage(path: Assets.imagesDefaultAvatar, fit: BoxFit.contain),
+          ),
         ),
         component.spacer(width: 4),
-        component.text(userIdEntity.fullName,
+        component.text(userIdEntity.username,
             style: theme.publicSansFonts.mediumStyle(
               fontSize: 16,
             )),
@@ -51,7 +53,9 @@ class UserFollowWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              color: isFollowing ? AppColors.grey0xFFEAECF0 : AppColors.color0xFFEBE2FF,
+              color: isFollowing
+                  ? AppColors.grey0xFFEAECF0
+                  : AppColors.color0xFFEBE2FF,
             ),
             child: component.text(
                 isFollowing

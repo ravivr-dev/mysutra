@@ -71,7 +71,7 @@ class _PostWidgetState extends State<PostWidget> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       return component.networkImage(
-                        url: widget.postEntity.mediaUrls[index].url,
+                        url: widget.postEntity.mediaUrls[index].url ?? '',
                         height: 153,
                         width: 153,
                         borderRadius: 20,

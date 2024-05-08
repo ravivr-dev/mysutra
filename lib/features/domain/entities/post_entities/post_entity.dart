@@ -2,15 +2,15 @@ class PostEntity {
   String id;
   UserIdEntity userId;
   bool isFollowing;
-  String content;
+  String? content;
   List<MediaUrlEntity> mediaUrls;
-  List<String> taggedUserIds;
+  List<String>? taggedUserIds;
   int totalLikes;
   int totalComments;
   int totalShares;
   bool isMyPost;
   bool isLiked;
-  DateTime createdAt;
+  DateTime? createdAt;
   DateTime updatedAt;
 
   PostEntity({
@@ -19,13 +19,13 @@ class PostEntity {
     required this.isFollowing,
     required this.content,
     required this.mediaUrls,
-    required this.taggedUserIds,
+    this.taggedUserIds,
     required this.totalLikes,
     required this.totalComments,
     required this.totalShares,
     required this.isMyPost,
     required this.isLiked,
-    required this.createdAt,
+    this.createdAt,
     required this.updatedAt,
   });
 
@@ -45,12 +45,12 @@ class PostEntity {
 }
 
 class MediaUrlEntity {
-  String mediaType;
-  String url;
+  String? mediaType;
+  String? url;
 
   MediaUrlEntity({
-    required this.mediaType,
-    required this.url,
+    this.mediaType,
+    this.url,
   });
 
   Map<String, dynamic> toJson() => {
@@ -60,19 +60,19 @@ class MediaUrlEntity {
 }
 
 class UserIdEntity {
-  String id;
-  String role;
-  String profilePic;
-  String fullName;
-  String username;
+  String? id;
+  String? role;
+  String? profilePic;
+  String? fullName;
+  String? username;
   bool isVerified;
 
   UserIdEntity({
-    required this.id,
-    required this.role,
-    required this.profilePic,
-    required this.fullName,
-    required this.username,
+    this.id,
+    this.role,
+    this.profilePic,
+    this.fullName,
+    this.username,
     required this.isVerified,
   });
 }

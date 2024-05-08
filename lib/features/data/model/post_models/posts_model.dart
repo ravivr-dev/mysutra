@@ -128,7 +128,7 @@ class MediaUrlModel {
 class UserIdModel {
   final String id;
   final String role;
-  final String profilePic;
+  final String? profilePic;
   final String fullName;
   final String username;
   final bool isVerified;
@@ -136,7 +136,7 @@ class UserIdModel {
   UserIdModel({
     required this.id,
     required this.role,
-    required this.profilePic,
+    this.profilePic,
     required this.fullName,
     required this.username,
     required this.isVerified,
