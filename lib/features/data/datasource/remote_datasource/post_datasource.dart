@@ -40,7 +40,8 @@ class PostDatasourceImpl extends PostDatasource {
     try {
       return await client.newPost(map).catchError((err) {
         _processDio(err);
-      });
+      }
+      );
     } on DioException catch (e) {
       throw ServerException(
           message: e.getErrorFromDio(

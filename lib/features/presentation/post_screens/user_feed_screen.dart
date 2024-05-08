@@ -7,7 +7,6 @@ import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/post_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
-import 'package:my_sutra/injection_container.dart';
 
 class UserFeedScreen extends StatefulWidget {
   const UserFeedScreen({super.key});

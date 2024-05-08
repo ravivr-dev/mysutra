@@ -64,6 +64,7 @@ dependencies:
   file_picker: ^8.0.2
   open_filex: ^4.4.0
   flutter_link_previewer: ^3.2.2
+  videosdk: ^1.1.10
 
 
 dev_dependencies:

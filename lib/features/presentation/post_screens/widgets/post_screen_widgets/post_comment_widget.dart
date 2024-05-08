@@ -1,7 +1,6 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/user_follow_widget.dart';
 import '../../../../../ailoitte_component_injector.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../generated/assets.dart';

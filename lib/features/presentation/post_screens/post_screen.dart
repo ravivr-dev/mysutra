@@ -4,7 +4,6 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/post_comment_widget.dart';
-import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/user_follow_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 class PostScreen extends StatefulWidget {

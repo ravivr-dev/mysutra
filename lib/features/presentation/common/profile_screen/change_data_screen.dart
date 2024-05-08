@@ -6,12 +6,10 @@ import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_small_outline_buttom.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
-import 'package:my_sutra/core/config/navigation.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
-import 'package:my_sutra/routes/routes_constants.dart';
 
 class ChangeDataScreen extends StatefulWidget {
   const ChangeDataScreen({super.key, required this.args});

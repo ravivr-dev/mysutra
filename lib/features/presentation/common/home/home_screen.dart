@@ -9,7 +9,6 @@ import 'package:my_sutra/features/presentation/common/home/screens/appointment_s
 import 'package:my_sutra/features/presentation/post_screens/create_post_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/user_feed_screen.dart';
-import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 import '../../../../core/models/user_helper.dart';

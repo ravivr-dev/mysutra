@@ -6,7 +6,6 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 
 import '../../../../domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
