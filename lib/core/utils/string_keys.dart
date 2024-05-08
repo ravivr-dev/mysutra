@@ -74,4 +74,5 @@ class StringKeys {
   static const String changeEmailAddress = 'change_email_address';
   static const String changeMobileNumber = 'change_mobile_number';
   static const String username = 'user_name';
+  static const String unfollow = 'unfollow';
 }

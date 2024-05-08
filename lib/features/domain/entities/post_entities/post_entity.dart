@@ -9,6 +9,7 @@ class PostEntity {
   int totalComments;
   int totalShares;
   bool isMyPost;
+  bool isLiked;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -23,10 +24,24 @@ class PostEntity {
     required this.totalComments,
     required this.totalShares,
     required this.isMyPost,
+    required this.isLiked,
     required this.createdAt,
     required this.updatedAt,
   });
 
+  void reInitIsFollowing() {
+    isFollowing = !isFollowing;
+  }
+
+  void reInitIsLiked() {
+    isLiked = !isLiked;
+
+    if (isLiked) {
+      totalLikes += 1;
+    } else {
+      totalLikes -= 1;
+    }
+  }
 }
 
 class MediaUrlEntity {
@@ -37,10 +52,11 @@ class MediaUrlEntity {
     required this.mediaType,
     required this.url,
   });
+
   Map<String, dynamic> toJson() => {
-    "mediaType": mediaType,
-    "url": url,
-  };
+        "mediaType": mediaType,
+        "url": url,
+      };
 }
 
 class UserIdEntity {
@@ -59,5 +75,4 @@ class UserIdEntity {
     required this.username,
     required this.isVerified,
   });
-
 }

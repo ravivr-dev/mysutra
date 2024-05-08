@@ -6,6 +6,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/post_datasource.dart';
 import 'package:my_sutra/features/data/repositories/post_repo/post_repository_conv.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
@@ -59,13 +60,13 @@ class PostRepositoryImpl extends PostRepository {
   }
 
   @override
-  Future<Either<Failure, String>> likeDislikePost(
+  Future<Either<Failure, LikeDislikeEntity>> likeDislikePost(
       LikeDislikePostParams params) async {
     try {
       if (await networkInfo.isConnected) {
         final result =
             await remoteDatasource.likeDislikePost({"postId": params.postId});
-        return Right(result.message ?? 'Liked/Disliked post Successfully');
+        return Right(PostRepoConv.convertLikeDisilkeModelToEntity(result));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

@@ -37,7 +37,7 @@ class PostCommentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const UserFollowWidget(),
+        // UserFollowWidget(),
         component.spacer(height: 10),
         component.text('5h ago',
             style: theme.publicSansFonts.regularStyle(

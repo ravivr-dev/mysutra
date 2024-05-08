@@ -24,6 +24,7 @@ class CreatePostScreen extends StatefulWidget {
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final TextEditingController _postController = TextEditingController();
   final List<MediaUrlEntity> mediaUrls = [];
+  final List<String> imageList = [];
   final List<String> taggedUserIds = [];
   XFile? media;
 
@@ -40,8 +41,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return BlocConsumer<PostsCubit, PostsState>(
       listener: (context, state) {
         if (state is UploadDocument) {
-          mediaUrls
-              .add(MediaUrlEntity(mediaType: 'IMAGE_URL', url: state.data.fileUrl!));
+          mediaUrls.add(
+              MediaUrlEntity(mediaType: 'IMAGE_URL', url: state.data.key!));
+          imageList.add(state.data.fileUrl!);
         }
         if (state is CreatePostLoaded) {
           widget.showSuccessToast(context: context, message: state.message);
@@ -185,7 +187,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         separatorBuilder: (_, __) {
           return component.spacer(width: 10);
         },
-        itemCount: mediaUrls.length,
+        itemCount: imageList.length,
       ),
     );
   }
@@ -197,7 +199,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           clipBehavior: Clip.hardEdge,
           borderRadius: BorderRadius.circular(20),
           child: component.networkImage(
-            url: mediaUrls[index].url,
+            url: imageList[index],
             height: 153,
             width: 153,
             fit: BoxFit.fill,

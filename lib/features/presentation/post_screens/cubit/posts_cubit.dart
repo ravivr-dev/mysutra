@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
@@ -59,6 +60,6 @@ class PostsCubit extends Cubit<PostsState> {
         await likeUnlikeUsecase.call(LikeDislikePostParams(postId: postId));
 
     result.fold((l) => emit(LikeDislikePostError(error: l.message)),
-        (r) => emit(LikeDislikePostLoaded(message: r)));
+        (r) => emit(LikeDislikePostLoaded(likeDislikeEntity: r)));
   }
 }

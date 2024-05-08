@@ -1,4 +1,6 @@
+import 'package:my_sutra/features/data/model/post_models/like_dislike_model.dart';
 import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 
 class PostRepoConv {
@@ -10,7 +12,7 @@ class PostRepoConv {
               id: e.userId.id,
               role: e.userId.role,
               profilePic: e.userId.profilePic,
-              fullName: e.userId.profilePic,
+              fullName: e.userId.fullName,
               username: e.userId.username,
               isVerified: e.userId.isVerified,
             ),
@@ -24,8 +26,21 @@ class PostRepoConv {
             totalComments: e.totalComments,
             totalShares: e.totalShares,
             isMyPost: e.isMyPost,
+            isLiked: e.isLiked,
             createdAt: e.createdAt,
             updatedAt: e.updatedAt))
         .toList();
+  }
+
+  static LikeDislikeEntity convertLikeDisilkeModelToEntity(
+      LikeDislikeModel model) {
+    if (model.data.likedBy != null) {
+      return LikeDislikeEntity(
+          likedBy: model.data.likedBy,
+          postId: model.data.postId,
+          id: model.data.id);
+    } else {
+      return LikeDislikeEntity(postId: model.data.postId);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/post_models/like_dislike_model.dart';
 import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';
@@ -51,5 +52,5 @@ abstract class PostRestClient {
   Future<SuccessMessageModel> editPost(@Queries() Map<String, dynamic> map);
 
   @POST(EndPoints.postLikeDislike)
-  Future<SuccessMessageModel> likeDislikePost(@Queries() Map<String, dynamic> map);
+  Future<LikeDislikeModel> likeDislikePost(@Body() Map<String, dynamic> map);
 }

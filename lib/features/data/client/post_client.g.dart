@@ -103,14 +103,14 @@ class _PostRestClient implements PostRestClient {
   }
 
   @override
-  Future<SuccessMessageModel> likeDislikePost(Map<String, dynamic> map) async {
+  Future<LikeDislikeModel> likeDislikePost(Map<String, dynamic> map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(map);
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LikeDislikeModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -126,7 +126,7 @@ class _PostRestClient implements PostRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
+    final value = LikeDislikeModel.fromJson(_result.data!);
     return value;
   }
 

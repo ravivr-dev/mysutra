@@ -68,5 +68,6 @@
   "go_to_home": "Go to Home",
   "change_email_address": "Change Email Address",
   "change_mobile_number": "Change Mobile Number",
-  "user_name": "Username"
+  "user_name": "Username",
+  "unfollow": "Unfollow"
 }

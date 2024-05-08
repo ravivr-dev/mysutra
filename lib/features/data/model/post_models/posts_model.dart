@@ -41,6 +41,7 @@ class PostData {
   final int totalComments;
   final int totalShares;
   final bool isMyPost;
+  final bool isLiked;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -55,6 +56,7 @@ class PostData {
     required this.totalComments,
     required this.totalShares,
     required this.isMyPost,
+    required this.isLiked,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -76,6 +78,7 @@ class PostData {
         totalComments: json["totalComments"],
         totalShares: json["totalShares"],
         isMyPost: json["isMyPost"],
+        isLiked: json["isLiked"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
@@ -91,6 +94,7 @@ class PostData {
         "totalComments": totalComments,
         "totalShares": totalShares,
         "isMyPost": isMyPost,
+        "isLiked": isLiked,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
       };
@@ -138,7 +142,8 @@ class UserIdModel {
     required this.isVerified,
   });
 
-  factory UserIdModel.fromRawJson(String str) => UserIdModel.fromJson(json.decode(str));
+  factory UserIdModel.fromRawJson(String str) =>
+      UserIdModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
