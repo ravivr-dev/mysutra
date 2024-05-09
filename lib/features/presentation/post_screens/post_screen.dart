@@ -187,28 +187,4 @@ class _PostScreenState extends State<PostScreen> {
       ),
     );
   }
-
-  Widget _buildHeaderWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        component.assetImage(
-            height: 40, width: 100, fit: BoxFit.fill, path: Assets.iconsLogo1),
-        // component.networkImage(
-        //   height: 38,
-        //   width: 38,
-        //   fit: BoxFit.fill,
-        //   url:
-        //       // _localDataSource.getUserProfilePic() ??
-        //       '',
-        //   errorWidget: component.assetImage(
-        //     path: Assets.imagesDefaultAvatar,
-        //     fit: BoxFit.fill,
-        //     height: 38,
-        //     width: 38,
-        //   ),
-        // ),
-      ],
-    );
-  }
 }
