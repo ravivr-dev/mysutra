@@ -7,7 +7,7 @@ import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';

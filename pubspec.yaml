@@ -54,18 +54,12 @@ dependencies:
   dotted_border: ^2.1.0
   image_picker: ^1.0.7
   searchfield: ^1.0.1
-#  dropdown_textfield: ^1.0.8
-  # google_maps_flutter: ^2.2.8
-  dropdown_textfield:
-    git:
-      url: https://github.com/sahil-ailoitte/dropdown_textfield.git
-      ref: master
+  dropdown_textfield: ^1.0.8
+  file_picker: ^8.0.3
   flutter_chat_ui: ^1.6.12
-  file_picker: ^8.0.2
   open_filex: ^4.4.0
-  flutter_link_previewer: ^3.2.2
-  videosdk: ^1.1.10
-
+#  videosdk: ^1.1.10
+  # google_maps_flutter: ^2.2.8
 
 dev_dependencies:
   flutter_test:
@@ -85,7 +79,6 @@ flutter:
     - assets/i18n/
     - assets/images/
     - assets/anim/
-    - assets/message.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

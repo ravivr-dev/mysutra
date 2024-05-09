@@ -26,15 +26,20 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   titleSpacing: 0,
-      //   backgroundColor: AppColors.backgroundColor,
-      //   leading: Icon(Icons.arrow_back,
-      //       color: AppColors.color0xFF00082F.withOpacity(.27)),
-      //   title: component.text(context.stringForKey(StringKeys.post),
-      //       style: theme.publicSansFonts.mediumStyle(fontSize: 20)),
-      // ),
+      appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
+        backgroundColor: AppColors.backgroundColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,
+              color: AppColors.color0xFF00082F.withOpacity(.27)),
+          onPressed: () {
+            AiloitteNavigation.back(context);
+          },
+        ),
+        title: component.text(context.stringForKey(StringKeys.post),
+            style: theme.publicSansFonts.mediumStyle(fontSize: 20)),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           top: true,
@@ -42,8 +47,8 @@ class _PostScreenState extends State<PostScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 22),
             child: Column(
               children: [
-                _buildHeaderWidget(),
-                component.spacer(height: 23),
+                // _buildHeaderWidget(),
+                // component.spacer(height: 23),
                 _buildPostWidget(),
                 component.spacer(height: 12),
                 _buildCommentWidget()

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/features/presentation/common/video_calling_screen/video_calling_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -42,8 +41,8 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigationKey,
         onGenerateRoute: Routes.onGenerateRoute,
         debugShowCheckedModeBanner: false,
-        home: const VideoCallingScreen(),
-        // initialRoute: AppRoutes.splashRoutes,
+        // home: const HomeScreen(),
+        initialRoute: AppRoutes.splashRoutes,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(

@@ -1,14 +1,14 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
-import '../../../../../ailoitte_component_injector.dart';
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../generated/assets.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
+import 'package:my_sutra/generated/assets.dart';
 
 class UserFollowWidget extends StatelessWidget {
   final VoidCallback? onShowMoreButtonClick;
-  final UserIdEntity userIdEntity;
+  final PostUserEntity userIdEntity;
   final bool isMyPost;
   final bool isFollowing;
 
@@ -31,7 +31,8 @@ class UserFollowWidget extends StatelessWidget {
             height: 24,
             width: 24,
             fit: BoxFit.fill,
-            errorWidget: component.assetImage(path: Assets.imagesDefaultAvatar, fit: BoxFit.contain),
+            errorWidget: component.assetImage(
+                path: Assets.imagesDefaultAvatar, fit: BoxFit.contain),
           ),
         ),
         component.spacer(width: 4),

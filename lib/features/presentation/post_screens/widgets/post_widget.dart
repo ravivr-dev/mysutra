@@ -6,8 +6,10 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
-import 'package:my_sutra/features/presentation/post_screens/widgets/LikeDislikeButtonWidget.dart';
+import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
+import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/user_follow_widget.dart';
+import 'package:my_sutra/features/presentation/post_screens/widgets/share_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 class PostWidget extends StatefulWidget {
@@ -98,25 +100,16 @@ class _PostWidgetState extends State<PostWidget> {
                       context
                           .read<PostsCubit>()
                           .likeDislikePost(postId: widget.postEntity.id);
-                      // widget.postEntity.reInitIsLiked();
                     },
+                    likeCount: widget.postEntity.totalLikes,
                   ),
-                  component.spacer(width: 4),
-                  component.text('${widget.postEntity.totalLikes}',
-                      style: theme.publicSansFonts.mediumStyle(
-                          fontSize: 12, fontColor: AppColors.color0xFF111111)),
-                  component.spacer(width: 20),
-                  component.assetImage(path: Assets.iconsComment),
-                  component.spacer(width: 4),
-                  component.text('${widget.postEntity.totalComments}',
-                      style: theme.publicSansFonts.mediumStyle(
-                          fontSize: 12, fontColor: AppColors.color0xFF111111)),
+                  component.spacer(width: 10),
+                  CommentButtonWidget(
+                    commentCount: widget.postEntity.totalComments,),
                   const Spacer(),
-                  component.assetImage(path: Assets.iconsShare),
-                  component.spacer(width: 4),
-                  component.text('${widget.postEntity.totalShares}',
-                      style: theme.publicSansFonts.mediumStyle(
-                          fontSize: 12, fontColor: AppColors.color0xFF111111)),
+                  ShareButtonWidget(
+                    shareCount: widget.postEntity.totalShares,
+                  ),
                 ],
               )
             ],
@@ -129,17 +122,4 @@ class _PostWidgetState extends State<PostWidget> {
   Widget _buildDivider() {
     return const Divider(color: AppColors.color0xFFEAECF0, height: 0);
   }
-
-// Widget _buildLikeButton({required bool isLiked}) {
-//   return InkWell(
-//     onTap: () {
-//       context
-//           .read<PostsCubit>()
-//           .likeDislikePost(postId: widget.postEntity.id);
-//     },
-//     child: isLiked
-//         ? component.assetImage(path: Assets.iconsVerify)
-//         : component.assetImage(path: Assets.iconsHeart),
-//   );
-// }
 }

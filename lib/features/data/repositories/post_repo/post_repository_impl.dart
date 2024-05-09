@@ -6,10 +6,13 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/post_datasource.dart';
 import 'package:my_sutra/features/data/repositories/post_repo/post_repository_conv.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_post_usecase.dart';
 
@@ -67,6 +70,41 @@ class PostRepositoryImpl extends PostRepository {
         final result =
             await remoteDatasource.likeDislikePost({"postId": params.postId});
         return Right(PostRepoConv.convertLikeDisilkeModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PostDetailEntity>> getPostDetail(String postId) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource.getPostDetail(postId);
+
+        return Right(PostRepoConv.converPostDetailModelToEntity(result.data));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CommentEntity>>> getComment(
+      GetCommentParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource.getComment({
+          "postId": params.postId,
+          "pagination": params.pagination,
+          "limit": params.limit
+        });
+
+        return Right(PostRepoConv.convertCommentModelToEntity(result));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

@@ -4,7 +4,9 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/post_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/post_models/comment_model.dart';
 import 'package:my_sutra/features/data/model/post_models/like_dislike_model.dart';
+import 'package:my_sutra/features/data/model/post_models/post_detail_model.dart';
 import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 
@@ -16,6 +18,10 @@ abstract class PostDatasource {
   Future<SuccessMessageModel> editPost(Map<String, dynamic> map);
 
   Future<LikeDislikeModel> likeDislikePost(Map<String, dynamic> map);
+
+  Future<PostDetailModel> getPostDetail(String postId);
+
+  Future<CommentModel> getComment(Map<String, dynamic> map);
 }
 
 class PostDatasourceImpl extends PostDatasource {
@@ -40,8 +46,7 @@ class PostDatasourceImpl extends PostDatasource {
     try {
       return await client.newPost(map).catchError((err) {
         _processDio(err);
-      }
-      );
+      });
     } on DioException catch (e) {
       throw ServerException(
           message: e.getErrorFromDio(
@@ -85,6 +90,36 @@ class PostDatasourceImpl extends PostDatasource {
   Future<LikeDislikeModel> likeDislikePost(Map<String, dynamic> map) {
     try {
       return client.likeDislikePost(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              localDataSource: localDataSource, validateAuthentication: true));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostDetailModel> getPostDetail(String postId) {
+    try {
+      return client.getPostDetail(postId).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              localDataSource: localDataSource, validateAuthentication: true));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CommentModel> getComment(Map<String, dynamic> map) {
+    try {
+      return client.getComment(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

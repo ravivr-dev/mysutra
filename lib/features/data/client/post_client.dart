@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/post_models/comment_model.dart';
 import 'package:my_sutra/features/data/model/post_models/like_dislike_model.dart';
+import 'package:my_sutra/features/data/model/post_models/post_detail_model.dart';
 import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';
@@ -53,4 +55,10 @@ abstract class PostRestClient {
 
   @POST(EndPoints.postLikeDislike)
   Future<LikeDislikeModel> likeDislikePost(@Body() Map<String, dynamic> map);
+
+  @GET('${EndPoints.post}/{postId}')
+  Future<PostDetailModel> getPostDetail(@Path('postId') String postId);
+
+  @GET(EndPoints.comment)
+  Future<CommentModel> getComment(@Queries() Map<String, dynamic> map);
 }

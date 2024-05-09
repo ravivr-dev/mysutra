@@ -48,9 +48,6 @@ class EndPoints {
   static const String post = '/post';
   static const String postRepost = '/post/report';
   static const String postLikeDislike = '/post/like-dislike';
-
-  // todo check how to send postId in parenthesis
-  // static const String postDetailDelete = '/post/{postId}';
   static const String comment = '/comment';
   static const String commentLikeDislike = '/comment/like-dislike';
 

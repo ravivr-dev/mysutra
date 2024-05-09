@@ -3,52 +3,48 @@ import 'dart:convert';
 import 'package:my_sutra/features/data/model/post_models/media_url_model.dart';
 import 'package:my_sutra/features/data/model/post_models/post_user_model.dart';
 
-class PostModel {
-  final String message;
-  final int count;
-  final List<PostData> data;
+class PostDetailModel {
+  String message;
+  PostDetailData data;
 
-  PostModel({
+  PostDetailModel({
     required this.message,
-    required this.count,
     required this.data,
   });
 
-  factory PostModel.fromRawJson(String str) =>
-      PostModel.fromJson(json.decode(str));
+  factory PostDetailModel.fromRawJson(String str) =>
+      PostDetailModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
+  factory PostDetailModel.fromJson(Map<String, dynamic> json) =>
+      PostDetailModel(
         message: json["message"],
-        count: json["count"],
-        data:
-            List<PostData>.from(json["data"].map((x) => PostData.fromJson(x))),
+        data: PostDetailData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "count": count,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data.toJson(),
       };
 }
 
-class PostData {
-  final String id;
-  final PostUserModel userId;
-  final bool isFollowing;
-  final String content;
-  final List<MediaUrlModel> mediaUrls;
-  final List<String> taggedUserIds;
-  final int totalLikes;
-  final int totalComments;
-  final int totalShares;
-  final bool isMyPost;
-  final bool isLiked;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+class PostDetailData {
+  String id;
+  PostUserModel userId;
+  bool isFollowing;
+  String content;
+  List<MediaUrlModel> mediaUrls;
+  List<String> taggedUserIds;
+  int totalLikes;
+  int totalComments;
+  int totalShares;
+  bool isMyPost;
+  bool isLiked;
+  DateTime createdAt;
+  DateTime updatedAt;
 
-  PostData({
+  PostDetailData({
     required this.id,
     required this.userId,
     required this.isFollowing,
@@ -64,12 +60,12 @@ class PostData {
     required this.updatedAt,
   });
 
-  factory PostData.fromRawJson(String str) =>
-      PostData.fromJson(json.decode(str));
+  factory PostDetailData.fromRawJson(String str) =>
+      PostDetailData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PostData.fromJson(Map<String, dynamic> json) => PostData(
+  factory PostDetailData.fromJson(Map<String, dynamic> json) => PostDetailData(
         id: json["_id"],
         userId: PostUserModel.fromJson(json["userId"]),
         isFollowing: json["isFollowing"],
@@ -91,7 +87,7 @@ class PostData {
         "userId": userId.toJson(),
         "isFollowing": isFollowing,
         "content": content,
-        "mediaUrls": List<dynamic>.from(mediaUrls.map((x) => x.toJson())),
+        "mediaUrls": List<dynamic>.from(mediaUrls.map((x) => x)),
         "taggedUserIds": List<dynamic>.from(taggedUserIds.map((x) => x)),
         "totalLikes": totalLikes,
         "totalComments": totalComments,
