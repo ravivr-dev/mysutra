@@ -18,6 +18,34 @@ final class GetPostsError extends PostsState {
   GetPostsError({required this.error});
 }
 
+final class GetPostDetailLoading extends PostsState {}
+
+final class GetPostDetailLoaded extends PostsState {
+  final PostDetailEntity post;
+
+  GetPostDetailLoaded({required this.post});
+}
+
+final class GetPostDetailError extends PostsState {
+  final String error;
+
+  GetPostDetailError({required this.error});
+}
+
+final class GetCommentLoading extends PostsState {}
+
+final class GetCommentLoaded extends PostsState {
+  final List<CommentEntity> comments;
+
+  GetCommentLoaded({required this.comments});
+}
+
+final class GetCommentError extends PostsState {
+  final String error;
+
+  GetCommentError({required this.error});
+}
+
 final class UploadDocLoading extends PostsState {}
 
 final class UploadDocument extends PostsState {

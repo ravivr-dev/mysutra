@@ -4,10 +4,10 @@ import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 
-class GetPostsUsecase extends UseCase<List<CommentEntity>, GetCommentParams> {
+class GetCommentUsecase extends UseCase<List<CommentEntity>, GetCommentParams> {
   final PostRepository _postRepository;
 
-  GetPostsUsecase(this._postRepository);
+  GetCommentUsecase(this._postRepository);
 
   @override
   Future<Either<Failure, List<CommentEntity>>> call(GetCommentParams params) {

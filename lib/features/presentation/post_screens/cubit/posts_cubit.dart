@@ -3,10 +3,14 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/get_post_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
@@ -17,10 +21,14 @@ class PostsCubit extends Cubit<PostsState> {
   final UploadDocumentUsecase uploadDocumentUsecase;
   final CreatePostUsecase createPostUsecase;
   final GetPostsUsecase getPostsUsecase;
+  final GetPostDetailUsecase getPostDetailUsecase;
+  final GetCommentUsecase getCommentUsecase;
   final LikeDislikePostUsecase likeUnlikeUsecase;
 
   PostsCubit(
-      {required this.likeUnlikeUsecase,
+      {required this.getPostDetailUsecase,
+      required this.getCommentUsecase,
+      required this.likeUnlikeUsecase,
       required this.getPostsUsecase,
       required this.createPostUsecase,
       required this.uploadDocumentUsecase})
@@ -41,6 +49,7 @@ class PostsCubit extends Cubit<PostsState> {
       {required String content,
       required List<MediaUrlEntity> mediaUrls,
       required List<String> taggedUserIds}) async {
+    emit(CreatePostLoading());
     final result = await createPostUsecase.call(CreatePostParams(
         content: content, mediaUrls: mediaUrls, taggedUserIds: taggedUserIds));
 
@@ -49,11 +58,32 @@ class PostsCubit extends Cubit<PostsState> {
   }
 
   void getPosts({required int pagination, required int limit}) async {
+    emit(GetPostsLoading());
     final result = await getPostsUsecase
         .call(GetPostsParams(pagination: pagination, limit: limit));
 
     result.fold((l) => emit(GetPostsError(error: l.message)),
         (r) => emit(GetPostsLoaded(posts: r)));
+  }
+
+  void getPostDetail({required String postId}) async {
+    emit(GetPostDetailLoading());
+    final result = await getPostDetailUsecase.call(postId);
+
+    result.fold((l) => emit(GetPostDetailError(error: l.message)),
+        (r) => emit(GetPostDetailLoaded(post: r)));
+  }
+
+  void getComments(
+      {required String postId,
+      required int pagination,
+      required int limit}) async {
+    emit(GetCommentLoading());
+    final result = await getCommentUsecase.call(
+        GetCommentParams(postId: postId, pagination: pagination, limit: limit));
+
+    result.fold((l) => emit(GetCommentError(error: l.message)),
+        (r) => emit(GetCommentLoaded(comments: r)));
   }
 
   void likeDislikePost({required String postId}) async {

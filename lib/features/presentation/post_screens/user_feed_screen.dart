@@ -17,11 +17,31 @@ class UserFeedScreen extends StatefulWidget {
 
 class _UserFeedScreenState extends State<UserFeedScreen> {
   List<PostEntity> posts = [];
+  bool isLoading = false;
 
-  // @override
-  // void initState() {
-  //   context.read<PostsCubit>().getPosts(pagination: 1, limit: 10);
-  //   super.initState();
+  // Widget _createListView() {
+  //   ScrollController scrollController = ScrollController();
+  //   scrollController.addListener(() {
+  //     if (scrollController.position.maxScrollExtent ==
+  //         scrollController.position.pixels) {
+  //       if (!isLoading) {
+  //         isLoading = !isLoading;
+  //         context.read();
+  //       }
+  //     }
+  //   });
+  //
+  //   return ListView.separated(
+  //       controller: scrollController,
+  //       physics: const NeverScrollableScrollPhysics(),
+  //       shrinkWrap: true,
+  //       itemBuilder: (context, index) {
+  //         return PostWidget(postEntity: posts[index]);
+  //       },
+  //       separatorBuilder: (_, index) {
+  //         return component.spacer(height: 15);
+  //       },
+  //       itemCount: posts.length);
   // }
 
   @override
@@ -50,7 +70,8 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
                     component.spacer(height: 23),
                     if (posts.isNotEmpty) ...[
                       ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
+                          physics: const ScrollPhysics(),
+                          scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return PostWidget(postEntity: posts[index]);

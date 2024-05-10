@@ -1,14 +1,18 @@
-import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/generated/assets.dart';
-import 'package:my_sutra/routes/routes_constants.dart';
 
 class CommentButtonWidget extends StatelessWidget {
   final int commentCount;
+  final VoidCallback onTap;
+  final String postId;
 
-  const CommentButtonWidget({super.key, required this.commentCount});
+  const CommentButtonWidget(
+      {super.key,
+      required this.commentCount,
+      required this.postId,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +21,7 @@ class CommentButtonWidget extends StatelessWidget {
       height: 20,
       child: InkWell(
         splashFactory: NoSplash.splashFactory,
-        onTap: () {
-          AiloitteNavigation.intent(context, AppRoutes.postRoute);
-        },
+        onTap: onTap,
         child: Row(children: [
           component.assetImage(
               path: Assets.iconsComment, color: AppColors.grey92),

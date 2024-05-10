@@ -1,3 +1,4 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike
 import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/user_follow_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/share_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
@@ -58,11 +60,17 @@ class _PostWidgetState extends State<PostWidget> {
                   fontColor: AppColors.neutral,
                 ),
               ),
-              component.text(
-                widget.postEntity.content,
-                style: theme.publicSansFonts.regularStyle(
-                  fontSize: 16,
-                  fontColor: AppColors.color0xFF1E293B,
+              InkWell(
+                onTap: () {
+                  AiloitteNavigation.intentWithData(
+                      context, AppRoutes.postRoute, widget.postEntity.id);
+                },
+                child: component.text(
+                  widget.postEntity.content,
+                  style: theme.publicSansFonts.regularStyle(
+                    fontSize: 16,
+                    fontColor: AppColors.color0xFF1E293B,
+                  ),
                 ),
               ),
               if (widget.postEntity.mediaUrls.isNotEmpty) ...[
@@ -105,7 +113,13 @@ class _PostWidgetState extends State<PostWidget> {
                   ),
                   component.spacer(width: 10),
                   CommentButtonWidget(
-                    commentCount: widget.postEntity.totalComments,),
+                    commentCount: widget.postEntity.totalComments,
+                    postId: widget.postEntity.id,
+                    onTap: () {
+                      AiloitteNavigation.intentWithData(
+                          context, AppRoutes.postRoute, widget.postEntity.id);
+                    },
+                  ),
                   const Spacer(),
                   ShareButtonWidget(
                     shareCount: widget.postEntity.totalShares,
