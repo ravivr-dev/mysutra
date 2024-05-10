@@ -65,39 +65,22 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
             ],
           ),
           component.spacer(height: 4),
-          component.text(entity.reason,
-              style: theme.publicSansFonts.regularStyle(
-                fontColor: AppColors.black81,
-              )),
-          component.spacer(height: 8),
+          if (entity.reason?.isNotEmpty ?? false) ...[
+            component.text(entity.reason,
+                style: theme.publicSansFonts.regularStyle(
+                  fontColor: AppColors.black81,
+                )),
+            component.spacer(height: 8),
+          ],
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TimeContainer(
                 time: _getAppointmentTime(entity.date, entity.time),
               ),
-              _buildJoinNowButton()
+              _buildCallingRowWidget(appointment: entity),
             ],
           )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildJoinNowButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(3)),
-      child: Row(
-        children: [
-          component.assetImage(path: Assets.iconsVideo2),
-          component.spacer(width: 4),
-          component.text('Join now',
-              style: theme.publicSansFonts.regularStyle(
-                fontColor: AppColors.white,
-              ))
         ],
       ),
     );

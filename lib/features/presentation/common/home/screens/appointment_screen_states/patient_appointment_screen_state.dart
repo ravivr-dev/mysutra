@@ -62,80 +62,96 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
               final appointment = _appointments[index];
               return Container(
                 decoration: AppDeco.cardDecoration,
+                width: double.infinity,
                 padding: const EdgeInsets.all(12),
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-                child: Row(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    component.networkImage(
-                      url: appointment.profilePic ?? '',
-                      fit: BoxFit.cover,
-                      width: 70,
-                      height: 70,
-                      borderRadius: 8,
-                      errorWidget: component.assetImage(
-                          path: Assets.imagesDefaultAvatar),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        component.networkImage(
+                          url: appointment.profilePic ?? '',
+                          fit: BoxFit.cover,
+                          width: 48,
+                          height: 48,
+                          borderRadius: 8,
+                          errorWidget: component.assetImage(
+                              path: Assets.imagesDefaultAvatar),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              component.text(
-                                "Dr. ${appointment.fullName}",
-                                style: theme.publicSansFonts.mediumStyle(
-                                    fontSize: 16,
-                                    fontColor: AppColors.blackColor),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  component.text(
+                                    "Dr. ${appointment.fullName}",
+                                    style: theme.publicSansFonts.mediumStyle(
+                                        fontSize: 16,
+                                        fontColor: AppColors.blackColor),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  component.assetImage(
+                                      path: Assets.iconsVerify),
+                                ],
                               ),
-                              const SizedBox(width: 5),
-                              component.assetImage(path: Assets.iconsVerify),
+                              component.text(
+                                appointment.specialization,
+                                style: theme.publicSansFonts
+                                    .regularStyle(fontColor: AppColors.black81),
+                              ),
+                              const SizedBox(height: 8),
                             ],
                           ),
-                          component.text(
-                            appointment.specialization,
-                            style: theme.publicSansFonts
-                                .regularStyle(fontColor: AppColors.black81),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors.blackF2,
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.schedule_outlined,
-                                  size: 11,
-                                  color: AppColors.black81,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              context.showBottomSheet(
+                                DrBottomSheet(
+                                  appointment: appointment,
                                 ),
-                                const SizedBox(width: 5),
-                                component.text(
-                                  "${Utils.getMonthDay(appointment.date)}, ${appointment.time}",
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                                borderRadius: 22,
+                              );
+                            },
+                            child: component.assetImage(
+                                path: Assets.iconsThreeDots)),
+                      ],
                     ),
-                    InkWell(
-                        onTap: () {
-                          context.showBottomSheet(
-                            DrBottomSheet(
-                              appointment: appointment,
-                            ),
-                            borderRadius: 22,
-                          );
-                        },
-                        child:
-                            component.assetImage(path: Assets.iconsThreeDots)),
+                    component.spacer(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: AppColors.blackF2,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.schedule_outlined,
+                                size: 11,
+                                color: AppColors.black81,
+                              ),
+                              const SizedBox(width: 5),
+                              component.text(
+                                "${Utils.getMonthDay(appointment.date)}, ${appointment.time}",
+                              ),
+                            ],
+                          ),
+                        ),
+                        _buildCallingRowWidget(appointment: appointment),
+                      ],
+                    )
                   ],
                 ),
               );

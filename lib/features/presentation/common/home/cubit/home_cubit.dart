@@ -6,12 +6,13 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 
 import '../../../../domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import '../../../../domain/entities/patient_entities/appointment_entity.dart';
+import '../../../../domain/entities/user_entities/video_room_response_entity.dart';
 import '../../../../domain/usecases/patient_usecases/get_appointments_usecase.dart';
+import '../../../../domain/usecases/user_usecases/get_video_room_id_usecase.dart';
 
 part 'home_state.dart';
 
@@ -23,6 +24,7 @@ class HomeCubit extends Cubit<HomeState> {
   final DoctorCancelAppointmentsUseCase doctorCancelAppointmentsUseCase;
   final DoctorRescheduleAppointmentsUseCase doctorRescheduleAppointmentsUseCase;
   final GetAvailableSlotsForDoctorUseCase getAvailableSlotsForDoctorUseCase;
+  final GetVideoRoomIdUseCase getVideoRoomIdUseCase;
 
   HomeCubit({
     required this.localDataSource,
@@ -32,6 +34,7 @@ class HomeCubit extends Cubit<HomeState> {
     required this.doctorCancelAppointmentsUseCase,
     required this.getAvailableSlotsForDoctorUseCase,
     required this.doctorRescheduleAppointmentsUseCase,
+    required this.getVideoRoomIdUseCase,
   }) : super(HomeInitial());
 
   void getAppointments(
@@ -92,6 +95,19 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
         (l) => emit(RescheduleAppointmentErrorState(message: l.message)),
         (r) => emit(RescheduleAppointmentLoadedState(message: r)));
+  }
+
+  void getVideoRoomId(
+      {required String appointmentId,
+      required bool isVideoCall,
+      required String name}) async {
+    final result = await getVideoRoomIdUseCase
+        .call(GetVideoRoomIdUseCaseParams(appointmentId: appointmentId));
+
+    result.fold(
+        (l) => emit(GetVideoRoomErrorState(message: l.message)),
+        (r) => emit(GetVideoRoomSuccessState(
+            data: r, isVideoCall: isVideoCall, name: name)));
   }
 
 // FutureOr<void> _emitFailure(

@@ -216,6 +216,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  coverage:
+    dependency: transitive
+    description:
+      name: coverage
+      sha256: "3945034e86ea203af7a056d98e98e42a5518fff200d6e8e6647e1886b07e936e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.0"
   cross_file:
     dependency: transitive
     description:
@@ -256,6 +264,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
+  dart_webrtc:
+    dependency: transitive
+    description:
+      name: dart_webrtc
+      sha256: b3a4f109c551a10170ece8fc79b5ca1b98223f24bcebc0f971d7fe35daad7a3b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.4"
   dartz:
     dependency: "direct main"
     description:
@@ -305,6 +321,14 @@ packages:
       url: "https://github.com/sahil-ailoitte/dropdown_textfield.git"
     source: git
     version: "1.0.7"
+  encrypt:
+    dependency: transitive
+    description:
+      name: encrypt
+      sha256: "62d9aa4670cc2a8798bab89b39fc71b6dfbacf615de6cf5001fb39f7e4a996a2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.3"
   equatable:
     dependency: "direct main"
     description:
@@ -313,6 +337,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
+  events2:
+    dependency: transitive
+    description:
+      name: events2
+      sha256: "41eec2689af52ecd2581494b9241589769b2873359909c9260588e51fbc188e7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -422,6 +454,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.12"
+  flutter_foreground_task:
+    dependency: transitive
+    description:
+      name: flutter_foreground_task
+      sha256: "9bcfcb43bba4a5446a056e723d21118ff6e184926b5557365c32c13caca157c2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.3"
   flutter_link_previewer:
     dependency: "direct main"
     description:
@@ -480,6 +520,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webrtc:
+    dependency: transitive
+    description:
+      name: flutter_webrtc
+      sha256: "20eac28848a2dffb26cc2b2870a5164613904511a0b7e8f4825e31a2768175d2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.3"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -600,6 +648,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  h264_profile_level_id:
+    dependency: transitive
+    description:
+      name: h264_profile_level_id
+      sha256: "8854d223ba85da786ff6e3ade38dd447caaf1ba0094c0a5e03d368ae54a7249b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   html:
     dependency: transitive
     description:
@@ -840,6 +896,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  node_preamble:
+    dependency: transitive
+    description:
+      name: node_preamble
+      sha256: "6e7eac89047ab8a8d26cf16127b5ed26de65209847630400f9aefd7cd5c730db"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   octo_image:
     dependency: transitive
     description:
@@ -968,6 +1032,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.4"
+  platform_detect:
+    dependency: transitive
+    description:
+      name: platform_detect
+      sha256: "08f4ee79c0e1c4858d37e06b22352a3ebdef5466b613749a3adb03e703d4f5b0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.11"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -992,6 +1064,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "01dd9bd0fa02548bf2ceee13545d4a0ec6046459d847b6b061d8a27237108a08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   provider:
     dependency: transitive
     description:
@@ -1016,6 +1096,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
+  random_string:
+    dependency: transitive
+    description:
+      name: random_string
+      sha256: "03b52435aae8cbdd1056cf91bfc5bf845e9706724dd35ae2e99fa14a1ef79d02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   retrofit:
     dependency: "direct main"
     description:
@@ -1048,6 +1144,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  sdp_transform:
+    dependency: transitive
+    description:
+      name: sdp_transform
+      sha256: "73e412a5279a5c2de74001535208e20fff88f225c9a4571af0f7146202755e45"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   searchfield:
     dependency: "direct main"
     description:
@@ -1120,6 +1224,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  shelf_packages_handler:
+    dependency: transitive
+    description:
+      name: shelf_packages_handler
+      sha256: "89f967eca29607c933ba9571d838be31d67f53f6e4ee15147d5dc2934fee1b1e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
+  shelf_static:
+    dependency: transitive
+    description:
+      name: shelf_static
+      sha256: a41d3f53c4adf0f57480578c1d61d90342cd617de7fc8077b1304643c2d85c1e
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -1149,6 +1269,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  source_map_stack_trace:
+    dependency: transitive
+    description:
+      name: source_map_stack_trace
+      sha256: "84cf769ad83aa6bb61e0aa5a18e53aea683395f196a6f39c4c881fb90ed4f7ae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
+  source_maps:
+    dependency: transitive
+    description:
+      name: source_maps
+      sha256: "708b3f6b97248e5781f493b765c3337db11c5d2c81c3094f10904bfa8004c703"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.12"
   source_span:
     dependency: transitive
     description:
@@ -1237,6 +1373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  test:
+    dependency: transitive
+    description:
+      name: test
+      sha256: a1f7595805820fcc05e5c52e3a231aedd0b72972cb333e8c738a8b1239448b6f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.24.9"
   test_api:
     dependency: transitive
     description:
@@ -1245,6 +1389,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+  test_core:
+    dependency: transitive
+    description:
+      name: test_core
+      sha256: a757b14fc47507060a162cc2530d9a4a2f92f5100a952c7443b5cad5ef5b106a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.9"
   timing:
     dependency: transitive
     description:
@@ -1357,6 +1509,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  videosdk:
+    dependency: "direct main"
+    description:
+      name: videosdk
+      sha256: fb9baa52c2e280e2bb2047a17f4ddde18aebd99f9a4ba560b7e7509d2c145545
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.10"
+  videosdk_otel:
+    dependency: transitive
+    description:
+      name: videosdk_otel
+      sha256: "1d52aab84a26b0c021dea99e97fdf4cba187e0a776faa07da304c4c0a736f2f7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
+  videosdk_room_stats:
+    dependency: transitive
+    description:
+      name: videosdk_room_stats
+      sha256: "81d2efdccd719dc24b4376ec0b6310e3b55fea3829026e4c14b293e2931aa633"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   visibility_detector:
     dependency: transitive
     description:

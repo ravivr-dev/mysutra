@@ -4,7 +4,8 @@ class AppRoutes {
   static const String chooseAccountTypeRoute = "/choose_account_type_screen";
   static const String createAccountRoute = "/create_account_screen";
   static const String selectAccountRoute = "/select_account_screen";
-  static const String myProfileRoute = "/common/profile_screen/my_profile_screen";
+  static const String myProfileRoute =
+      "/common/profile_screen/my_profile_screen";
 
   // patient routes
   static const String findDoctorRoute = "/find_doctor_screen";
@@ -37,6 +38,7 @@ class AppRoutes {
       '/common/profile_screen/change_data_screen';
   static const String rescheduleAppointment =
       '/common/home/screens/reschedule_appointment_screen';
+  static const String videoCallingRoute = 'video_calling/video_calling_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

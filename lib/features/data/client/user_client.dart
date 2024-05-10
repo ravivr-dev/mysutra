@@ -16,10 +16,12 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../model/user_models/generate_username_model.dart';
 import '../model/user_models/home_response_model.dart';
 import '../model/user_models/my_profile_model.dart';
+import '../model/user_models/video_room_response_model.dart';
 
 part 'user_client.g.dart';
 
@@ -129,10 +131,11 @@ abstract class UserRestClient {
   @GET(EndPoints.userFollowing)
   Future<ResponseModel> getFollowings(@Queries() Map<String, dynamic> map);
 
-    @POST(EndPoints.userMessage)
+  @POST(EndPoints.userMessage)
   Future<CreateChatModel> sendMessage(
     @Body() final Map<String, dynamic> data,
   );
+
   @GET(EndPoints.userMessage)
   Future<ChatModel> getMessages(
     @Queries() final Map<String, dynamic> queries,
@@ -140,4 +143,8 @@ abstract class UserRestClient {
 
   @PUT(EndPoints.clearMessage)
   Future<dynamic> clearMessage(@Field("appointmentId") String appointmentId);
+
+  @POST(EndPoints.videoSdkRoom)
+  Future<VideoRoomResponseModel> getVideoRoomId(
+      @Body() Map<String, dynamic> map);
 }

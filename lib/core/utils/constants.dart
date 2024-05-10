@@ -58,6 +58,8 @@ class Constants {
   static const String gender = 'gender';
   static const String age = 'age';
   static const String userNameAvailable = 'userNameAvailable';
+  static const String videoSdkRoomId = 'videoSdkRoomId';
+  static const String videoSdkToken = 'videoSdkToken';
 
   //Doctor Constants
   static const String userId = 'userId';

@@ -21,6 +21,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/registration_use
 
 import '../../model/user_models/generate_username_model.dart';
 import '../../model/user_models/my_profile_model.dart';
+import '../../model/user_models/video_room_response_model.dart';
 
 abstract class UserDataSource {
   Future<GeneralModel> login(
@@ -60,6 +61,8 @@ abstract class UserDataSource {
   Future<SuccessMessageModel> verifyChangeEmail(Map<String, dynamic> map);
 
   Future<ResponseModel> getFollowing(Map<String, dynamic> map);
+
+  Future<VideoRoomResponseModel> getVideoRoomId(Map<String, dynamic> data);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -377,6 +380,22 @@ class UserDataSourceImpl extends UserDataSource {
   Future<CreateChatModel> sendMessages(Map<String, dynamic> data) async {
     try {
       return await client.sendMessage(data).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<VideoRoomResponseModel> getVideoRoomId(Map<String, dynamic> data) async {
+    try {
+      return await client.getVideoRoomId(data).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

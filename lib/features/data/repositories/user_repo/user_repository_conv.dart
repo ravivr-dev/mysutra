@@ -1,9 +1,11 @@
 import 'package:my_sutra/features/data/model/user_models/chat_model.dart';
 import 'package:my_sutra/features/data/model/user_models/my_profile_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
+import 'package:my_sutra/features/data/model/user_models/video_room_response_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
 
 import '../../../domain/entities/user_entities/my_profile_entity.dart';
 import '../../../domain/entities/user_entities/user_data_entity.dart';
@@ -14,7 +16,7 @@ class UserRepoConv {
   static List<SpecializationEntity> convSpecialisationModelToEntity(
       List<SpecializationItem> data) {
     List<SpecializationEntity> list =
-        List<SpecializationEntity>.empty(growable: true);
+    List<SpecializationEntity>.empty(growable: true);
 
     for (SpecializationItem e in data) {
       list.add(SpecializationEntity(
@@ -73,7 +75,7 @@ class UserRepoConv {
 
   static List<MessageItemEntity> convertChatModelToEntity(List<Data> data) {
     List<MessageItemEntity> list =
-        List<MessageItemEntity>.empty(growable: true);
+    List<MessageItemEntity>.empty(growable: true);
 
     for (Data e in data) {
       list.add(MessageItemEntity(
@@ -95,5 +97,11 @@ class UserRepoConv {
       ));
     }
     return list;
+  }
+
+  static VideoRoomResponseEntity videoRoomResponseModelToEntity(
+      VideoRoomResponseModel model) {
+    return VideoRoomResponseEntity(videoSdkRoomId: model.videoSdkRoomId,
+        videoSdkToken: model.videoSdkToken);
   }
 }

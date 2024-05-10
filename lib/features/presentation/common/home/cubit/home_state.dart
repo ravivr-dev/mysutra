@@ -103,3 +103,23 @@ final class RescheduleAppointmentLoadedState extends HomeState {
 
   RescheduleAppointmentLoadedState({required this.message});
 }
+
+final class GetVideoRoomSuccessState extends HomeState {
+  final VideoRoomResponseEntity data;
+  final bool isVideoCall;
+  final String name;
+
+  GetVideoRoomSuccessState({
+    required this.data,
+    required this.isVideoCall,
+    required this.name,
+  });
+}
+
+final class GetVideoRoomLoadingState extends HomeState {}
+
+final class GetVideoRoomErrorState extends HomeState {
+  final String message;
+
+  GetVideoRoomErrorState({required this.message});
+}

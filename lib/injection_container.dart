@@ -36,6 +36,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_us
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_profile_details_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_video_room_id_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
@@ -85,6 +86,7 @@ Future<void> init() async {
             sl<GetAvailableSlotsForDoctorUseCase>(),
         doctorRescheduleAppointmentsUseCase:
             sl<DoctorRescheduleAppointmentsUseCase>(),
+        getVideoRoomIdUseCase: sl<GetVideoRoomIdUseCase>(),
       ));
   sl.registerFactory(() => LoginCubit(sl<LoginUsecase>()));
   sl.registerFactory(() => SelectAccountCubit(
@@ -169,6 +171,7 @@ Future<void> init() async {
   sl.registerFactory(() => SendMessageUsecase(sl<UserRepository>()));
   sl.registerFactory(() => ClearMessagesUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetMessageUseCase(sl<UserRepository>()));
+  sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

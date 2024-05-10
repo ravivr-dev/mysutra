@@ -14,7 +14,9 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/registration_use
 import '../entities/user_entities/my_profile_entity.dart';
 import '../entities/user_entities/user_data_entity.dart';
 import '../entities/user_entities/user_entity.dart';
+import '../entities/user_entities/video_room_response_entity.dart';
 import '../usecases/user_usecases/get_following_usecase.dart';
+import '../usecases/user_usecases/get_video_room_id_usecase.dart';
 
 abstract class UserRepository {
   Future<Either<Failure, String>> login(
@@ -58,4 +60,7 @@ abstract class UserRepository {
 
   Future<Either<Failure, List<UserDataEntity>>> getFollowings(
       GetFollowingParams data);
+
+  Future<Either<Failure, VideoRoomResponseEntity>> getVideoRoomId(
+      GetVideoRoomIdUseCaseParams data);
 }

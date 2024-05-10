@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/search_with_filter_widget.dart';
 import 'package:my_sutra/core/common_widgets/time_container.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
@@ -15,6 +16,7 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_app
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/bottom_sheets/patient_appointment_bottom_sheet.dart';
+import 'package:my_sutra/features/presentation/common/video_calling/video_calling_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/bottomsheet/dr_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
@@ -91,9 +93,24 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
           _appointments.addAll(state.appointmentEntities);
         } else if (state is GetDoctorAppointmentSuccessState) {
           _isLoading = false;
+        } else if (state is GetVideoRoomSuccessState) {
+          AiloitteNavigation.intentWithData(
+            context,
+            AppRoutes.videoCallingRoute,
+            VideoCallingArgs(
+              entity: state.data,
+              isVideoCall: state.isVideoCall,
+              name: state.name,
+            ),
+          );
+        } else if (state is GetVideoRoomErrorState) {
+          widget.showErrorToast(context: context, message: state.message);
         }
       },
-      buildWhen: (previousState, newState) => previousState != newState,
+      buildWhen: (previousState, newState) =>
+          previousState != newState ||
+          newState is GetVideoRoomSuccessState ||
+          newState is GetVideoRoomErrorState,
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
@@ -105,6 +122,55 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCallingRowWidget({required AppointmentEntity appointment}) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildCallingRowItem(icon: Assets.iconsChat),
+        component.spacer(width: 8),
+        _buildCallingRowItem(
+            icon: Assets.iconsPhone,
+            onTap: () => _onVideoCallClick(
+                appointment: appointment, isVideoCall: false)),
+        component.spacer(width: 8),
+        _buildCallingRowItem(
+            icon: Assets.iconsVideo2,
+            color: AppColors.color0xFF8338EC,
+            onTap: () => _onVideoCallClick(appointment: appointment)),
+      ],
+    );
+  }
+
+  void _onVideoCallClick(
+      {required AppointmentEntity appointment, bool isVideoCall = true}) {
+    DateTime time = DateTime.parse(appointment.date);
+    if (DateTime.now().difference(time).inMinutes < 30) {
+      _callVideoSdkRoomApi(
+          appointment.id, appointment.fullName ?? appointment.username ?? '',
+          isVideoCall: isVideoCall);
+    } else {
+      widget.showErrorToast(
+          context: context, message: "Can't Join appointment before time");
+    }
+  }
+
+  Widget _buildCallingRowItem(
+      {required String icon, Color? color, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 40,
+        width: 40,
+        decoration: BoxDecoration(
+            color: color ?? AppColors.color0xFFE2E8F0,
+            borderRadius: BorderRadius.circular(6)),
+        child: component.assetImage(
+            path: icon,
+            color: color != null ? AppColors.white : AppColors.color0xFF3D3D3D),
+      ),
     );
   }
 
@@ -153,6 +219,12 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
         ),
       ],
     );
+  }
+
+  void _callVideoSdkRoomApi(String appointmentId, String name,
+      {bool isVideoCall = true}) {
+    context.read<HomeCubit>().getVideoRoomId(
+        appointmentId: appointmentId, isVideoCall: isVideoCall, name: name);
   }
 
   Widget _buildAppointmentDateWidget() {

@@ -20,6 +20,7 @@ import 'package:my_sutra/features/presentation/common/registration/choose_accoun
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
+import 'package:my_sutra/features/presentation/common/video_calling/video_calling_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_following/doctor_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/doctor_past_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_patients_screen.dart';
@@ -204,6 +205,10 @@ class Routes {
                   create: (context) => sl<ProfileCubit>(),
                   child: const MyProfileScreen(),
                 ));
+      case AppRoutes.videoCallingRoute:
+        final args = settings?.arguments as VideoCallingArgs;
+        return MaterialPageRoute(
+            builder: (_) => VideoCallingScreen(args: args));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
