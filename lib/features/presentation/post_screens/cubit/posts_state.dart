@@ -87,3 +87,31 @@ final class LikeDislikePostError extends PostsState {
 
   LikeDislikePostError({required this.error});
 }
+
+final class NewCommentLoading extends PostsState {}
+
+final class NewCommentLoaded extends PostsState {
+  final String message;
+
+  NewCommentLoaded({required this.message});
+}
+
+final class NewCommentError extends PostsState {
+  final String error;
+
+  NewCommentError({required this.error});
+}
+
+final class NewReplyLoading extends PostsState {}
+
+final class NewReplyLoaded extends PostsState {
+  final String message;
+
+  NewReplyLoaded({required this.message});
+}
+
+final class NewReplyError extends PostsState {
+  final String error;
+
+  NewReplyError({required this.error});
+}

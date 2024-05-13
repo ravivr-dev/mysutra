@@ -27,4 +27,14 @@ class CommentEntity {
     required this.updatedAt,
     required this.replies,
   });
+
+  void reInitIsLiked() {
+    isLiked = !isLiked;
+
+    if (isLiked) {
+      totalLikes += 1;
+    } else {
+      totalLikes -= 1;
+    }
+  }
 }

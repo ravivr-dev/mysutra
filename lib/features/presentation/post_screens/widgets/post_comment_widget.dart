@@ -6,9 +6,9 @@ import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.d
 import 'package:my_sutra/features/domain/entities/post_entities/reply_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
-import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/user_follow_widget.dart';
-import '../../../../../ailoitte_component_injector.dart';
-import '../../../../../core/utils/app_colors.dart';
+import 'package:my_sutra/features/presentation/post_screens/widgets/user_follow_widget.dart';
+import '../../../../ailoitte_component_injector.dart';
+import '../../../../core/utils/app_colors.dart';
 
 class PostCommentWidget extends StatelessWidget {
   final CommentEntity commentEntity;
@@ -66,7 +66,7 @@ class PostCommentWidget extends StatelessWidget {
           isFollowing: commentEntity.isFollowing,
         ),
         component.spacer(height: 10),
-        component.text(DateFormat('d/m/y').format(commentEntity.updatedAt),
+        component.text(DateFormat('d/M/y').format(commentEntity.updatedAt),
             style: theme.publicSansFonts.regularStyle(
               fontColor: AppColors.neutral,
             )),
@@ -109,7 +109,7 @@ class PostCommentWidget extends StatelessWidget {
           isFollowing: reply.isFollowing,
         ),
         component.spacer(height: 10),
-        component.text(DateFormat('d/m/y').format(commentEntity.updatedAt),
+        component.text(DateFormat('d/M/y').format(commentEntity.updatedAt),
             style: theme.publicSansFonts.regularStyle(
               fontColor: AppColors.neutral,
             )),

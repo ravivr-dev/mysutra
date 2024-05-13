@@ -11,8 +11,9 @@ import 'package:my_sutra/features/domain/entities/post_entities/post_detail_enti
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
-import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/post_comment_widget.dart';
-import 'package:my_sutra/features/presentation/post_screens/widgets/post_screen_widgets/user_follow_widget.dart';
+import 'package:my_sutra/features/presentation/post_screens/widgets/post_comment_widget.dart';
+import 'package:my_sutra/features/presentation/post_screens/widgets/user_follow_widget.dart';
+import 'package:my_sutra/features/presentation/post_screens/widgets/send_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/share_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 
@@ -34,11 +35,16 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   void initState() {
+    _loadPostDetails();
+    super.initState();
+  }
+
+  void _loadPostDetails() {
     context.read<PostsCubit>().getPostDetail(postId: widget.postId);
     context
         .read<PostsCubit>()
         .getComments(postId: widget.postId, pagination: 1, limit: 100);
-    super.initState();
+    setState(() {});
   }
 
   @override
@@ -72,13 +78,22 @@ class _PostScreenState extends State<PostScreen> {
             listener: (context, state) {
               if (state is GetPostDetailLoaded) {
                 postDetail = state.post;
-                postLoading = !postLoading;
+                postLoading = false;
               }
               if (state is GetCommentLoaded) {
                 comments = state.comments;
-                commentLoading = !commentLoading;
+                commentLoading = false;
               }
               if (state is GetCommentError) {
+                widget.showErrorToast(context: context, message: state.error);
+              }
+
+              if (state is NewCommentLoaded) {
+                _loadPostDetails();
+                _commentController.clear();
+              }
+
+              if (state is NewCommentError) {
                 widget.showErrorToast(context: context, message: state.error);
               }
             },
@@ -178,16 +193,20 @@ class _PostScreenState extends State<PostScreen> {
         children: [
           Expanded(
               child: component.textField(
-                  controller: _commentController,
-                  contentPadding: EdgeInsets.zero,
-                  hintText: context.stringForKey(StringKeys.writeYourComment),
-                  hintTextStyle: theme.publicSansFonts
-                      .regularStyle(fontSize: 16, fontColor: AppColors.black81),
-                  borderColor: AppColors.transparent)),
-          CircleAvatar(
-            backgroundColor: AppColors.color0xFF8338EC,
-            child: component.assetImage(path: Assets.iconsSend),
-          )
+            controller: _commentController,
+            contentPadding: EdgeInsets.zero,
+            hintText: context.stringForKey(StringKeys.writeYourComment),
+            hintTextStyle: theme.publicSansFonts
+                .regularStyle(fontSize: 16, fontColor: AppColors.black81),
+            borderColor: AppColors.transparent,
+            focusedBorderColor: AppColors.transparent,
+          )),
+          SendButtonWidget(
+            onTap: () {
+              context.read<PostsCubit>().newComment(
+                  postId: widget.postId, comment: _commentController.text);
+            },
+          ),
         ],
       ),
     );

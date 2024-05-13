@@ -37,7 +37,11 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usec
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_post_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
@@ -136,10 +140,14 @@ Future<void> init() async {
   sl.registerFactory(() => PostsCubit(
         uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
         createPostUsecase: sl<CreatePostUsecase>(),
-        likeUnlikeUsecase: sl<LikeDislikePostUsecase>(),
+        likeUnlikePostUsecase: sl<LikeDislikePostUsecase>(),
         getPostsUsecase: sl<GetPostsUsecase>(),
         getPostDetailUsecase: sl<GetPostDetailUsecase>(),
         getCommentUsecase: sl<GetCommentUsecase>(),
+        newCommentUsecase: sl<NewCommentUsecase>(),
+        newReplyUsecase: sl<NewReplyUsecase>(),
+        likeDislikeCommentUsecase: sl<LikeDislikeCommentUsecase>(),
+        likeDislikeReplyUsecase: sl<LikeDislikeReplyUsecase>(),
       ));
 
   // UseCases
@@ -193,6 +201,10 @@ Future<void> init() async {
   sl.registerFactory(() => GetPostDetailUsecase(sl<PostRepository>()));
   sl.registerFactory(() => GetCommentUsecase(sl<PostRepository>()));
   sl.registerFactory(() => LikeDislikePostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => NewCommentUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => NewReplyUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => LikeDislikeCommentUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => LikeDislikeReplyUsecase(sl<PostRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

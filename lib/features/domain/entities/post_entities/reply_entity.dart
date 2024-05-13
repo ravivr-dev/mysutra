@@ -23,4 +23,13 @@ class ReplyEntity {
     required this.updatedAt,
   });
 
+  void reInitIsLiked() {
+    isLiked = !isLiked;
+
+    if (isLiked) {
+      totalLikes += 1;
+    } else {
+      totalLikes -= 1;
+    }
+  }
 }
