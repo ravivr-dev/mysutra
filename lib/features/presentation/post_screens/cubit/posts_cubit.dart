@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';

@@ -77,7 +77,7 @@ final class CreatePostError extends PostsState {
 final class LikeDislikePostLoading extends PostsState {}
 
 final class LikeDislikePostLoaded extends PostsState {
-  final LikeDislikeEntity likeDislikeEntity;
+  final PostLikeDislikeEntity likeDislikeEntity;
 
   LikeDislikePostLoaded({required this.likeDislikeEntity});
 }

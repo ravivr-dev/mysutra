@@ -50,11 +50,6 @@ class EndPoints {
   static const String postLikeDislike = '/post/like-dislike';
   static const String comment = '/comment';
   static const String commentLikeDislike = '/comment/like-dislike';
-
-  // todo check how to send commentId in parenthesis
-  // static const String commentDelete = '/comment/{commentId}';
   static const String reply = '/reply';
   static const String replyLikeDislike = '/reply/like-dislike';
-// todo check how to send replyId in parenthesis
-// static const String replyDelete = '/reply/{replyId}';
 }

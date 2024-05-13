@@ -19,7 +19,7 @@ class _PostRestClient implements PostRestClient {
   String? baseUrl;
 
   @override
-  Future<SuccessMessageModel> newPost(Map<String, dynamic> data) async {
+  Future<SuccessMessageModel> createPost(Map<String, dynamic> data) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -103,14 +103,14 @@ class _PostRestClient implements PostRestClient {
   }
 
   @override
-  Future<LikeDislikeModel> likeDislikePost(Map<String, dynamic> map) async {
+  Future<PostLikeDislikeModel> likeDislikePost(Map<String, dynamic> map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(map);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<LikeDislikeModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PostLikeDislikeModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -126,7 +126,7 @@ class _PostRestClient implements PostRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = LikeDislikeModel.fromJson(_result.data!);
+    final value = PostLikeDislikeModel.fromJson(_result.data!);
     return value;
   }
 
@@ -182,6 +182,201 @@ class _PostRestClient implements PostRestClient {
               baseUrl,
             ))));
     final value = CommentModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SuccessMessageModel> postComment(Map<String, dynamic> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SuccessMessageModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/comment',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = SuccessMessageModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SuccessMessageModel> postReply(Map<String, dynamic> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SuccessMessageModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/reply',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = SuccessMessageModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<CommentLikeDislikeModel> likeDislikeComment(
+      Map<String, dynamic> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CommentLikeDislikeModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/comment/like-dislike',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CommentLikeDislikeModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ReplyLikeDislikeModel> likeDislikeReply(
+      Map<String, dynamic> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ReplyLikeDislikeModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/reply/like-dislike',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ReplyLikeDislikeModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SuccessMessageModel> deletePost(String postId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SuccessMessageModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/post/${postId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = SuccessMessageModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SuccessMessageModel> deleteComment(String commentId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SuccessMessageModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/comment/${commentId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = SuccessMessageModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SuccessMessageModel> deleteReply(String replyId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SuccessMessageModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/reply/${replyId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = SuccessMessageModel.fromJson(_result.data!);
     return value;
   }
 

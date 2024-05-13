@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/post_models/comment_like_dislike_model.dart';
 import 'package:my_sutra/features/data/model/post_models/comment_model.dart';
-import 'package:my_sutra/features/data/model/post_models/like_dislike_model.dart';
+import 'package:my_sutra/features/data/model/post_models/post_like_dislike_model.dart';
 import 'package:my_sutra/features/data/model/post_models/post_detail_model.dart';
 import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
+import 'package:my_sutra/features/data/model/post_models/reply_like_dislike_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
@@ -45,7 +49,7 @@ abstract class PostRestClient {
   }
 
   @POST(EndPoints.post)
-  Future<SuccessMessageModel> newPost(@Body() Map<String, dynamic> data);
+  Future<SuccessMessageModel> createPost(@Body() Map<String, dynamic> data);
 
   @GET(EndPoints.post)
   Future<PostModel> getPosts(@Queries() Map<String, dynamic> map);
@@ -54,11 +58,36 @@ abstract class PostRestClient {
   Future<SuccessMessageModel> editPost(@Queries() Map<String, dynamic> map);
 
   @POST(EndPoints.postLikeDislike)
-  Future<LikeDislikeModel> likeDislikePost(@Body() Map<String, dynamic> map);
+  Future<PostLikeDislikeModel> likeDislikePost(
+      @Body() Map<String, dynamic> map);
 
   @GET('${EndPoints.post}/{postId}')
   Future<PostDetailModel> getPostDetail(@Path('postId') String postId);
 
   @GET(EndPoints.comment)
   Future<CommentModel> getComment(@Queries() Map<String, dynamic> map);
+
+  @POST(EndPoints.comment)
+  Future<SuccessMessageModel> postComment(@Body() Map<String, dynamic> map);
+
+  @POST(EndPoints.reply)
+  Future<SuccessMessageModel> postReply(@Body() Map<String, dynamic> map);
+
+  @POST(EndPoints.commentLikeDislike)
+  Future<CommentLikeDislikeModel> likeDislikeComment(
+      @Body() Map<String, dynamic> map);
+
+  @POST(EndPoints.replyLikeDislike)
+  Future<ReplyLikeDislikeModel> likeDislikeReply(
+      @Body() Map<String, dynamic> map);
+
+  @DELETE('${EndPoints.post}/{postId}')
+  Future<SuccessMessageModel> deletePost(@Path('postId') String postId);
+
+  @DELETE('${EndPoints.comment}/{commentId}')
+  Future<SuccessMessageModel> deleteComment(
+      @Path('commentId') String commentId);
+
+  @DELETE('${EndPoints.reply}/{replyId}')
+  Future<SuccessMessageModel> deleteReply(@Path('replyId') String replyId);
 }

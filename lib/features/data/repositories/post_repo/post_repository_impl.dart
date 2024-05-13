@@ -7,14 +7,20 @@ import 'package:my_sutra/features/data/datasource/local_datasource/local_datasou
 import 'package:my_sutra/features/data/datasource/remote_datasource/post_datasource.dart';
 import 'package:my_sutra/features/data/repositories/post_repo/post_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/comment_like_dislike_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/reply_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
 
 class PostRepositoryImpl extends PostRepository {
   final LocalDataSource localDataSource;
@@ -63,13 +69,13 @@ class PostRepositoryImpl extends PostRepository {
   }
 
   @override
-  Future<Either<Failure, LikeDislikeEntity>> likeDislikePost(
+  Future<Either<Failure, PostLikeDislikeEntity>> likeDislikePost(
       LikeDislikePostParams params) async {
     try {
       if (await networkInfo.isConnected) {
         final result =
             await remoteDatasource.likeDislikePost({"postId": params.postId});
-        return Right(PostRepoConv.convertLikeDisilkeModelToEntity(result));
+        return Right(PostRepoConv.convertPostLikeDislikeModelToEntity(result));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
@@ -84,7 +90,7 @@ class PostRepositoryImpl extends PostRepository {
       if (await networkInfo.isConnected) {
         final result = await remoteDatasource.getPostDetail(postId);
 
-        return Right(PostRepoConv.converPostDetailModelToEntity(result.data));
+        return Right(PostRepoConv.convertPostDetailModelToEntity(result.data));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
@@ -105,6 +111,73 @@ class PostRepositoryImpl extends PostRepository {
         });
 
         return Right(PostRepoConv.convertCommentModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CommentLikeDislikeEntity>> likeDislikeComment(
+      LikeDislikeCommentParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource
+            .likeDislikeComment({"commentId": params.commentId});
+
+        return Right(
+            PostRepoConv.convertCommentLikeDislikeModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ReplyLikeDislikeEntity>> likeDislikeReply(
+      LikeDislikeReplyParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource
+            .likeDislikeReply({"replyId": params.replyId});
+
+        return Right(PostRepoConv.convertReplyLikeDislikeModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> postComment(NewCommentParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource
+            .postComment({"postId": params.postId, "comment": params.comment});
+
+        return Right(result.message ?? "Post Comment Success");
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> postReply(NewReplyParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource
+            .postComment({"commentId": params.commentId, "reply": params.reply});
+
+        return Right(result.message ?? "Post Reply Success");
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

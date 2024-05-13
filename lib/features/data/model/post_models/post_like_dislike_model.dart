@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-class LikeDislikeModel {
+class PostLikeDislikeModel {
   final String message;
-  final LikeDislikeData data;
+  final PostLikeDislikeData data;
 
-  LikeDislikeModel({
+  PostLikeDislikeModel({
     required this.message,
     required this.data,
   });
 
-  factory LikeDislikeModel.fromRawJson(String str) =>
-      LikeDislikeModel.fromJson(json.decode(str));
+  factory PostLikeDislikeModel.fromRawJson(String str) =>
+      PostLikeDislikeModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory LikeDislikeModel.fromJson(Map<String, dynamic> json) =>
-      LikeDislikeModel(
+  factory PostLikeDislikeModel.fromJson(Map<String, dynamic> json) =>
+      PostLikeDislikeModel(
         message: json["message"],
-        data: LikeDislikeData.fromJson(json["data"]),
+        data: PostLikeDislikeData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -26,7 +26,7 @@ class LikeDislikeModel {
       };
 }
 
-class LikeDislikeData {
+class PostLikeDislikeData {
   final String? likedBy;
   final String postId;
   final String? id;
@@ -34,7 +34,7 @@ class LikeDislikeData {
   final DateTime? updatedAt;
   final int? v;
 
-  LikeDislikeData({
+  PostLikeDislikeData({
     this.likedBy,
     required this.postId,
     this.id,
@@ -43,13 +43,13 @@ class LikeDislikeData {
     required this.v,
   });
 
-  factory LikeDislikeData.fromRawJson(String str) =>
-      LikeDislikeData.fromJson(json.decode(str));
+  factory PostLikeDislikeData.fromRawJson(String str) =>
+      PostLikeDislikeData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory LikeDislikeData.fromJson(Map<String, dynamic> json) =>
-      LikeDislikeData(
+  factory PostLikeDislikeData.fromJson(Map<String, dynamic> json) =>
+      PostLikeDislikeData(
         likedBy: json["likedBy"],
         postId: json["postId"],
         id: json["_id"],

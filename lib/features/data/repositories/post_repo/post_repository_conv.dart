@@ -1,20 +1,23 @@
+import 'package:my_sutra/features/data/model/post_models/comment_like_dislike_model.dart';
 import 'package:my_sutra/features/data/model/post_models/comment_model.dart';
-import 'package:my_sutra/features/data/model/post_models/like_dislike_model.dart';
+import 'package:my_sutra/features/data/model/post_models/post_like_dislike_model.dart';
 import 'package:my_sutra/features/data/model/post_models/post_detail_model.dart';
 import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
+import 'package:my_sutra/features/data/model/post_models/reply_like_dislike_model.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/like_dislike_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/comment_like_dislike_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/reply_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/reply_like_dislike_entity.dart';
 
 class PostRepoConv {
   static List<PostEntity> convertPostsModelToEntity(List<PostData> data) {
     return data
-        .map((e) =>
-        PostEntity(
+        .map((e) => PostEntity(
             id: e.id,
             userId: PostUserEntity(
               id: e.userId.id,
@@ -40,19 +43,46 @@ class PostRepoConv {
         .toList();
   }
 
-  static LikeDislikeEntity convertLikeDisilkeModelToEntity(
-      LikeDislikeModel model) {
+  static PostLikeDislikeEntity convertPostLikeDislikeModelToEntity(
+      PostLikeDislikeModel model) {
     if (model.data.likedBy != null) {
-      return LikeDislikeEntity(
+      return PostLikeDislikeEntity(
           likedBy: model.data.likedBy,
           postId: model.data.postId,
           id: model.data.id);
     } else {
-      return LikeDislikeEntity(postId: model.data.postId);
+      return PostLikeDislikeEntity(postId: model.data.postId);
     }
   }
 
-  static PostDetailEntity converPostDetailModelToEntity(PostDetailData data) {
+  static ReplyLikeDislikeEntity convertReplyLikeDislikeModelToEntity(
+      ReplyLikeDislikeModel model) {
+    if (model.data.likedBy != null) {
+      return ReplyLikeDislikeEntity(
+          likedBy: model.data.likedBy,
+          postId: model.data.postId,
+          id: model.data.id,
+          commentId: model.data.commentId,
+          replyId: model.data.replyId);
+    } else {
+      return ReplyLikeDislikeEntity(replyId: model.data.replyId);
+    }
+  }
+
+  static CommentLikeDislikeEntity convertCommentLikeDislikeModelToEntity(
+      CommentLikeDislikeModel model) {
+    if (model.data.likedBy != null) {
+      return CommentLikeDislikeEntity(
+          likedBy: model.data.likedBy,
+          postId: model.data.postId,
+          commentId: model.data.commentId,
+          id: model.data.id);
+    } else {
+      return CommentLikeDislikeEntity(commentId: model.data.commentId);
+    }
+  }
+
+  static PostDetailEntity convertPostDetailModelToEntity(PostDetailData data) {
     return PostDetailEntity(
         id: data.id,
         userId: PostUserEntity(
@@ -78,10 +108,11 @@ class PostRepoConv {
   }
 
   static List<CommentEntity> convertCommentModelToEntity(CommentModel model) {
-    return model.data.map((e) =>
-        CommentEntity(
+    return model.data
+        .map((e) => CommentEntity(
             id: e.id,
-            userId: PostUserEntity(id: e.userId.id,
+            userId: PostUserEntity(
+                id: e.userId.id,
                 role: e.userId.role,
                 fullName: e.userId.fullName,
                 username: e.userId.username,
@@ -94,10 +125,11 @@ class PostRepoConv {
             totalReplies: e.totalReplies,
             createdAt: e.createdAt,
             updatedAt: e.updatedAt,
-            replies: e.replies.map((e) =>
-                ReplyEntity(
+            replies: e.replies
+                .map((e) => ReplyEntity(
                     id: e.id,
-                    userId: PostUserEntity(id: e.userId.id,
+                    userId: PostUserEntity(
+                        id: e.userId.id,
                         role: e.userId.role,
                         fullName: e.userId.fullName,
                         username: e.userId.username,
@@ -108,6 +140,8 @@ class PostRepoConv {
                     isLiked: e.isLiked,
                     totalLikes: e.totalLikes,
                     createdAt: e.createdAt,
-                    updatedAt: e.updatedAt)).toList())).toList();
+                    updatedAt: e.updatedAt))
+                .toList()))
+        .toList();
   }
 }
