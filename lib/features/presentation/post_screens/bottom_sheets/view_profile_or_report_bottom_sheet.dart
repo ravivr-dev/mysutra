@@ -1,13 +1,18 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/reporting_bottom_sheet.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/injection_container.dart';
 
-class ViewProfileBottomSheet extends StatelessWidget {
-  const ViewProfileBottomSheet({super.key});
+class ViewProfileOrReportBottomSheet extends StatelessWidget {
+  final String postId;
+
+  const ViewProfileOrReportBottomSheet({super.key, required this.postId});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,12 @@ class ViewProfileBottomSheet extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               context.showBottomSheet(
-                const ReportingBottomSheet(),
+                BlocProvider(
+                  create: (context) => sl<PostsCubit>(),
+                  child: ReportingBottomSheet(
+                    postId: postId,
+                  ),
+                ),
                 isScrollControlled: true,
               );
             },

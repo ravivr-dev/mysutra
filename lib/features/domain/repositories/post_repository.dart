@@ -14,6 +14,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_pos
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
 
 abstract class PostRepository {
   Future<Either<Failure, String>> createPost(CreatePostParams params);
@@ -37,4 +38,6 @@ abstract class PostRepository {
 
   Future<Either<Failure, ReplyLikeDislikeEntity>> likeDislikeReply(
       LikeDislikeReplyParams params);
+
+  Future<Either<Failure, String>> reportPost(ReportPostParams params);
 }

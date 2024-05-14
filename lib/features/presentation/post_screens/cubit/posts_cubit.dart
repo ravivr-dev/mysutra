@@ -17,6 +17,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_pos
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 
 part 'posts_state.dart';
@@ -32,9 +33,11 @@ class PostsCubit extends Cubit<PostsState> {
   final LikeDislikeReplyUsecase likeDislikeReplyUsecase;
   final NewCommentUsecase newCommentUsecase;
   final NewReplyUsecase newReplyUsecase;
+  final ReportPostUsecase reportPostUsecase;
 
   PostsCubit(
-      {required this.newCommentUsecase,
+      {required this.reportPostUsecase,
+      required this.newCommentUsecase,
       required this.newReplyUsecase,
       required this.likeDislikeCommentUsecase,
       required this.likeDislikeReplyUsecase,
@@ -120,5 +123,16 @@ class PostsCubit extends Cubit<PostsState> {
 
     result.fold((l) => emit(NewReplyError(error: l.message)),
         (r) => emit(NewReplyLoaded(message: r)));
+  }
+
+  void reportPost(
+      {required String postId,
+      required String reportReason,
+      required String description}) async {
+    final result = await reportPostUsecase.call(ReportPostParams(
+        postId: postId, reportReason: reportReason, description: description));
+
+    result.fold((l) => emit(ReportPostError(error: l.message)),
+        (r) => emit(ReportPostLoaded(message: r)));
   }
 }

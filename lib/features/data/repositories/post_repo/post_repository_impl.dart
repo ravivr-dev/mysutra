@@ -21,6 +21,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_pos
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
 
 class PostRepositoryImpl extends PostRepository {
   final LocalDataSource localDataSource;
@@ -174,10 +175,29 @@ class PostRepositoryImpl extends PostRepository {
   Future<Either<Failure, String>> postReply(NewReplyParams params) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDatasource
-            .postComment({"commentId": params.commentId, "reply": params.reply});
+        final result = await remoteDatasource.postComment(
+            {"commentId": params.commentId, "reply": params.reply});
 
         return Right(result.message ?? "Post Reply Success");
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> reportPost(ReportPostParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource.reportPost({
+          "postId": params.postId,
+          "reportReason": params.reportReason,
+          "description": params.description
+        });
+
+        return Right(result.message ?? 'Post Report Success');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

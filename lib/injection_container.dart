@@ -42,6 +42,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_pos
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
@@ -148,6 +149,7 @@ Future<void> init() async {
         newReplyUsecase: sl<NewReplyUsecase>(),
         likeDislikeCommentUsecase: sl<LikeDislikeCommentUsecase>(),
         likeDislikeReplyUsecase: sl<LikeDislikeReplyUsecase>(),
+        reportPostUsecase: sl<ReportPostUsecase>(),
       ));
 
   // UseCases
@@ -205,6 +207,7 @@ Future<void> init() async {
   sl.registerFactory(() => NewReplyUsecase(sl<PostRepository>()));
   sl.registerFactory(() => LikeDislikeCommentUsecase(sl<PostRepository>()));
   sl.registerFactory(() => LikeDislikeReplyUsecase(sl<PostRepository>()));
+  sl.registerLazySingleton(() => ReportPostUsecase(sl<PostRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

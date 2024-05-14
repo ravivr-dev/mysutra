@@ -38,6 +38,8 @@ abstract class PostDatasource {
   Future<SuccessMessageModel> deleteComment(String commentId);
 
   Future<SuccessMessageModel> deleteReply(String replyId);
+
+  Future<SuccessMessageModel> reportPost(Map<String, dynamic> map);
 }
 
 class PostDatasourceImpl extends PostDatasource {
@@ -243,6 +245,21 @@ class PostDatasourceImpl extends PostDatasource {
   Future<SuccessMessageModel> deleteReply(String replyId) async {
     try {
       return await client.deleteReply(replyId).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              localDataSource: localDataSource, validateAuthentication: true));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessMessageModel> reportPost(Map<String, dynamic> map) {
+    try {
+      return client.reportPost(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

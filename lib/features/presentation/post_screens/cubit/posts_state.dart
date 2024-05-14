@@ -115,3 +115,17 @@ final class NewReplyError extends PostsState {
 
   NewReplyError({required this.error});
 }
+
+final class ReportPostLoading extends PostsState {}
+
+final class ReportPostLoaded extends PostsState {
+  final String message;
+
+  ReportPostLoaded({required this.message});
+}
+
+final class ReportPostError extends PostsState {
+  final String error;
+
+  ReportPostError({required this.error});
+}

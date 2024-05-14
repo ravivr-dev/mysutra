@@ -51,6 +51,7 @@ class _PostWidgetState extends State<PostWidget> {
                 userIdEntity: widget.postEntity.userId,
                 isMyPost: widget.postEntity.isMyPost,
                 isFollowing: widget.postEntity.isFollowing,
+                postId: widget.postEntity.id,
               ),
               component.spacer(height: 10),
               component.text(

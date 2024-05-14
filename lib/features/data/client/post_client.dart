@@ -90,4 +90,7 @@ abstract class PostRestClient {
 
   @DELETE('${EndPoints.reply}/{replyId}')
   Future<SuccessMessageModel> deleteReply(@Path('replyId') String replyId);
+
+  @PATCH(EndPoints.postReport)
+  Future<SuccessMessageModel> reportPost(@Body() Map<String, dynamic> map);
 }

@@ -4,20 +4,23 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
+import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/view_profile_or_report_bottom_sheet.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 class UserFollowWidget extends StatelessWidget {
-  final VoidCallback? onShowMoreButtonClick;
+  final String? postId;
   final PostUserEntity userIdEntity;
   final bool isMyPost;
   final bool isFollowing;
+  final bool isPost;
 
   const UserFollowWidget(
       {super.key,
-      this.onShowMoreButtonClick,
       required this.userIdEntity,
       required this.isMyPost,
-      required this.isFollowing});
+      required this.isFollowing,
+      this.postId,
+      this.isPost = true});
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +72,19 @@ class UserFollowWidget extends StatelessWidget {
                 )),
           ),
         ],
-        const Spacer(),
-        InkWell(
-          onTap: onShowMoreButtonClick,
-          child: const Icon(
-            Icons.more_vert,
-            color: AppColors.color0xFF292D32,
-            size: 18,
-          ),
-        )
+        if (isPost) ...[
+          const Spacer(),
+          InkWell(
+            onTap: () => context.showBottomSheet(ViewProfileOrReportBottomSheet(
+              postId: postId!,
+            )),
+            child: const Icon(
+              Icons.more_vert,
+              color: AppColors.color0xFF292D32,
+              size: 18,
+            ),
+          )
+        ]
       ],
     );
   }

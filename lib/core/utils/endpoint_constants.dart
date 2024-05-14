@@ -46,7 +46,7 @@ class EndPoints {
   // Posts Endpoints
   static const String searchUserName = '/post/search';
   static const String post = '/post';
-  static const String postRepost = '/post/report';
+  static const String postReport = '/post/report';
   static const String postLikeDislike = '/post/like-dislike';
   static const String comment = '/comment';
   static const String commentLikeDislike = '/comment/like-dislike';
