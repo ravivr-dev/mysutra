@@ -6,12 +6,14 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
+import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/user_follow_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/share_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class PostWidget extends StatefulWidget {
@@ -47,11 +49,14 @@ class _PostWidgetState extends State<PostWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UserFollowWidget(
-                userIdEntity: widget.postEntity.userId,
-                isMyPost: widget.postEntity.isMyPost,
-                isFollowing: widget.postEntity.isFollowing,
-                postId: widget.postEntity.id,
+              BlocProvider<SearchDoctorCubit>(
+                create: (context) => sl<SearchDoctorCubit>(),
+                child: UserFollowWidget(
+                  userIdEntity: widget.postEntity.userId,
+                  isMyPost: widget.postEntity.isMyPost,
+                  isFollowing: widget.postEntity.isFollowing,
+                  postId: widget.postEntity.id,
+                ),
               ),
               component.spacer(height: 10),
               component.text(

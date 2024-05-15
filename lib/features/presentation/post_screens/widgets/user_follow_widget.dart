@@ -1,11 +1,16 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
+import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
+import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/edit_or_deete_post_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/view_profile_or_report_bottom_sheet.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class UserFollowWidget extends StatelessWidget {
@@ -27,30 +32,23 @@ class UserFollowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        InkWell(
-          onTap: () {},
-          child: Row(
-            children: [
-              ClipRRect(
-                clipBehavior: Clip.hardEdge,
-                borderRadius: BorderRadius.circular(4),
-                child: component.networkImage(
-                  url: userIdEntity.profilePic ?? '',
-                  height: 24,
-                  width: 24,
-                  fit: BoxFit.fill,
-                  errorWidget: component.assetImage(
-                      path: Assets.imagesDefaultAvatar, fit: BoxFit.contain),
-                ),
-              ),
-              component.spacer(width: 4),
-              component.text(userIdEntity.username,
-                  style: theme.publicSansFonts.mediumStyle(
-                    fontSize: 16,
-                  ))
-            ],
+        ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: BorderRadius.circular(4),
+          child: component.networkImage(
+            url: userIdEntity.profilePic ?? '',
+            height: 24,
+            width: 24,
+            fit: BoxFit.fill,
+            errorWidget: component.assetImage(
+                path: Assets.imagesDefaultAvatar, fit: BoxFit.contain),
           ),
         ),
+        component.spacer(width: 4),
+        component.text(userIdEntity.username,
+            style: theme.publicSansFonts.mediumStyle(
+              fontSize: 16,
+            )),
         component.spacer(width: 4),
         if (userIdEntity.isVerified) ...[
           component.assetImage(
@@ -60,7 +58,7 @@ class UserFollowWidget extends StatelessWidget {
               fit: BoxFit.fill),
         ],
         component.spacer(width: 3),
-        if (!isMyPost) ...[
+        if (!isMyPost && userIdEntity.role == 'DOCTOR') ...[
           Container(
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
             decoration: BoxDecoration(
@@ -80,19 +78,23 @@ class UserFollowWidget extends StatelessWidget {
                 )),
           ),
         ],
-        if (isPost) ...[
-          const Spacer(),
-          InkWell(
-            onTap: () => context.showBottomSheet(ViewProfileOrReportBottomSheet(
-              postId: postId!,
-            )),
-            child: const Icon(
-              Icons.more_vert,
-              color: AppColors.color0xFF292D32,
-              size: 18,
-            ),
-          )
-        ]
+        const Spacer(),
+        InkWell(
+          onTap: () => context.showBottomSheet(isMyPost
+              ? EditOrDeletePostBottomSheet(postId: postId!)
+              : BlocProvider<SearchDoctorCubit>(
+                  create: (context) => sl<SearchDoctorCubit>(),
+                  child: ViewProfileOrReportBottomSheet(
+                    postId: postId!,
+                    userId: userIdEntity.id!,
+                  ),
+                )),
+          child: const Icon(
+            Icons.more_vert,
+            color: AppColors.color0xFF292D32,
+            size: 18,
+          ),
+        )
       ],
     );
   }
