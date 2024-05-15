@@ -6,6 +6,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/view_profile_or_report_bottom_sheet.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class UserFollowWidget extends StatelessWidget {
   final String? postId;
@@ -26,23 +27,30 @@ class UserFollowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          clipBehavior: Clip.hardEdge,
-          borderRadius: BorderRadius.circular(4),
-          child: component.networkImage(
-            url: userIdEntity.profilePic ?? '',
-            height: 24,
-            width: 24,
-            fit: BoxFit.fill,
-            errorWidget: component.assetImage(
-                path: Assets.imagesDefaultAvatar, fit: BoxFit.contain),
+        InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.circular(4),
+                child: component.networkImage(
+                  url: userIdEntity.profilePic ?? '',
+                  height: 24,
+                  width: 24,
+                  fit: BoxFit.fill,
+                  errorWidget: component.assetImage(
+                      path: Assets.imagesDefaultAvatar, fit: BoxFit.contain),
+                ),
+              ),
+              component.spacer(width: 4),
+              component.text(userIdEntity.username,
+                  style: theme.publicSansFonts.mediumStyle(
+                    fontSize: 16,
+                  ))
+            ],
           ),
         ),
-        component.spacer(width: 4),
-        component.text(userIdEntity.username,
-            style: theme.publicSansFonts.mediumStyle(
-              fontSize: 16,
-            )),
         component.spacer(width: 4),
         if (userIdEntity.isVerified) ...[
           component.assetImage(

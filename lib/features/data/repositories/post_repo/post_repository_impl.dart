@@ -175,7 +175,7 @@ class PostRepositoryImpl extends PostRepository {
   Future<Either<Failure, String>> postReply(NewReplyParams params) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDatasource.postComment(
+        final result = await remoteDatasource.postReply(
             {"commentId": params.commentId, "reply": params.reply});
 
         return Right(result.message ?? "Post Reply Success");

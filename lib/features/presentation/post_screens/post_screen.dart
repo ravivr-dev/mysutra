@@ -28,10 +28,8 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   final TextEditingController _commentController = TextEditingController();
-  late PostDetailEntity postDetail;
+  PostDetailEntity? postDetail;
   List<CommentEntity> comments = [];
-  bool postLoading = true;
-  bool commentLoading = true;
 
   @override
   void initState() {
@@ -78,11 +76,9 @@ class _PostScreenState extends State<PostScreen> {
             listener: (context, state) {
               if (state is GetPostDetailLoaded) {
                 postDetail = state.post;
-                postLoading = false;
               }
               if (state is GetCommentLoaded) {
                 comments = state.comments;
-                commentLoading = false;
               }
               if (state is GetCommentError) {
                 widget.showErrorToast(context: context, message: state.error);
@@ -98,7 +94,7 @@ class _PostScreenState extends State<PostScreen> {
               }
             },
             builder: (context, state) {
-              return postLoading
+              return postDetail == null
                   ? const Center(child: CircularProgressIndicator())
                   : Column(
                       children: [
@@ -124,36 +120,35 @@ class _PostScreenState extends State<PostScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildWriteYourCommentWidget(),
-          if (!commentLoading) ...[
-            if (comments.isNotEmpty) ...[
-              component.spacer(height: 16),
-              _buildDivider(),
-              component.spacer(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: component.text(context.stringForKey(StringKeys.comments),
-                    style: theme.publicSansFonts.mediumStyle(fontSize: 16)),
-              ),
-              component.spacer(height: 16),
-              ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return PostCommentWidget(
-                      commentEntity: comments[index],
-                    );
-                  },
-                  separatorBuilder: (_, index) {
-                    return Column(
-                      children: [
-                        component.spacer(height: 14),
-                        _buildDivider(),
-                        component.spacer(height: 14),
-                      ],
-                    );
-                  },
-                  itemCount: comments.length),
-            ]
+          if (comments.isNotEmpty) ...[
+            component.spacer(height: 16),
+            _buildDivider(),
+            component.spacer(height: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: component.text(context.stringForKey(StringKeys.comments),
+                  style: theme.publicSansFonts.mediumStyle(fontSize: 16)),
+            ),
+            component.spacer(height: 16),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return PostCommentWidget(
+                    commentEntity: comments[index],
+                    postId: widget.postId,
+                  );
+                },
+                separatorBuilder: (_, index) {
+                  return Column(
+                    children: [
+                      component.spacer(height: 14),
+                      _buildDivider(),
+                      component.spacer(height: 14),
+                    ],
+                  );
+                },
+                itemCount: comments.length),
           ]
         ],
       ),
@@ -225,23 +220,23 @@ class _PostScreenState extends State<PostScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UserFollowWidget(
-            userIdEntity: postDetail.userId,
-            isMyPost: postDetail.isMyPost,
-            isFollowing: postDetail.isFollowing,
+            userIdEntity: postDetail!.userId,
+            isMyPost: postDetail!.isMyPost,
+            isFollowing: postDetail!.isFollowing,
           ),
           component.spacer(height: 10),
-          component.text(DateFormat('d/M/y').format(postDetail.updatedAt),
+          component.text(DateFormat('d/M/y').format(postDetail!.updatedAt),
               style: theme.publicSansFonts.mediumStyle(
                 fontColor: AppColors.neutral,
               )),
           component.spacer(height: 10),
-          component.text(postDetail.content,
+          component.text(postDetail!.content,
               style: theme.publicSansFonts.regularStyle(
                 fontSize: 16,
                 fontColor: AppColors.color0xFF1E293B,
               )),
           component.spacer(height: 16),
-          if (postDetail.mediaUrls.isNotEmpty) ...[
+          if (postDetail!.mediaUrls.isNotEmpty) ...[
             SizedBox(
               height: 150,
               child: ListView.separated(
@@ -249,7 +244,7 @@ class _PostScreenState extends State<PostScreen> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   return component.networkImage(
-                    url: postDetail.mediaUrls[index].url ?? '',
+                    url: postDetail!.mediaUrls[index].url ?? '',
                     height: 153,
                     width: 153,
                     borderRadius: 20,
@@ -261,7 +256,7 @@ class _PostScreenState extends State<PostScreen> {
                 separatorBuilder: (BuildContext context, int index) {
                   return component.spacer(width: 10);
                 },
-                itemCount: postDetail.mediaUrls.length,
+                itemCount: postDetail!.mediaUrls.length,
               ),
             ),
           ],
@@ -271,17 +266,17 @@ class _PostScreenState extends State<PostScreen> {
           Row(
             children: [
               LikeDislikeButtonWidget(
-                  isLiked: postDetail.isLiked,
+                  isLiked: postDetail!.isLiked,
                   onTap: () {},
-                  likeCount: postDetail.totalLikes),
+                  likeCount: postDetail!.totalLikes),
               component.spacer(width: 20),
               CommentButtonWidget(
-                commentCount: postDetail.totalComments,
-                postId: postDetail.id,
+                commentCount: postDetail!.totalComments,
+                postId: postDetail!.id,
                 onTap: () {},
               ),
               const Spacer(),
-              ShareButtonWidget(shareCount: postDetail.totalShares),
+              ShareButtonWidget(shareCount: postDetail!.totalShares),
             ],
           )
         ],

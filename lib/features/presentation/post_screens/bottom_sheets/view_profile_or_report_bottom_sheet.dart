@@ -23,26 +23,26 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildRow(context,
-              key: StringKeys.viewProfile, icon: Assets.iconsWarning),
+              key: StringKeys.viewProfile,
+              icon: Assets.iconsReport,
+              color: AppColors.black24),
           const Divider(color: AppColors.color0xFFEAECF0),
-          _buildRow(
-            context,
-            onTap: () {
-              Navigator.pop(context);
-              context.showBottomSheet(
-                BlocProvider(
-                  create: (context) => sl<PostsCubit>(),
-                  child: ReportingBottomSheet(
-                    postId: postId,
-                  ),
+          _buildRow(context, onTap: () {
+            Navigator.pop(context);
+            context.showBottomSheet(
+              BlocProvider(
+                create: (context) => sl<PostsCubit>(),
+                child: ReportingBottomSheet(
+                  postId: postId,
                 ),
-                isScrollControlled: true,
-              );
-            },
-            key: StringKeys.report,
-            icon: Assets.iconsReport,
-            fontColor: AppColors.color0xFFF34848,
-          )
+              ),
+              isScrollControlled: true,
+            );
+          },
+              key: StringKeys.report,
+              icon: Assets.iconsWarning,
+              fontColor: AppColors.color0xFFF34848,
+              color: AppColors.error)
         ],
       ),
     );
@@ -52,6 +52,7 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
     BuildContext context, {
     required String key,
     required String icon,
+    required Color color,
     Color? fontColor,
     VoidCallback? onTap,
   }) {
@@ -59,7 +60,7 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          component.assetImage(path: icon),
+          component.assetImage(path: icon, color: color),
           component.spacer(width: 8),
           component.text(context.stringForKey(key),
               style: theme.publicSansFonts.regularStyle(
