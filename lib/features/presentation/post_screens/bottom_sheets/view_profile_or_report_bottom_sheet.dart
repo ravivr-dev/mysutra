@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/reporting_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
@@ -29,8 +28,8 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
       listener: (context, state) {
         if (state is GetDoctorDetailsSuccessState) {
           AiloitteNavigation.back(context);
-          _navigateToDoctorDetailScreen(
-              context: context, entity: state.doctorEntity);
+          Navigator.pushNamed(context, AppRoutes.doctorDetail,
+              arguments: state.doctorEntity);
         }
       },
       child: Container(
@@ -96,15 +95,5 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _navigateToDoctorDetailScreen(
-      {required BuildContext context, required DoctorEntity entity}) {
-    Navigator.pushNamed(context, AppRoutes.doctorDetail, arguments: entity);
-  }
-
-  void _getDoctorDetails(
-      {required BuildContext context, required String doctorId}) {
-    context.read<SearchDoctorCubit>().getDoctorDetails(doctorId: doctorId);
   }
 }
