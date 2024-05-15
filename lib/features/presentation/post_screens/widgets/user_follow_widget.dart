@@ -72,8 +72,7 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                   fit: BoxFit.fill),
             ],
             component.spacer(width: 3),
-            if (!widget.isMyPost &&
-                widget.userIdEntity.role == 'DOCTOR') ...[
+            if (!widget.isMyPost && widget.userIdEntity.role == 'DOCTOR') ...[
               InkWell(
                 onTap: () {
                   context.read<SearchDoctorCubit>().followDoctor(
@@ -101,24 +100,26 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                 ),
               ),
             ],
-            if(widget.isPost)...[const Spacer(),
-            InkWell(
-              onTap: () => context.showBottomSheet(widget.isMyPost
-                  ? EditOrDeletePostBottomSheet(postId: widget.postId!)
-                  : BlocProvider<SearchDoctorCubit>(
-                      create: (context) => sl<SearchDoctorCubit>(),
-                      child: ViewProfileOrReportBottomSheet(
-                        postId: widget.postId!,
-                        userId: widget.userIdEntity.id!,
-                        userRole: widget.userIdEntity.role!,
-                      ),
-                    )),
-              child: const Icon(
-                Icons.more_vert,
-                color: AppColors.color0xFF292D32,
-                size: 18,
-              ),
-            )]
+            if (widget.isPost) ...[
+              const Spacer(),
+              InkWell(
+                onTap: () => context.showBottomSheet(widget.isMyPost
+                    ? EditOrDeletePostBottomSheet(postId: widget.postId!)
+                    : BlocProvider<SearchDoctorCubit>(
+                        create: (context) => sl<SearchDoctorCubit>(),
+                        child: ViewProfileOrReportBottomSheet(
+                          postId: widget.postId!,
+                          userId: widget.userIdEntity.id!,
+                          userRole: widget.userIdEntity.role!,
+                        ),
+                      )),
+                child: const Icon(
+                  Icons.more_vert,
+                  color: AppColors.color0xFF292D32,
+                  size: 18,
+                ),
+              )
+            ]
           ],
         );
       },

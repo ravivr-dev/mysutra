@@ -220,6 +220,7 @@ class _PostScreenState extends State<PostScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UserFollowWidget(
+            postId: postDetail!.id,
             userIdEntity: postDetail!.userId,
             isMyPost: postDetail!.isMyPost,
             isFollowing: postDetail!.isFollowing,
