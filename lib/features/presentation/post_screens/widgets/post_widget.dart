@@ -33,8 +33,7 @@ class _PostWidgetState extends State<PostWidget> {
         if (state is LikeDislikePostLoaded &&
             widget.postEntity.id == state.likeDislikeEntity.postId) {
           widget.postEntity.reInitIsLiked();
-        }
-        if (state is LikeDislikePostError) {
+        } else if (state is LikeDislikePostError) {
           widget.showErrorToast(context: context, message: state.error);
         }
       },
@@ -56,6 +55,11 @@ class _PostWidgetState extends State<PostWidget> {
                   isMyPost: widget.postEntity.isMyPost,
                   isFollowing: widget.postEntity.isFollowing,
                   postId: widget.postEntity.id,
+                  userFollowing: (_) {
+                    setState(() {
+                      widget.postEntity.reInitIsFollowing();
+                    });
+                  },
                 ),
               ),
               component.spacer(height: 10),

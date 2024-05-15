@@ -210,8 +210,15 @@ class Routes {
       case AppRoutes.postRoute:
         final args = settings?.arguments as String;
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<PostsCubit>(
-                  create: (context) => sl<PostsCubit>(),
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<PostsCubit>(
+                      create: (context) => sl<PostsCubit>(),
+                    ),
+                    BlocProvider<SearchDoctorCubit>(
+                      create: (context) => sl<SearchDoctorCubit>(),
+                    ),
+                  ],
                   child: PostScreen(
                     postId: args,
                   ),

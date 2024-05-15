@@ -100,6 +100,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
           userIdEntity: widget.commentEntity.userId,
           isMyPost: widget.commentEntity.isMyComment,
           isFollowing: widget.commentEntity.isFollowing,
+          isPost: false,
         ),
         component.spacer(height: 10),
         component.text(
@@ -189,6 +190,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
           userIdEntity: reply.userId,
           isMyPost: reply.isMyReply,
           isFollowing: reply.isFollowing,
+          isPost: false,
         ),
         component.spacer(height: 10),
         component.text(

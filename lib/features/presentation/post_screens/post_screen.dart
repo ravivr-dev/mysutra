@@ -223,6 +223,11 @@ class _PostScreenState extends State<PostScreen> {
             userIdEntity: postDetail!.userId,
             isMyPost: postDetail!.isMyPost,
             isFollowing: postDetail!.isFollowing,
+            userFollowing: (_) {
+              setState(() {
+                postDetail!.reInitIsFollowing();
+              });
+            },
           ),
           component.spacer(height: 10),
           component.text(DateFormat('d/M/y').format(postDetail!.updatedAt),
