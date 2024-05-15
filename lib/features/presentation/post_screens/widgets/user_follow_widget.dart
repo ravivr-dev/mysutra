@@ -73,8 +73,7 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
             ],
             component.spacer(width: 3),
             if (!widget.isMyPost &&
-                widget.userIdEntity.role == 'DOCTOR' &&
-                widget.isPost) ...[
+                widget.userIdEntity.role == 'DOCTOR') ...[
               InkWell(
                 onTap: () {
                   context.read<SearchDoctorCubit>().followDoctor(
@@ -102,7 +101,7 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                 ),
               ),
             ],
-            const Spacer(),
+            if(widget.isPost)...[const Spacer(),
             InkWell(
               onTap: () => context.showBottomSheet(widget.isMyPost
                   ? EditOrDeletePostBottomSheet(postId: widget.postId!)
@@ -119,7 +118,7 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                 color: AppColors.color0xFF292D32,
                 size: 18,
               ),
-            )
+            )]
           ],
         );
       },
