@@ -87,6 +87,7 @@ class UserFollowWidget extends StatelessWidget {
                   child: ViewProfileOrReportBottomSheet(
                     postId: postId!,
                     userId: userIdEntity.id!,
+                    userRole: userIdEntity.role!,
                   ),
                 )),
           child: const Icon(

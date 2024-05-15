@@ -66,6 +66,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                 Padding(
                   padding: const EdgeInsets.only(left: 24),
                   child: ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.commentEntity.replies.length,
                     itemBuilder: (context, index) {

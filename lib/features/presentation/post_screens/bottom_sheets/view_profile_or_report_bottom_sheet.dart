@@ -15,15 +15,20 @@ import 'package:my_sutra/routes/routes_constants.dart';
 class ViewProfileOrReportBottomSheet extends StatelessWidget {
   final String userId;
   final String postId;
+  final String userRole;
 
   const ViewProfileOrReportBottomSheet(
-      {super.key, required this.postId, required this.userId});
+      {super.key,
+      required this.postId,
+      required this.userId,
+      required this.userRole});
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<SearchDoctorCubit, SearchDoctorState>(
       listener: (context, state) {
         if (state is GetDoctorDetailsSuccessState) {
+          AiloitteNavigation.back(context);
           _navigateToDoctorDetailScreen(
               context: context, entity: state.doctorEntity);
         }
@@ -34,18 +39,20 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildRow(
-              context,
-              onTap: () {
-                context
-                    .read<SearchDoctorCubit>()
-                    .getDoctorDetails(doctorId: userId);
-              },
-              key: StringKeys.viewProfile,
-              icon: Assets.iconsReport,
-              color: AppColors.black24,
-            ),
-            const Divider(color: AppColors.color0xFFEAECF0),
+            if (userRole == 'DOCTOR') ...[
+              _buildRow(
+                context,
+                onTap: () {
+                  context
+                      .read<SearchDoctorCubit>()
+                      .getDoctorDetails(doctorId: userId);
+                },
+                key: StringKeys.viewProfile,
+                icon: Assets.iconsReport,
+                color: AppColors.black24,
+              ),
+              const Divider(color: AppColors.color0xFFEAECF0),
+            ],
             _buildRow(context, onTap: () {
               Navigator.pop(context);
               context.showBottomSheet(
