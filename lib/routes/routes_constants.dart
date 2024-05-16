@@ -41,6 +41,7 @@ class AppRoutes {
   static const String videoCallingRoute = 'video_calling/video_calling_screen';
 
   static const String postRoute = '/post_screens/post_screen';
+  static const String repostRoute = '/post_screens/repost_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

@@ -13,8 +13,12 @@ class SendButtonWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: CircleAvatar(
+        radius: 30,
         backgroundColor: AppColors.color0xFF8338EC,
-        child: component.assetImage(path: Assets.iconsSend),
+        child: component.assetImage(
+          path: Assets.iconsSend,
+          height: 20,
+        ),
       ),
     );
   }
