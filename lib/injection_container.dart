@@ -8,11 +8,15 @@ import 'package:my_sutra/features/data/client/doctor_client.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
+import 'package:my_sutra/features/data/datasource/remote_datasource/firebase_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
 import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
+import 'package:my_sutra/features/domain/repositories/chat_repository.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
@@ -65,9 +69,8 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.da
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 
+import 'features/data/repositories/chat_repo/chat_repository_impl.dart';
 import 'features/domain/usecases/user_usecases/clear_messages_use_case.dart';
-import 'features/domain/usecases/user_usecases/get_message_use_case.dart';
-import 'features/domain/usecases/user_usecases/send_message_use_case.dart';
 import 'features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 
 final sl = GetIt.instance;
@@ -122,9 +125,10 @@ Future<void> init() async {
         verifyChangePhoneNumberUseCase: sl<VerifyChangePhoneNumberUseCase>(),
       ));
   sl.registerFactory(() => ChatCubit(
-      sendMessageUsecase: sl<SendMessageUsecase>(),
-      clearMessagesUseCase: sl<ClearMessagesUseCase>(),
-      getMessageUseCase: sl<GetMessageUseCase>()));
+        clearMessagesUseCase: sl<ClearMessagesUseCase>(),
+        listenMessagesUseCase: sl<ListenMessagesUseCase>(),
+        sendMessageUseCase: sl<SendMessageUseCase>(),
+      ));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -168,9 +172,9 @@ Future<void> init() async {
       () => DoctorCancelAppointmentsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(
       () => DoctorRescheduleAppointmentsUseCase(sl<DoctorRepository>()));
-  sl.registerFactory(() => SendMessageUsecase(sl<UserRepository>()));
+  sl.registerFactory(() => SendMessageUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => ClearMessagesUseCase(sl<UserRepository>()));
-  sl.registerFactory(() => GetMessageUseCase(sl<UserRepository>()));
+  sl.registerFactory(() => ListenMessagesUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
 
   /// Repository
@@ -193,6 +197,10 @@ Future<void> init() async {
         remoteDataSource: sl<DoctorDataSource>(),
         networkInfo: sl<NetworkInfo>(),
       ));
+  sl.registerLazySingleton<ChatRepository>(
+    () => ChatRepositoryImpl(
+        dataSource: sl<FirebaseDataSource>(), networkInfo: sl<NetworkInfo>()),
+  );
 
   /// DataSource
   sl.registerLazySingleton<LocalDataSource>(
@@ -203,6 +211,7 @@ Future<void> init() async {
       client: sl<PatientRestClient>(), localDataSource: sl<LocalDataSource>()));
   sl.registerLazySingleton<DoctorDataSource>(() => DoctorDataSourceImpl(
       client: sl<DoctorClient>(), localDataSource: sl<LocalDataSource>()));
+  sl.registerLazySingleton<FirebaseDataSource>(() => FirebaseDataSourceImpl());
 
   sl.registerLazySingleton<AppTheme>(() => AppTheme());
   sl.registerLazySingleton<CustomWidgets>(() => CustomWidgets());

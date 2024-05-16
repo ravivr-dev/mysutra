@@ -8,7 +8,6 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
-import 'package:my_sutra/features/data/model/user_models/chat_model.dart';
 import 'package:my_sutra/features/data/model/user_models/create_chat_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
@@ -41,13 +40,15 @@ abstract class UserDataSource {
 
   Future<MyProfileResponseModel> getProfileDetails();
 
-  Future<ChatModel> getMessages(
-    final Map<String, dynamic> queries,
-  );
+  // Future<ChatModel> getMessages(
+  //   final Map<String, dynamic> queries,
+  // );
   Future<CreateChatModel> sendMessages(
     final Map<String, dynamic> data,
   );
+
   Future<dynamic> clearMessage(String appointmentId);
+
   Future<GenerateUsernameModel> generateUsernames(String userName);
 
   Future<HomeResponseModel> getHomeData();
@@ -361,22 +362,6 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<ChatModel> getMessages(Map<String, dynamic> queries) async {
-    try {
-      return await client.getMessages(queries).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
   Future<CreateChatModel> sendMessages(Map<String, dynamic> data) async {
     try {
       return await client.sendMessage(data).catchError((err) {
@@ -393,7 +378,8 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<VideoRoomResponseModel> getVideoRoomId(Map<String, dynamic> data) async {
+  Future<VideoRoomResponseModel> getVideoRoomId(
+      Map<String, dynamic> data) async {
     try {
       return await client.getVideoRoomId(data).catchError((err) {
         _processDio(err);

@@ -40,8 +40,8 @@ abstract class UserRepository {
 
 
   Future<Either<Failure, String>> sendMessage(ChatEntity params);
-  Future<Either<Failure, MessagesEntity>> getMessages(
-      String appointmentId, int? pagination, int? limit);
+  // Future<Either<Failure, MessagesEntity>> getMessages(
+  //     String appointmentId, int? pagination, int? limit);
 
   Future<Either<Failure, String>> clearMessage(String appointmentId);
   Future<Either<Failure, GenerateUsernameEntity>> generateUsernames(

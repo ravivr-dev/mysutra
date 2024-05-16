@@ -87,8 +87,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                 'Active now',
                 style: theme.publicSansFonts.regularStyle(
                   fontColor: AppColors.grey797C7B,
-                  fontSize: 16,
-                  height: 16,
+                  fontSize: 12,
                 ),
               ),
             ],

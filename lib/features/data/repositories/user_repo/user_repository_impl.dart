@@ -14,7 +14,6 @@ import 'package:my_sutra/features/data/repositories/user_repo/user_repository_co
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
 
@@ -320,31 +319,6 @@ class UserRepositoryImpl extends UserRepository {
         final result = await remoteDataSource.clearMessage(appointmentId);
 
         return Right(result['message']);
-      } else {
-        return const Left(ServerFailure(message: Constants.errorNoInternet));
-      }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, MessagesEntity>> getMessages(
-      String appointmentId, int? pagination, int? limit) async {
-    try {
-      if (await networkInfo.isConnected) {
-        final Map<String, dynamic> data = {
-          "appointmentId": appointmentId,
-          if (limit != null) "limit": limit,
-          if (pagination != null) "pagination": pagination,
-        };
-        final result = await remoteDataSource.getMessages(data);
-
-        return Right(MessagesEntity(
-            message: result.message,
-            count: result.count,
-            chatMessages:
-                UserRepoConv.convertChatModelToEntity(result.data ?? [])));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

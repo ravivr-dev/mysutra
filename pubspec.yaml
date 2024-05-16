@@ -65,6 +65,8 @@ dependencies:
   open_filex: ^4.4.0
   flutter_link_previewer: ^3.2.2
   videosdk: ^1.1.10
+  firebase_core: ^2.31.0
+  cloud_firestore: ^4.17.3
 
 
 dev_dependencies:

@@ -5,6 +5,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/bottom_sheets/cancel_appointment_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/injection_container.dart';
@@ -71,7 +72,14 @@ class DrBottomSheet extends StatelessWidget {
           const Divider(color: AppColors.color0xFFEAECF0),
           InkWell(
             onTap: () => AiloitteNavigation.intentWithData(
-                context, AppRoutes.chatScreen, appointment),
+                context,
+                AppRoutes.chatScreen,
+                ChatScreenArgs(
+                  roomId: '${appointment.doctorId}${appointment.userId}',
+                  username: appointment.username ?? '',
+                  currentUserId: appointment.doctorId!,
+                  profilePic: appointment.profilePic,
+                )),
             child: component.text('Send Message',
                 style: theme.publicSansFonts.regularStyle(
                     fontSize: 16, fontColor: AppColors.color0xFF1E293B)),

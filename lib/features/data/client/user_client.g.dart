@@ -508,34 +508,6 @@ class _UserRestClient implements UserRestClient {
   }
 
   @override
-  Future<ChatModel> getMessages(Map<String, dynamic> queries) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(queries);
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ChatModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/user/message',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = ChatModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
   Future<dynamic> clearMessage(String appointmentId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

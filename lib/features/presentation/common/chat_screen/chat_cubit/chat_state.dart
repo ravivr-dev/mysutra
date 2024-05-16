@@ -25,12 +25,16 @@ final class ClearChatErrorState extends ChattingState {
   const ClearChatErrorState(this.error);
 }
 
-final class SendMsgLoading extends ChattingState {}
+final class SendMsgLoadingState extends ChattingState {}
 
-final class SendMessageSuccess extends ChattingState {
+final class SendMessageSuccessState extends ChattingState {
+  const SendMessageSuccessState();
+}
+
+final class SendMessageErrorState extends ChattingState {
   final String message;
 
-  const SendMessageSuccess(this.message);
+  const SendMessageErrorState(this.message);
 }
 
 final class ClearMessageSuccess extends ChattingState {

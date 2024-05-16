@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:my_sutra/features/data/model/user_models/chat_model.dart';
 import 'package:my_sutra/features/data/model/user_models/create_chat_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
@@ -136,10 +135,10 @@ abstract class UserRestClient {
     @Body() final Map<String, dynamic> data,
   );
 
-  @GET(EndPoints.userMessage)
-  Future<ChatModel> getMessages(
-    @Queries() final Map<String, dynamic> queries,
-  );
+  // @GET(EndPoints.userMessage)
+  // Future<ChatModel> getMessages(
+  //   @Queries() final Map<String, dynamic> queries,
+  // );
 
   @PUT(EndPoints.clearMessage)
   Future<dynamic> clearMessage(@Field("appointmentId") String appointmentId);

@@ -1,47 +1,26 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/error/failures.dart';
+import 'package:my_sutra/features/domain/entities/chat_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
+import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/clear_messages_use_case.dart';
-import 'package:my_sutra/features/domain/usecases/user_usecases/get_message_use_case.dart';
-import 'package:my_sutra/features/domain/usecases/user_usecases/send_message_use_case.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/chat_entity.dart';
+
+import '../../../../domain/usecases/chat_usecases/send_message_usecase.dart';
 
 part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChattingState> {
-  final SendMessageUsecase sendMessageUsecase;
-  final GetMessageUseCase getMessageUseCase;
+  final SendMessageUseCase sendMessageUseCase;
+  final ListenMessagesUseCase listenMessagesUseCase;
   final ClearMessagesUseCase clearMessagesUseCase;
-  ChatCubit(
-      {required this.sendMessageUsecase,
-      required this.getMessageUseCase,
-      required this.clearMessagesUseCase})
-      : super(ChatInitial());
 
-  sendMessage(ChatEntity params) async {
-    emit(SendMsgLoading());
-    final result = await sendMessageUsecase(params);
-
-    result.fold((l) => _emitFailure(l), (data) {
-      emit(
-        SendMessageSuccess(data),
-      );
-    });
-  }
-
-  getChatMessages(GetMessageParams params) async {
-    emit(ChatLoading());
-    final result = await getMessageUseCase(params);
-
-    result.fold((l) => _emitFailure(l), (data) {
-      emit(
-        GetChatMessagesSuccess(data),
-      );
-    });
-  }
+  ChatCubit({
+    required this.sendMessageUseCase,
+    required this.clearMessagesUseCase,
+    required this.listenMessagesUseCase,
+  }) : super(ChatInitial());
 
   clearChatMessages(String appointmentId) async {
     emit(ClearChatLoading());
@@ -52,6 +31,16 @@ class ChatCubit extends Cubit<ChattingState> {
         ClearMessageSuccess(data),
       );
     });
+  }
+
+  Stream<ChatEntity> listenMessages({required String roomId}) {
+    return listenMessagesUseCase.call(ListenMessagesParams(roomId: roomId));
+  }
+
+  void sendMessage(SendMessageParams params) async {
+    final result = await sendMessageUseCase.call(params);
+    result.fold((l) => emit(SendMessageErrorState(l.message)),
+        (r) => emit(const SendMessageSuccessState()));
   }
 
   FutureOr<void> _emitFailure(
@@ -65,6 +54,7 @@ class ChatCubit extends Cubit<ChattingState> {
       emit(ChatError(failure.message));
     }
   }
+
   FutureOr<void> _emitClearChatFailure(
     Failure failure,
   ) async {

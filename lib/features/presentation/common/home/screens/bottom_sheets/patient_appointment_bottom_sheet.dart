@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/common_widgets/time_container.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 import '../../../../../../ailoitte_component_injector.dart';
@@ -14,6 +15,7 @@ import '../../cubit/home_cubit.dart';
 
 class PatientAppointmentBottomSheet extends StatelessWidget {
   final AppointmentEntity entity;
+
   const PatientAppointmentBottomSheet({super.key, required this.entity});
 
   @override
@@ -75,7 +77,14 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
                 _buildDivider(),
                 _buildItems(
                     callback: () => AiloitteNavigation.intentWithData(
-                        context, AppRoutes.chatScreen, entity),
+                        context,
+                        AppRoutes.chatScreen,
+                        ChatScreenArgs(
+                          roomId: '${entity.doctorId}${entity.userId}',
+                          username: entity.username ?? '',
+                          currentUserId: entity.userId!,
+                          profilePic: entity.profilePic,
+                        )),
                     text: 'Send Message'),
                 _buildDivider(),
                 _buildItems(callback: () {}, text: 'View patient history'),

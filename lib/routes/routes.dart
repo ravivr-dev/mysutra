@@ -160,6 +160,8 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
       case AppRoutes.chatScreen:
+        final args = settings?.arguments as ChatScreenArgs;
+
         return MaterialPageRoute(
             settings: settings,
             builder: (_) => MultiBlocProvider(
@@ -171,7 +173,7 @@ class Routes {
                       create: (context) => sl<ChatCubit>(),
                     ),
                   ],
-                  child: const ChatScreen(),
+                  child: ChatScreen(args: args),
                 ));
 
       case AppRoutes.searchFilterScreen:

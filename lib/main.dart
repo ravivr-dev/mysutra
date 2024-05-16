@@ -1,4 +1,5 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,10 +9,14 @@ import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import 'ailoitte_component_injector.dart';
+import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await di.init();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarIconBrightness: Brightness.dark,
