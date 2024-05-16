@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
@@ -233,7 +234,7 @@ class Routes {
                 ));
 
       case AppRoutes.repostRoute:
-        final args = settings?.arguments as String;
+        final args = settings?.arguments as PostEntity;
         return MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
                   providers: [
@@ -244,8 +245,8 @@ class Routes {
                       create: (context) => sl<SearchDoctorCubit>(),
                     ),
                   ],
-                  child: RepostScreen(
-                    postId: args,
+                  child: RePostScreen(
+                    postEntity: args,
                   ),
                 ));
 

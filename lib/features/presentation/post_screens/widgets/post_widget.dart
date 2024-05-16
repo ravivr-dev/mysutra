@@ -121,7 +121,104 @@ class _PostWidgetState extends State<PostWidget> {
                 ),
               ),
               component.spacer(height: 16),
-              _buildDivider(),
+              if (widget.postEntity.postId != null) ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.color0xFFE2E8F0),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BlocProvider<SearchDoctorCubit>(
+                        create: (context) => sl<SearchDoctorCubit>(),
+                        child: UserFollowWidget(
+                          userIdEntity: widget.postEntity.postId!.userId,
+                          isMyPost: true,
+                          isFollowing: false,
+                          postId: widget.postEntity.postId!.id,
+                          userFollowing: (_) {},
+                        ),
+                      ),
+                      component.spacer(height: 10),
+                      component.text(
+                        DateFormat('d/M/y').format(
+                            widget.postEntity.postId!.updatedAt.toLocal()),
+                        style: theme.publicSansFonts.mediumStyle(
+                          fontColor: AppColors.neutral,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          component.text(
+                            widget.postEntity.postId!.content,
+                            style: theme.publicSansFonts.regularStyle(
+                              fontSize: 16,
+                              fontColor: AppColors.color0xFF1E293B,
+                            ),
+                          ),
+                          if (widget
+                              .postEntity.postId!.mediaUrls.isNotEmpty) ...[
+                            SizedBox(
+                              height: 150,
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return component.networkImage(
+                                    url: widget.postEntity.postId!
+                                            .mediaUrls[index].url ??
+                                        '',
+                                    height: 153,
+                                    width: 153,
+                                    borderRadius: 20,
+                                    fit: BoxFit.fill,
+                                    errorWidget: component.assetImage(
+                                        path: Assets.imagesDefaultAvatar),
+                                  );
+                                },
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return component.spacer(width: 10);
+                                },
+                                itemCount:
+                                    widget.postEntity.postId!.mediaUrls.length,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      component.spacer(height: 12),
+                      Row(
+                        children: [
+                          LikeDislikeButtonWidget(
+                            isLiked: false,
+                            onTap: () {},
+                            likeCount: widget.postEntity.postId!.totalLikes,
+                          ),
+                          component.spacer(width: 10),
+                          CommentButtonWidget(
+                            commentCount:
+                                widget.postEntity.postId!.totalComments,
+                            postId: widget.postEntity.postId!.id,
+                            onTap: () {},
+                          ),
+                          const Spacer(),
+                          ShareButtonWidget(
+                            shareCount: widget.postEntity.postId!.totalShares,
+                            onTap: () {},
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ] else ...[
+                _buildDivider(),
+              ],
               component.spacer(height: 12),
               Row(
                 children: [
@@ -151,7 +248,7 @@ class _PostWidgetState extends State<PostWidget> {
                     shareCount: widget.postEntity.totalShares,
                     onTap: () {
                       AiloitteNavigation.intentWithData(
-                          context, AppRoutes.repostRoute, widget.postEntity.id);
+                          context, AppRoutes.repostRoute, widget.postEntity);
                     },
                   ),
                 ],

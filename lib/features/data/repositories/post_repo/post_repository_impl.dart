@@ -14,6 +14,7 @@ import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart
 import 'package:my_sutra/features/domain/entities/post_entities/reply_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/delete_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_comment_usecase.dart';
@@ -175,8 +176,8 @@ class PostRepositoryImpl extends PostRepository {
   Future<Either<Failure, String>> postReply(NewReplyParams params) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDatasource.postReply(
-            {"commentId": params.commentId, "reply": params.reply});
+        final result = await remoteDatasource
+            .postReply({"commentId": params.commentId, "reply": params.reply});
 
         return Right(result.message ?? "Post Reply Success");
       } else {
@@ -198,6 +199,40 @@ class PostRepositoryImpl extends PostRepository {
         });
 
         return Right(result.message ?? 'Post Report Success');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> rePost(CreatePostParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource.createPost({
+          "postId": params.postId,
+          "content": params.content,
+          "mediaUrls": params.mediaUrls.map((e) => e.toJson()).toList(),
+          "taggedUserIds": params.taggedUserIds
+        });
+
+        return Right(result.message ?? 'Reposted Successfully');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> deletePost(DeletePostParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource.deletePost(params.postId);
+        return Right(result.message ?? 'Deleted Post Successfully');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

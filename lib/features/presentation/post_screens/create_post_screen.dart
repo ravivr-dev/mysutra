@@ -22,6 +22,7 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController _postController = TextEditingController();
   final List<MediaUrlEntity> mediaUrls = [];
   final List<String> imageList = [];
@@ -47,8 +48,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
         if (state is CreatePostLoaded) {
           widget.showSuccessToast(context: context, message: state.message);
-          AiloitteNavigation.intentWithClearAllRoutes(
-              context, AppRoutes.homeRoute);
+          AiloitteNavigation.back(context);
         }
       },
       builder: (context, state) {
@@ -80,8 +80,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             radius: 22,
                           ),
                           component.spacer(width: 10),
-                          Expanded(
-                            child: _buildTextField(),
+                          Form(
+                            key: _key,
+                            child: Expanded(
+                              child: _buildTextField(),
+                            ),
                           )
                         ],
                       ),
@@ -103,13 +106,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return component.textField(
       controller: _postController,
       fillColor: AppColors.white,
-
       // onTapCallback: () => setState(() => _isKeyboardOpen = true),
       hintText: 'Enter Text Here...',
       borderRadius: 10,
       filled: true,
       focusedBorderColor: AppColors.white,
       borderColor: AppColors.white,
+      validator: (val) =>
+      val!.trim().isEmpty
+          ? 'Please Enter Something to Post'
+          : null,
     );
   }
 
@@ -159,10 +165,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           const Spacer(),
           InkWell(
             onTap: () {
-              context.read<PostsCubit>().createPost(
-                  content: _postController.text,
-                  mediaUrls: mediaUrls,
-                  taggedUserIds: taggedUserIds);
+              if(_key.currentState!.validate()){
+                context.read<PostsCubit>().createPost(
+                    content: _postController.text,
+                    mediaUrls: mediaUrls,
+                    taggedUserIds: taggedUserIds);
+              }
             },
             child: CircleAvatar(
               radius: 30,

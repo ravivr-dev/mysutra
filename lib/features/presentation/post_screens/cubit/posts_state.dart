@@ -129,3 +129,17 @@ final class ReportPostError extends PostsState {
 
   ReportPostError({required this.error});
 }
+
+final class RePostLoading extends PostsState {}
+
+final class RePostLoaded extends PostsState {
+  final String message;
+
+  RePostLoaded({required this.message});
+}
+
+final class RePostError extends PostsState {
+  final String error;
+
+  RePostError({required this.error});
+}

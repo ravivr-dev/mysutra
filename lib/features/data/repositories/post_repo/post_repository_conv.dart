@@ -36,10 +36,39 @@ class PostRepoConv {
             totalLikes: e.totalLikes,
             totalComments: e.totalComments,
             totalShares: e.totalShares,
+            repostCount: e.repostCount,
             isMyPost: e.isMyPost,
             isLiked: e.isLiked,
             createdAt: e.createdAt,
-            updatedAt: e.updatedAt))
+            updatedAt: e.updatedAt,
+            postId: e.postId == null
+                ? null
+                : PostIdEntity(
+                    id: e.postId!.id,
+                    userId: PostUserEntity(
+                      id: e.postId!.userId.id,
+                      role: e.postId!.userId.role,
+                      profilePic: e.postId!.userId.profilePic,
+                      fullName: e.postId!.userId.fullName,
+                      username: e.postId!.userId.username,
+                      isVerified: e.postId!.userId.isVerified,
+                    ),
+                    isFollowing: e.isFollowing,
+                    content: e.content,
+                    mediaUrls: e.mediaUrls
+                        .map((e) =>
+                            MediaUrlEntity(mediaType: e.mediaType, url: e.url))
+                        .toList(),
+                    taggedUserIds: e.taggedUserIds,
+                    totalLikes: e.postId!.totalLikes,
+                    totalComments: e.postId!.totalComments,
+                    totalShares: e.postId!.totalShares,
+                    repostCount: e.postId!.repostCount,
+                    isMyPost: e.postId!.isMyPost,
+                    isLiked: e.postId!.isLiked,
+                    isRepostedByMe: e.postId!.isRepostedByMe,
+                    createdAt: e.postId!.createdAt,
+                    updatedAt: e.postId!.updatedAt)))
         .toList();
   }
 

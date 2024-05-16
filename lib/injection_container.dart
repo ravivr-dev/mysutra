@@ -47,6 +47,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_rep
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/repost_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
@@ -140,9 +141,10 @@ Future<void> init() async {
         verifyChangePhoneNumberUseCase: sl<VerifyChangePhoneNumberUseCase>(),
       ));
   sl.registerFactory(() => ChatCubit(
-      clearMessagesUseCase: sl<ClearMessagesUseCase>(),
-      listenMessagesUseCase: sl<ListenMessagesUseCase>(),
-      sendMessageUseCase: sl<SendMessageUseCase>(),));
+        clearMessagesUseCase: sl<ClearMessagesUseCase>(),
+        listenMessagesUseCase: sl<ListenMessagesUseCase>(),
+        sendMessageUseCase: sl<SendMessageUseCase>(),
+      ));
   sl.registerFactory(() => PostsCubit(
         uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
         createPostUsecase: sl<CreatePostUsecase>(),
@@ -155,6 +157,7 @@ Future<void> init() async {
         likeDislikeCommentUsecase: sl<LikeDislikeCommentUsecase>(),
         likeDislikeReplyUsecase: sl<LikeDislikeReplyUsecase>(),
         reportPostUsecase: sl<ReportPostUsecase>(),
+        rePostUsecase: sl<RePostUsecase>(),
       ));
 
   // UseCases
@@ -214,6 +217,7 @@ Future<void> init() async {
   sl.registerFactory(() => LikeDislikeCommentUsecase(sl<PostRepository>()));
   sl.registerFactory(() => LikeDislikeReplyUsecase(sl<PostRepository>()));
   sl.registerLazySingleton(() => ReportPostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => RePostUsecase(sl<PostRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(
