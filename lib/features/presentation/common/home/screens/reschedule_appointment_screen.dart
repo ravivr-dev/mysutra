@@ -11,7 +11,6 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
-import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 

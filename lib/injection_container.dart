@@ -6,15 +6,19 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/features/data/client/doctor_client.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
+import 'package:my_sutra/features/data/client/post_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/firebase_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
+import 'package:my_sutra/features/data/datasource/remote_datasource/post_datasource.dart';
 import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
+import 'package:my_sutra/features/data/repositories/post_repo/post_repository_impl.dart';
 import 'package:my_sutra/features/domain/repositories/chat_repository.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
@@ -33,6 +37,16 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/get_post_detail_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
@@ -55,6 +69,7 @@ import 'package:my_sutra/features/presentation/common/registration/cubit/registr
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_sutra/core/components/config/theme/theme.dart';
 import 'package:my_sutra/core/components/custom_widgets/custom_widgets.dart';
@@ -125,9 +140,21 @@ Future<void> init() async {
         verifyChangePhoneNumberUseCase: sl<VerifyChangePhoneNumberUseCase>(),
       ));
   sl.registerFactory(() => ChatCubit(
-        clearMessagesUseCase: sl<ClearMessagesUseCase>(),
-        listenMessagesUseCase: sl<ListenMessagesUseCase>(),
-        sendMessageUseCase: sl<SendMessageUseCase>(),
+      clearMessagesUseCase: sl<ClearMessagesUseCase>(),
+      listenMessagesUseCase: sl<ListenMessagesUseCase>(),
+      sendMessageUseCase: sl<SendMessageUseCase>(),));
+  sl.registerFactory(() => PostsCubit(
+        uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
+        createPostUsecase: sl<CreatePostUsecase>(),
+        likeUnlikePostUsecase: sl<LikeDislikePostUsecase>(),
+        getPostsUsecase: sl<GetPostsUsecase>(),
+        getPostDetailUsecase: sl<GetPostDetailUsecase>(),
+        getCommentUsecase: sl<GetCommentUsecase>(),
+        newCommentUsecase: sl<NewCommentUsecase>(),
+        newReplyUsecase: sl<NewReplyUsecase>(),
+        likeDislikeCommentUsecase: sl<LikeDislikeCommentUsecase>(),
+        likeDislikeReplyUsecase: sl<LikeDislikeReplyUsecase>(),
+        reportPostUsecase: sl<ReportPostUsecase>(),
       ));
 
   // UseCases
@@ -177,6 +204,17 @@ Future<void> init() async {
   sl.registerFactory(() => ListenMessagesUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
 
+  sl.registerFactory(() => CreatePostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => GetPostsUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => GetPostDetailUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => GetCommentUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => LikeDislikePostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => NewCommentUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => NewReplyUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => LikeDislikeCommentUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => LikeDislikeReplyUsecase(sl<PostRepository>()));
+  sl.registerLazySingleton(() => ReportPostUsecase(sl<PostRepository>()));
+
   /// Repository
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(
@@ -197,6 +235,10 @@ Future<void> init() async {
         remoteDataSource: sl<DoctorDataSource>(),
         networkInfo: sl<NetworkInfo>(),
       ));
+  sl.registerLazySingleton<PostRepository>(() => PostRepositoryImpl(
+      localDataSource: sl<LocalDataSource>(),
+      remoteDatasource: sl<PostDatasource>(),
+      networkInfo: sl<NetworkInfo>()));
   sl.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(
         dataSource: sl<FirebaseDataSource>(), networkInfo: sl<NetworkInfo>()),
@@ -211,6 +253,8 @@ Future<void> init() async {
       client: sl<PatientRestClient>(), localDataSource: sl<LocalDataSource>()));
   sl.registerLazySingleton<DoctorDataSource>(() => DoctorDataSourceImpl(
       client: sl<DoctorClient>(), localDataSource: sl<LocalDataSource>()));
+  sl.registerLazySingleton<PostDatasource>(() => PostDatasourceImpl(
+      client: sl<PostRestClient>(), localDataSource: sl<LocalDataSource>()));
   sl.registerLazySingleton<FirebaseDataSource>(() => FirebaseDataSourceImpl());
 
   sl.registerLazySingleton<AppTheme>(() => AppTheme());
@@ -251,4 +295,5 @@ Future<void> init() async {
   sl.registerLazySingleton<PatientRestClient>(
       () => PatientRestClient(dio, sl()));
   sl.registerLazySingleton<DoctorClient>(() => DoctorClient(dio, sl()));
+  sl.registerLazySingleton<PostRestClient>(() => PostRestClient(dio, sl()));
 }

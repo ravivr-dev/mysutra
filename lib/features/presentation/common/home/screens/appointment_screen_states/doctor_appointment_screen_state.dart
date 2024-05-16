@@ -12,7 +12,7 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildHeaderWidget(),
-        _buildAppointmentRequestWidget(),
+        // _buildAppointmentRequestWidget(),
         _buildAppointmentDateWidget(),
         ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
@@ -87,37 +87,37 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
   }
 
 //todo discuss this in scurm call like what is the use of appointment request
-  Widget _buildAppointmentRequestWidget() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 10),
-      decoration: const BoxDecoration(
-        color: AppColors.color0xFFF3EBFF,
-      ),
-      child: Row(
-        children: [
-          component.assetImage(path: Assets.iconsCalendar2),
-          component.text(
-            'Appointment request',
-            style: theme.publicSansFonts.regularStyle(
-              fontColor: AppColors.color0xFF232323,
-            ),
-          ),
-          const Spacer(),
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.primaryColor.withOpacity(.15)),
-            child: component.text(
-              '13+',
-              style: theme.publicSansFonts.regularStyle(
-                  fontColor: AppColors.color0xFF232323, fontSize: 12),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+//   Widget _buildAppointmentRequestWidget() {
+//     return Container(
+//       padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 10),
+//       decoration: const BoxDecoration(
+//         color: AppColors.color0xFFF3EBFF,
+//       ),
+//       child: Row(
+//         children: [
+//           component.assetImage(path: Assets.iconsCalendar2),
+//           component.text(
+//             'Appointment request',
+//             style: theme.publicSansFonts.regularStyle(
+//               fontColor: AppColors.color0xFF232323,
+//             ),
+//           ),
+//           const Spacer(),
+//           Container(
+//             padding: const EdgeInsets.all(4),
+//             decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(10),
+//                 color: AppColors.primaryColor.withOpacity(.15)),
+//             child: component.text(
+//               '13+',
+//               style: theme.publicSansFonts.regularStyle(
+//                   fontColor: AppColors.color0xFF232323, fontSize: 12),
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
 
   Widget _buildHeaderWidget() {
     return Container(

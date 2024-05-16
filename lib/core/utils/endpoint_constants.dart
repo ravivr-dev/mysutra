@@ -25,7 +25,8 @@ class EndPoints {
   static const String patients = '/doctor/patients';
   static const String home = '/doctor/home';
   static const String doctorAppointments = '/doctor/appointments';
-  static const String doctorAppointmentReSchedule = '/doctor/appointment/re-schedule';
+  static const String doctorAppointmentReSchedule =
+      '/doctor/appointment/re-schedule';
   static const String doctorAppointmentCancel = '/doctor/appointment/cancel';
   static const String doctorAvailableSlots = '/doctor/available-slots';
 
@@ -42,4 +43,14 @@ class EndPoints {
       '/user/change-phone-number/verify-otp';
   static const String userFollowing = '/user/followings';
   static const String videoSdkRoom ='/user/videosdk/room';
+
+  // Posts Endpoints
+  static const String searchUserName = '/post/search';
+  static const String post = '/post';
+  static const String postReport = '/post/report';
+  static const String postLikeDislike = '/post/like-dislike';
+  static const String comment = '/comment';
+  static const String commentLikeDislike = '/comment/like-dislike';
+  static const String reply = '/reply';
+  static const String replyLikeDislike = '/reply/like-dislike';
 }

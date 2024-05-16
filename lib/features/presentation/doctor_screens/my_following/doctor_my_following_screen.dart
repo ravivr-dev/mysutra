@@ -65,20 +65,26 @@ class _DoctorMyFollowingScreenState extends State<DoctorMyFollowingScreen> {
         // ),
       ),
       body:
-      // TabBarView(
-      //   controller: _tabController,
-      //   children: [
-          ListView.separated(
-        itemCount: widget.followers.length,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        shrinkWrap: true,
-        itemBuilder: (_, index) {
-          return _buildDoctorsCard(widget.followers[index]);
-        },
-        separatorBuilder: (_, index) {
-          return component.spacer(height: 12);
-        },
-      ),
+          // TabBarView(
+          //   controller: _tabController,
+          //   children: [
+          widget.followers.isEmpty
+              ? Align(
+                  alignment: Alignment.center,
+                  child: component.text('Currently Not Following Anyone',
+                      style: theme.publicSansFonts.regularStyle(
+                          fontSize: 20, fontColor: AppColors.grey92)))
+              : ListView.separated(
+                  itemCount: widget.followers.length,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  shrinkWrap: true,
+                  itemBuilder: (_, index) {
+                    return _buildDoctorsCard(widget.followers[index]);
+                  },
+                  separatorBuilder: (_, index) {
+                    return component.spacer(height: 12);
+                  },
+                ),
       // const SizedBox.shrink(),
       // ],
       // ),

@@ -10,14 +10,18 @@ class _DoctorRescheduleState extends _RescheduleAppointmentScreenState {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<HomeCubit>().getAvailableTimeSlotsForDoctors(
-          date: _serverDateFormat.format(_selectedDate));
+      _getAvailableTimeSlotsForDoctor(_serverDateFormat.format(_selectedDate));
     });
     super.initState();
   }
 
   void _initSelectedDate(DateTime dateTime) {
     _selectedDate = dateTime;
+    _getAvailableTimeSlotsForDoctor(_serverDateFormat.format(_selectedDate));
+  }
+
+  void _getAvailableTimeSlotsForDoctor(String date) {
+    context.read<HomeCubit>().getAvailableTimeSlotsForDoctors(date: date);
   }
 
   Widget _buildText({required String value, double? fontSize}) {

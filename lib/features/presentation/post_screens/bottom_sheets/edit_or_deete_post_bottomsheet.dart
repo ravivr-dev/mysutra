@@ -1,13 +1,17 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/reporting_bottom_sheet.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/injection_container.dart';
 
-class ViewProfileBottomSheet extends StatelessWidget {
-  const ViewProfileBottomSheet({super.key});
+class EditOrDeletePostBottomSheet extends StatelessWidget {
+  final String postId;
+
+  const EditOrDeletePostBottomSheet({super.key, required this.postId});
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +22,24 @@ class ViewProfileBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildRow(context,
-              key: StringKeys.viewProfile, icon: Assets.iconsWarning),
+              key: 'Edit Post', icon: Assets.iconsReport, color: Colors.black),
           const Divider(color: AppColors.color0xFFEAECF0),
-          _buildRow(
-            context,
-            onTap: () {
-              Navigator.pop(context);
-              context.showBottomSheet(
-                const ReportingBottomSheet(),
-                isScrollControlled: true,
-              );
-            },
-            key: StringKeys.report,
-            icon: Assets.iconsReport,
-            fontColor: AppColors.color0xFFF34848,
-          )
+          _buildRow(context, onTap: () {
+            Navigator.pop(context);
+            context.showBottomSheet(
+              BlocProvider(
+                create: (context) => sl<PostsCubit>(),
+                child: ReportingBottomSheet(
+                  postId: postId,
+                ),
+              ),
+              isScrollControlled: true,
+            );
+          },
+              key: 'Delete Post',
+              icon: Assets.iconsWarning,
+              fontColor: AppColors.color0xFFF34848,
+              color: Colors.black)
         ],
       ),
     );
@@ -42,6 +49,7 @@ class ViewProfileBottomSheet extends StatelessWidget {
     BuildContext context, {
     required String key,
     required String icon,
+    required Color color,
     Color? fontColor,
     VoidCallback? onTap,
   }) {
@@ -49,9 +57,9 @@ class ViewProfileBottomSheet extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          component.assetImage(path: icon),
+          component.assetImage(path: icon, color: color),
           component.spacer(width: 8),
-          component.text(context.stringForKey(key),
+          component.text(key,
               style: theme.publicSansFonts.regularStyle(
                   fontSize: 16,
                   fontColor: fontColor ?? AppColors.color0xFF1E293B))

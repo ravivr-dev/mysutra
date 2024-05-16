@@ -6,7 +6,9 @@ import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
-import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/create_post_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
+import 'package:my_sutra/features/presentation/post_screens/user_feed_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 import '../../../../core/models/user_helper.dart';
@@ -30,11 +32,19 @@ abstract class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _screens = [
     BlocProvider<HomeCubit>(
-      create: (BuildContext context) => sl<HomeCubit>()..getHomeData(),
+      create: (BuildContext context) =>
+      sl<HomeCubit>()
+        ..getHomeData(),
       child: const AppointmentScreen(),
     ),
-    const PostScreen(),
-    const SizedBox.shrink(),
+    BlocProvider<PostsCubit>(
+      create: (context) => sl<PostsCubit>()..getPosts(pagination: 1, limit: 50),
+      child: const UserFeedScreen(),
+    ),
+    BlocProvider<PostsCubit>(
+      create: (context) => sl<PostsCubit>(),
+      child: const CreatePostScreen(),
+    ),
     Container(),
     BlocProvider(
       create: (BuildContext context) => sl<ProfileCubit>(),
@@ -42,7 +52,7 @@ abstract class _HomeScreenState extends State<HomeScreen> {
     )
   ];
   late final List<BottomNavigationBarItem> _bottomNavigationBarList =
-      _getNavigationBarList();
+  _getNavigationBarList();
 
   _HomeScreenState();
 
@@ -70,18 +80,20 @@ abstract class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.backgroundColor,
       body: _screens[_selectedScreen],
       bottomNavigationBar: BottomNavigationBar(
+        unselectedLabelStyle:
+        theme.publicSansFonts.regularStyle(fontColor: AppColors.grey92),
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedScreen,
         onTap: (index) {
-          if (index == 2) {
-            return;
-          }
+          // if (index == 2) {
+          //   return;
+          // }
           setState(() {
             _selectedScreen = index;
           });
         },
         selectedItemColor: AppColors.primaryColor,
-        unselectedItemColor: AppColors.black33,
+        unselectedItemColor: AppColors.grey92,
         showUnselectedLabels: true,
         items: _bottomNavigationBarList,
       ),
@@ -111,7 +123,7 @@ abstract class _HomeScreenState extends State<HomeScreen> {
     return BottomNavigationBarItem(
         icon: component.assetImage(path: icon),
         activeIcon:
-            component.assetImage(path: icon, color: AppColors.primaryColor),
+        component.assetImage(path: icon, color: AppColors.primaryColor),
         label: label);
   }
 }

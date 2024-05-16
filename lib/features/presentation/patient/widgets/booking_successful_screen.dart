@@ -49,7 +49,7 @@ class BookingSuccessfulScreen extends StatelessWidget {
                 )),
             component.spacer(height: 28),
             // _buildChatButton(context),
-            component.spacer(height: 12),
+            // component.spacer(height: 12),
             _buildGoToHomeButton(context),
             component.spacer(height: 70)
           ],

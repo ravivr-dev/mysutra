@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigationKey,
         onGenerateRoute: Routes.onGenerateRoute,
         debugShowCheckedModeBanner: false,
+        // home: const HomeScreen(),
         initialRoute: AppRoutes.splashRoutes,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,

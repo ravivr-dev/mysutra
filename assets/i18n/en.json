@@ -14,7 +14,8 @@
   "to": "to",
   "session_duration": "Session Duration",
   "select_days": "Select days",
-  "create_post": "Create post",
+  "create_post": "Create Post",
+  "edit_post": "Edit Post",
   "post": "Post",
   "write_your_comment": "Write your comment",
   "comments": "Comments",
@@ -67,5 +68,7 @@
   "go_to_home": "Go to Home",
   "change_email_address": "Change Email Address",
   "change_mobile_number": "Change Mobile Number",
-  "user_name": "Username"
+  "user_name": "Username",
+  "unfollow": "Unfollow",
+  "no_comments": "No Comments"
 }

@@ -27,6 +27,7 @@ class DoctorDataModel {
   int? ratings;
   int? reviews;
   int? fees;
+  bool? isVerified;
   bool? isFollowing;
   int? patients;
   int? experience;
@@ -41,6 +42,7 @@ class DoctorDataModel {
     this.ratings,
     this.reviews,
     this.fees,
+    this.isVerified,
     this.isFollowing,
     this.patients,
     this.experience,
@@ -56,6 +58,7 @@ class DoctorDataModel {
     ratings = json['ratings'];
     reviews = json['reviews'];
     fees = json['fees'];
+    isVerified  = json['isVerified'];
     isFollowing = json['isFollowing'];
     patients = json['patients'];
     experience = json['experience'];

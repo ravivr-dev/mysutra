@@ -6,6 +6,10 @@ abstract class LocalDataSource {
 
   setAccessToken(String token);
 
+  setUserProfilePic(String url);
+
+  String? getUserProfilePic();
+
   String getUserRole();
 
   setUserRole(String role);
@@ -77,5 +81,15 @@ class LocalDataSourceImpl extends LocalDataSource {
   @override
   void setIsAccountSelected(bool isSelected) {
     return mySharedPref.setIsAccountSelected(isSelected);
+  }
+
+  @override
+  String? getUserProfilePic() {
+    return mySharedPref.getUserProfilePic();
+  }
+
+  @override
+  setUserProfilePic(String url) {
+    return mySharedPref.setUserProfilePic(url);
   }
 }

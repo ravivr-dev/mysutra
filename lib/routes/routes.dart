@@ -36,6 +36,8 @@ import 'package:my_sutra/features/presentation/patient/search/search_result_scre
 import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/booking_successful_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
+import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -194,7 +196,7 @@ class Routes {
       case AppRoutes.rescheduleAppointment:
         final args = settings?.arguments as String;
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
+            builder: (_) => BlocProvider<HomeCubit>(
                   create: (context) => sl<HomeCubit>(),
                   child: RescheduleAppointmentScreen(
                     appointmentId: args,
@@ -203,7 +205,7 @@ class Routes {
 
       case AppRoutes.myProfileRoute:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
+            builder: (_) => BlocProvider<ProfileCubit>(
                   create: (context) => sl<ProfileCubit>(),
                   child: const MyProfileScreen(),
                 ));
@@ -211,6 +213,23 @@ class Routes {
         final args = settings?.arguments as VideoCallingArgs;
         return MaterialPageRoute(
             builder: (_) => VideoCallingScreen(args: args));
+
+      case AppRoutes.postRoute:
+        final args = settings?.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<PostsCubit>(
+                      create: (context) => sl<PostsCubit>(),
+                    ),
+                    BlocProvider<SearchDoctorCubit>(
+                      create: (context) => sl<SearchDoctorCubit>(),
+                    ),
+                  ],
+                  child: PostScreen(
+                    postId: args,
+                  ),
+                ));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

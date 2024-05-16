@@ -15,6 +15,7 @@ class StringKeys {
   static const String sessionDuration = 'session_duration';
   static const String selectDays = 'select_days';
   static const String createPost = 'create_post';
+  static const String editPost = 'edit_post';
   static const String post = 'post';
   static const String writeYourComment = 'write_your_comment';
   static const String comments = 'comments';
@@ -67,10 +68,12 @@ class StringKeys {
   static const String newAppointment = 'new_appointment';
   static const String areYouSure = 'are_you_sure?';
   static const String uouWantToCancelThisAppointment =
-      'you_want_to_cancel_this_appointment?';
+      'you_want_to_cancel_this_appointment';
   static const String noDoNotCancel = "no_do_not_cancel";
   static const String yesCancel = "yes_cancel";
   static const String changeEmailAddress = 'change_email_address';
   static const String changeMobileNumber = 'change_mobile_number';
   static const String username = 'user_name';
+  static const String unfollow = 'unfollow';
+  static const String noComments = 'no_comments';
 }

@@ -40,6 +40,8 @@ class AppRoutes {
       '/common/home/screens/reschedule_appointment_screen';
   static const String videoCallingRoute = 'video_calling/video_calling_screen';
 
+  static const String postRoute = '/post_screens/post_screen';
+
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";
   // static const String markAttendanceRoute = "/mark_attendance_screen";

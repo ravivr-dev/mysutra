@@ -24,6 +24,7 @@ class TextFormWithCountryCode extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.hintTextStyle,
     this.title,
+    this.hintText,
     this.filled = false,
     this.horizontalContentPadding = 20,
     this.verticalContentPadding = 14,
@@ -43,6 +44,7 @@ class TextFormWithCountryCode extends StatefulWidget {
   final Function(String text)? onDone;
   final TextStyle? hintTextStyle;
   final String? title;
+  final String? hintText;
   final double horizontalContentPadding;
   final double verticalContentPadding;
   final double borderRadius;
@@ -77,6 +79,8 @@ class _TextFormWithCountryCodeState extends State<TextFormWithCountryCode> {
       controller: widget.controller,
       borderColor: widget.fillColor ?? AppColors.blackColor.withOpacity(0.08),
       borderRadius: widget.borderRadius,
+      hintText: widget.hintText,
+      hintTextStyle: widget.hintTextStyle,
       horizontalContentPadding: widget.horizontalContentPadding,
       verticalContentPadding: widget.verticalContentPadding,
       suffixWidget: null,

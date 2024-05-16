@@ -7,6 +7,7 @@ class DoctorEntity {
   final int? reviews;
   final int? fees;
   bool? isFollowing;
+  bool? isVerified;
   final int? experience;
   final int? patients;
   final String? about;
@@ -21,6 +22,7 @@ class DoctorEntity {
     required this.ratings,
     required this.reviews,
     required this.fees,
+    required this.isVerified,
     required this.isFollowing,
     required this.experience,
     required this.patients,

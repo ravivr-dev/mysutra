@@ -44,6 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   TimeOfDay? _session1StartTime;
   TimeOfDay? _session1EndTime;
+  bool addMore = false;
   TimeOfDay? _session2StartTime;
   TimeOfDay? _session2EndTime;
   final SingleValueDropDownController _session1StartController =
@@ -79,7 +80,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: AppColors.transparent,
         leading: InkWell(
           onTap: () => AiloitteNavigation.back(context),
           child: Icon(
@@ -171,7 +171,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           });
 
                           _showToast(
-                              message: 'Please Selection Session1Start Time');
+                              message: 'Please Selection Session1 Start Time');
                           return;
                         }
                         setState(() {
@@ -182,52 +182,75 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     )),
                   ],
                 ),
-                component.spacer(height: 20),
-                _buildHeader(
-                    text: context.stringForKey(StringKeys.session2Timing)),
-                component.spacer(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                        child: _buildDropDown(
-                      controller: _session2StartController,
-                      items: _getTimeList(moreThan: _session1EndTime),
-                      onChanged: (model) {
-                        if (_session1EndTime == null) {
-                          setState(() {
-                            _session2StartController.dropDownValue = null;
-                          });
+                if (addMore) ...[
+                  component.spacer(height: 20),
+                  _buildHeader(
+                      text: context.stringForKey(StringKeys.session2Timing)),
+                  component.spacer(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: _buildDropDown(
+                        controller: _session2StartController,
+                        items: _getTimeList(moreThan: _session1EndTime),
+                        onChanged: (model) {
+                          if (_session1EndTime == null) {
+                            setState(() {
+                              _session2StartController.dropDownValue = null;
+                            });
 
-                          _showToast(message: 'Please Select Session 1 Timing');
-                          return;
-                        }
-                        setState(() {
-                          _session2StartTime =
+                            _showToast(
+                                message: 'Please Select Session 1 Timing');
+                            return;
+                          }
+                          setState(() {
+                            _session2StartTime =
+                                _getTimeOfDayFromString(model!.value);
+                          });
+                        },
+                      )),
+                      component.spacer(width: 8),
+                      Expanded(
+                          child: _buildDropDown(
+                        controller: _session2EndController,
+                        items: _getTimeList(moreThan: _session2StartTime),
+                        onChanged: (model) {
+                          if (_session2StartTime == null) {
+                            setState(() {
+                              _session2EndController.dropDownValue = null;
+                            });
+
+                            _showToast(
+                                message: 'Please Select Session2 Start Timing');
+                            return;
+                          }
+                          _session2EndTime =
                               _getTimeOfDayFromString(model!.value);
-                        });
-                      },
-                    )),
-                    component.spacer(width: 8),
-                    Expanded(
-                        child: _buildDropDown(
-                      controller: _session2EndController,
-                      items: _getTimeList(moreThan: _session2StartTime),
-                      onChanged: (model) {
-                        if (_session2StartTime == null) {
-                          setState(() {
-                            _session2EndController.dropDownValue = null;
-                          });
-
-                          _showToast(
-                              message: 'Please Select Session2 Start Timing');
-                          return;
-                        }
-                        _session2EndTime =
-                            _getTimeOfDayFromString(model!.value);
-                      },
-                    )),
-                  ],
-                ),
+                        },
+                      )),
+                      component.spacer(width: 8),
+                      InkWell(
+                        onTap: () {setState(() {
+                          addMore = !addMore;
+                        });},
+                        child: const Icon(Icons.delete, color: AppColors.error,),
+                      ),
+                    ],
+                  ),
+                ],
+                if (!addMore) ...[
+                  component.spacer(height: 20),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        addMore = !addMore;
+                      });
+                    },
+                    child: component.text('+ Add Session',
+                        style: theme.publicSansFonts.mediumStyle(
+                            fontSize: 16, fontColor: AppColors.primaryColor)),
+                  ),
+                ],
                 component.spacer(height: 20),
                 CustomButton(
                   text: 'Save Changes',
@@ -440,7 +463,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ? element.minute > (moreThan?.minute ?? 0)
                 : false)))
         .map((e) {
-
       return '${Utils.changeTimeIn12HoursFormat(e.hour, e.minute)} ${e.period.name.toUpperCase()}';
     }).toList();
   }
