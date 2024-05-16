@@ -72,12 +72,6 @@ class _PostWidgetState extends State<PostWidget> {
               ),
               InkWell(
                 onTap: () {
-                  // AiloitteNavigation.intentWithData(
-                  //         context, AppRoutes.postRoute, widget.postEntity.id)
-                  //     .then((value) => context
-                  //         .read<PostsCubit>()
-                  //         .getPosts(pagination: 1, limit: 50));
-
                   Navigator.pushNamed(context, AppRoutes.postRoute,
                           arguments: widget.postEntity.id)
                       .then((_) => context
@@ -155,6 +149,10 @@ class _PostWidgetState extends State<PostWidget> {
                   const Spacer(),
                   ShareButtonWidget(
                     shareCount: widget.postEntity.totalShares,
+                    onTap: () {
+                      AiloitteNavigation.intentWithData(
+                          context, AppRoutes.repostRoute, widget.postEntity.id);
+                    },
                   ),
                 ],
               )

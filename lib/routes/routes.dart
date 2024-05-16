@@ -37,6 +37,7 @@ import 'package:my_sutra/features/presentation/patient/widgets/booking_successfu
 import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/repost_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -220,6 +221,23 @@ class Routes {
                     ),
                   ],
                   child: PostScreen(
+                    postId: args,
+                  ),
+                ));
+
+      case AppRoutes.repostRoute:
+        final args = settings?.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<PostsCubit>(
+                      create: (context) => sl<PostsCubit>(),
+                    ),
+                    BlocProvider<SearchDoctorCubit>(
+                      create: (context) => sl<SearchDoctorCubit>(),
+                    ),
+                  ],
+                  child: RepostScreen(
                     postId: args,
                   ),
                 ));
