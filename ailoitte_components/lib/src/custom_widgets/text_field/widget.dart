@@ -154,7 +154,7 @@ class _AiloitteTextFieldWidgetState extends State<AiloitteTextFieldWidget> {
   @override
   void dispose() {
     if (widget.isDisposable) {
-      widget.controller.dispose();
+      // widget.controller.dispose();
       _focus.removeListener(_onFocusChange);
       _focus.dispose();
       widget.focusNode?.dispose();
