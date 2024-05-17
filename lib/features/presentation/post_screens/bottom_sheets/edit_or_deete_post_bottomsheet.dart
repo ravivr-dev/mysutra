@@ -1,12 +1,7 @@
-import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/reporting_bottom_sheet.dart';
-import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
-import 'package:my_sutra/injection_container.dart';
 
 class EditOrDeletePostBottomSheet extends StatelessWidget {
   final String postId;
@@ -24,18 +19,8 @@ class EditOrDeletePostBottomSheet extends StatelessWidget {
           _buildRow(context,
               key: 'Edit Post', icon: Assets.iconsReport, color: Colors.black),
           const Divider(color: AppColors.color0xFFEAECF0),
-          _buildRow(context, onTap: () {
-            Navigator.pop(context);
-            context.showBottomSheet(
-              BlocProvider(
-                create: (context) => sl<PostsCubit>(),
-                child: ReportingBottomSheet(
-                  postId: postId,
-                ),
-              ),
-              isScrollControlled: true,
-            );
-          },
+          _buildRow(context,
+              onTap: () {},
               key: 'Delete Post',
               icon: Assets.iconsWarning,
               fontColor: AppColors.color0xFFF34848,
