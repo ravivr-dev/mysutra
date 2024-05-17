@@ -50,8 +50,7 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
       listener: (context, state) {
         if (state is GetPostsLoaded) {
           posts = state.posts;
-        }
-        if (state is GetPostsError) {
+        } else if (state is GetPostsError) {
           widget.showErrorToast(context: context, message: state.error);
         }
       },

@@ -48,7 +48,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
         if (state is CreatePostLoaded) {
           widget.showSuccessToast(context: context, message: state.message);
-          AiloitteNavigation.back(context);
+          AiloitteNavigation.intentWithClearAllRoutes(
+              context, AppRoutes.homeRoute);
         }
       },
       builder: (context, state) {
@@ -113,9 +114,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       focusedBorderColor: AppColors.white,
       borderColor: AppColors.white,
       validator: (val) =>
-      val!.trim().isEmpty
-          ? 'Please Enter Something to Post'
-          : null,
+          val!.trim().isEmpty ? 'Please Enter Something to Post' : null,
     );
   }
 
@@ -165,7 +164,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           const Spacer(),
           InkWell(
             onTap: () {
-              if(_key.currentState!.validate()){
+              if (_key.currentState!.validate()) {
                 context.read<PostsCubit>().createPost(
                     content: _postController.text,
                     mediaUrls: mediaUrls,
