@@ -267,7 +267,101 @@ class _PostScreenState extends State<PostScreen> {
             ),
           ],
           component.spacer(height: 12),
-          _buildDivider(),
+          if (postDetail!.postId != null) ...[
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.color0xFFE2E8F0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  UserFollowWidget(
+                    userIdEntity: postDetail!.postId!.userId,
+                    isMyPost: true,
+                    isFollowing: false,
+                    isPost: false,
+                    postId: postDetail!.postId!.id,
+                    userFollowing: (_) {},
+                  ),
+                  component.spacer(height: 10),
+                  component.text(
+                    DateFormat('d/M/y').format(
+                        postDetail!.postId!.updatedAt.toLocal()),
+                    style: theme.publicSansFonts.mediumStyle(
+                      fontColor: AppColors.neutral,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      component.text(
+                        postDetail!.postId!.content,
+                        style: theme.publicSansFonts.regularStyle(
+                          fontSize: 16,
+                          fontColor: AppColors.color0xFF1E293B,
+                        ),
+                      ),
+                      if (postDetail!.postId!.mediaUrls.isNotEmpty) ...[
+                        SizedBox(
+                          height: 150,
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (BuildContext context, int index) {
+                              return component.networkImage(
+                                url: postDetail!.postId!
+                                    .mediaUrls[index].url ??
+                                    '',
+                                height: 153,
+                                width: 153,
+                                borderRadius: 20,
+                                fit: BoxFit.fill,
+                                errorWidget: component.assetImage(
+                                    path: Assets.imagesDefaultAvatar),
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return component.spacer(width: 10);
+                            },
+                            itemCount:
+                            postDetail!.postId!.mediaUrls.length,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  component.spacer(height: 12),
+                  Row(
+                    children: [
+                      LikeDislikeButtonWidget(
+                        isLiked: false,
+                        onTap: () {},
+                        likeCount: postDetail!.postId!.totalLikes,
+                      ),
+                      component.spacer(width: 10),
+                      CommentButtonWidget(
+                        commentCount:
+                        postDetail!.postId!.totalComments,
+                        postId: postDetail!.postId!.id,
+                        onTap: () {},
+                      ),
+                      const Spacer(),
+                      ShareButtonWidget(
+                        shareCount: postDetail!.postId!.totalShares,
+                        onTap: () {},
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ] else ...[
+            _buildDivider(),
+          ],
           component.spacer(height: 12),
           Row(
             children: [
