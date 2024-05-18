@@ -118,8 +118,8 @@ class PostIdModel {
   final PostUserModel userId;
   final bool isFollowing;
   final String content;
-  final List<dynamic> mediaUrls;
-  final List<dynamic> taggedUserIds;
+  final List<MediaUrlModel> mediaUrls;
+  final List<String> taggedUserIds;
   final int totalLikes;
   final int totalComments;
   final int totalShares;
@@ -158,8 +158,9 @@ class PostIdModel {
         userId: PostUserModel.fromJson(json["userId"]),
         isFollowing: json["isFollowing"],
         content: json["content"],
-        mediaUrls: List<dynamic>.from(json["mediaUrls"].map((x) => x)),
-        taggedUserIds: List<dynamic>.from(json["taggedUserIds"].map((x) => x)),
+    mediaUrls: List<MediaUrlModel>.from(
+        json["mediaUrls"].map((x) => MediaUrlModel.fromJson(x))),
+    taggedUserIds: List<String>.from(json["taggedUserIds"].map((x) => x)),
         totalLikes: json["totalLikes"],
         totalComments: json["totalComments"],
         totalShares: json["totalShares"],
