@@ -6,6 +6,7 @@ import 'package:my_sutra/features/data/model/post_models/posts_model.dart';
 import 'package:my_sutra/features/data/model/post_models/reply_like_dislike_model.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_like_dislike_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_id_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
@@ -130,10 +131,39 @@ class PostRepoConv {
         totalLikes: data.totalLikes,
         totalComments: data.totalComments,
         totalShares: data.totalShares,
+        repostCount: data.repostCount,
         isMyPost: data.isMyPost,
         isLiked: data.isLiked,
+        isRepostedByMe: data.isRepostedByMe,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt);
+        updatedAt: data.updatedAt,
+        postId: data.postId == null
+            ? null
+            : PostIdEntity(
+                id: data.postId!.id,
+                userId: PostUserEntity(
+                    id: data.postId!.userId.id,
+                    role: data.postId!.userId.role,
+                    profilePic: data.postId!.userId.profilePic,
+                    username: data.postId!.userId.username,
+                    fullName: data.postId!.userId.fullName,
+                    isVerified: data.postId!.userId.isVerified),
+                isFollowing: data.postId!.isFollowing,
+                content: data.postId!.content,
+                mediaUrls: data.postId!.mediaUrls
+                    .map((e) =>
+                        MediaUrlEntity(mediaType: e.mediaType, url: e.url))
+                    .toList(),
+                taggedUserIds: data.postId!.taggedUserIds,
+                totalLikes: data.postId!.totalLikes,
+                totalComments: data.postId!.totalComments,
+                totalShares: data.postId!.totalShares,
+                repostCount: data.postId!.repostCount,
+                isMyPost: data.postId!.isMyPost,
+                isLiked: data.postId!.isLiked,
+                isRepostedByMe: data.postId!.isRepostedByMe,
+                createdAt: data.postId!.createdAt,
+                updatedAt: data.postId!.updatedAt));
   }
 
   static List<CommentEntity> convertCommentModelToEntity(CommentModel model) {
