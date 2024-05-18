@@ -138,6 +138,7 @@ class _PostWidgetState extends State<PostWidget> {
                           userIdEntity: widget.postEntity.postId!.userId,
                           isMyPost: true,
                           isFollowing: false,
+                          isPost:false,
                           postId: widget.postEntity.postId!.id,
                           userFollowing: (_) {},
                         ),
