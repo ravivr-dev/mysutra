@@ -53,13 +53,13 @@ class PostRepoConv {
                       username: e.postId!.userId.username,
                       isVerified: e.postId!.userId.isVerified,
                     ),
-                    isFollowing: e.isFollowing,
-                    content: e.content,
-                    mediaUrls: e.mediaUrls
+                    isFollowing: e.postId!.isFollowing,
+                    content: e.postId!.content,
+                    mediaUrls: e.postId!.mediaUrls
                         .map((e) =>
                             MediaUrlEntity(mediaType: e.mediaType, url: e.url))
                         .toList(),
-                    taggedUserIds: e.taggedUserIds,
+                    taggedUserIds: e.postId!.taggedUserIds,
                     totalLikes: e.postId!.totalLikes,
                     totalComments: e.postId!.totalComments,
                     totalShares: e.postId!.totalShares,
