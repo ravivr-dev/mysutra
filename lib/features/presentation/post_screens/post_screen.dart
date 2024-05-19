@@ -76,20 +76,24 @@ class _PostScreenState extends State<PostScreen> {
             listener: (context, state) {
               if (state is GetPostDetailLoaded) {
                 postDetail = state.post;
+              } else if (state is GetPostDetailError) {
+                widget.showErrorToast(context: context, message: state.error);
               }
               if (state is GetCommentLoaded) {
                 comments = state.comments;
-              }
-              if (state is GetCommentError) {
+              } else if (state is GetCommentError) {
                 widget.showErrorToast(context: context, message: state.error);
               }
-
               if (state is NewCommentLoaded) {
                 _loadPostDetails();
                 _commentController.clear();
+              } else if (state is NewCommentError) {
+                widget.showErrorToast(context: context, message: state.error);
               }
 
-              if (state is NewCommentError) {
+              if (state is LikeDislikePostLoaded) {
+                postDetail!.reInitIsLiked();
+              } else if (state is LikeDislikePostError) {
                 widget.showErrorToast(context: context, message: state.error);
               }
             },
@@ -288,8 +292,8 @@ class _PostScreenState extends State<PostScreen> {
                   ),
                   component.spacer(height: 10),
                   component.text(
-                    DateFormat('d/M/y').format(
-                        postDetail!.postId!.updatedAt.toLocal()),
+                    DateFormat('d/M/y')
+                        .format(postDetail!.postId!.updatedAt.toLocal()),
                     style: theme.publicSansFonts.mediumStyle(
                       fontColor: AppColors.neutral,
                     ),
@@ -312,8 +316,7 @@ class _PostScreenState extends State<PostScreen> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (BuildContext context, int index) {
                               return component.networkImage(
-                                url: postDetail!.postId!
-                                    .mediaUrls[index].url ??
+                                url: postDetail!.postId!.mediaUrls[index].url ??
                                     '',
                                 height: 153,
                                 width: 153,
@@ -327,35 +330,34 @@ class _PostScreenState extends State<PostScreen> {
                                 (BuildContext context, int index) {
                               return component.spacer(width: 10);
                             },
-                            itemCount:
-                            postDetail!.postId!.mediaUrls.length,
+                            itemCount: postDetail!.postId!.mediaUrls.length,
                           ),
                         ),
                       ],
                     ],
                   ),
                   component.spacer(height: 12),
-                  Row(
-                    children: [
-                      LikeDislikeButtonWidget(
-                        isLiked: false,
-                        onTap: () {},
-                        likeCount: postDetail!.postId!.totalLikes,
-                      ),
-                      component.spacer(width: 10),
-                      CommentButtonWidget(
-                        commentCount:
-                        postDetail!.postId!.totalComments,
-                        postId: postDetail!.postId!.id,
-                        onTap: () {},
-                      ),
-                      const Spacer(),
-                      ShareButtonWidget(
-                        shareCount: postDetail!.postId!.totalShares,
-                        onTap: () {},
-                      ),
-                    ],
-                  )
+                  // Row(
+                  //   children: [
+                  //     LikeDislikeButtonWidget(
+                  //       isLiked: false,
+                  //       onTap: () {},
+                  //       likeCount: postDetail!.postId!.totalLikes,
+                  //     ),
+                  //     component.spacer(width: 10),
+                  //     CommentButtonWidget(
+                  //       commentCount:
+                  //       postDetail!.postId!.totalComments,
+                  //       postId: postDetail!.postId!.id,
+                  //       onTap: () {},
+                  //     ),
+                  //     const Spacer(),
+                  //     ShareButtonWidget(
+                  //       shareCount: postDetail!.postId!.totalShares,
+                  //       onTap: () {},
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
             )
@@ -367,7 +369,11 @@ class _PostScreenState extends State<PostScreen> {
             children: [
               LikeDislikeButtonWidget(
                   isLiked: postDetail!.isLiked,
-                  onTap: () {},
+                  onTap: () {
+                    context
+                        .read<PostsCubit>()
+                        .likeDislikePost(postId: postDetail!.id);
+                  },
                   likeCount: postDetail!.totalLikes),
               component.spacer(width: 20),
               CommentButtonWidget(
