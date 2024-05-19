@@ -138,7 +138,7 @@ class _PostWidgetState extends State<PostWidget> {
                           userIdEntity: widget.postEntity.postId!.userId,
                           isMyPost: true,
                           isFollowing: false,
-                          isPost:false,
+                          isPost: false,
                           postId: widget.postEntity.postId!.id,
                           userFollowing: (_) {},
                         ),
@@ -192,28 +192,28 @@ class _PostWidgetState extends State<PostWidget> {
                           ],
                         ],
                       ),
-                      component.spacer(height: 12),
-                      Row(
-                        children: [
-                          LikeDislikeButtonWidget(
-                            isLiked: false,
-                            onTap: () {},
-                            likeCount: widget.postEntity.postId!.totalLikes,
-                          ),
-                          component.spacer(width: 10),
-                          CommentButtonWidget(
-                            commentCount:
-                                widget.postEntity.postId!.totalComments,
-                            postId: widget.postEntity.postId!.id,
-                            onTap: () {},
-                          ),
-                          const Spacer(),
-                          ShareButtonWidget(
-                            shareCount: widget.postEntity.postId!.totalShares,
-                            onTap: () {},
-                          ),
-                        ],
-                      )
+                      // component.spacer(height: 12),
+                      // Row(
+                      //   children: [
+                      //     LikeDislikeButtonWidget(
+                      //       isLiked: false,
+                      //       onTap: () {},
+                      //       likeCount: widget.postEntity.postId!.totalLikes,
+                      //     ),
+                      //     component.spacer(width: 10),
+                      //     CommentButtonWidget(
+                      //       commentCount:
+                      //           widget.postEntity.postId!.totalComments,
+                      //       postId: widget.postEntity.postId!.id,
+                      //       onTap: () {},
+                      //     ),
+                      //     const Spacer(),
+                      //     ShareButtonWidget(
+                      //       shareCount: widget.postEntity.postId!.totalShares,
+                      //       onTap: () {},
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                 )
