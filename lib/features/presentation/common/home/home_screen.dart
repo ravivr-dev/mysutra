@@ -38,7 +38,7 @@ abstract class _HomeScreenState extends State<HomeScreen> {
       child: const AppointmentScreen(),
     ),
     BlocProvider<PostsCubit>(
-      create: (context) => sl<PostsCubit>()..getPosts(pagination: 1, limit: 50),
+      create: (context) => sl<PostsCubit>(),
       child: const UserFeedScreen(),
     ),
     BlocProvider<PostsCubit>(
