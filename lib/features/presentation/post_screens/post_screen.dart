@@ -336,7 +336,7 @@ class _PostScreenState extends State<PostScreen> {
                       ],
                     ],
                   ),
-                  component.spacer(height: 12),
+                  // component.spacer(height: 12),
                   // Row(
                   //   children: [
                   //     LikeDislikeButtonWidget(
