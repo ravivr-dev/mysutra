@@ -54,13 +54,15 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendMessage({required SendMessageParams data}) async {
+  Future<Either<Failure, void>> sendMessage(
+      {required SendMessageParams data}) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await dataSource.sendMessage(roomId: data.roomId, data: {
           'senderId': data.senderID,
           'time': data.timeStamp,
           'message': data.message,
+          if (data.isImage != null) 'isImage': data.isImage
         });
 
         return Right(result);
