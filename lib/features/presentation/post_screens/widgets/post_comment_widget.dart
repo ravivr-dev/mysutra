@@ -131,7 +131,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             InkWell(
               onTap: () {
                 setState(() {
-                  reply = true;
+                  reply = !reply;
                 });
               },
               child: component.text(context.stringForKey(StringKeys.reply),
