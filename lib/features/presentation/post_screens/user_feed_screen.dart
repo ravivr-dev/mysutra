@@ -34,6 +34,10 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
         } else if (state is GetPostsError) {
           widget.showErrorToast(context: context, message: state.error);
         }
+
+        if (state is DeletePostLoaded) {
+          _loadPosts();
+        }
       },
       builder: (context, state) {
         return Scaffold(

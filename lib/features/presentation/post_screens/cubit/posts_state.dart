@@ -143,3 +143,17 @@ final class RePostError extends PostsState {
 
   RePostError({required this.error});
 }
+
+final class DeletePostLoading extends PostsState {}
+
+final class DeletePostLoaded extends PostsState {
+  final String message;
+
+  DeletePostLoaded({required this.message});
+}
+
+final class DeletePostError extends PostsState {
+  final String error;
+
+  DeletePostError({required this.error});
+}
