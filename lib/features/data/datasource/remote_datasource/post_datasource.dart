@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:equatable/equatable.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';

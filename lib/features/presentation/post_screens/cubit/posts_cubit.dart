@@ -10,6 +10,7 @@ import 'package:my_sutra/features/domain/entities/post_entities/post_detail_enti
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/delete_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/edit_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_post_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
@@ -38,6 +39,7 @@ class PostsCubit extends Cubit<PostsState> {
   final ReportPostUsecase reportPostUsecase;
   final RePostUsecase rePostUsecase;
   final DeletePostUsecase deletePostUsecase;
+  final EditPostUsecase editPostUsecase;
 
   PostsCubit({
     required this.rePostUsecase,
@@ -53,6 +55,7 @@ class PostsCubit extends Cubit<PostsState> {
     required this.createPostUsecase,
     required this.uploadDocumentUsecase,
     required this.deletePostUsecase,
+    required this.editPostUsecase,
   }) : super(PostsInitial());
 
   void uploadDoc(XFile file) async {
@@ -163,5 +166,20 @@ class PostsCubit extends Cubit<PostsState> {
 
     result.fold((l) => emit(DeletePostError(error: l.message)),
         (r) => emit(DeletePostLoaded(message: r)));
+  }
+
+  void editPost(
+      {required String postId,
+      required String content,
+      required List<MediaUrlEntity> mediaUrls,
+      required List<String> taggedUserIds}) async {
+    final result = await editPostUsecase.call(EditPostParams(
+        postId: postId,
+        content: content,
+        mediaUrls: mediaUrls,
+        taggedUserIds: taggedUserIds));
+
+    result.fold((l) => emit(EditPostError(error: l.message)),
+        (r) => emit(EditPostLoaded(message: r)));
   }
 }

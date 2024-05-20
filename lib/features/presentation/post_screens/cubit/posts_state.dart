@@ -55,9 +55,9 @@ final class UploadDocument extends PostsState {
 }
 
 final class UploadDocumentError extends PostsState {
-  final String message;
+  final String error;
 
-  UploadDocumentError(this.message);
+  UploadDocumentError(this.error);
 }
 
 final class CreatePostLoading extends PostsState {}
@@ -156,4 +156,18 @@ final class DeletePostError extends PostsState {
   final String error;
 
   DeletePostError({required this.error});
+}
+
+final class EditPostLoading extends PostsState {}
+
+final class EditPostLoaded extends PostsState {
+  final String message;
+
+  EditPostLoaded({required this.message});
+}
+
+final class EditPostError extends PostsState {
+  final String error;
+
+  EditPostError({required this.error});
 }

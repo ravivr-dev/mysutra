@@ -76,4 +76,5 @@ class StringKeys {
   static const String username = 'user_name';
   static const String unfollow = 'unfollow';
   static const String noComments = 'no_comments';
+  static const String repost = 're_post';
 }

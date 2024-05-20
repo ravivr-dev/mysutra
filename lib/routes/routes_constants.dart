@@ -42,6 +42,7 @@ class AppRoutes {
 
   static const String postRoute = '/post_screens/post_screen';
   static const String repostRoute = '/post_screens/repost_screen';
+  static const String editPostRoute = '/post_screens/create_post';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

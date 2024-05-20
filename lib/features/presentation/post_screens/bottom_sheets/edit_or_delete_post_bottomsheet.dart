@@ -6,6 +6,7 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class EditOrDeletePostBottomSheet extends StatelessWidget {
   final String postId;
@@ -28,10 +29,10 @@ class EditOrDeletePostBottomSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildRow(context,
-                key: 'Edit Post',
-                icon: Assets.iconsReport,
-                color: Colors.black),
+            _buildRow(context, onTap: () {
+              AiloitteNavigation.intentWithData(
+                  context, AppRoutes.editPostRoute, postId);
+            }, key: 'Edit Post', icon: Assets.iconsReport, color: Colors.black),
             const Divider(color: AppColors.color0xFFEAECF0),
             _buildRow(context, onTap: () {
               context.read<PostsCubit>().deletePost(postId: postId);
