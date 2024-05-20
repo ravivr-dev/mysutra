@@ -16,6 +16,7 @@ import 'package:my_sutra/features/presentation/post_screens/widgets/user_follow_
 import 'package:my_sutra/features/presentation/post_screens/widgets/send_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/share_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class PostScreen extends StatefulWidget {
   final String postId;
@@ -29,6 +30,7 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   final TextEditingController _commentController = TextEditingController();
   PostDetailEntity? postDetail;
+  bool comment = false;
   List<CommentEntity> comments = [];
 
   @override
@@ -76,20 +78,24 @@ class _PostScreenState extends State<PostScreen> {
             listener: (context, state) {
               if (state is GetPostDetailLoaded) {
                 postDetail = state.post;
+              } else if (state is GetPostDetailError) {
+                widget.showErrorToast(context: context, message: state.error);
               }
               if (state is GetCommentLoaded) {
                 comments = state.comments;
-              }
-              if (state is GetCommentError) {
+              } else if (state is GetCommentError) {
                 widget.showErrorToast(context: context, message: state.error);
               }
-
               if (state is NewCommentLoaded) {
                 _loadPostDetails();
                 _commentController.clear();
+              } else if (state is NewCommentError) {
+                widget.showErrorToast(context: context, message: state.error);
               }
 
-              if (state is NewCommentError) {
+              if (state is LikeDislikePostLoaded) {
+                postDetail!.reInitIsLiked();
+              } else if (state is LikeDislikePostError) {
                 widget.showErrorToast(context: context, message: state.error);
               }
             },
@@ -100,6 +106,9 @@ class _PostScreenState extends State<PostScreen> {
                       children: [
                         _buildPostWidget(),
                         component.spacer(height: 12),
+                        if (comment) ...[
+                          _buildWriteYourCommentWidget(),
+                        ],
                         _buildCommentWidget()
                       ],
                     );
@@ -112,14 +121,15 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget _buildCommentWidget() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       decoration: const BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildWriteYourCommentWidget(),
           if (comments.isNotEmpty) ...[
             component.spacer(height: 16),
             _buildDivider(),
@@ -159,50 +169,42 @@ class _PostScreenState extends State<PostScreen> {
     return const Divider(color: AppColors.color0xFFEAECF0, height: 0);
   }
 
-  // Widget _buildComments() {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 24),
-  //     child: Column(
-  //       children: [
-  //         const PostCommentWidget(),
-  //         component.spacer(height: 14),
-  //         _buildDivider(),
-  //         component.spacer(height: 14),
-  //         const PostCommentWidget()
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget _buildWriteYourCommentWidget() {
     return Container(
-      height: 60,
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
-          borderRadius: BorderRadius.circular(90),
-          border: Border.all(color: AppColors.greyD9)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-              child: component.textField(
-            controller: _commentController,
-            contentPadding: EdgeInsets.zero,
-            hintText: context.stringForKey(StringKeys.writeYourComment),
-            hintTextStyle: theme.publicSansFonts
-                .regularStyle(fontSize: 16, fontColor: AppColors.black81),
-            borderColor: AppColors.transparent,
-            focusedBorderColor: AppColors.transparent,
-          )),
-          SendButtonWidget(
-            onTap: () {
-              context.read<PostsCubit>().newComment(
-                  postId: widget.postId, comment: _commentController.text);
-            },
-          ),
-        ],
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: const BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+      child: Container(
+        height: 60,
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        decoration: BoxDecoration(
+            color: AppColors.backgroundColor,
+            borderRadius: BorderRadius.circular(90),
+            border: Border.all(color: AppColors.greyD9)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+                child: component.textField(
+              controller: _commentController,
+              contentPadding: EdgeInsets.zero,
+              hintText: context.stringForKey(StringKeys.writeYourComment),
+              hintTextStyle: theme.publicSansFonts
+                  .regularStyle(fontSize: 16, fontColor: AppColors.black81),
+              borderColor: AppColors.transparent,
+              focusedBorderColor: AppColors.transparent,
+            )),
+            SendButtonWidget(
+              onTap: () {
+                context.read<PostsCubit>().newComment(
+                    postId: widget.postId, comment: _commentController.text);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -267,19 +269,126 @@ class _PostScreenState extends State<PostScreen> {
             ),
           ],
           component.spacer(height: 12),
-          _buildDivider(),
+          if (postDetail!.postId != null) ...[
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.postRoute,
+                    arguments: postDetail!.postId!.id);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.color0xFFE2E8F0),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    UserFollowWidget(
+                      userIdEntity: postDetail!.postId!.userId,
+                      isMyPost: true,
+                      isFollowing: false,
+                      isPost: false,
+                      postId: postDetail!.postId!.id,
+                      userFollowing: (_) {},
+                    ),
+                    component.spacer(height: 10),
+                    component.text(
+                      DateFormat('d/M/y')
+                          .format(postDetail!.postId!.updatedAt.toLocal()),
+                      style: theme.publicSansFonts.mediumStyle(
+                        fontColor: AppColors.neutral,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        component.text(
+                          postDetail!.postId!.content,
+                          style: theme.publicSansFonts.regularStyle(
+                            fontSize: 16,
+                            fontColor: AppColors.color0xFF1E293B,
+                          ),
+                        ),
+                        if (postDetail!.postId!.mediaUrls.isNotEmpty) ...[
+                          SizedBox(
+                            height: 150,
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                return component.networkImage(
+                                  url: postDetail!
+                                          .postId!.mediaUrls[index].url ??
+                                      '',
+                                  height: 153,
+                                  width: 153,
+                                  borderRadius: 20,
+                                  fit: BoxFit.fill,
+                                  errorWidget: component.assetImage(
+                                      path: Assets.imagesDefaultAvatar),
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return component.spacer(width: 10);
+                              },
+                              itemCount: postDetail!.postId!.mediaUrls.length,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    // component.spacer(height: 12),
+                    // Row(
+                    //   children: [
+                    //     LikeDislikeButtonWidget(
+                    //       isLiked: false,
+                    //       onTap: () {},
+                    //       likeCount: postDetail!.postId!.totalLikes,
+                    //     ),
+                    //     component.spacer(width: 10),
+                    //     CommentButtonWidget(
+                    //       commentCount:
+                    //       postDetail!.postId!.totalComments,
+                    //       postId: postDetail!.postId!.id,
+                    //       onTap: () {},
+                    //     ),
+                    //     const Spacer(),
+                    //     ShareButtonWidget(
+                    //       shareCount: postDetail!.postId!.totalShares,
+                    //       onTap: () {},
+                    //     ),
+                    //   ],
+                    // )
+                  ],
+                ),
+              ),
+            )
+          ] else ...[
+            _buildDivider(),
+          ],
           component.spacer(height: 12),
           Row(
             children: [
               LikeDislikeButtonWidget(
                   isLiked: postDetail!.isLiked,
-                  onTap: () {},
+                  onTap: () {
+                    context
+                        .read<PostsCubit>()
+                        .likeDislikePost(postId: postDetail!.id);
+                  },
                   likeCount: postDetail!.totalLikes),
               component.spacer(width: 20),
               CommentButtonWidget(
                 commentCount: postDetail!.totalComments,
                 postId: postDetail!.id,
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    comment = !comment;
+                  });
+                },
               ),
               const Spacer(),
               ShareButtonWidget(shareCount: postDetail!.totalShares),

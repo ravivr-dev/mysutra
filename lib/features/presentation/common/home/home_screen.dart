@@ -9,6 +9,8 @@ import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart
 import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
+import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/create_post_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/user_feed_screen.dart';
@@ -37,10 +39,14 @@ abstract class _HomeScreenState extends State<HomeScreen>
 
   late final List<Widget> _screens = [
     AppointmentScreen(entity: _userEntity),
-    BlocProvider<PostsCubit>(
-      create: (context) => sl<PostsCubit>()..getPosts(pagination: 1, limit: 50),
-      child: const UserFeedScreen(),
-    ),
+    MultiBlocProvider(providers: [
+      BlocProvider<PostsCubit>(
+        create: (context) => sl<PostsCubit>(),
+      ),
+      BlocProvider<SearchDoctorCubit>(
+        create: (context) => sl<SearchDoctorCubit>(),
+      ),
+    ], child: const UserFeedScreen()),
     BlocProvider<PostsCubit>(
       create: (context) => sl<PostsCubit>(),
       child: const CreatePostScreen(),

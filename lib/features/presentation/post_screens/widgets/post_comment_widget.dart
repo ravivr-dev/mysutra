@@ -131,7 +131,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             InkWell(
               onTap: () {
                 setState(() {
-                  reply = true;
+                  reply = !reply;
                 });
               },
               child: component.text(context.stringForKey(StringKeys.reply),
@@ -206,19 +206,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
           ),
         ),
         component.spacer(height: 12),
-        Row(
-          children: [
-            LikeDislikeButtonWidget(
-                isLiked: widget.commentEntity.isLiked,
-                onTap: () {},
-                likeCount: widget.commentEntity.totalLikes),
-            component.spacer(width: 20),
-            CommentButtonWidget(
-                commentCount: widget.commentEntity.totalReplies,
-                postId: widget.commentEntity.id,
-                onTap: () {}),
-          ],
-        ),
+        LikeDislikeButtonWidget(
+            isLiked: widget.commentEntity.isLiked,
+            onTap: () {},
+            likeCount: widget.commentEntity.totalLikes),
       ],
     );
   }

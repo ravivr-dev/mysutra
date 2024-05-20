@@ -16,12 +16,14 @@ class CreatePostUsecase extends UseCase<String, CreatePostParams> {
 }
 
 class CreatePostParams {
+  final String? postId;
   final String content;
   final List<MediaUrlEntity> mediaUrls;
   final List<String> taggedUserIds;
 
   CreatePostParams(
-      {required this.content,
+      {this.postId,
+      required this.content,
       required this.mediaUrls,
       required this.taggedUserIds});
 }

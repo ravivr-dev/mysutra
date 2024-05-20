@@ -9,6 +9,7 @@ import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entit
 import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/delete_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_post_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
@@ -18,6 +19,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_rep
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/repost_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 
 part 'posts_state.dart';
@@ -34,20 +36,24 @@ class PostsCubit extends Cubit<PostsState> {
   final NewCommentUsecase newCommentUsecase;
   final NewReplyUsecase newReplyUsecase;
   final ReportPostUsecase reportPostUsecase;
+  final RePostUsecase rePostUsecase;
+  final DeletePostUsecase deletePostUsecase;
 
-  PostsCubit(
-      {required this.reportPostUsecase,
-      required this.newCommentUsecase,
-      required this.newReplyUsecase,
-      required this.likeDislikeCommentUsecase,
-      required this.likeDislikeReplyUsecase,
-      required this.getPostDetailUsecase,
-      required this.getCommentUsecase,
-      required this.likeUnlikePostUsecase,
-      required this.getPostsUsecase,
-      required this.createPostUsecase,
-      required this.uploadDocumentUsecase})
-      : super(PostsInitial());
+  PostsCubit({
+    required this.rePostUsecase,
+    required this.reportPostUsecase,
+    required this.newCommentUsecase,
+    required this.newReplyUsecase,
+    required this.likeDislikeCommentUsecase,
+    required this.likeDislikeReplyUsecase,
+    required this.getPostDetailUsecase,
+    required this.getCommentUsecase,
+    required this.likeUnlikePostUsecase,
+    required this.getPostsUsecase,
+    required this.createPostUsecase,
+    required this.uploadDocumentUsecase,
+    required this.deletePostUsecase,
+  }) : super(PostsInitial());
 
   void uploadDoc(XFile file) async {
     emit(UploadDocLoading());
@@ -134,5 +140,28 @@ class PostsCubit extends Cubit<PostsState> {
 
     result.fold((l) => emit(ReportPostError(error: l.message)),
         (r) => emit(ReportPostLoaded(message: r)));
+  }
+
+  void repost(
+      {required String postId,
+      required String content,
+      required List<MediaUrlEntity> mediaUrls,
+      required List<String> taggedUserIds}) async {
+    final result = await rePostUsecase.call(CreatePostParams(
+        postId: postId,
+        content: content,
+        mediaUrls: mediaUrls,
+        taggedUserIds: taggedUserIds));
+
+    result.fold((l) => emit(RePostError(error: l.message)),
+        (r) => emit(RePostLoaded(message: r)));
+  }
+
+  void deletePost({required String postId}) async {
+    final result =
+        await deletePostUsecase.call(DeletePostParams(postId: postId));
+
+    result.fold((l) => emit(DeletePostError(error: l.message)),
+        (r) => emit(DeletePostLoaded(message: r)));
   }
 }

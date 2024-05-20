@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
@@ -38,6 +39,7 @@ import 'package:my_sutra/features/presentation/patient/widgets/booking_successfu
 import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
+import 'package:my_sutra/features/presentation/post_screens/repost_screen.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -236,6 +238,23 @@ class Routes {
                   ],
                   child: PostScreen(
                     postId: args,
+                  ),
+                ));
+
+      case AppRoutes.repostRoute:
+        final args = settings?.arguments as PostEntity;
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<PostsCubit>(
+                      create: (context) => sl<PostsCubit>(),
+                    ),
+                    BlocProvider<SearchDoctorCubit>(
+                      create: (context) => sl<SearchDoctorCubit>(),
+                    ),
+                  ],
+                  child: RePostScreen(
+                    postEntity: args,
                   ),
                 ));
 

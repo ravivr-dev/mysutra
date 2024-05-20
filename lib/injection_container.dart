@@ -48,6 +48,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_de
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/delete_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_post_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
@@ -57,6 +58,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_rep
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/new_reply_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/repost_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
@@ -158,6 +160,8 @@ Future<void> init() async {
         likeDislikeCommentUsecase: sl<LikeDislikeCommentUsecase>(),
         likeDislikeReplyUsecase: sl<LikeDislikeReplyUsecase>(),
         reportPostUsecase: sl<ReportPostUsecase>(),
+        rePostUsecase: sl<RePostUsecase>(),
+        deletePostUsecase: sl<DeletePostUsecase>(),
       ));
 
   // UseCases
@@ -218,6 +222,8 @@ Future<void> init() async {
   sl.registerFactory(() => LikeDislikeCommentUsecase(sl<PostRepository>()));
   sl.registerFactory(() => LikeDislikeReplyUsecase(sl<PostRepository>()));
   sl.registerLazySingleton(() => ReportPostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => RePostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => DeletePostUsecase(sl<PostRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

@@ -7,8 +7,9 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
-import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/edit_or_deete_post_bottomsheet.dart';
+import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/edit_or_delete_post_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/view_profile_or_report_bottom_sheet.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/injection_container.dart';
 
@@ -20,14 +21,13 @@ class UserFollowWidget extends StatefulWidget {
   final bool isPost;
   final Function(bool)? userFollowing;
 
-  const UserFollowWidget(
-      {super.key,
-      required this.userIdEntity,
-      required this.isMyPost,
-      required this.isFollowing,
-      this.postId,
-      this.isPost = true,
-      this.userFollowing});
+  const UserFollowWidget({super.key,
+    required this.userIdEntity,
+    required this.isMyPost,
+    required this.isFollowing,
+    this.postId,
+    this.isPost = true,
+    this.userFollowing});
 
   @override
   State<UserFollowWidget> createState() => _UserFollowWidgetState();
@@ -81,7 +81,7 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                 },
                 child: Container(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                  const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
                     color: widget.isFollowing
@@ -103,16 +103,21 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
             if (widget.isPost) ...[
               const Spacer(),
               InkWell(
-                onTap: () => context.showBottomSheet(widget.isMyPost
-                    ? EditOrDeletePostBottomSheet(postId: widget.postId!)
-                    : BlocProvider<SearchDoctorCubit>(
-                        create: (context) => sl<SearchDoctorCubit>(),
-                        child: ViewProfileOrReportBottomSheet(
-                          postId: widget.postId!,
-                          userId: widget.userIdEntity.id!,
-                          userRole: widget.userIdEntity.role!,
-                        ),
-                      )),
+                onTap: () =>
+                    context.showBottomSheet(widget.isMyPost
+                        ? BlocProvider<PostsCubit>(
+                      create: (context) => sl<PostsCubit>(),
+                      child: EditOrDeletePostBottomSheet(
+                          postId: widget.postId!),
+                    )
+                        : BlocProvider<SearchDoctorCubit>(
+                      create: (context) => sl<SearchDoctorCubit>(),
+                      child: ViewProfileOrReportBottomSheet(
+                        postId: widget.postId!,
+                        userId: widget.userIdEntity.id!,
+                        userRole: widget.userIdEntity.role!,
+                      ),
+                    )),
                 child: const Icon(
                   Icons.more_vert,
                   color: AppColors.color0xFF292D32,

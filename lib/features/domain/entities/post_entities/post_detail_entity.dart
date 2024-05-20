@@ -1,4 +1,5 @@
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_id_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
 
 class PostDetailEntity {
@@ -11,10 +12,13 @@ class PostDetailEntity {
   int totalLikes;
   int totalComments;
   int totalShares;
+  int repostCount;
   bool isMyPost;
   bool isLiked;
+  bool isRepostedByMe;
   DateTime createdAt;
   DateTime updatedAt;
+  PostIdEntity? postId;
 
   PostDetailEntity({
     required this.id,
@@ -26,12 +30,14 @@ class PostDetailEntity {
     required this.totalLikes,
     required this.totalComments,
     required this.totalShares,
+    required this.repostCount,
     required this.isMyPost,
     required this.isLiked,
+    required this.isRepostedByMe,
     required this.createdAt,
     required this.updatedAt,
+    this.postId,
   });
-
 
   void reInitIsFollowing() {
     isFollowing = !isFollowing;

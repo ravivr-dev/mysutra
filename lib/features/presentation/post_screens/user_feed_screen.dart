@@ -19,30 +19,11 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
   List<PostEntity> posts = [];
   bool isLoading = false;
 
-  // Widget _createListView() {
-  //   ScrollController scrollController = ScrollController();
-  //   scrollController.addListener(() {
-  //     if (scrollController.position.maxScrollExtent ==
-  //         scrollController.position.pixels) {
-  //       if (!isLoading) {
-  //         isLoading = !isLoading;
-  //         context.read();
-  //       }
-  //     }
-  //   });
-  //
-  //   return ListView.separated(
-  //       controller: scrollController,
-  //       physics: const NeverScrollableScrollPhysics(),
-  //       shrinkWrap: true,
-  //       itemBuilder: (context, index) {
-  //         return PostWidget(postEntity: posts[index]);
-  //       },
-  //       separatorBuilder: (_, index) {
-  //         return component.spacer(height: 15);
-  //       },
-  //       itemCount: posts.length);
-  // }
+  @override
+  void initState() {
+    _loadPosts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +31,12 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
       listener: (context, state) {
         if (state is GetPostsLoaded) {
           posts = state.posts;
-        }
-        if (state is GetPostsError) {
+        } else if (state is GetPostsError) {
           widget.showErrorToast(context: context, message: state.error);
+        }
+
+        if (state is DeletePostLoaded) {
+          _loadPosts();
         }
       },
       builder: (context, state) {
@@ -106,5 +90,9 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
         )
       ],
     );
+  }
+
+  void _loadPosts() {
+    context.read<PostsCubit>().getPosts(pagination: 1, limit: 50);
   }
 }
