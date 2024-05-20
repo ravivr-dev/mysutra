@@ -5,7 +5,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
-import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/edit_or_deete_post_bottomsheet.dart';
 import 'package:my_sutra/features/presentation/post_screens/bottom_sheets/view_profile_or_report_bottom_sheet.dart';
@@ -76,8 +76,8 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
               InkWell(
                 onTap: () {
                   context.read<SearchDoctorCubit>().followDoctor(
-                      params: FollowDoctorParams(
-                          doctorId: widget.userIdEntity.id!));
+                      params: FollowUserParams(
+                          userId: widget.userIdEntity.id!));
                 },
                 child: Container(
                   padding:

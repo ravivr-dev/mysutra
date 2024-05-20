@@ -42,7 +42,8 @@ class EndPoints {
   static const String verifyChangePhoneNumber =
       '/user/change-phone-number/verify-otp';
   static const String userFollowing = '/user/followings';
-  static const String videoSdkRoom ='/user/videosdk/room';
+  static const String videoSdkRoom = '/user/videosdk/room';
+  static const String userFollow = '/user/follow';
 
   // Posts Endpoints
   static const String searchUserName = '/post/search';

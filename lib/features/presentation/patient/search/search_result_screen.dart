@@ -12,8 +12,9 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+
 import '../../../../generated/assets.dart';
-import '../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import '../../../domain/usecases/user_usecases/follow_user_usecase.dart';
 
 class SearchResultScreen extends StatefulWidget {
   final SearchResultArgs? args;
@@ -198,7 +199,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   InkWell(
                     onTap: () {
                       context.read<SearchDoctorCubit>().followDoctor(
-                          params: FollowDoctorParams(doctorId: data.id!),
+                          params: FollowUserParams(userId: data.id!),
                           followedDoctorIndex: index);
                     },
                     child: Container(

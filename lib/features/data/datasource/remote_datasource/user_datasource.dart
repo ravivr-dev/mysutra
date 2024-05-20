@@ -64,6 +64,8 @@ abstract class UserDataSource {
   Future<ResponseModel> getFollowing(Map<String, dynamic> map);
 
   Future<VideoRoomResponseModel> getVideoRoomId(Map<String, dynamic> data);
+
+  Future<dynamic> followUser(Map<String, dynamic> data);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -382,6 +384,22 @@ class UserDataSourceImpl extends UserDataSource {
       Map<String, dynamic> data) async {
     try {
       return await client.getVideoRoomId(data).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<dynamic> followUser(Map<String, dynamic> data) async {
+    try {
+      return await client.followUser(data).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

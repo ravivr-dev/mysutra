@@ -6,14 +6,14 @@ import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity
 import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
-import '../../../../domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import '../../../../domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
+import '../../../../domain/usecases/user_usecases/follow_user_usecase.dart';
 
 part 'search_doctor_state.dart';
 
 class SearchDoctorCubit extends Cubit<SearchDoctorState> {
   final SearchDoctorUsecase searchDoctorUsecase;
-  final FollowDoctorUseCase followDoctorUseCase;
+  final FollowUserUseCase followDoctorUseCase;
   final GetDoctorDetailsUseCase getDoctorDetailsUseCase;
 
   SearchDoctorCubit({
@@ -32,7 +32,7 @@ class SearchDoctorCubit extends Cubit<SearchDoctorState> {
   }
 
   Future<void> followDoctor(
-      {required FollowDoctorParams params, int? followedDoctorIndex}) async {
+      {required FollowUserParams params, int? followedDoctorIndex}) async {
     emit(FollowDoctorLoading());
     final result = await followDoctorUseCase.call(params);
 
@@ -42,7 +42,7 @@ class SearchDoctorCubit extends Cubit<SearchDoctorState> {
         FollowDoctorSuccessState(
           followEntity: r,
           followedDoctorIndex: followedDoctorIndex,
-          doctorId: params.doctorId,
+          doctorId: params.userId,
         ),
       ),
     );

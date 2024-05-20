@@ -20,12 +20,15 @@ import 'package:my_sutra/features/domain/entities/user_entities/video_room_respo
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_video_room_id_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
+import '../../../domain/entities/patient_entities/follow_entity.dart';
 import '../../../domain/entities/user_entities/user_data_entity.dart';
 import '../../../domain/entities/user_entities/user_entity.dart';
 import '../../../domain/usecases/user_usecases/get_following_usecase.dart';
+import '../../model/patient_models/follow_model.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
@@ -341,6 +344,25 @@ class UserRepositoryImpl extends UserRepository {
         });
 
         return Right(UserRepoConv.videoRoomResponseModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, FollowEntity>> followUser(
+      FollowUserParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.followUser({
+          'userId': data.userId,
+        });
+
+        return Right(UserRepoConv.followModelToEntity(
+            FollowModel.fromJson(result['data'] ?? {})));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

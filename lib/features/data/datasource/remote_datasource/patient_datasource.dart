@@ -14,8 +14,6 @@ import '../../model/patient_models/schedule_appointment_response_model.dart';
 abstract class PatientDataSource {
   Future<SearchDoctorModel> searchDoctors(SearchDoctorParams data);
 
-  Future<Map<String, dynamic>> followDoctor(Map<String, dynamic> data);
-
   Future<AvailableTimeSlotResponse> getAvailableSlots(Map<String, dynamic> map);
 
   Future getDoctorDetails(String doctorId);
@@ -55,22 +53,6 @@ class PatientDataSourceImpl extends PatientDataSource {
           .searchDoctors(data.search, data.experience, data.start, data.limit,
               data.reviews, data.specializationId)
           .catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Map<String, dynamic>> followDoctor(Map<String, dynamic> data) async {
-    try {
-      return await client.followDoctor(data).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

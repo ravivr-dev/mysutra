@@ -146,4 +146,7 @@ abstract class UserRestClient {
   @POST(EndPoints.videoSdkRoom)
   Future<VideoRoomResponseModel> getVideoRoomId(
       @Body() Map<String, dynamic> map);
+
+  @POST(EndPoints.userFollow)
+  Future<dynamic> followUser(@Body() Map<String, dynamic> map);
 }

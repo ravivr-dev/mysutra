@@ -53,9 +53,6 @@ abstract class PatientRestClient {
     @Query("specializationId") String? specializationId,
   );
 
-  @POST(EndPoints.doctorFollow)
-  Future<dynamic> followDoctor(@Body() Map<String, dynamic> data);
-
   @GET(EndPoints.availableSlots)
   Future<AvailableTimeSlotResponse> getAvailableSlots(
       @Queries() Map<String, dynamic> map);
