@@ -30,6 +30,7 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   final TextEditingController _commentController = TextEditingController();
   PostDetailEntity? postDetail;
+  bool comment = false;
   List<CommentEntity> comments = [];
 
   @override
@@ -105,6 +106,9 @@ class _PostScreenState extends State<PostScreen> {
                       children: [
                         _buildPostWidget(),
                         component.spacer(height: 12),
+                        if (comment) ...[
+                          _buildWriteYourCommentWidget(),
+                        ],
                         _buildCommentWidget()
                       ],
                     );
@@ -117,14 +121,15 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget _buildCommentWidget() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       decoration: const BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildWriteYourCommentWidget(),
           if (comments.isNotEmpty) ...[
             component.spacer(height: 16),
             _buildDivider(),
@@ -164,50 +169,42 @@ class _PostScreenState extends State<PostScreen> {
     return const Divider(color: AppColors.color0xFFEAECF0, height: 0);
   }
 
-  // Widget _buildComments() {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 24),
-  //     child: Column(
-  //       children: [
-  //         const PostCommentWidget(),
-  //         component.spacer(height: 14),
-  //         _buildDivider(),
-  //         component.spacer(height: 14),
-  //         const PostCommentWidget()
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget _buildWriteYourCommentWidget() {
     return Container(
-      height: 60,
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
-          borderRadius: BorderRadius.circular(90),
-          border: Border.all(color: AppColors.greyD9)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-              child: component.textField(
-            controller: _commentController,
-            contentPadding: EdgeInsets.zero,
-            hintText: context.stringForKey(StringKeys.writeYourComment),
-            hintTextStyle: theme.publicSansFonts
-                .regularStyle(fontSize: 16, fontColor: AppColors.black81),
-            borderColor: AppColors.transparent,
-            focusedBorderColor: AppColors.transparent,
-          )),
-          SendButtonWidget(
-            onTap: () {
-              context.read<PostsCubit>().newComment(
-                  postId: widget.postId, comment: _commentController.text);
-            },
-          ),
-        ],
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: const BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+      child: Container(
+        height: 60,
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        decoration: BoxDecoration(
+            color: AppColors.backgroundColor,
+            borderRadius: BorderRadius.circular(90),
+            border: Border.all(color: AppColors.greyD9)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+                child: component.textField(
+              controller: _commentController,
+              contentPadding: EdgeInsets.zero,
+              hintText: context.stringForKey(StringKeys.writeYourComment),
+              hintTextStyle: theme.publicSansFonts
+                  .regularStyle(fontSize: 16, fontColor: AppColors.black81),
+              borderColor: AppColors.transparent,
+              focusedBorderColor: AppColors.transparent,
+            )),
+            SendButtonWidget(
+              onTap: () {
+                context.read<PostsCubit>().newComment(
+                    postId: widget.postId, comment: _commentController.text);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -276,7 +273,7 @@ class _PostScreenState extends State<PostScreen> {
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.postRoute,
-                        arguments: postDetail!.postId!.id);
+                    arguments: postDetail!.postId!.id);
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -387,7 +384,11 @@ class _PostScreenState extends State<PostScreen> {
               CommentButtonWidget(
                 commentCount: postDetail!.totalComments,
                 postId: postDetail!.id,
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    comment = !comment;
+                  });
+                },
               ),
               const Spacer(),
               ShareButtonWidget(shareCount: postDetail!.totalShares),
