@@ -149,7 +149,8 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
                             ],
                           ),
                         ),
-                        _buildCallingRowWidget(appointment: appointment),
+                        _buildCallingRowWidget(
+                            appointment: appointment, isDoctor: false),
                       ],
                     )
                   ],

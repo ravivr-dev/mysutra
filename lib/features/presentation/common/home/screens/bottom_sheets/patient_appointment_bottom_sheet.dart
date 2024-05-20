@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/common_widgets/time_container.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
-import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 import '../../../../../../ailoitte_component_injector.dart';
@@ -75,18 +74,18 @@ class PatientAppointmentBottomSheet extends StatelessWidget {
                 component.spacer(height: 36),
                 _buildItems(callback: () {}, text: 'Join Video Consultation'),
                 _buildDivider(),
-                _buildItems(
-                    callback: () => AiloitteNavigation.intentWithData(
-                        context,
-                        AppRoutes.chatScreen,
-                        ChatScreenArgs(
-                          roomId: '${entity.doctorId}${entity.userId}',
-                          username: entity.username ?? '',
-                          currentUserId: entity.userId!,
-                          profilePic: entity.profilePic,
-                        )),
-                    text: 'Send Message'),
-                _buildDivider(),
+                // _buildItems(
+                //     callback: () => AiloitteNavigation.intentWithData(
+                //         context,
+                //         AppRoutes.chatScreen,
+                //         ChatScreenArgs(
+                //           roomId: '${entity.doctorId}${entity.userId}',
+                //           username: entity.username ?? '',
+                //           currentUserId: entity.userId!,
+                //           profilePic: entity.profilePic,
+                //         )),
+                //     text: 'Send Message'),
+                // _buildDivider(),
                 _buildItems(callback: () {}, text: 'View patient history'),
                 _buildDivider(),
                 _buildItems(
