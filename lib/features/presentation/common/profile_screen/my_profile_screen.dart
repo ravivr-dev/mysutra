@@ -94,11 +94,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 component.spacer(height: 12),
                 const Divider(color: AppColors.dividerColor),
                 component.spacer(height: 12),
-                if (userRole != UserRole.influencer)
+                if (userRole == UserRole.doctor) ...[
                   _buildCard(
-                      value: userRole == UserRole.doctor
-                          ? 'My Patients'
-                          : 'My Doctors',
+                      value: 'My Patients',
                       onTap: () {
                         if (userRole == UserRole.doctor) {
                           //todo make it dynamic (implement pagination)
@@ -108,7 +106,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         }
                       },
                       icons: Assets.iconsUserCircle),
-                component.spacer(height: 12),
+                  component.spacer(height: 12),
+                ],
                 _buildCard(
                     value: 'My Following',
                     icons: Assets.iconsUserAdd,
@@ -211,7 +210,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         ],
       ),
       component.text(
-          '${my?.specialization?.name ?? ''} | ${my?.totalExperience} year experience'.capitalizeFirstLetterOfEveryWord,
+          '${my?.specialization?.name ?? ''} | ${my?.totalExperience} year experience'
+              .capitalizeFirstLetterOfEveryWord,
           style: theme.publicSansFonts.regularStyle(
             fontColor: AppColors.color0xFF526371,
           )),
