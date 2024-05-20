@@ -6,13 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_dropdown.dart';
-import 'package:my_sutra/core/common_widgets/user_name_textfield.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
-import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bottom_sheets/confirm_your_booking_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
@@ -40,7 +38,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   String? _selectedTimeSlot;
   List<AvailableTimeSlotEntity> _availableTImeSlots = [];
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final TextEditingController _nameController = TextEditingController();
+  // final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -136,15 +134,15 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                     .stringForKey(StringKeys.patientDetails),
                                 fontSize: 16),
                             component.spacer(height: 16),
-                            _buildText(
-                                value:
-                                    context.stringForKey(StringKeys.username)),
-                            component.spacer(height: 10),
-                            BlocProvider(
-                              create: (_) => sl<RegistrationCubit>(),
-                              child: UserNameTextField(
-                                  userNameController: _nameController),
-                            ),
+                            // _buildText(
+                            //     value:
+                            //         context.stringForKey(StringKeys.username)),
+                            // component.spacer(height: 10),
+                            // BlocProvider(
+                            //   create: (_) => sl<RegistrationCubit>(),
+                            //   child: UserNameTextField(
+                            //       userNameController: _nameController),
+                            // ),
                             _buildText(
                                 value: context.stringForKey(StringKeys.age)),
                             component.spacer(height: 10),
@@ -273,7 +271,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
           patientAge: isNewAppointment ? _ageController.text : null,
           patientGender: isNewAppointment ? _selectedGender! : null,
           patientEmail: isNewAppointment ? _emailController.text : null,
-          patientName: isNewAppointment ? _nameController.text : null,
+          // patientName: isNewAppointment ? _nameController.text : null,
           // patientProblem: isNewAppointment ? _reasonController.text : null,
           time: _selectedTimeSlot!,
           appointmentId: isNewAppointment ? null : widget.args.appointmentId,
@@ -349,7 +347,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   }
 
   void _disposeAllController() {
-    _nameController.dispose();
+    // _nameController.dispose();
     _ageController.dispose();
     _phoneNumberController.dispose();
     _emailController.dispose();

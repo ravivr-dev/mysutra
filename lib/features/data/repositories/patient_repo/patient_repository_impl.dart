@@ -11,6 +11,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/available_tim
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
+
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/schedule_appointment_response_entity.dart';
 import '../../../domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
@@ -94,9 +95,9 @@ class PatientRepositoryImpl extends PatientRepository {
           'date': data.date,
           'time': data.time,
           if (data.appointmentId != null) 'appointmentId': data.appointmentId,
-          if (data.patientNumber != null && data.patientName != null)
+          if (data.patientNumber != null)
             'patientDetails': {
-              'username': data.patientName,
+              // 'username': data.patientName,
               'age': data.patientAge,
               'gender': data.patientGender,
               'countryCode': '+91',
