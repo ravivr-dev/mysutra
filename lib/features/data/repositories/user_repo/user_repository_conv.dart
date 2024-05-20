@@ -70,6 +70,7 @@ class UserRepoConv {
       role: model.role,
       gender: model.gender,
       age: model.age,
+      id: model.id,
     );
   }
 

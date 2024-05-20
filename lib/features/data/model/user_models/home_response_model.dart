@@ -11,6 +11,7 @@ class HomeResponseModel {
 
 ///Everything would be null (except role) in case of GUEST user
 class UserModel {
+  final String id;
   final String? fullName;
   final String? username;
   final String? profilePic;
@@ -26,5 +27,6 @@ class UserModel {
         isVerified = json[Constants.isVerified],
         role = json[Constants.role],
         gender = json[Constants.gender],
-        age = json[Constants.age];
+        age = json[Constants.age],
+        id = json[Constants.id];
 }
