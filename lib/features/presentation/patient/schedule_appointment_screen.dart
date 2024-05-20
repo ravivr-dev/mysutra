@@ -157,6 +157,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                             _buildTextField(
                                 controller: _ageController,
                                 errorText: 'Age',
+                                maxLength: 3,
                                 textInputType: TextInputType.number),
                             _buildText(
                                 value: context
@@ -166,6 +167,12 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                 controller: _phoneNumberController,
                                 textInputType: TextInputType.number,
                                 maxLength: 10,
+                                additionalValidation: (value) {
+                                  if (int.tryParse(value ?? '') == null) {
+                                    return 'Please Enter Valid Mobile Number';
+                                  }
+                                  return null;
+                                },
                                 errorText: 'Phone Number'),
                             _buildText(
                                 value: context.stringForKey(StringKeys.email)),
@@ -299,6 +306,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
     required String? errorText,
     TextInputType? textInputType,
     int? maxLength,
+    String? Function(String? value)? additionalValidation,
   }) {
     return SizedBox(
       height: maxLines == null ? 95 : null,
@@ -308,8 +316,11 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
         textInputType: textInputType,
         maxLength: maxLength,
         validator: (value) {
+          final validationResult = additionalValidation?.call(value);
           if (value!.isEmpty) {
             return 'Please Fill ${errorText ?? 'Empty'} Field';
+          } else if (additionalValidation != null && validationResult != null) {
+            return validationResult;
           }
           return null;
         },
