@@ -157,6 +157,7 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
                 ),
               );
             }),
+        if (_appointments.isEmpty) component.text('No Appointments Found')
       ],
     );
   }
