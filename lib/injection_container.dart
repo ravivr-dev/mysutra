@@ -87,7 +87,6 @@ import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.da
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/data/repositories/chat_repo/chat_repository_impl.dart';
-import 'features/domain/usecases/user_usecases/clear_messages_use_case.dart';
 import 'features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 
 final sl = GetIt.instance;
@@ -202,7 +201,6 @@ Future<void> init() async {
   sl.registerFactory(
       () => DoctorRescheduleAppointmentsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => SendMessageUseCase(sl<ChatRepository>()));
-  sl.registerFactory(() => ClearMessagesUseCase(sl<UserRepository>()));
   sl.registerFactory(() => ListenMessagesUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
 

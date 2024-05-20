@@ -12,7 +12,6 @@ import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/repositories/user_repo/user_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
@@ -296,36 +295,6 @@ class UserRepositoryImpl extends UserRepository {
 
         return Right(
             UserRepoConv.convertUserDataModelToEntity(result.userDataList));
-      } else {
-        return const Left(ServerFailure(message: Constants.errorNoInternet));
-      }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, String>> sendMessage(ChatEntity params) async {
-    try {
-      if (await networkInfo.isConnected) {
-        final result = await remoteDataSource.sendMessages(params.toJson());
-
-        return Right(result.message ?? '');
-      } else {
-        return const Left(ServerFailure(message: Constants.errorNoInternet));
-      }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, String>> clearMessage(String appointmentId) async {
-    try {
-      if (await networkInfo.isConnected) {
-        final result = await remoteDataSource.clearMessage(appointmentId);
-
-        return Right(result['message']);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
