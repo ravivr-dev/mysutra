@@ -1,5 +1,7 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_sutra/core/common_widgets/custom_calender.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 
 class DateWidget extends StatefulWidget {
@@ -19,10 +21,21 @@ class _DateWidgetState extends State<DateWidget> {
     return Row(
       children: [
         _buildArrowButton(icon: Icons.arrow_back_ios, isPrevious: true),
-        SizedBox(
-          width: 65,
-          child: Center(
-            child: Text(DateFormat('d MMM').format(_date)),
+        InkWell(
+          onTap: () {
+            context.showBottomSheet(CustomDatePicker(callback: (selectedData) {
+              AiloitteNavigation.back(context);
+              setState(() {
+                _date = selectedData;
+              });
+              widget.onDateChanged.call(_date);
+            }));
+          },
+          child: SizedBox(
+            width: 65,
+            child: Center(
+              child: Text(DateFormat('d MMM').format(_date)),
+            ),
           ),
         ),
         _buildArrowButton(icon: Icons.arrow_forward_ios, isPrevious: false)

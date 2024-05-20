@@ -508,32 +508,6 @@ class _UserRestClient implements UserRestClient {
   }
 
   @override
-  Future<dynamic> clearMessage(String appointmentId) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {'appointmentId': appointmentId};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
-      method: 'PUT',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/user/message/clear',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-    final value = _result.data;
-    return value;
-  }
-
-  @override
   Future<VideoRoomResponseModel> getVideoRoomId(
       Map<String, dynamic> map) async {
     const _extra = <String, dynamic>{};
@@ -559,6 +533,33 @@ class _UserRestClient implements UserRestClient {
               baseUrl,
             ))));
     final value = VideoRoomResponseModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> followUser(Map<String, dynamic> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/user/follow',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
     return value;
   }
 

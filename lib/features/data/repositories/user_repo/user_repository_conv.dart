@@ -5,8 +5,10 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation
 import 'package:my_sutra/features/domain/entities/user_entities/user_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
 
+import '../../../domain/entities/patient_entities/follow_entity.dart';
 import '../../../domain/entities/user_entities/my_profile_entity.dart';
 import '../../../domain/entities/user_entities/user_data_entity.dart';
+import '../../model/patient_models/follow_model.dart';
 import '../../model/user_models/home_response_model.dart';
 import '../../model/user_models/otp_model.dart';
 
@@ -68,6 +70,7 @@ class UserRepoConv {
       role: model.role,
       gender: model.gender,
       age: model.age,
+      id: model.id,
     );
   }
 
@@ -76,5 +79,9 @@ class UserRepoConv {
     return VideoRoomResponseEntity(
         videoSdkRoomId: model.videoSdkRoomId,
         videoSdkToken: model.videoSdkToken);
+  }
+
+  static FollowEntity followModelToEntity(FollowModel model) {
+    return FollowEntity(followedUserId: model.followedUserId);
   }
 }

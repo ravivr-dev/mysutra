@@ -8,7 +8,6 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
-import 'package:my_sutra/features/data/model/user_models/create_chat_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/home_response_model.dart';
@@ -40,15 +39,6 @@ abstract class UserDataSource {
 
   Future<MyProfileResponseModel> getProfileDetails();
 
-  // Future<ChatModel> getMessages(
-  //   final Map<String, dynamic> queries,
-  // );
-  Future<CreateChatModel> sendMessages(
-    final Map<String, dynamic> data,
-  );
-
-  Future<dynamic> clearMessage(String appointmentId);
-
   Future<GenerateUsernameModel> generateUsernames(String userName);
 
   Future<HomeResponseModel> getHomeData();
@@ -64,6 +54,8 @@ abstract class UserDataSource {
   Future<ResponseModel> getFollowing(Map<String, dynamic> map);
 
   Future<VideoRoomResponseModel> getVideoRoomId(Map<String, dynamic> data);
+
+  Future<dynamic> followUser(Map<String, dynamic> data);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -346,42 +338,26 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future clearMessage(String appointmentId) async {
-    try {
-      return await client.clearMessage(appointmentId).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<CreateChatModel> sendMessages(Map<String, dynamic> data) async {
-    try {
-      return await client.sendMessage(data).catchError((err) {
-        _processDio(err);
-      });
-    } on DioException catch (e) {
-      throw ServerException(
-        message: e.getErrorFromDio(
-            validateAuthentication: true, localDataSource: localDataSource),
-      );
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  @override
   Future<VideoRoomResponseModel> getVideoRoomId(
       Map<String, dynamic> data) async {
     try {
       return await client.getVideoRoomId(data).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<dynamic> followUser(Map<String, dynamic> data) async {
+    try {
+      return await client.followUser(data).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

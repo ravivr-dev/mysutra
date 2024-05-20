@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_search_field.dart';
@@ -25,7 +26,6 @@ import 'package:my_sutra/features/presentation/common/registration/cubit/registr
 import 'package:my_sutra/features/presentation/common/registration/widgets/app_logo_with_terms_condition_widget.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:searchfield/searchfield.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -52,6 +52,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _expCtrl = TextEditingController();
   final TextEditingController _ageCtrl = TextEditingController();
   final TextEditingController _socialCtrl = TextEditingController();
+  final FocusNode _socialUrlFocusNode = FocusNode();
 
   final ValueNotifier<List<String>> urlList = ValueNotifier<List<String>>([]);
 
@@ -78,6 +79,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   void initState() {
     _focusNode.addListener(_onFocusNodeChanges);
+    _socialUrlFocusNode.addListener(_socialMediaNodeChanges);
     super.initState();
   }
 
@@ -103,7 +105,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             } else if (state is RegistrationSuccess) {
               widget.showSuccessToast(context: context, message: state.message);
               showOtpBottomSheet();
-            } else if (state is UploadDocument) {
+            } else if (state is UploadDocumentSuccessState) {
               profilePic = state.file;
               profilePicKey = state.data.key;
             } else if (state is GenerateUserNamesSuccessState) {
@@ -345,6 +347,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       component.spacer(height: 20),
                     ] else if (widget.profession == "Influencer") ...[
                       TextFormFieldWidget(
+                        focusNode: _socialUrlFocusNode,
                         title: "Social Profile URL",
                         controller: _socialCtrl,
                         validator: (value) => urlList.value.isEmpty
@@ -354,9 +357,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       TextButton.icon(
                         onPressed: () {
                           if (_socialCtrl.text.trim().isNotEmpty) {
-                            urlList.value.add(_socialCtrl.text.trim());
-                            urlList.value = [...urlList.value];
-                            _socialCtrl.clear();
+                            _initUrl();
                           }
                         },
                         style: TextButton.styleFrom(
@@ -472,9 +473,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         );
   }
 
+  void _initUrl() {
+    urlList.value.add(_socialCtrl.text.trim());
+    urlList.value = [...urlList.value];
+    _socialCtrl.clear();
+  }
+
   void _onFocusNodeChanges() {
     if (!_focusNode.hasFocus && _userNameController.text.isNotEmpty) {
       _callUserNameApi();
+    }
+  }
+
+  void _socialMediaNodeChanges() {
+    if (!_socialUrlFocusNode.hasFocus && _socialCtrl.text.isNotEmpty) {
+      _initUrl();
     }
   }
 

@@ -130,20 +130,10 @@ abstract class UserRestClient {
   @GET(EndPoints.userFollowing)
   Future<ResponseModel> getFollowings(@Queries() Map<String, dynamic> map);
 
-  @POST(EndPoints.userMessage)
-  Future<CreateChatModel> sendMessage(
-    @Body() final Map<String, dynamic> data,
-  );
-
-  // @GET(EndPoints.userMessage)
-  // Future<ChatModel> getMessages(
-  //   @Queries() final Map<String, dynamic> queries,
-  // );
-
-  @PUT(EndPoints.clearMessage)
-  Future<dynamic> clearMessage(@Field("appointmentId") String appointmentId);
-
   @POST(EndPoints.videoSdkRoom)
   Future<VideoRoomResponseModel> getVideoRoomId(
       @Body() Map<String, dynamic> map);
+
+  @POST(EndPoints.userFollow)
+  Future<dynamic> followUser(@Body() Map<String, dynamic> map);
 }

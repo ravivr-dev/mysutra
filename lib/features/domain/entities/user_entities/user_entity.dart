@@ -1,4 +1,5 @@
 class UserEntity {
+  final String id;
   final String? fullName;
   final String? username;
   final String? profilePic;
@@ -8,6 +9,7 @@ class UserEntity {
   final String? age;
 
   UserEntity({
+    required this.id,
     required this.fullName,
     required this.username,
     required this.profilePic,

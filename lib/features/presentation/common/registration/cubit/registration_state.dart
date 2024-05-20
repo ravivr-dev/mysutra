@@ -18,11 +18,11 @@ final class RegistrationSuccess extends RegistrationState {
   RegistrationSuccess(this.message);
 }
 
-final class UploadDocument extends RegistrationState {
+final class UploadDocumentSuccessState extends RegistrationState {
   final UploadDocModel data;
   final XFile file;
 
-  UploadDocument(this.data, this.file);
+  UploadDocumentSuccessState(this.data, this.file);
 }
 
 final class RegistrationError extends RegistrationState {

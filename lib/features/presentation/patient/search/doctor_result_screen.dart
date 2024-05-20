@@ -6,7 +6,7 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
-import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -86,7 +86,7 @@ class DoctorResultScreen extends StatelessWidget {
                       onTap: () {
                         context.read<SearchDoctorCubit>().followDoctor(
                             params:
-                                FollowDoctorParams(doctorId: doctorEntity.id!));
+                                FollowUserParams(userId: doctorEntity.id!));
                         // doctorEntity.reInitIsFollowing();
                       },
                       child: _buildFollowButton(
@@ -120,7 +120,7 @@ class DoctorResultScreen extends StatelessWidget {
               Expanded(
                   child: _buildDecoratedContainer(
                 color: AppColors.color0xFF8338EC,
-                text: '${doctorEntity.ratings}',
+                text: '${doctorEntity.ratings ?? ''}',
                 subText: 'Ratings',
                 iconPath: Assets.iconsStar,
               )),

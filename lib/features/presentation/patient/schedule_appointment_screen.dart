@@ -6,13 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/common_widgets/custom_dropdown.dart';
-import 'package:my_sutra/core/common_widgets/user_name_textfield.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
-import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bottom_sheets/confirm_your_booking_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
@@ -40,7 +38,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   String? _selectedTimeSlot;
   List<AvailableTimeSlotEntity> _availableTImeSlots = [];
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final TextEditingController _nameController = TextEditingController();
+  // final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -129,6 +127,14 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                   _availableTImeSlots.length,
                                   (index) => _buildTimeWidget(
                                       _availableTImeSlots[index]))),
+                          if (_availableTImeSlots.isEmpty)
+                            Align(
+                              alignment: Alignment.center,
+                              child: component.text(
+                                'No Available Time Slots Found',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           if (widget.args.isNewAppointment) ...[
                             component.spacer(height: 24),
                             _buildText(
@@ -136,21 +142,22 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                     .stringForKey(StringKeys.patientDetails),
                                 fontSize: 16),
                             component.spacer(height: 16),
-                            _buildText(
-                                value:
-                                    context.stringForKey(StringKeys.username)),
-                            component.spacer(height: 10),
-                            BlocProvider(
-                              create: (_) => sl<RegistrationCubit>(),
-                              child: UserNameTextField(
-                                  userNameController: _nameController),
-                            ),
+                            // _buildText(
+                            //     value:
+                            //         context.stringForKey(StringKeys.username)),
+                            // component.spacer(height: 10),
+                            // BlocProvider(
+                            //   create: (_) => sl<RegistrationCubit>(),
+                            //   child: UserNameTextField(
+                            //       userNameController: _nameController),
+                            // ),
                             _buildText(
                                 value: context.stringForKey(StringKeys.age)),
                             component.spacer(height: 10),
                             _buildTextField(
                                 controller: _ageController,
                                 errorText: 'Age',
+                                maxLength: 3,
                                 textInputType: TextInputType.number),
                             _buildText(
                                 value: context
@@ -160,6 +167,12 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                 controller: _phoneNumberController,
                                 textInputType: TextInputType.number,
                                 maxLength: 10,
+                                additionalValidation: (value) {
+                                  if (int.tryParse(value ?? '') == null) {
+                                    return 'Please Enter Valid Mobile Number';
+                                  }
+                                  return null;
+                                },
                                 errorText: 'Phone Number'),
                             _buildText(
                                 value: context.stringForKey(StringKeys.email)),
@@ -273,7 +286,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
           patientAge: isNewAppointment ? _ageController.text : null,
           patientGender: isNewAppointment ? _selectedGender! : null,
           patientEmail: isNewAppointment ? _emailController.text : null,
-          patientName: isNewAppointment ? _nameController.text : null,
+          // patientName: isNewAppointment ? _nameController.text : null,
           // patientProblem: isNewAppointment ? _reasonController.text : null,
           time: _selectedTimeSlot!,
           appointmentId: isNewAppointment ? null : widget.args.appointmentId,
@@ -293,6 +306,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
     required String? errorText,
     TextInputType? textInputType,
     int? maxLength,
+    String? Function(String? value)? additionalValidation,
   }) {
     return SizedBox(
       height: maxLines == null ? 95 : null,
@@ -302,8 +316,11 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
         textInputType: textInputType,
         maxLength: maxLength,
         validator: (value) {
+          final validationResult = additionalValidation?.call(value);
           if (value!.isEmpty) {
             return 'Please Fill ${errorText ?? 'Empty'} Field';
+          } else if (additionalValidation != null && validationResult != null) {
+            return validationResult;
           }
           return null;
         },
@@ -349,7 +366,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   }
 
   void _disposeAllController() {
-    _nameController.dispose();
+    // _nameController.dispose();
     _ageController.dispose();
     _phoneNumberController.dispose();
     _emailController.dispose();

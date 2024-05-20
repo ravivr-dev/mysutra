@@ -5,16 +5,16 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
+import '../entities/patient_entities/follow_entity.dart';
 import '../entities/user_entities/my_profile_entity.dart';
 import '../entities/user_entities/user_data_entity.dart';
 import '../entities/user_entities/user_entity.dart';
 import '../entities/user_entities/video_room_response_entity.dart';
+import '../usecases/user_usecases/follow_user_usecase.dart';
 import '../usecases/user_usecases/get_following_usecase.dart';
 import '../usecases/user_usecases/get_video_room_id_usecase.dart';
 
@@ -37,13 +37,6 @@ abstract class UserRepository {
 
   Future<Either<Failure, MyProfileEntity>> getProfileDetails();
 
-
-
-  Future<Either<Failure, String>> sendMessage(ChatEntity params);
-  // Future<Either<Failure, MessagesEntity>> getMessages(
-  //     String appointmentId, int? pagination, int? limit);
-
-  Future<Either<Failure, String>> clearMessage(String appointmentId);
   Future<Either<Failure, GenerateUsernameEntity>> generateUsernames(
       String userName);
 
@@ -63,4 +56,6 @@ abstract class UserRepository {
 
   Future<Either<Failure, VideoRoomResponseEntity>> getVideoRoomId(
       GetVideoRoomIdUseCaseParams data);
+
+  Future<Either<Failure, FollowEntity>> followUser(FollowUserParams data);
 }

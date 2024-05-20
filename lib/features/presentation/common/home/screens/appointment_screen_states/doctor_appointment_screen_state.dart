@@ -75,10 +75,13 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TimeContainer(
-                time: _getAppointmentTime(entity.date, entity.time),
+              Flexible(
+                child: TimeContainer(
+                  time: _getAppointmentTime(entity.date, entity.time),
+                ),
               ),
-              _buildCallingRowWidget(appointment: entity),
+              component.spacer(width: 5),
+              _buildCallingRowWidget(appointment: entity, isDoctor: true),
             ],
           )
         ],

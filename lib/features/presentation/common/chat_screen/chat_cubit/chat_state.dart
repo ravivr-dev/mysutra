@@ -48,3 +48,13 @@ final class GetChatMessagesSuccess extends ChattingState {
 
   const GetChatMessagesSuccess(this.messageList);
 }
+
+final class SetOnlineStatusSuccessState extends ChattingState {
+  const SetOnlineStatusSuccessState();
+}
+
+final class SetOnlineStatusErrorState extends ChattingState {
+  final String message;
+
+  const SetOnlineStatusErrorState(this.message);
+}

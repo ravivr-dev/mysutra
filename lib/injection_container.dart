@@ -3,24 +3,35 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:my_sutra/core/components/config/theme/theme.dart';
+import 'package:my_sutra/core/components/custom_widgets/custom_widgets.dart';
+import 'package:my_sutra/core/config/my_shared_pref.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
+import 'package:my_sutra/core/network/network_info.dart';
+import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/doctor_client.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/client/post_client.dart';
+import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/firebase_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/post_datasource.dart';
+import 'package:my_sutra/features/data/datasource/remote_datasource/user_datasource.dart';
 import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/post_repo/post_repository_impl.dart';
+import 'package:my_sutra/features/data/repositories/user_repo/user_repository_impl.dart';
 import 'package:my_sutra/features/domain/repositories/chat_repository.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
+import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
@@ -31,7 +42,6 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_o
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
@@ -52,12 +62,14 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usec
 import 'package:my_sutra/features/domain/usecases/post_usecases/repost_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_profile_details_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_video_room_id_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
@@ -66,6 +78,8 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_em
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
+import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
@@ -74,21 +88,8 @@ import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.da
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:my_sutra/core/components/config/theme/theme.dart';
-import 'package:my_sutra/core/components/custom_widgets/custom_widgets.dart';
-import 'package:my_sutra/core/config/my_shared_pref.dart';
-import 'package:my_sutra/core/network/network_info.dart';
-import 'package:my_sutra/core/utils/constants.dart';
-import 'package:my_sutra/features/data/client/user_client.dart';
-import 'package:my_sutra/features/data/datasource/remote_datasource/user_datasource.dart';
-import 'package:my_sutra/features/data/repositories/user_repo/user_repository_impl.dart';
-import 'package:my_sutra/features/domain/repositories/user_repository.dart';
-import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
-import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
-import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 
 import 'features/data/repositories/chat_repo/chat_repository_impl.dart';
-import 'features/domain/usecases/user_usecases/clear_messages_use_case.dart';
 import 'features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 
 final sl = GetIt.instance;
@@ -121,7 +122,7 @@ Future<void> init() async {
       sl<GenerateUsernamesUseCase>()));
   sl.registerFactory(() => SearchDoctorCubit(
         searchDoctorUsecase: sl<SearchDoctorUsecase>(),
-        followDoctorUseCase: sl<FollowDoctorUseCase>(),
+        followDoctorUseCase: sl<FollowUserUseCase>(),
         getDoctorDetailsUseCase: sl<GetDoctorDetailsUseCase>(),
       ));
   sl.registerFactory(() => SettingCubit(
@@ -143,9 +144,10 @@ Future<void> init() async {
         verifyChangePhoneNumberUseCase: sl<VerifyChangePhoneNumberUseCase>(),
       ));
   sl.registerFactory(() => ChatCubit(
-        clearMessagesUseCase: sl<ClearMessagesUseCase>(),
         listenMessagesUseCase: sl<ListenMessagesUseCase>(),
         sendMessageUseCase: sl<SendMessageUseCase>(),
+        listenRoomUseCase: sl<ListenUserDataUseCase>(),
+        setUserDataUseCase: sl<SetUserDataUseCase>(),
       ));
   sl.registerFactory(() => PostsCubit(
         uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
@@ -174,7 +176,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RegistrationUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => UploadDocumentUsecase(sl<UserRepository>()));
   sl.registerFactory(() => SearchDoctorUsecase(sl<PatientRepository>()));
-  sl.registerFactory(() => FollowDoctorUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => FollowUserUseCase(sl<UserRepository>()));
   sl.registerFactory(() => UpdateTimeSlotsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => UpdateAboutOrFeesUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetDoctorDetailsUseCase(sl<PatientRepository>()));
@@ -207,9 +209,10 @@ Future<void> init() async {
   sl.registerFactory(
       () => DoctorRescheduleAppointmentsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => SendMessageUseCase(sl<ChatRepository>()));
-  sl.registerFactory(() => ClearMessagesUseCase(sl<UserRepository>()));
   sl.registerFactory(() => ListenMessagesUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
+  sl.registerFactory(() => ListenUserDataUseCase(sl<ChatRepository>()));
+  sl.registerFactory(() => SetUserDataUseCase(sl<ChatRepository>()));
 
   sl.registerFactory(() => CreatePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => GetPostsUsecase(sl<PostRepository>()));

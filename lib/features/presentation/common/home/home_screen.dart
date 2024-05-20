@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
+import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
@@ -14,11 +18,10 @@ import 'package:my_sutra/generated/assets.dart';
 
 import '../../../../core/models/user_helper.dart';
 import '../../../../injection_container.dart';
+import '../../../domain/entities/user_entities/user_entity.dart';
 
 part 'home_screen_states/doctor_home_screen_state.dart';
-
 part 'home_screen_states/influencer_home_screen_state.dart';
-
 part 'home_screen_states/patient_home_screen_state.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,14 +31,14 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState.init();
 }
 
-abstract class _HomeScreenState extends State<HomeScreen> {
+abstract class _HomeScreenState extends State<HomeScreen>
+    with WidgetsBindingObserver {
   int _selectedScreen = 0;
+  UserEntity? _userEntity;
+  static bool _isUserOnline = false;
 
-  final List<Widget> _screens = [
-    BlocProvider<HomeCubit>(
-      create: (BuildContext context) => sl<HomeCubit>()..getHomeData(),
-      child: const AppointmentScreen(),
-    ),
+  late final List<Widget> _screens = [
+    AppointmentScreen(entity: _userEntity),
     MultiBlocProvider(providers: [
       BlocProvider<PostsCubit>(
         create: (context) => sl<PostsCubit>(),
@@ -71,7 +74,25 @@ abstract class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _reInitScreens();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _setUserData(isOnline: false);
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _setUserData(isOnline: false);
+    } else if (state == AppLifecycleState.resumed) {
+      _setUserData();
+    }
+    super.didChangeAppLifecycleState(state);
   }
 
   /// this method is for change screens and bottomNavigationBar (like in case of influencer we want to show 3 screen in navbar so we can reinit the value of _screens)
@@ -81,7 +102,17 @@ abstract class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: _screens[_selectedScreen],
+      body: BlocBuilder<HomeCubit, HomeState>(builder: (_, state) {
+        if (state is GetHomeDataSuccessState) {
+          _userEntity = state.entity;
+          _setUserData();
+        }
+        final screen = _screens[_selectedScreen];
+        if (screen is AppointmentScreen && screen.entity == null) {
+          _screens[_selectedScreen] = AppointmentScreen(entity: _userEntity);
+        }
+        return screen;
+      }),
       bottomNavigationBar: BottomNavigationBar(
         unselectedLabelStyle:
             theme.publicSansFonts.regularStyle(fontColor: AppColors.grey92),
@@ -101,6 +132,27 @@ abstract class _HomeScreenState extends State<HomeScreen> {
         items: _bottomNavigationBarList,
       ),
     );
+  }
+
+  ///We are using this _isUserOnline because we don't want to increase firebase read
+  void _setUserData({bool isOnline = true}) {
+    if ((_userEntity?.id ?? '').isNotEmpty) {
+      if (!_isUserOnline && isOnline) {
+        _setUserOnlineOfflineStatus(isOnline: true);
+        _isUserOnline = true;
+      } else if (_isUserOnline && !isOnline) {
+        _setUserOnlineOfflineStatus(isOnline: false);
+        _isUserOnline = false;
+      }
+    }
+  }
+
+  void _setUserOnlineOfflineStatus({required isOnline}) {
+    context.read<ChatCubit>().setUserData(SetUserDataParams(
+          userId: _userEntity!.id,
+          lastOnlineAt: Timestamp.now(),
+          isOnline: isOnline,
+        ));
   }
 
   List<BottomNavigationBarItem> _getNavigationBarList() {

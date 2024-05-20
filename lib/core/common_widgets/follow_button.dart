@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../ailoitte_component_injector.dart';
-import '../../features/domain/usecases/patient_usecases/follow_doctor_usecase.dart';
+import '../../features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import '../../features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import '../../injection_container.dart';
 import '../utils/app_colors.dart';
@@ -46,7 +47,7 @@ class _FollowButtonState extends State<FollowButton> {
             onTap: () {
               context.read<SearchDoctorCubit>().followDoctor(
                     params:
-                        FollowDoctorParams(doctorId: widget.followingUserId),
+                        FollowUserParams(userId: widget.followingUserId),
                   );
             },
             child: Container(

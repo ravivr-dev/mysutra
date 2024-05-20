@@ -47,8 +47,8 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
                 readOnly: true,
                 onTap: _navigateToSearchDoctorScreen,
               ),
-              const SizedBox(height: 32),
-              const DashboardHelperItems(),
+              const SizedBox(height: 10),
+              // const DashboardHelperItems(),
             ],
           ),
         ),
@@ -149,13 +149,15 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
                             ],
                           ),
                         ),
-                        _buildCallingRowWidget(appointment: appointment),
+                        _buildCallingRowWidget(
+                            appointment: appointment, isDoctor: false),
                       ],
                     )
                   ],
                 ),
               );
             }),
+        if (_appointments.isEmpty) component.text('No Appointments Found')
       ],
     );
   }
