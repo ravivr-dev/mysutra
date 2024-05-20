@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../ailoitte_component_injector.dart';
 import '../../generated/assets.dart';
 import '../utils/app_colors.dart';
@@ -21,7 +22,7 @@ class TimeContainer extends StatelessWidget {
         children: [
           component.assetImage(path: Assets.iconsClock),
           component.spacer(width: 4),
-          component.text(time),
+          Flexible(child: FittedBox(child: component.text(time))),
         ],
       ),
     );
