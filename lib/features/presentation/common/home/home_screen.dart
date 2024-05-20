@@ -6,6 +6,7 @@ import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
+import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/create_post_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/user_feed_screen.dart';
@@ -32,15 +33,17 @@ abstract class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _screens = [
     BlocProvider<HomeCubit>(
-      create: (BuildContext context) =>
-      sl<HomeCubit>()
-        ..getHomeData(),
+      create: (BuildContext context) => sl<HomeCubit>()..getHomeData(),
       child: const AppointmentScreen(),
     ),
-    BlocProvider<PostsCubit>(
-      create: (context) => sl<PostsCubit>(),
-      child: const UserFeedScreen(),
-    ),
+    MultiBlocProvider(providers: [
+      BlocProvider<PostsCubit>(
+        create: (context) => sl<PostsCubit>(),
+      ),
+      BlocProvider<SearchDoctorCubit>(
+        create: (context) => sl<SearchDoctorCubit>(),
+      ),
+    ], child: const UserFeedScreen()),
     BlocProvider<PostsCubit>(
       create: (context) => sl<PostsCubit>(),
       child: const CreatePostScreen(),
@@ -52,7 +55,7 @@ abstract class _HomeScreenState extends State<HomeScreen> {
     )
   ];
   late final List<BottomNavigationBarItem> _bottomNavigationBarList =
-  _getNavigationBarList();
+      _getNavigationBarList();
 
   _HomeScreenState();
 
@@ -81,7 +84,7 @@ abstract class _HomeScreenState extends State<HomeScreen> {
       body: _screens[_selectedScreen],
       bottomNavigationBar: BottomNavigationBar(
         unselectedLabelStyle:
-        theme.publicSansFonts.regularStyle(fontColor: AppColors.grey92),
+            theme.publicSansFonts.regularStyle(fontColor: AppColors.grey92),
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedScreen,
         onTap: (index) {
@@ -123,7 +126,7 @@ abstract class _HomeScreenState extends State<HomeScreen> {
     return BottomNavigationBarItem(
         icon: component.assetImage(path: icon),
         activeIcon:
-        component.assetImage(path: icon, color: AppColors.primaryColor),
+            component.assetImage(path: icon, color: AppColors.primaryColor),
         label: label);
   }
 }
