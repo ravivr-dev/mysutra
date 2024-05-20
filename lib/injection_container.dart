@@ -141,9 +141,11 @@ Future<void> init() async {
         verifyChangePhoneNumberUseCase: sl<VerifyChangePhoneNumberUseCase>(),
       ));
   sl.registerFactory(() => ChatCubit(
-      clearMessagesUseCase: sl<ClearMessagesUseCase>(),
-      listenMessagesUseCase: sl<ListenMessagesUseCase>(),
-      sendMessageUseCase: sl<SendMessageUseCase>(),));
+        listenMessagesUseCase: sl<ListenMessagesUseCase>(),
+        sendMessageUseCase: sl<SendMessageUseCase>(),
+        listenRoomUseCase: sl<ListenUserDataUseCase>(),
+        setUserDataUseCase: sl<SetUserDataUseCase>(),
+      ));
   sl.registerFactory(() => PostsCubit(
         uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
         createPostUsecase: sl<CreatePostUsecase>(),
@@ -203,6 +205,8 @@ Future<void> init() async {
   sl.registerFactory(() => SendMessageUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => ListenMessagesUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
+  sl.registerFactory(() => ListenUserDataUseCase(sl<ChatRepository>()));
+  sl.registerFactory(() => SetUserDataUseCase(sl<ChatRepository>()));
 
   sl.registerFactory(() => CreatePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => GetPostsUsecase(sl<PostRepository>()));

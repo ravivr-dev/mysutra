@@ -1,12 +1,15 @@
 import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/domain/entities/chat_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/user_usecases/clear_messages_use_case.dart';
+import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
 
+import '../../../../domain/entities/chat_entities/room_entity.dart';
+import '../../../../domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import '../../../../domain/usecases/chat_usecases/send_message_usecase.dart';
 
 part 'chat_state.dart';
@@ -14,33 +17,45 @@ part 'chat_state.dart';
 class ChatCubit extends Cubit<ChattingState> {
   final SendMessageUseCase sendMessageUseCase;
   final ListenMessagesUseCase listenMessagesUseCase;
-  final ClearMessagesUseCase clearMessagesUseCase;
+  final ListenUserDataUseCase listenRoomUseCase;
+  final SetUserDataUseCase setUserDataUseCase;
 
   ChatCubit({
     required this.sendMessageUseCase,
-    required this.clearMessagesUseCase,
     required this.listenMessagesUseCase,
+    required this.listenRoomUseCase,
+    required this.setUserDataUseCase,
   }) : super(ChatInitial());
 
   clearChatMessages(String appointmentId) async {
-    emit(ClearChatLoading());
-    final result = await clearMessagesUseCase(appointmentId);
-
-    result.fold((l) => _emitClearChatFailure(l), (data) {
-      emit(
-        ClearMessageSuccess(data),
-      );
-    });
+    // emit(ClearChatLoading());
+    // final result = await clearMessagesUseCase(appointmentId);
+    //
+    // result.fold((l) => _emitClearChatFailure(l), (data) {
+    //   emit(
+    //     ClearMessageSuccess(data),
+    //   );
+    // });
   }
 
   Stream<ChatEntity> listenMessages({required String roomId}) {
     return listenMessagesUseCase.call(ListenMessagesParams(roomId: roomId));
   }
 
+  Stream<RoomUserEntity> listenUserData({required String userId}) {
+    return listenRoomUseCase.call(ListenUserDataParams(userId: userId));
+  }
+
   void sendMessage(SendMessageParams params) async {
     final result = await sendMessageUseCase.call(params);
     result.fold((l) => emit(SendMessageErrorState(l.message)),
         (r) => emit(const SendMessageSuccessState()));
+  }
+
+  void setUserData(SetUserDataParams params) async {
+    final result = await setUserDataUseCase.call(params);
+    result.fold((l) => emit(SetOnlineStatusErrorState(l.message)),
+        (r) => emit(const SetOnlineStatusSuccessState()));
   }
 
   FutureOr<void> _emitFailure(

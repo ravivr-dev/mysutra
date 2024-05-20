@@ -24,15 +24,18 @@ import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart'
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/main.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+
 import '../../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../patient/search_filter_screen.dart';
+import '../../chat_screen/chat_screen.dart';
 
 part 'appointment_screen_states/doctor_appointment_screen_state.dart';
-
 part 'appointment_screen_states/patient_appointment_screen_state.dart';
 
 class AppointmentScreen extends StatefulWidget {
-  const AppointmentScreen({super.key});
+  final UserEntity? entity;
+
+  const AppointmentScreen({super.key, required this.entity});
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState.init();
@@ -44,7 +47,6 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   final List<AppointmentEntity> _appointments = [];
   final ScrollController _scrollController = ScrollController();
   int _page = 1;
-  UserEntity? _userEntity;
 
   ///This is for pagination
   bool _isLoading = false;
@@ -84,9 +86,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (state is GetHomeDataSuccessState) {
-          _userEntity = state.entity;
-        } else if (state is GetAppointmentsSuccessState) {
+        if (state is GetAppointmentsSuccessState) {
           //todo will have to improve the code for pagination
           _isLoading = false;
           _appointments.clear();
@@ -192,7 +192,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
             const SizedBox(height: 8),
             component.text(
               Utils.getNameOrUsername(
-                  _userEntity?.fullName, _userEntity?.username),
+                  widget.entity?.fullName, widget.entity?.username),
               style: theme.publicSansFonts.mediumStyle(
                 fontColor: AppColors.blackColor,
                 fontSize: 24,
@@ -210,7 +210,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
             borderRadius: BorderRadius.circular(8),
           ),
           child: component.networkImage(
-              url: _userEntity?.profilePic ?? '',
+              url: widget.entity?.profilePic ?? '',
               fit: BoxFit.fill,
               errorWidget: Icon(
                 Icons.person,

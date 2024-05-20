@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
-import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
-import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
+import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/booking_cancelled_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/reschedule_appointment_screen.dart';
@@ -27,7 +28,6 @@ import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_pat
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
-import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
 import 'package:my_sutra/features/presentation/patient/schedule_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
@@ -112,7 +112,15 @@ class Routes {
           ),
         );
       case AppRoutes.homeRoute:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<HomeCubit>(
+                        create: (_) => sl<HomeCubit>()..getHomeData()),
+                    BlocProvider<ChatCubit>(create: (_) => sl<ChatCubit>())
+                  ],
+                  child: const HomeScreen(),
+                ));
       case AppRoutes.scheduleAppointment:
         final args = settings?.arguments as ScheduleAppointmentScreenArgs;
 
@@ -162,7 +170,7 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => const DoctorPastAppointmentScreen());
       case AppRoutes.chatScreen:
-        final args = settings?.arguments as ChatScreenArgs;
+        final args = settings!.arguments as ChatScreenArgs;
 
         return MaterialPageRoute(
             settings: settings,

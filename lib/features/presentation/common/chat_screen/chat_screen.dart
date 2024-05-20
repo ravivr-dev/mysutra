@@ -1,17 +1,21 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
+import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+
 import '../../../domain/entities/chat_entities/chat_entity.dart';
 import 'widgets/chat_appbar.dart';
 
@@ -59,6 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
           // }
         },
         profileUrl: widget.args.profilePic,
+        userId: widget.args.remoteUserId,
       ),
       body: StreamBuilder(
           stream: context
