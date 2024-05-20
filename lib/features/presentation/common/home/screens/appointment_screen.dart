@@ -19,7 +19,6 @@ import 'package:my_sutra/features/presentation/common/home/screens/bottom_sheets
 import 'package:my_sutra/features/presentation/common/video_calling/video_calling_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/bottomsheet/dr_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
-import 'package:my_sutra/features/presentation/patient/widgets/dashboard_helper_items.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/main.dart';
