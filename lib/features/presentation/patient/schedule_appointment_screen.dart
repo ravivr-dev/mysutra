@@ -127,6 +127,14 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                   _availableTImeSlots.length,
                                   (index) => _buildTimeWidget(
                                       _availableTImeSlots[index]))),
+                          if (_availableTImeSlots.isEmpty)
+                            Align(
+                              alignment: Alignment.center,
+                              child: component.text(
+                                'No Available Time Slots Found',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           if (widget.args.isNewAppointment) ...[
                             component.spacer(height: 24),
                             _buildText(
