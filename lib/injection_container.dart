@@ -39,6 +39,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appo
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/delete_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/edit_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_post_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
@@ -160,6 +161,7 @@ Future<void> init() async {
         reportPostUsecase: sl<ReportPostUsecase>(),
         rePostUsecase: sl<RePostUsecase>(),
         deletePostUsecase: sl<DeletePostUsecase>(),
+        editPostUsecase: sl<EditPostUsecase>(),
       ));
 
   // UseCases
@@ -221,6 +223,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ReportPostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => RePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => DeletePostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => EditPostUsecase(sl<PostRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

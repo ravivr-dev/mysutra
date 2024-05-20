@@ -14,8 +14,9 @@ import 'package:my_sutra/routes/routes_constants.dart';
 
 class CreatePostScreen extends StatefulWidget {
   final bool isEditing;
+  final String postId;
 
-  const CreatePostScreen({super.key, this.isEditing = false});
+  const CreatePostScreen({super.key, this.isEditing = false, this.postId = ''});
 
   @override
   State<CreatePostScreen> createState() => _CreatePostScreenState();
@@ -45,11 +46,31 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           mediaUrls.add(
               MediaUrlEntity(mediaType: 'IMAGE_URL', url: state.data.key!));
           imageList.add(state.data.fileUrl!);
+        } else if (state is UploadDocumentError) {
+          widget.showErrorToast(context: context, message: state.error);
         }
         if (state is CreatePostLoaded) {
-          widget.showSuccessToast(context: context, message: state.message);
+          // widget.showSuccessToast(context: context, message: state.message);
           AiloitteNavigation.intentWithClearAllRoutes(
               context, AppRoutes.homeRoute);
+        } else if (state is CreatePostError) {
+          widget.showErrorToast(context: context, message: state.error);
+        }
+        if (state is EditPostLoaded) {
+          AiloitteNavigation.intentWithClearAllRoutes(
+              context, AppRoutes.homeRoute);
+        } else if (state is EditPostError) {
+          widget.showErrorToast(context: context, message: state.error);
+        }
+
+        if (state is GetPostDetailLoaded) {
+          _postController.text = state.post.content;
+          if (state.post.mediaUrls.isNotEmpty) {
+            state.post.mediaUrls.map((e) => imageList.add(e.url ?? ''));
+          }
+          if (state.post.taggedUserIds.isNotEmpty) {
+            state.post.taggedUserIds.map((e) => taggedUserIds.add(e));
+          }
         }
       },
       builder: (context, state) {
@@ -165,10 +186,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           InkWell(
             onTap: () {
               if (_key.currentState!.validate()) {
-                context.read<PostsCubit>().createPost(
-                    content: _postController.text,
-                    mediaUrls: mediaUrls,
-                    taggedUserIds: taggedUserIds);
+                if (widget.isEditing) {
+                  context.read<PostsCubit>().editPost(
+                      postId: widget.postId,
+                      content: _postController.text,
+                      mediaUrls: mediaUrls,
+                      taggedUserIds: taggedUserIds);
+                } else {
+                  context.read<PostsCubit>().createPost(
+                      content: _postController.text,
+                      mediaUrls: mediaUrls,
+                      taggedUserIds: taggedUserIds);
+                }
               }
             },
             child: CircleAvatar(
@@ -219,15 +248,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           child: CircleAvatar(
             radius: 16,
             backgroundColor: AppColors.black01.withOpacity(.3),
-            child: IconButton(
-                onPressed: () {
-                  mediaUrls.remove(mediaUrls[index]);
-                  setState(() {});
-                },
-                icon: const Icon(
-                  Icons.close,
-                  color: AppColors.white,
-                )),
+            child: Center(
+              child: IconButton(
+                  onPressed: () {
+                    mediaUrls.remove(mediaUrls[index]);
+                    setState(() {});
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: AppColors.white,
+                  )),
+            ),
           ),
         )
       ],

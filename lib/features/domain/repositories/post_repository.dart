@@ -8,6 +8,7 @@ import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart
 import 'package:my_sutra/features/domain/entities/post_entities/reply_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/delete_post_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/post_usecases/edit_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/get_posts_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/like_dislike_comment_usecase.dart';
@@ -45,4 +46,6 @@ abstract class PostRepository {
   Future<Either<Failure, String>> rePost(CreatePostParams params);
 
   Future<Either<Failure, String>> deletePost(DeletePostParams params);
+
+  Future<Either<Failure, String>> editPost(EditPostParams params);
 }

@@ -59,7 +59,7 @@ class _RePostScreenState extends State<RePostScreen> {
                   AiloitteNavigation.back(context);
                 },
                 icon: const Icon(Icons.close, color: AppColors.black01)),
-            title: component.text(context.stringForKey(StringKeys.createPost)),
+            title: component.text(context.stringForKey(StringKeys.repost)),
             backgroundColor: AppColors.white,
           ),
           body: Column(
