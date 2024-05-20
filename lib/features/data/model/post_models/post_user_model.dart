@@ -4,7 +4,7 @@ class PostUserModel {
   final String id;
   final String role;
   final String? profilePic;
-  final String fullName;
+  final String? fullName;
   final String username;
   final bool isVerified;
 
@@ -12,7 +12,7 @@ class PostUserModel {
     required this.id,
     required this.role,
     this.profilePic,
-    required this.fullName,
+    this.fullName,
     required this.username,
     required this.isVerified,
   });
