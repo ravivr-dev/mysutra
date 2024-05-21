@@ -140,7 +140,7 @@ class _PostScreenState extends State<PostScreen> {
                   style: theme.publicSansFonts.mediumStyle(fontSize: 16)),
             ),
             component.spacer(height: 16),
-            ListView.separated(
+            ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
@@ -149,15 +149,15 @@ class _PostScreenState extends State<PostScreen> {
                     postId: widget.postId,
                   );
                 },
-                separatorBuilder: (_, index) {
-                  return Column(
-                    children: [
-                      component.spacer(height: 14),
-                      _buildDivider(),
-                      component.spacer(height: 14),
-                    ],
-                  );
-                },
+                // separatorBuilder: (_, index) {
+                //   return Column(
+                //     children: [
+                      // component.spacer(height: 14),
+                      // _buildDivider(),
+                      // component.spacer(height: 14),
+                //     ],
+                //   );
+                // },
                 itemCount: comments.length),
           ]
         ],
@@ -291,7 +291,11 @@ class _PostScreenState extends State<PostScreen> {
                       isFollowing: false,
                       isPost: false,
                       postId: postDetail!.postId!.id,
-                      userFollowing: (_) {},
+                      userFollowing: (_) {
+                        setState(() {
+                          postDetail!.postId!.reInitIsFollowing();
+                        });
+                      },
                     ),
                     component.spacer(height: 10),
                     component.text(

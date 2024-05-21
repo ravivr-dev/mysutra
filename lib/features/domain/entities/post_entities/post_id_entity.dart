@@ -2,21 +2,21 @@ import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entit
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
 
 class PostIdEntity {
-  final String id;
-  final PostUserEntity userId;
-  final bool isFollowing;
-  final String content;
-  final List<MediaUrlEntity> mediaUrls;
-  final List<String> taggedUserIds;
-  final int totalLikes;
-  final int totalComments;
-  final int totalShares;
-  final int repostCount;
-  final bool isMyPost;
-  final bool isLiked;
-  final bool isRepostedByMe;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  String id;
+  PostUserEntity userId;
+  bool isFollowing;
+  String content;
+  List<MediaUrlEntity> mediaUrls;
+  List<String> taggedUserIds;
+  int totalLikes;
+  int totalComments;
+  int totalShares;
+  int repostCount;
+  bool isMyPost;
+  bool isLiked;
+  bool isRepostedByMe;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   PostIdEntity({
     required this.id,
@@ -35,4 +35,18 @@ class PostIdEntity {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  void reInitIsFollowing() {
+    isFollowing = !isFollowing;
+  }
+
+  void reInitIsLiked() {
+    isLiked = !isLiked;
+
+    if (isLiked) {
+      totalLikes += 1;
+    } else {
+      totalLikes -= 1;
+    }
+  }
 }

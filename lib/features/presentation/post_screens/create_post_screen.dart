@@ -51,8 +51,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
         if (state is CreatePostLoaded) {
           // widget.showSuccessToast(context: context, message: state.message);
-          AiloitteNavigation.intentWithClearAllRoutes(
-              context, AppRoutes.homeRoute);
+          AiloitteNavigation.intentWithClearAllRoutesWithData(
+              context, AppRoutes.homeRoute, 1);
         } else if (state is CreatePostError) {
           widget.showErrorToast(context: context, message: state.error);
         }

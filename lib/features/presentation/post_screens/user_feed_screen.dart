@@ -17,11 +17,21 @@ class UserFeedScreen extends StatefulWidget {
 
 class _UserFeedScreenState extends State<UserFeedScreen> {
   List<PostEntity> posts = [];
-  bool isLoading = false;
+  final ScrollController _scrollCtrl = ScrollController();
+  int pagination = 1;
+  bool noMoreData = false;
+  int limit = 10;
 
   @override
   void initState() {
     _loadPosts();
+    _scrollCtrl.addListener(() {
+      if (_scrollCtrl.position.pixels == _scrollCtrl.position.maxScrollExtent &&
+          !noMoreData) {
+        pagination += 1;
+        _loadPosts();
+      }
+    });
     super.initState();
   }
 
@@ -30,7 +40,14 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
     return BlocConsumer<PostsCubit, PostsState>(
       listener: (context, state) {
         if (state is GetPostsLoaded) {
-          posts = state.posts;
+          if (pagination == 1) {
+            posts = state.posts;
+          } else {
+            posts.addAll(state.posts);
+          }
+          if (state.posts.length < limit) {
+            noMoreData = true;
+          }
         } else if (state is GetPostsError) {
           widget.showErrorToast(context: context, message: state.error);
         }
@@ -48,27 +65,28 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
               padding:
                   const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
               child: SingleChildScrollView(
+                controller: _scrollCtrl,
                 child: Column(
                   children: [
                     _buildHeaderWidget(),
                     component.spacer(height: 23),
-                    if (posts.isNotEmpty) ...[
-                      ListView.separated(
-                          physics: const ScrollPhysics(),
+                    if (state is GetPostsLoading && posts.isEmpty)
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    else if (posts.isNotEmpty) ...[
+                      ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return PostWidget(postEntity: posts[index]);
                           },
-                          separatorBuilder: (_, index) {
-                            return component.spacer(height: 15);
-                          },
                           itemCount: posts.length)
-                    ] else ...[
+                    ] else
                       component.text('No Posts Here',
                           style: theme.publicSansFonts.mediumStyle(
                               fontSize: 25, fontColor: AppColors.grey92)),
-                    ],
                   ],
                 ),
               ),
@@ -93,6 +111,6 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
   }
 
   void _loadPosts() {
-    context.read<PostsCubit>().getPosts(pagination: 1, limit: 50);
+    context.read<PostsCubit>().getPosts(pagination: pagination, limit: limit);
   }
 }

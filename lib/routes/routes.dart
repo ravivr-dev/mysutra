@@ -122,7 +122,7 @@ class Routes {
                         create: (_) => sl<HomeCubit>()..getHomeData()),
                     BlocProvider<ChatCubit>(create: (_) => sl<ChatCubit>())
                   ],
-                  child: const HomeScreen(),
+                  child: HomeScreen(index: args as int?),
                 ));
       case AppRoutes.scheduleAppointment:
         final args = settings?.arguments as ScheduleAppointmentScreenArgs;

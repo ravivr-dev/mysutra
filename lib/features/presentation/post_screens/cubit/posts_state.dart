@@ -171,3 +171,31 @@ final class EditPostError extends PostsState {
 
   EditPostError({required this.error});
 }
+
+final class LikeDislikeCommentLoading extends PostsState {}
+
+final class LikeDislikeCommentLoaded extends PostsState {
+  final CommentLikeDislikeEntity commentEntity;
+
+  LikeDislikeCommentLoaded({required this.commentEntity});
+}
+
+final class LikeDislikeCommentError extends PostsState {
+  final String error;
+
+  LikeDislikeCommentError({required this.error});
+}
+
+final class LikeDislikeReplyLoading extends PostsState {}
+
+final class LikeDislikeReplyLoaded extends PostsState {
+  final ReplyLikeDislikeEntity replyEntity;
+
+  LikeDislikeReplyLoaded({required this.replyEntity});
+}
+
+final class LikeDislikeReplyError extends PostsState {
+  final String error;
+
+  LikeDislikeReplyError({required this.error});
+}

@@ -37,6 +37,7 @@ class _PostWidgetState extends State<PostWidget> {
       },
       builder: (context, state) {
         return Container(
+          margin: const EdgeInsets.symmetric(vertical: 7.5),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.white,
