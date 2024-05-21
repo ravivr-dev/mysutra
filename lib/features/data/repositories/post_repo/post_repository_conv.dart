@@ -9,7 +9,6 @@ import 'package:my_sutra/features/domain/entities/post_entities/comment_like_dis
 import 'package:my_sutra/features/domain/entities/post_entities/post_id_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/reply_entity.dart';
@@ -40,6 +39,7 @@ class PostRepoConv {
             repostCount: e.repostCount,
             isMyPost: e.isMyPost,
             isLiked: e.isLiked,
+            isRepostedByMe: e.isRepostedByMe,
             createdAt: e.createdAt,
             updatedAt: e.updatedAt,
             postId: e.postId == null
@@ -112,8 +112,8 @@ class PostRepoConv {
     }
   }
 
-  static PostDetailEntity convertPostDetailModelToEntity(PostDetailData data) {
-    return PostDetailEntity(
+  static PostEntity convertPostDetailModelToEntity(PostDetailData data) {
+    return PostEntity(
         id: data.id,
         userId: PostUserEntity(
             id: data.userId.id,

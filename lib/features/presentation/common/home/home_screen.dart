@@ -9,7 +9,6 @@ import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart
 import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_screen.dart';
-import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/create_post_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
@@ -21,11 +20,15 @@ import '../../../../injection_container.dart';
 import '../../../domain/entities/user_entities/user_entity.dart';
 
 part 'home_screen_states/doctor_home_screen_state.dart';
+
 part 'home_screen_states/influencer_home_screen_state.dart';
+
 part 'home_screen_states/patient_home_screen_state.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final int? index;
+
+  const HomeScreen({super.key, this.index = 0});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState.init();
@@ -33,7 +36,7 @@ class HomeScreen extends StatefulWidget {
 
 abstract class _HomeScreenState extends State<HomeScreen>
     with WidgetsBindingObserver {
-  int _selectedScreen = 0;
+  late int _selectedScreen;
   UserEntity? _userEntity;
   static bool _isUserOnline = false;
 
@@ -73,6 +76,7 @@ abstract class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
+    _selectedScreen = widget.index ?? 0;
     _reInitScreens();
     WidgetsBinding.instance.addObserver(this);
     super.initState();

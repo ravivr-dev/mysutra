@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/comment_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/reply_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/delete_post_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/edit_post_usecase.dart';
@@ -181,5 +182,21 @@ class PostsCubit extends Cubit<PostsState> {
 
     result.fold((l) => emit(EditPostError(error: l.message)),
         (r) => emit(EditPostLoaded(message: r)));
+  }
+
+  void likeDislikeComment({required String commentId}) async {
+    final result = await likeDislikeCommentUsecase
+        .call(LikeDislikeCommentParams(commentId: commentId));
+
+    result.fold((l) => emit(LikeDislikeCommentError(error: l.message)),
+        (r) => emit(LikeDislikeCommentLoaded(commentEntity: r)));
+  }
+
+  void likeDislikeReply({required String replyId}) async {
+    final result = await likeDislikeReplyUsecase
+        .call(LikeDislikeReplyParams(replyId: replyId));
+
+    result.fold((l) => emit(LikeDislikeReplyError(error: l.message)),
+        (r) => emit(LikeDislikeReplyLoaded(replyEntity: r)));
   }
 }

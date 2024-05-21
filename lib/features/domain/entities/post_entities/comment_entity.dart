@@ -28,6 +28,10 @@ class CommentEntity {
     required this.replies,
   });
 
+  void reInitIsFollowing() {
+    isFollowing = !isFollowing;
+  }
+
   void reInitIsLiked() {
     isLiked = !isLiked;
 

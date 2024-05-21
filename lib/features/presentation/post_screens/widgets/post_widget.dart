@@ -37,6 +37,7 @@ class _PostWidgetState extends State<PostWidget> {
       },
       builder: (context, state) {
         return Container(
+          margin: const EdgeInsets.symmetric(vertical: 7.5),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -248,7 +249,8 @@ class _PostWidgetState extends State<PostWidget> {
                   ),
                   const Spacer(),
                   ShareButtonWidget(
-                    shareCount: widget.postEntity.totalShares,
+                    shareCount: widget.postEntity.totalShares +
+                        widget.postEntity.repostCount,
                     onTap: () {
                       AiloitteNavigation.intentWithData(
                           context, AppRoutes.repostRoute, widget.postEntity);

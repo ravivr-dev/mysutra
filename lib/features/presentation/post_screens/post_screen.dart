@@ -7,7 +7,7 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
+import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
@@ -29,7 +29,7 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   final TextEditingController _commentController = TextEditingController();
-  PostDetailEntity? postDetail;
+  PostEntity? postDetail;
   bool comment = false;
   List<CommentEntity> comments = [];
 
@@ -140,7 +140,7 @@ class _PostScreenState extends State<PostScreen> {
                   style: theme.publicSansFonts.mediumStyle(fontSize: 16)),
             ),
             component.spacer(height: 16),
-            ListView.separated(
+            ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
@@ -149,15 +149,15 @@ class _PostScreenState extends State<PostScreen> {
                     postId: widget.postId,
                   );
                 },
-                separatorBuilder: (_, index) {
-                  return Column(
-                    children: [
-                      component.spacer(height: 14),
-                      _buildDivider(),
-                      component.spacer(height: 14),
-                    ],
-                  );
-                },
+                // separatorBuilder: (_, index) {
+                //   return Column(
+                //     children: [
+                      // component.spacer(height: 14),
+                      // _buildDivider(),
+                      // component.spacer(height: 14),
+                //     ],
+                //   );
+                // },
                 itemCount: comments.length),
           ]
         ],
@@ -291,7 +291,11 @@ class _PostScreenState extends State<PostScreen> {
                       isFollowing: false,
                       isPost: false,
                       postId: postDetail!.postId!.id,
-                      userFollowing: (_) {},
+                      userFollowing: (_) {
+                        setState(() {
+                          postDetail!.postId!.reInitIsFollowing();
+                        });
+                      },
                     ),
                     component.spacer(height: 10),
                     component.text(
@@ -391,7 +395,16 @@ class _PostScreenState extends State<PostScreen> {
                 },
               ),
               const Spacer(),
-              ShareButtonWidget(shareCount: postDetail!.totalShares),
+              ShareButtonWidget(
+                shareCount: postDetail!.totalShares + postDetail!.repostCount,
+                onTap: () {
+                  AiloitteNavigation.intentWithData(
+                    context,
+                    AppRoutes.repostRoute,
+                    postDetail
+                  );
+                },
+              ),
             ],
           )
         ],

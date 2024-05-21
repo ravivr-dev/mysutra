@@ -21,7 +21,7 @@ final class GetPostsError extends PostsState {
 final class GetPostDetailLoading extends PostsState {}
 
 final class GetPostDetailLoaded extends PostsState {
-  final PostDetailEntity post;
+  final PostEntity post;
 
   GetPostDetailLoaded({required this.post});
 }
@@ -170,4 +170,32 @@ final class EditPostError extends PostsState {
   final String error;
 
   EditPostError({required this.error});
+}
+
+final class LikeDislikeCommentLoading extends PostsState {}
+
+final class LikeDislikeCommentLoaded extends PostsState {
+  final CommentLikeDislikeEntity commentEntity;
+
+  LikeDislikeCommentLoaded({required this.commentEntity});
+}
+
+final class LikeDislikeCommentError extends PostsState {
+  final String error;
+
+  LikeDislikeCommentError({required this.error});
+}
+
+final class LikeDislikeReplyLoading extends PostsState {}
+
+final class LikeDislikeReplyLoaded extends PostsState {
+  final ReplyLikeDislikeEntity replyEntity;
+
+  LikeDislikeReplyLoaded({required this.replyEntity});
+}
+
+final class LikeDislikeReplyError extends PostsState {
+  final String error;
+
+  LikeDislikeReplyError({required this.error});
 }

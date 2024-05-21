@@ -366,6 +366,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          elevation: 0,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(20),
