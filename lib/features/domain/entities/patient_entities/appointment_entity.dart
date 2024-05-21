@@ -18,6 +18,7 @@ class AppointmentEntity {
   String? fullName;
   bool? isVerified;
   String? specialization;
+  int duration;
 
   AppointmentEntity({
     required this.id,
@@ -34,5 +35,6 @@ class AppointmentEntity {
     this.phoneNumber,
     this.countryCode,
     this.reason,
+    required this.duration,
   });
 }

@@ -131,7 +131,11 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       children: [
         _buildCallingRowItem(
             icon: Assets.iconsChat,
-            onTap: () => _goToChatScreen(appointment, isDoctor)),
+            onTap: () {
+              if (_canJoinAppointment(appointment: appointment)) {
+                _goToChatScreen(appointment, isDoctor);
+              }
+            }),
         component.spacer(width: 8),
         _buildCallingRowItem(
             icon: Assets.iconsPhone,
@@ -146,16 +150,35 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
     );
   }
 
+  bool _canJoinAppointment({required AppointmentEntity appointment}) {
+    final appointmentHours = DateFormat('hh:mm a').parse(appointment.time);
+    final appointmentEndTime =
+        appointmentHours.add(Duration(minutes: appointment.duration));
+    DateTime appointmentTime = DateTime.parse(appointment.date).toUtc().add(
+        Duration(
+            hours: appointmentHours.hour, minutes: appointmentHours.minute));
+
+    final currentTime = DateTime.now();
+
+    if (Utils.isFutureTime(appointmentTime)) {
+      widget.showErrorToast(
+          context: context, message: "Can't join call before time");
+      return false;
+    } else if (currentTime.hour <= appointmentEndTime.hour &&
+        appointmentEndTime.minute < currentTime.minute) {
+      return true;
+    }
+    return false;
+  }
+
   void _onVideoCallClick(
       {required AppointmentEntity appointment, bool isVideoCall = true}) {
-    DateTime time = DateTime.parse(appointment.date);
-    if (DateTime.now().difference(time).inMinutes < 30) {
+    if (_canJoinAppointment(appointment: appointment)) {
       _callVideoSdkRoomApi(
-          appointment.id, appointment.fullName ?? appointment.username ?? '',
-          isVideoCall: isVideoCall);
-    } else {
-      widget.showErrorToast(
-          context: context, message: "Can't Join appointment before time");
+        appointment.id,
+        appointment.fullName ?? appointment.username ?? '',
+        isVideoCall: isVideoCall,
+      );
     }
   }
 

@@ -1,13 +1,13 @@
 import 'package:my_sutra/features/data/model/doctor_models/get_doctor_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
+import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 
 import '../../../domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
 import '../../model/doctor_models/get_time_slots_response_model.dart';
-import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
 
 class DoctorRepositoryConv {
   static List<FollowerEntity> convertFollowingModelToEntity(
@@ -70,6 +70,7 @@ class DoctorRepositoryConv {
                 phoneNumber: e.phoneNumber,
                 countryCode: e.countryCode,
                 reason: e.reason,
+                duration: e.duration ?? 0,
               ))
           .toList(),
     );

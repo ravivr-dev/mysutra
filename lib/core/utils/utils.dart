@@ -30,4 +30,25 @@ class Utils {
     }
     return username;
   }
+
+  static bool isTodayDate(DateTime dateTime) {
+    final now = DateTime.now();
+    return now.day == dateTime.day &&
+        now.month == dateTime.month &&
+        now.year == dateTime.year;
+  }
+
+  static bool isFutureTime(DateTime dateTime) {
+    final now = DateTime.now();
+    if (now.day <= dateTime.day &&
+        now.month <= dateTime.month &&
+        now.year <= dateTime.year) {
+      if (dateTime.hour > now.hour) {
+        return true;
+      } else if (dateTime.hour == now.hour && dateTime.minute > now.minute) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

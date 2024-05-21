@@ -125,6 +125,7 @@ class PatientRepoConv {
               date: e.date,
               time: e.time,
               timeInMinutes: e.timeInMinutes,
+              duration: e.duration ?? 0,
             ))
         .toList();
   }

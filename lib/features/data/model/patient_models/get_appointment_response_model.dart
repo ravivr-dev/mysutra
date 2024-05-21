@@ -34,6 +34,7 @@ class AppointmentModel {
   String? countryCode;
   int? phoneNumber;
   String? reason;
+  int? duration;
 
   AppointmentModel({
     this.id,
@@ -66,5 +67,6 @@ class AppointmentModel {
         timeInMinutes = json[Constants.timeInMinutes],
         phoneNumber = json[Constants.phoneNumber],
         countryCode = json[Constants.countryCode],
-        reason = json[Constants.reason];
+        reason = json[Constants.reason],
+        duration = json['duration'];
 }
