@@ -6,16 +6,17 @@ class PostEntity {
   String id;
   PostUserEntity userId;
   bool isFollowing;
-  String? content;
+  String content;
   List<MediaUrlEntity> mediaUrls;
-  List<String>? taggedUserIds;
+  List<String> taggedUserIds;
   int totalLikes;
   int totalComments;
   int totalShares;
   int repostCount;
   bool isMyPost;
   bool isLiked;
-  DateTime? createdAt;
+  bool isRepostedByMe;
+  DateTime createdAt;
   DateTime updatedAt;
   PostIdEntity? postId;
 
@@ -25,14 +26,15 @@ class PostEntity {
     required this.isFollowing,
     required this.content,
     required this.mediaUrls,
-    this.taggedUserIds,
+    required this.taggedUserIds,
     required this.totalLikes,
     required this.totalComments,
     required this.totalShares,
     required this.repostCount,
     required this.isMyPost,
     required this.isLiked,
-    this.createdAt,
+    required this.isRepostedByMe,
+    required this.createdAt,
     required this.updatedAt,
     this.postId,
   });

@@ -3,7 +3,6 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/reply_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
@@ -26,7 +25,7 @@ abstract class PostRepository {
   Future<Either<Failure, PostLikeDislikeEntity>> likeDislikePost(
       LikeDislikePostParams params);
 
-  Future<Either<Failure, PostDetailEntity>> getPostDetail(String postId);
+  Future<Either<Failure, PostEntity>> getPostDetail(String postId);
 
   Future<Either<Failure, List<CommentEntity>>> getComment(
       GetCommentParams params);

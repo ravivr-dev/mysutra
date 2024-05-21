@@ -47,6 +47,7 @@ class PostData {
   final int repostCount;
   final bool isMyPost;
   final bool isLiked;
+  final bool isRepostedByMe;
   final DateTime createdAt;
   final DateTime updatedAt;
   final PostIdModel? postId;
@@ -64,6 +65,7 @@ class PostData {
     required this.repostCount,
     required this.isMyPost,
     required this.isLiked,
+    required this.isRepostedByMe,
     required this.createdAt,
     required this.updatedAt,
     this.postId,
@@ -88,6 +90,7 @@ class PostData {
         repostCount: json["repostCount"],
         isMyPost: json["isMyPost"],
         isLiked: json["isLiked"],
+        isRepostedByMe: json["isRepostedByMe"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         postId: json["postId"] == null
@@ -108,84 +111,9 @@ class PostData {
         "repostCount": repostCount,
         "isMyPost": isMyPost,
         "isLiked": isLiked,
+        "isRepostedByMe": isRepostedByMe,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
         "postId": postId!.toJson(),
       };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

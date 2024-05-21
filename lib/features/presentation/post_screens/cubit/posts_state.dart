@@ -21,7 +21,7 @@ final class GetPostsError extends PostsState {
 final class GetPostDetailLoading extends PostsState {}
 
 final class GetPostDetailLoaded extends PostsState {
-  final PostDetailEntity post;
+  final PostEntity post;
 
   GetPostDetailLoaded({required this.post});
 }

@@ -9,7 +9,6 @@ import 'package:my_sutra/features/data/repositories/post_repo/post_repository_co
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_like_dislike_entity.dart';
-import 'package:my_sutra/features/domain/entities/post_entities/post_detail_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/reply_like_dislike_entity.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
@@ -88,7 +87,7 @@ class PostRepositoryImpl extends PostRepository {
   }
 
   @override
-  Future<Either<Failure, PostDetailEntity>> getPostDetail(String postId) async {
+  Future<Either<Failure, PostEntity>> getPostDetail(String postId) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDatasource.getPostDetail(postId);
