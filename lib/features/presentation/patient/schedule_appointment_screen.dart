@@ -278,7 +278,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
     final isNewAppointment = widget.args.isNewAppointment;
     context.read<AppointmentCubit>().scheduleAppointment(
             data: ScheduleAppointmentParams(
-          doctorID: isNewAppointment ? widget.args.doctorId : null,
+          doctorID: widget.args.doctorId,
           date: _getServerDate,
           patientNumber: isNewAppointment
               ? int.parse(_phoneNumberController.text.trim())
