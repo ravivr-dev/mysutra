@@ -263,7 +263,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       AppRoutes.chatScreen,
       ChatScreenArgs(
         roomId: '${appointment.doctorId}${appointment.userId}',
-        username: appointment.username ?? '',
+        username: appointment.fullName ?? appointment.username ?? '',
         currentUserId: isDoctor ? appointment.doctorId! : appointment.userId!,
         profilePic: appointment.profilePic,
         remoteUserId: isDoctor ? appointment.userId! : appointment.doctorId!,
