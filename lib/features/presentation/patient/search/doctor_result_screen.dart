@@ -61,14 +61,12 @@ class DoctorResultScreen extends StatelessWidget {
             component.spacer(height: 12),
             Align(
               alignment: Alignment.center,
-              child: Flexible(
-                child: component.text(
-                  doctorEntity.fullName,
-                  style: theme.publicSansFonts.mediumStyle(
-                    fontSize: 16,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+              child: component.text(
+                doctorEntity.fullName,
+                style: theme.publicSansFonts.mediumStyle(
+                  fontSize: 16,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Align(
