@@ -1,5 +1,7 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -29,6 +31,7 @@ import '../../../patient/search_filter_screen.dart';
 import '../../chat_screen/chat_screen.dart';
 
 part 'appointment_screen_states/doctor_appointment_screen_state.dart';
+
 part 'appointment_screen_states/patient_appointment_screen_state.dart';
 
 class AppointmentScreen extends StatefulWidget {
@@ -181,27 +184,30 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Welcome back",
-              style: theme.publicSansFonts.regularStyle(
-                fontColor: AppColors.blackColor,
-                fontSize: 14,
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Welcome back",
+                style: theme.publicSansFonts.regularStyle(
+                  fontColor: AppColors.blackColor,
+                  fontSize: 14,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            component.text(
-              Utils.getNameOrUsername(
-                  widget.entity?.fullName, widget.entity?.username),
-              style: theme.publicSansFonts.mediumStyle(
-                fontColor: AppColors.blackColor,
-                fontSize: 24,
-                height: 28,
+              const SizedBox(height: 8),
+              component.text(
+                Utils.getNameOrUsername(
+                    widget.entity?.fullName, widget.entity?.username),
+                style: theme.publicSansFonts.mediumStyle(
+                  fontColor: AppColors.blackColor,
+                  fontSize: 24,
+                  height: 28,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Container(
           width: 38,

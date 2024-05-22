@@ -52,16 +52,24 @@ class DoctorResultScreen extends StatelessWidget {
                 child: component.networkImage(
                   fit: BoxFit.fill,
                   url: doctorEntity.profilePic ?? '',
+                  errorWidget: component.assetImage(
+                    path: Assets.imagesDefaultAvatar,
+                  ),
                 ),
               ),
             ),
             component.spacer(height: 12),
             Align(
               alignment: Alignment.center,
-              child: component.text(doctorEntity.fullName,
+              child: Flexible(
+                child: component.text(
+                  doctorEntity.fullName,
                   style: theme.publicSansFonts.mediumStyle(
                     fontSize: 16,
-                  )),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.center,
@@ -85,8 +93,7 @@ class DoctorResultScreen extends StatelessWidget {
                         child: InkWell(
                       onTap: () {
                         context.read<SearchDoctorCubit>().followDoctor(
-                            params:
-                                FollowUserParams(userId: doctorEntity.id!));
+                            params: FollowUserParams(userId: doctorEntity.id!));
                         // doctorEntity.reInitIsFollowing();
                       },
                       child: _buildFollowButton(
