@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
-import 'package:my_sutra/core/common_widgets/custom_small_outline_buttom.dart';
+import 'package:my_sutra/core/common_widgets/custom_small_outline_button.dart';
 import 'package:my_sutra/core/common_widgets/mobile_form_widget.dart';
 import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
@@ -25,6 +25,7 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
   final TextEditingController _valCtrl = TextEditingController();
   final TextEditingController _otpCtrl = TextEditingController();
   bool showOTP = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -41,10 +42,12 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
         if (state is ChangeEmailLoadedState) {
           widget.showSuccessToast(context: context, message: state.message);
           showOTP = true;
+          _stopLoading();
         }
         if (state is ChangePhoneNumberLoadedState) {
           widget.showSuccessToast(context: context, message: state.message);
           showOTP = true;
+          _stopLoading();
         }
         if (state is VerifyChangeLoadedState) {
           widget.showSuccessToast(context: context, message: state.message);
@@ -81,6 +84,7 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                   )
                 : CustomSmallOutlineButton(
                     text: 'Send OTP',
+                    isLoading: _isLoading,
                     onPressed: () {
                       if (widget.args.isEmail) {
                         context
@@ -91,6 +95,7 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                             cc: _ccCtrl.text,
                             phoneNumber: int.tryParse(_valCtrl.text)!);
                       }
+                      _startLoading();
                     },
                   ),
           ),
@@ -147,6 +152,18 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
         );
       },
     );
+  }
+
+  void _startLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  void _stopLoading() {
+    setState(() {
+      _isLoading = false;
+    });
   }
 }
 
