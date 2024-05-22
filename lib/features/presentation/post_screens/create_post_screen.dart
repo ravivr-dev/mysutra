@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
@@ -51,8 +52,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
         if (state is CreatePostLoaded) {
           // widget.showSuccessToast(context: context, message: state.message);
-          AiloitteNavigation.intentWithClearAllRoutesWithData(
-              context, AppRoutes.homeRoute, 1);
+          if (UserHelper.role == UserRole.doctor) {
+            AiloitteNavigation.intentWithClearAllRoutesWithData(
+                context, AppRoutes.homeRoute, 1);
+          } else {
+            AiloitteNavigation.intentWithClearAllRoutes(context, AppRoutes.homeRoute);
+          }
         } else if (state is CreatePostError) {
           widget.showErrorToast(context: context, message: state.error);
         }
