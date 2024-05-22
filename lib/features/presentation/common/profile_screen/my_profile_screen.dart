@@ -1,4 +1,5 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -250,7 +251,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _buildUserName() {
-    return Flexible(
+    return SizedBox(
+      width: context.screenWidth - 100,
       child: component.text(
         Utils.getNameOrUsername(my?.fullName, my?.username),
         style: theme.publicSansFonts.mediumStyle(
@@ -258,6 +260,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           fontColor: AppColors.black37,
         ),
         overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
       ),
     );
   }
