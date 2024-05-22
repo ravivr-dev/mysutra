@@ -1,4 +1,5 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -144,10 +145,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 children: [
                   Row(
                     children: [
-                      component.text(data.fullName?.capitalizeFirstLetter,
-                          style: theme.publicSansFonts.mediumStyle(
-                            fontSize: 16,
-                          )),
+                      Flexible(
+                        child:
+                            component.text(data.fullName?.capitalizeFirstLetter,
+                                style: theme.publicSansFonts.mediumStyle(
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                            ),
+                      ),
                       if (data.isVerified != null) ...[
                         component.spacer(width: 4),
                         component.assetImage(
@@ -155,7 +161,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       ]
                     ],
                   ),
-                  component.text('${data.specialization}'.capitalizeFirstLetterOfEveryWord,
+                  component.text(
+                      '${data.specialization}'.capitalizeFirstLetterOfEveryWord,
                       style: theme.publicSansFonts.regularStyle(
                         fontSize: 14,
                         fontColor: AppColors.black81,
@@ -237,6 +244,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 ],
               ),
             ),
+            component.spacer(width: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: component.networkImage(

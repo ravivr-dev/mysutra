@@ -1,5 +1,7 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
@@ -61,11 +63,17 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
               ),
             ),
             component.spacer(width: 4),
-            component.text(
-                (widget.userIdEntity.fullName??'').isNotEmpty? widget.userIdEntity.fullName: widget.userIdEntity.username,
+            Flexible(
+              child: component.text(
+                (widget.userIdEntity.fullName ?? '').isNotEmpty
+                    ? widget.userIdEntity.fullName
+                    : widget.userIdEntity.username,
                 style: theme.publicSansFonts.mediumStyle(
                   fontSize: 16,
-                )),
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             component.spacer(width: 4),
             if (widget.userIdEntity.isVerified) ...[
               component.assetImage(

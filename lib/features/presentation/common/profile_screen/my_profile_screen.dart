@@ -250,11 +250,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _buildUserName() {
-    return component.text(
-      Utils.getNameOrUsername(my?.fullName, my?.username),
-      style: theme.publicSansFonts.mediumStyle(
-        fontSize: 25,
-        fontColor: AppColors.black37,
+    return Flexible(
+      child: component.text(
+        Utils.getNameOrUsername(my?.fullName, my?.username),
+        style: theme.publicSansFonts.mediumStyle(
+          fontSize: 25,
+          fontColor: AppColors.black37,
+        ),
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
