@@ -37,10 +37,17 @@ class Utils {
         now.month == dateTime.month &&
         now.year == dateTime.year;
   }
-
+//We can make these conditions more better
   static bool isFutureTime(DateTime dateTime) {
-    final now = DateTime.now();
-    if (now.day <= dateTime.day &&
+    DateTime now = DateTime.now();
+
+    if (dateTime.year > now.year ||
+        (dateTime.year == now.year && dateTime.month > now.month) ||
+        (dateTime.year == now.year &&
+            dateTime.month == now.month &&
+            dateTime.day > now.day)) {
+      return true;
+    } else if (now.day <= dateTime.day &&
         now.month <= dateTime.month &&
         now.year <= dateTime.year) {
       if (dateTime.hour > now.hour) {

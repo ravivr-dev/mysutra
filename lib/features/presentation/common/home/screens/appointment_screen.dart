@@ -156,12 +156,11 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   bool _canJoinAppointment(
       {required AppointmentEntity appointment, String? errorMessage}) {
     final appointmentHours = DateFormat('hh:mm a').parse(appointment.time);
-    final appointmentEndTime =
-        appointmentHours.add(Duration(minutes: appointment.duration));
     DateTime appointmentTime = DateTime.parse(appointment.date).toUtc().add(
         Duration(
             hours: appointmentHours.hour, minutes: appointmentHours.minute));
-
+    final appointmentEndTime =
+        appointmentTime.add(Duration(minutes: appointment.duration));
     final now = DateTime.now();
 
     if (Utils.isFutureTime(appointmentTime)) {
@@ -170,13 +169,14 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
           message: errorMessage ?? "Can't join call before time");
       return false;
     } else if (now.hour > appointmentEndTime.hour ||
-        (now.hour <= appointmentEndTime.hour &&
+        (now.hour == appointmentEndTime.hour &&
             now.minute > appointmentEndTime.minute)) {
       widget.showErrorToast(
           context: context, message: 'Appointment time has finished');
       return false;
-    } else if (now.hour <= appointmentEndTime.hour &&
-        appointmentEndTime.minute < now.minute) {
+    } else if (now.hour < appointmentEndTime.hour ||
+        (now.hour == appointmentEndTime.hour &&
+            appointmentEndTime.minute < now.minute)) {
       return true;
     }
     return false;
