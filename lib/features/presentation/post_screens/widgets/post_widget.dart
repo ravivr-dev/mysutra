@@ -60,8 +60,9 @@ class _PostWidgetState extends State<PostWidget> {
               ),
               component.spacer(height: 10),
               component.text(
-                DateFormat('d/M/y')
-                    .format(widget.postEntity.updatedAt.toLocal()),
+                // DateFormat('d/M/y')
+                //     .format(widget.postEntity.updatedAt.toLocal()),
+                _formatElapsedTime(widget.postEntity.updatedAt.toLocal()),
                 style: theme.publicSansFonts.mediumStyle(
                   fontColor: AppColors.neutral,
                 ),
@@ -146,7 +147,9 @@ class _PostWidgetState extends State<PostWidget> {
                         ),
                         component.spacer(height: 10),
                         component.text(
-                          DateFormat('d/M/y').format(
+                          // DateFormat('d/M/y').format(
+                          //     widget.postEntity.postId!.updatedAt.toLocal()),
+                          _formatElapsedTime(
                               widget.postEntity.postId!.updatedAt.toLocal()),
                           style: theme.publicSansFonts.mediumStyle(
                             fontColor: AppColors.neutral,
@@ -263,6 +266,22 @@ class _PostWidgetState extends State<PostWidget> {
         );
       },
     );
+  }
+
+  String _formatElapsedTime(DateTime dateTime) {
+    Duration difference = DateTime.now().difference(dateTime);
+
+    if (difference.inDays > 30) {
+      return DateFormat('d/M/y').format(dateTime);
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
+    }
   }
 
   Widget _buildDivider() {

@@ -152,9 +152,9 @@ class _PostScreenState extends State<PostScreen> {
                 // separatorBuilder: (_, index) {
                 //   return Column(
                 //     children: [
-                      // component.spacer(height: 14),
-                      // _buildDivider(),
-                      // component.spacer(height: 14),
+                // component.spacer(height: 14),
+                // _buildDivider(),
+                // component.spacer(height: 14),
                 //     ],
                 //   );
                 // },
@@ -233,7 +233,9 @@ class _PostScreenState extends State<PostScreen> {
             },
           ),
           component.spacer(height: 10),
-          component.text(DateFormat('d/M/y').format(postDetail!.updatedAt),
+          component.text(
+              // DateFormat('d/M/y').format(postDetail!.updatedAt),
+              _formatElapsedTime(postDetail!.updatedAt.toLocal()),
               style: theme.publicSansFonts.mediumStyle(
                 fontColor: AppColors.neutral,
               )),
@@ -299,8 +301,10 @@ class _PostScreenState extends State<PostScreen> {
                     ),
                     component.spacer(height: 10),
                     component.text(
-                      DateFormat('d/M/y')
-                          .format(postDetail!.postId!.updatedAt.toLocal()),
+                      // DateFormat('d/M/y')
+                      //     .format(postDetail!.postId!.updatedAt.toLocal()),
+                      _formatElapsedTime(
+                          postDetail!.postId!.updatedAt.toLocal()),
                       style: theme.publicSansFonts.mediumStyle(
                         fontColor: AppColors.neutral,
                       ),
@@ -399,10 +403,7 @@ class _PostScreenState extends State<PostScreen> {
                 shareCount: postDetail!.totalShares + postDetail!.repostCount,
                 onTap: () {
                   AiloitteNavigation.intentWithData(
-                    context,
-                    AppRoutes.repostRoute,
-                    postDetail
-                  );
+                      context, AppRoutes.repostRoute, postDetail);
                 },
               ),
             ],
@@ -410,5 +411,21 @@ class _PostScreenState extends State<PostScreen> {
         ],
       ),
     );
+  }
+
+  String _formatElapsedTime(DateTime dateTime) {
+    Duration difference = DateTime.now().difference(dateTime);
+
+    if (difference.inDays > 30) {
+      return DateFormat('d/M/y').format(dateTime);
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
+    }
   }
 }
