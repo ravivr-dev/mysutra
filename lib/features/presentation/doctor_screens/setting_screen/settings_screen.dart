@@ -44,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   TimeOfDay? _session1StartTime;
   TimeOfDay? _session1EndTime;
-  bool addMore = false;
+  bool _addMore = false;
   TimeOfDay? _session2StartTime;
   TimeOfDay? _session2EndTime;
   final SingleValueDropDownController _session1StartController =
@@ -182,7 +182,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     )),
                   ],
                 ),
-                if (addMore) ...[
+                if (_addMore) ...[
                   component.spacer(height: 20),
                   _buildHeader(
                       text: context.stringForKey(StringKeys.session2Timing)),
@@ -230,20 +230,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       )),
                       component.spacer(width: 8),
                       InkWell(
-                        onTap: () {setState(() {
-                          addMore = !addMore;
-                        });},
-                        child: const Icon(Icons.delete, color: AppColors.error,),
+                        onTap: () {
+                          setState(() {
+                            _addMore = !_addMore;
+                          });
+                        },
+                        child: const Icon(
+                          Icons.delete,
+                          color: AppColors.error,
+                        ),
                       ),
                     ],
                   ),
                 ],
-                if (!addMore) ...[
+                if (!_addMore) ...[
                   component.spacer(height: 20),
                   InkWell(
                     onTap: () {
                       setState(() {
-                        addMore = !addMore;
+                        _addMore = !_addMore;
                       });
                     },
                     child: component.text('+ Add Session',
