@@ -1,7 +1,5 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
@@ -63,59 +61,63 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
               ),
             ),
             component.spacer(width: 4),
-            Flexible(
-              flex: 4,
-              child: component.text(
-                (widget.userIdEntity.fullName ?? '').isNotEmpty
-                    ? widget.userIdEntity.fullName
-                    : widget.userIdEntity.username,
-                style: theme.publicSansFonts.mediumStyle(
-                  fontSize: 16,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            component.spacer(width: 4),
-            if (widget.userIdEntity.isVerified) ...[
-              component.assetImage(
-                  path: Assets.iconsVerify,
-                  height: 20,
-                  width: 20,
-                  fit: BoxFit.fill),
-            ],
-            component.spacer(width: 3),
-            if (!widget.isMyPost &&
-                (widget.userIdEntity.role == UserRole.doctor.name ||
-                    widget.userIdEntity.role == UserRole.influencer.name)) ...[
-              InkWell(
-                onTap: () {
-                  context.read<SearchDoctorCubit>().followDoctor(
-                      params:
-                          FollowUserParams(userId: widget.userIdEntity.id!));
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: widget.isFollowing
-                        ? AppColors.grey0xFFEAECF0
-                        : AppColors.color0xFFEBE2FF,
-                  ),
+            Expanded(
+                child: Row(
+              children: [
+                Flexible(
                   child: component.text(
-                      widget.isFollowing
-                          ? context.stringForKey(StringKeys.unfollow)
-                          : context.stringForKey(StringKeys.follow),
-                      style: theme.publicSansFonts.mediumStyle(
-                        fontColor: widget.isFollowing
-                            ? AppColors.color0xFF85799E
-                            : AppColors.color0xFF8338EC,
-                      )),
+                    (widget.userIdEntity.fullName ?? '').isNotEmpty
+                        ? widget.userIdEntity.fullName
+                        : widget.userIdEntity.username,
+                    style: theme.publicSansFonts.mediumStyle(
+                      fontSize: 16,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-            ],
+                component.spacer(width: 4),
+                if (widget.userIdEntity.isVerified) ...[
+                  component.assetImage(
+                      path: Assets.iconsVerify,
+                      height: 20,
+                      width: 20,
+                      fit: BoxFit.fill),
+                  component.spacer(width: 3),
+                ],
+                if (!widget.isMyPost &&
+                    (widget.userIdEntity.role == UserRole.doctor.name ||
+                        widget.userIdEntity.role ==
+                            UserRole.influencer.name)) ...[
+                  InkWell(
+                    onTap: () {
+                      context.read<SearchDoctorCubit>().followDoctor(
+                          params: FollowUserParams(
+                              userId: widget.userIdEntity.id!));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: widget.isFollowing
+                            ? AppColors.grey0xFFEAECF0
+                            : AppColors.color0xFFEBE2FF,
+                      ),
+                      child: component.text(
+                          widget.isFollowing
+                              ? context.stringForKey(StringKeys.unfollow)
+                              : context.stringForKey(StringKeys.follow),
+                          style: theme.publicSansFonts.mediumStyle(
+                            fontColor: widget.isFollowing
+                                ? AppColors.color0xFF85799E
+                                : AppColors.color0xFF8338EC,
+                          )),
+                    ),
+                  ),
+                ],
+              ],
+            )),
             if (widget.isPost) ...[
-              const Spacer(),
               InkWell(
                 onTap: () => context.showBottomSheet(widget.isMyPost
                     ? BlocProvider<PostsCubit>(
