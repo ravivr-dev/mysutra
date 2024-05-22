@@ -132,7 +132,10 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
         _buildCallingRowItem(
             icon: Assets.iconsChat,
             onTap: () {
-              if (_canJoinAppointment(appointment: appointment)) {
+              final canJoin = _canJoinAppointment(
+                  appointment: appointment,
+                  errorMessage: "Can't chat before time");
+              if (canJoin) {
                 _goToChatScreen(appointment, isDoctor);
               }
             }),
@@ -150,7 +153,8 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
     );
   }
 
-  bool _canJoinAppointment({required AppointmentEntity appointment}) {
+  bool _canJoinAppointment(
+      {required AppointmentEntity appointment, String? errorMessage}) {
     final appointmentHours = DateFormat('hh:mm a').parse(appointment.time);
     final appointmentEndTime =
         appointmentHours.add(Duration(minutes: appointment.duration));
@@ -162,7 +166,8 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
 
     if (Utils.isFutureTime(appointmentTime)) {
       widget.showErrorToast(
-          context: context, message: "Can't join call before time");
+          context: context,
+          message: errorMessage ?? "Can't join call before time");
       return false;
     } else if (currentTime.hour <= appointmentEndTime.hour &&
         appointmentEndTime.minute < currentTime.minute) {
