@@ -9,6 +9,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+
 import '../../../../ailoitte_component_injector.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../data/model/doctor_models/time_slot_model.dart';
@@ -265,8 +266,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       return;
                     } else if (_session1StartTime == null ||
                         _session1EndTime == null ||
-                        _session2StartTime == null ||
-                        _session2EndTime == null) {
+                        (_session2StartTime != null &&
+                            _session2EndTime == null) ||
+                        (_session2EndTime != null &&
+                            _session2StartTime == null)) {
                       _showToast(message: 'Please fill timings');
                       return;
                     }
@@ -278,11 +281,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           _getMinFromTime(_session1StartTime!),
                                       endTime:
                                           _getMinFromTime(_session1EndTime!)),
-                                  Slots(
-                                      startTime:
-                                          _getMinFromTime(_session2StartTime!),
-                                      endTime:
-                                          _getMinFromTime(_session2EndTime!)),
+                                  if (_addMore && _session2StartTime != null)
+                                    Slots(
+                                        startTime: _getMinFromTime(
+                                            _session2StartTime!),
+                                        endTime:
+                                            _getMinFromTime(_session2EndTime!)),
                                 ]))
                             .toList(),
                         slotType: _getServerSlot));
