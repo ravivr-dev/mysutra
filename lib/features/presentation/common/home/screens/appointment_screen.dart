@@ -1,7 +1,5 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -31,7 +29,6 @@ import '../../../patient/search_filter_screen.dart';
 import '../../chat_screen/chat_screen.dart';
 
 part 'appointment_screen_states/doctor_appointment_screen_state.dart';
-
 part 'appointment_screen_states/patient_appointment_screen_state.dart';
 
 class AppointmentScreen extends StatefulWidget {
@@ -179,7 +176,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       return false;
     } else if (now.hour < appointmentEndTime.hour ||
         (now.hour == appointmentEndTime.hour &&
-            appointmentEndTime.minute < now.minute)) {
+            appointmentEndTime.minute > now.minute)) {
       return true;
     }
     return false;
