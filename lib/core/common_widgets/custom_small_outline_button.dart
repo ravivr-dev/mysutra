@@ -6,14 +6,16 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 class CustomSmallOutlineButton extends StatelessWidget {
   final Color? loaderColor;
   final String? text;
-  final bool? isLoading;
+  final bool isLoading;
   final Color? textColor;
+
   // final Color? buttonColor;
   final Function()? onPressed;
   final double? width;
   final String? icon;
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleStyle;
+
   const CustomSmallOutlineButton({
     super.key,
     this.loaderColor,
@@ -33,7 +35,7 @@ class CustomSmallOutlineButton extends StatelessWidget {
     return SizedBox(
       width: width,
       child: ElevatedButton(
-        onPressed: isLoading! ? nullPress : onPressed,
+        onPressed: isLoading ? nullPress : onPressed,
         style: ElevatedButton.styleFrom(
           side: const BorderSide(
             width: 1,
@@ -44,7 +46,7 @@ class CustomSmallOutlineButton extends StatelessWidget {
           ),
           backgroundColor: AppColors.white,
         ),
-        child: isLoading!
+        child: isLoading
             ? LoadingAnimationWidget.inkDrop(
                 color: loaderColor ?? AppColors.primaryColor,
                 size: 22,
