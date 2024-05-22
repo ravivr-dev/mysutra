@@ -61,7 +61,8 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
               ),
             ),
             component.spacer(width: 4),
-            component.text(widget.userIdEntity.username,
+            component.text(
+                widget.userIdEntity.fullName ?? widget.userIdEntity.username,
                 style: theme.publicSansFonts.mediumStyle(
                   fontSize: 16,
                 )),
