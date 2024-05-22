@@ -76,8 +76,8 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
             ],
             component.spacer(width: 3),
             if (!widget.isMyPost &&
-                    widget.userIdEntity.role == UserRole.doctor.name ||
-                widget.userIdEntity.role == UserRole.influencer.name) ...[
+                (widget.userIdEntity.role == UserRole.doctor.name ||
+                    widget.userIdEntity.role == UserRole.influencer.name)) ...[
               InkWell(
                 onTap: () {
                   context.read<SearchDoctorCubit>().followDoctor(
