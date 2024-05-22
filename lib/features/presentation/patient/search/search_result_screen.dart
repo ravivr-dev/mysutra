@@ -163,27 +163,30 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   component.spacer(height: 4),
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                          color: AppColors.color0xFFFEFFD1,
+                      if (data.ratings != null) ...[
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: AppColors.color0xFFFEFFD1,
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.star, color: AppColors.star),
+                              component.text(data.ratings.toString(),
+                                  style: theme.publicSansFonts.regularStyle())
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.star, color: AppColors.star),
-                            component.text(data.ratings.toString(),
-                                style: theme.publicSansFonts.regularStyle())
-                          ],
+                        component.spacer(width: 8),
+                      ],
+                      if ((data.reviews ?? 0) > 0)
+                        component.text(
+                          '(${data.reviews} reviews)',
+                          style: theme.publicSansFonts.regularStyle(
+                            fontColor: AppColors.color0xFF8338EC,
+                          ),
                         ),
-                      ),
-                      component.spacer(width: 8),
-                      component.text(
-                        '(${data.ratings} reviews)',
-                        style: theme.publicSansFonts.regularStyle(
-                          fontColor: AppColors.color0xFF8338EC,
-                        ),
-                      ),
                     ],
                   ),
                   component.spacer(
