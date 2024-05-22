@@ -2,6 +2,7 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_user_entity.dart';
@@ -21,13 +22,14 @@ class UserFollowWidget extends StatefulWidget {
   final bool isPost;
   final Function(bool)? userFollowing;
 
-  const UserFollowWidget({super.key,
-    required this.userIdEntity,
-    required this.isMyPost,
-    required this.isFollowing,
-    this.postId,
-    this.isPost = true,
-    this.userFollowing});
+  const UserFollowWidget(
+      {super.key,
+      required this.userIdEntity,
+      required this.isMyPost,
+      required this.isFollowing,
+      this.postId,
+      this.isPost = true,
+      this.userFollowing});
 
   @override
   State<UserFollowWidget> createState() => _UserFollowWidgetState();
@@ -72,16 +74,18 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                   fit: BoxFit.fill),
             ],
             component.spacer(width: 3),
-            if (!widget.isMyPost && widget.userIdEntity.role == 'DOCTOR') ...[
+            if (!widget.isMyPost &&
+                    widget.userIdEntity.role == UserRole.doctor.name ||
+                widget.userIdEntity.role == UserRole.influencer.name) ...[
               InkWell(
                 onTap: () {
                   context.read<SearchDoctorCubit>().followDoctor(
-                      params: FollowUserParams(
-                          userId: widget.userIdEntity.id!));
+                      params:
+                          FollowUserParams(userId: widget.userIdEntity.id!));
                 },
                 child: Container(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                      const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
                     color: widget.isFollowing
@@ -103,21 +107,20 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
             if (widget.isPost) ...[
               const Spacer(),
               InkWell(
-                onTap: () =>
-                    context.showBottomSheet(widget.isMyPost
-                        ? BlocProvider<PostsCubit>(
-                      create: (context) => sl<PostsCubit>(),
-                      child: EditOrDeletePostBottomSheet(
-                          postId: widget.postId!),
-                    )
-                        : BlocProvider<SearchDoctorCubit>(
-                      create: (context) => sl<SearchDoctorCubit>(),
-                      child: ViewProfileOrReportBottomSheet(
-                        postId: widget.postId!,
-                        userId: widget.userIdEntity.id!,
-                        userRole: widget.userIdEntity.role!,
-                      ),
-                    )),
+                onTap: () => context.showBottomSheet(widget.isMyPost
+                    ? BlocProvider<PostsCubit>(
+                        create: (context) => sl<PostsCubit>(),
+                        child:
+                            EditOrDeletePostBottomSheet(postId: widget.postId!),
+                      )
+                    : BlocProvider<SearchDoctorCubit>(
+                        create: (context) => sl<SearchDoctorCubit>(),
+                        child: ViewProfileOrReportBottomSheet(
+                          postId: widget.postId!,
+                          userId: widget.userIdEntity.id!,
+                          userRole: widget.userIdEntity.role!,
+                        ),
+                      )),
                 child: const Icon(
                   Icons.more_vert,
                   color: AppColors.color0xFF292D32,
