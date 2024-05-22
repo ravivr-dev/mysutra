@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
@@ -18,7 +19,13 @@ class EditOrDeletePostBottomSheet extends StatelessWidget {
     return BlocListener<PostsCubit, PostsState>(
       listener: (context, state) {
         if (state is DeletePostLoaded) {
-          AiloitteNavigation.back(context);
+          if (UserHelper.role == UserRole.doctor) {
+            AiloitteNavigation.intentWithClearAllRoutesWithData(
+                context, AppRoutes.homeRoute, 1);
+          } else {
+            AiloitteNavigation.intentWithClearAllRoutes(
+                context, AppRoutes.homeRoute);
+          }
         } else if (state is DeletePostError) {
           showErrorToast(context: context, message: state.error);
         }
