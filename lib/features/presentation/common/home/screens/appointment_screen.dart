@@ -162,15 +162,21 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
         Duration(
             hours: appointmentHours.hour, minutes: appointmentHours.minute));
 
-    final currentTime = DateTime.now();
+    final now = DateTime.now();
 
     if (Utils.isFutureTime(appointmentTime)) {
       widget.showErrorToast(
           context: context,
           message: errorMessage ?? "Can't join call before time");
       return false;
-    } else if (currentTime.hour <= appointmentEndTime.hour &&
-        appointmentEndTime.minute < currentTime.minute) {
+    } else if (now.hour > appointmentEndTime.hour ||
+        (now.hour <= appointmentEndTime.hour &&
+            now.minute > appointmentEndTime.minute)) {
+      widget.showErrorToast(
+          context: context, message: 'Appointment time has finished');
+      return false;
+    } else if (now.hour <= appointmentEndTime.hour &&
+        appointmentEndTime.minute < now.minute) {
       return true;
     }
     return false;
