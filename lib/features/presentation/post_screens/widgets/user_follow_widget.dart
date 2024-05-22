@@ -64,6 +64,7 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
             ),
             component.spacer(width: 4),
             Flexible(
+              flex: 4,
               child: component.text(
                 (widget.userIdEntity.fullName ?? '').isNotEmpty
                     ? widget.userIdEntity.fullName
