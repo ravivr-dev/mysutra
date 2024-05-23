@@ -54,4 +54,13 @@ class EndPoints {
   static const String commentLikeDislike = '/comment/like-dislike';
   static const String reply = '/reply';
   static const String replyLikeDislike = '/reply/like-dislike';
+
+  //Article Endpoints
+static const String article = '/article';
+static const String likeDislikeArticle = '/article/like';
+static const String reportArticle = '/article/report';
+static const String articleComment = '/article/comment';
+static const String likeDislikeArticleComment = '/article/comment/like-dislike';
+static const String articleReply = '/article/reply';
+static const String likeDislikeArticleReply = '/article/like-dislike';
 }

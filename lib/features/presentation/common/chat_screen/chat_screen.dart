@@ -127,7 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 onTap: () => _handleImageSelection(
                                     source: ImageSource.gallery),
                                 child: component.assetImage(
-                                    path: Assets.pickImage)),
+                                    path: Assets.iconsPickImage)),
                             component.spacer(width: 11),
                             Expanded(
                               child: SizedBox(
