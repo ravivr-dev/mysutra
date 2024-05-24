@@ -138,12 +138,9 @@ class _PatientMyFollowingScreenState extends State<PatientMyFollowingScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FittedBox(
-                  child: component.text(
-                    'Dr. ${entity.fullName}',
+                component.text('Dr. ${entity.fullName}',
                     style: theme.publicSansFonts.mediumStyle(fontSize: 16),
-                  ),
-                ),
+                    overflow: TextOverflow.ellipsis),
                 component.spacer(height: 4),
                 if (isDoctor) ...[
                   component.text(
