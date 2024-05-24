@@ -9,11 +9,13 @@ import 'package:my_sutra/features/domain/entities/user_entities/generate_usernam
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
+
 import '../entities/patient_entities/follow_entity.dart';
 import '../entities/user_entities/my_profile_entity.dart';
 import '../entities/user_entities/user_data_entity.dart';
 import '../entities/user_entities/user_entity.dart';
 import '../entities/user_entities/video_room_response_entity.dart';
+import '../usecases/user_usecases/download_pdf_usecase.dart';
 import '../usecases/user_usecases/follow_user_usecase.dart';
 import '../usecases/user_usecases/get_following_usecase.dart';
 import '../usecases/user_usecases/get_video_room_id_usecase.dart';
@@ -58,4 +60,6 @@ abstract class UserRepository {
       GetVideoRoomIdUseCaseParams data);
 
   Future<Either<Failure, FollowEntity>> followUser(FollowUserParams data);
+
+  Future<Either<Failure, String>> downloadPdf(DownloadPdfParams data);
 }

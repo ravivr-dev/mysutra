@@ -58,3 +58,21 @@ final class CancelAppointmentErrorState extends AppointmentState {
     required this.message,
   });
 }
+
+final class PastAppointmentLoadingState extends AppointmentState {}
+
+final class PastAppointmentSuccessState extends AppointmentState {
+  final List<AppointmentEntity> appointmentEntities;
+
+  PastAppointmentSuccessState({
+    required this.appointmentEntities,
+  });
+}
+
+final class PastAppointmentErrorState extends AppointmentState {
+  final String message;
+
+  PastAppointmentErrorState({
+    required this.message,
+  });
+}

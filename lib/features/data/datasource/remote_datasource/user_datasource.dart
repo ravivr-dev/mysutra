@@ -1,6 +1,6 @@
 // ignore_for_file: body_might_complete_normally_catch_error
 
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
@@ -16,6 +16,7 @@ import 'package:my_sutra/features/data/model/user_models/specialisation_model.da
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
+import 'package:retrofit/dio.dart';
 
 import '../../model/user_models/generate_username_model.dart';
 import '../../model/user_models/my_profile_model.dart';
@@ -35,7 +36,7 @@ abstract class UserDataSource {
 
   Future<GeneralModel> registration(RegistrationParams params);
 
-  Future<UploadDocModel> uploadDocument(File file);
+  Future<UploadDocModel> uploadDocument(io.File file);
 
   Future<MyProfileResponseModel> getProfileDetails();
 
@@ -56,6 +57,8 @@ abstract class UserDataSource {
   Future<VideoRoomResponseModel> getVideoRoomId(Map<String, dynamic> data);
 
   Future<dynamic> followUser(Map<String, dynamic> data);
+
+  Future<HttpResponse> downloadPdf(String url);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -191,7 +194,7 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<UploadDocModel> uploadDocument(File file) async {
+  Future<UploadDocModel> uploadDocument(io.File file) async {
     try {
       return await client.uploadDocument(file).catchError((err) {
         _processDio(err);
@@ -358,6 +361,22 @@ class UserDataSourceImpl extends UserDataSource {
   Future<dynamic> followUser(Map<String, dynamic> data) async {
     try {
       return await client.followUser(data).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<HttpResponse> downloadPdf(String url) async {
+    try {
+      return await client.downloadPdf(url).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

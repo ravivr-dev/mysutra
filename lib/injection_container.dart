@@ -45,6 +45,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appoi
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/past_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
@@ -130,10 +131,12 @@ Future<void> init() async {
       updateAboutOrFeesUseCase: sl<UpdateAboutOrFeesUseCase>(),
       getTimeSlotsUseCase: sl<GetTimeSlotsUseCase>()));
   sl.registerFactory(() => AppointmentCubit(
-      getAvailableSlotsUseCase: sl<GetAvailableSlotsForPatientUseCase>(),
-      scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
-      confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
-      cancelAppointmentUseCase: sl<CancelAppointmentUseCase>()));
+        getAvailableSlotsUseCase: sl<GetAvailableSlotsForPatientUseCase>(),
+        scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
+        confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
+        cancelAppointmentUseCase: sl<CancelAppointmentUseCase>(),
+        pastAppointmentUseCase: sl<PastAppointmentUseCase>(),
+      ));
   sl.registerFactory(() => ProfileCubit(
         getFollowingUseCase: sl<GetFollowingUseCase>(),
         getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
@@ -187,6 +190,8 @@ Future<void> init() async {
   sl.registerFactory(() => ScheduleAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => ConfirmAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => CancelAppointmentUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => PastAppointmentUseCase(sl<PatientRepository>()));
+
   sl.registerFactory(() => GetProfileDetailsUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetFollowingUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetTimeSlotsUseCase(sl<DoctorRepository>()));

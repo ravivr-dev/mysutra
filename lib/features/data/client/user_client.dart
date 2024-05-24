@@ -136,4 +136,8 @@ abstract class UserRestClient {
 
   @POST(EndPoints.userFollow)
   Future<dynamic> followUser(@Body() Map<String, dynamic> map);
+
+  @GET('{url}')
+  @DioResponseType(ResponseType.bytes)
+  Future<HttpResponse<List<int>>> downloadPdf(@Path('url') String url);
 }

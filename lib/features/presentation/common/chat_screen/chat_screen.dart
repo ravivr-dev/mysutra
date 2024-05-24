@@ -377,11 +377,15 @@ class ChatScreenArgs {
   final String? profilePic;
   final String remoteUserId;
 
+  ///if this flag is try than we will not allow current user to chat
+  final bool showChatHistory;
+
   ChatScreenArgs({
     required this.roomId,
     required this.username,
     required this.currentUserId,
     this.profilePic,
     required this.remoteUserId,
+    this.showChatHistory = false,
   });
 }
