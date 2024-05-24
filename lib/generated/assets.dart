@@ -84,4 +84,5 @@ class Assets {
   static const String imagesSplash = 'assets/images/splash.json';
   static const String mysutraAssetsMessage = 'assets/message.json';
   static const String pickImage = 'assets/icons/pick_image.svg';
+  static const String iconsDocs2 = 'assets/icons/doc2.svg';
 }

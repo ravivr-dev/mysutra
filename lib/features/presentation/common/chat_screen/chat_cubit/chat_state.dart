@@ -58,3 +58,15 @@ final class SetOnlineStatusErrorState extends ChattingState {
 
   const SetOnlineStatusErrorState(this.message);
 }
+
+final class DownloadPdfErrorState extends ChattingState {
+  final String message;
+
+  const DownloadPdfErrorState(this.message);
+}
+
+final class DownloadPdfSuccessState extends ChattingState {
+  final String filePath;
+
+  const DownloadPdfSuccessState(this.filePath);
+}

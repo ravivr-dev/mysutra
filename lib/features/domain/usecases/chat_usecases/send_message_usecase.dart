@@ -20,6 +20,7 @@ class SendMessageParams {
   final String senderID;
   final Timestamp timeStamp;
   final bool? isImage;
+  final bool? isPdf;
 
   const SendMessageParams({
     required this.senderID,
@@ -27,5 +28,6 @@ class SendMessageParams {
     required this.roomId,
     required this.message,
     this.isImage,
+    this.isPdf,
   });
 }

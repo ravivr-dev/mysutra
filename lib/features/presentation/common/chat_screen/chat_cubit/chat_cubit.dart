@@ -11,6 +11,7 @@ import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_us
 import '../../../../domain/entities/chat_entities/room_entity.dart';
 import '../../../../domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import '../../../../domain/usecases/chat_usecases/send_message_usecase.dart';
+import '../../../../domain/usecases/user_usecases/download_pdf_usecase.dart';
 
 part 'chat_state.dart';
 
@@ -19,12 +20,14 @@ class ChatCubit extends Cubit<ChattingState> {
   final ListenMessagesUseCase listenMessagesUseCase;
   final ListenUserDataUseCase listenRoomUseCase;
   final SetUserDataUseCase setUserDataUseCase;
+  final DownloadPdfUseCase downloadPdfUseCase;
 
   ChatCubit({
     required this.sendMessageUseCase,
     required this.listenMessagesUseCase,
     required this.listenRoomUseCase,
     required this.setUserDataUseCase,
+    required this.downloadPdfUseCase,
   }) : super(ChatInitial());
 
   clearChatMessages(String appointmentId) async {
@@ -56,6 +59,12 @@ class ChatCubit extends Cubit<ChattingState> {
     final result = await setUserDataUseCase.call(params);
     result.fold((l) => emit(SetOnlineStatusErrorState(l.message)),
         (r) => emit(const SetOnlineStatusSuccessState()));
+  }
+
+  void downloadPdf(String url) async {
+    final result = await downloadPdfUseCase.call(DownloadPdfParams(url: url));
+    result.fold((l) => emit(DownloadPdfErrorState(l.message)),
+        (r) => emit(DownloadPdfSuccessState(r)));
   }
 
   FutureOr<void> _emitFailure(

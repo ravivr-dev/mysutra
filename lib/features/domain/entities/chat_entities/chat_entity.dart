@@ -12,12 +12,14 @@ class MessageEntity {
   final DateTime time;
   final String senderId;
 
-  /// We are send this when we upload image url in message
+  /// We are sending this when we upload image url in message
   final bool isImage;
+  final bool isPdf;
 
   MessageEntity.fromJson(Map<String, dynamic> json)
       : message = json['message'],
         time = (json['time'] as Timestamp).toDate(),
         senderId = json['senderId'],
-        isImage = json['isImage'] ?? false;
+        isImage = json['isImage'] ?? false,
+        isPdf = json['isPdf'] ?? false;
 }

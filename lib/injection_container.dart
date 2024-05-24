@@ -63,6 +63,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usec
 import 'package:my_sutra/features/domain/usecases/post_usecases/repost_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/download_pdf_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
@@ -151,6 +152,7 @@ Future<void> init() async {
         sendMessageUseCase: sl<SendMessageUseCase>(),
         listenRoomUseCase: sl<ListenUserDataUseCase>(),
         setUserDataUseCase: sl<SetUserDataUseCase>(),
+        downloadPdfUseCase: sl<DownloadPdfUseCase>(),
       ));
   sl.registerFactory(() => PostsCubit(
         uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
@@ -218,6 +220,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
   sl.registerFactory(() => ListenUserDataUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => SetUserDataUseCase(sl<ChatRepository>()));
+  sl.registerFactory(() => DownloadPdfUseCase(sl<UserRepository>()));
 
   sl.registerFactory(() => CreatePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => GetPostsUsecase(sl<PostRepository>()));

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,6 +16,7 @@ import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/cha
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:open_file/open_file.dart';
 
 import '../../../domain/entities/chat_entities/chat_entity.dart';
 import 'widgets/chat_appbar.dart';
@@ -65,122 +67,161 @@ class _ChatScreenState extends State<ChatScreen> {
         profileUrl: widget.args.profilePic,
         userId: widget.args.remoteUserId,
       ),
-      body: StreamBuilder(
-          stream: context
-              .read<ChatCubit>()
-              .listenMessages(roomId: widget.args.roomId),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: SingleChildScrollView(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: component.text('Something Went Wrong '),
-              );
+      body: BlocListener<ChatCubit, ChattingState>(
+          listener: (_, state) {
+            if (state is DownloadPdfErrorState) {
+              widget.showErrorToast(context: context, message: state.message);
+            } else if (state is DownloadPdfSuccessState) {
+              _showOpenFileToast(path: state.filePath);
             }
-            ChatEntity entity = snapshot.data!;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
-                children: [
-                  BlocConsumer<RegistrationCubit, RegistrationState>(
-                      listener: (_, state) {
-                    if (state is UploadDocumentSuccessState) {
-                      _sendMessage(state.data.fileUrl ?? '', isImage: true);
-                    } else if (state is UploadDocumentError) {
-                      widget.showErrorToast(
-                          context: context, message: 'Something went wrong');
-                    }
-                  }, builder: (context, state) {
-                    return Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: entity.messages.length,
-                            itemBuilder: (_, index) {
-                              final messageEntity = entity.messages[index];
-                              final isMe = messageEntity.senderId ==
-                                  widget.args.currentUserId;
-                              final showTime = _shouldShowTime(entity, index);
-                              final showAvatar =
-                                  _shouldShowAvatar(entity, index);
-                              return isMe
-                                  ? _buildMessageAndTimeWidget(
-                                      showTime: showTime,
-                                      isMe: isMe,
-                                      entity: messageEntity,
-                                    )
-                                  : _buildRemoteUserChatWidget(
-                                      showAvatar: showAvatar,
-                                      showTime: showTime,
-                                      entity: messageEntity,
-                                    );
-                            }));
-                  }),
-                  ValueListenableBuilder(
-                      valueListenable: _messageController,
-                      builder: (_, value, __) {
-                        return Row(
-                          // crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            InkWell(
-                                onTap: () => _handleImageSelection(
-                                    source: ImageSource.gallery),
-                                child: component.assetImage(
-                                    path: Assets.pickImage)),
-                            component.spacer(width: 11),
-                            Expanded(
-                              child: SizedBox(
-                                height: 80,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: component.textField(
-                                    controller: _messageController,
-                                    fillColor: AppColors.fillColor,
-                                    borderColor: AppColors.transparent,
-                                    borderRadius: 12,
-                                    hintText: 'Write your message',
-                                  ),
-                                ),
-                              ),
-                            ),
-                            component.spacer(width: 16),
-                            InkWell(
-                                onTap: () => _handleImageSelection(
-                                    source: ImageSource.camera),
-                                child: component.assetImage(
-                                    path: Assets.iconsCamera)),
-                            component.spacer(width: 12),
-                            InkWell(
-                              onTap: () {
-                                if (value.text.trim().isEmpty) {
-                                  widget.showErrorToast(
-                                      context: context,
-                                      message: 'Enter Valid Message');
-                                  return;
-                                }
-                                _sendMessage(_messageController.text);
-                                _messageController.text = '';
-                              },
-                              child: CircleAvatar(
-                                radius: 15,
-                                backgroundColor: AppColors.color0xFF8338EC,
-                                child: component.assetImage(
-                                  path: Assets.iconsSend,
-                                  width: 15,
-                                  height: 15,
-                                  fit: BoxFit.scaleDown,
-                                ),
-                              ),
-                            )
-                          ],
-                        );
+          },
+          child: StreamBuilder(
+              stream: context
+                  .read<ChatCubit>()
+                  .listenMessages(roomId: widget.args.roomId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: SingleChildScrollView(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: component.text('Something Went Wrong '),
+                  );
+                }
+                ChatEntity entity = snapshot.data!;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    children: [
+                      BlocConsumer<RegistrationCubit, RegistrationState>(
+                          listener: (_, state) {
+                        if (state is UploadDocumentSuccessState) {
+                          _sendMessage(
+                            state.data.fileUrl ?? '',
+                            isImage: state.isPdf ? null : true,
+                            isPdf: state.isPdf ? true : null,
+                          );
+                        } else if (state is UploadDocumentError) {
+                          widget.showErrorToast(
+                              context: context,
+                              message: 'Something went wrong');
+                        }
+                      }, builder: (context, state) {
+                        return Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.only(top: 5),
+                                itemCount: entity.messages.length,
+                                itemBuilder: (_, index) {
+                                  final messageEntity = entity.messages[index];
+                                  final isMe = messageEntity.senderId ==
+                                      widget.args.currentUserId;
+                                  final showTime =
+                                      _shouldShowTime(entity, index);
+                                  final showAvatar =
+                                      _shouldShowAvatar(entity, index);
+                                  return isMe
+                                      ? _buildMessageAndTimeWidget(
+                                          showTime: showTime,
+                                          isMe: isMe,
+                                          entity: messageEntity,
+                                        )
+                                      : _buildRemoteUserChatWidget(
+                                          showAvatar: showAvatar,
+                                          showTime: showTime,
+                                          entity: messageEntity,
+                                        );
+                                }));
                       }),
-                  // component.spacer(height: 20)
-                ],
-              ),
-            );
-          }),
+                      if (!widget.args.showChatHistory)
+                        ValueListenableBuilder(
+                            valueListenable: _messageController,
+                            builder: (_, value, __) {
+                              return Row(
+                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                      onTap: () => _handleImageSelection(
+                                          source: ImageSource.gallery),
+                                      child: component.assetImage(
+                                          path: Assets.pickImage)),
+                                  component.spacer(width: 11),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 80,
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: component.textField(
+                                          controller: _messageController,
+                                          fillColor: AppColors.fillColor,
+                                          borderColor: AppColors.transparent,
+                                          borderRadius: 12,
+                                          hintTextStyle: theme.publicSansFonts
+                                              .regularStyle(
+                                            fontSize: 12,
+                                            fontColor: AppColors.textColor,
+                                          ),
+                                          hintText: 'Write your message',
+                                          suffixWidget: _buildSendDocWidget(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  component.spacer(width: 16),
+                                  InkWell(
+                                      onTap: () => _handleImageSelection(
+                                          source: ImageSource.camera),
+                                      child: component.assetImage(
+                                          path: Assets.iconsCamera)),
+                                  component.spacer(width: 12),
+                                  InkWell(
+                                    onTap: () {
+                                      if (value.text.trim().isEmpty) {
+                                        widget.showErrorToast(
+                                            context: context,
+                                            message: 'Enter Valid Message');
+                                        return;
+                                      }
+                                      _sendMessage(_messageController.text);
+                                      _messageController.text = '';
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor:
+                                          AppColors.color0xFF8338EC,
+                                      child: component.assetImage(
+                                        path: Assets.iconsSend,
+                                        width: 15,
+                                        height: 15,
+                                        fit: BoxFit.scaleDown,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
+                    ],
+                  ),
+                );
+              })),
+    );
+  }
+
+  Widget _buildSendDocWidget() {
+    return InkWell(
+      onTap: () async {
+        FilePickerResult? file = await FilePicker.platform
+            .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+        if (file != null) {
+          final xFile = file.files.single.xFile;
+          _callUploadAPI(xFile, isPdf: true);
+        }
+      },
+      child: component.assetImage(
+        path: Assets.iconsDocs2,
+        fit: BoxFit.scaleDown,
+      ),
     );
   }
 
@@ -191,6 +232,26 @@ class _ChatScreenState extends State<ChatScreen> {
       source: source,
     );
     _callUploadAPI(result);
+  }
+
+  void _showOpenFileToast({required String path}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        component.text('File downloaded successfully'),
+        TextButton(
+            onPressed: () {
+              OpenFile.open(path);
+            },
+            child: component.text(
+              'open file',
+              style: theme.publicSansFonts.regularStyle(
+                fontColor: AppColors.white,
+              ),
+            ))
+      ],
+    )));
   }
 
 //todo these bold methods should not depend upon ChatEntity
@@ -231,6 +292,7 @@ class _ChatScreenState extends State<ChatScreen> {
               text: entity.message,
               isMe: isMe,
               isImage: entity.isImage,
+              isPdf: entity.isPdf,
             ),
           ),
           if (showTime) ...[
@@ -253,28 +315,38 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   ///this text(message) would be image in case of image and message in case of normal message
-  Widget _buildChatImageBubble(
-      {required String text, required bool isMe, required bool isImage}) {
+  Widget _buildChatImageBubble({
+    required String text,
+    required bool isMe,
+    required bool isImage,
+    required bool isPdf,
+  }) {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: isImage
-          ? _buildImageContainer(text)
-          : Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: isMe ? AppColors.color0xFF8338EC : AppColors.blackF2F7FB,
-                borderRadius: BorderRadius.only(
-                    topLeft: isMe ? const Radius.circular(10) : Radius.zero,
-                    bottomLeft: const Radius.circular(10),
-                    bottomRight: const Radius.circular(10),
-                    topRight: isMe ? Radius.zero : const Radius.circular(10)),
-              ),
-              child: component.text(text,
-                  style: theme.publicSansFonts.regularStyle(
-                    fontSize: 12,
-                    fontColor: isMe ? AppColors.white : AppColors.black000E08,
-                  )),
-            ),
+      child: isPdf
+          ? _buildPdfWidget(text)
+          : isImage
+              ? _buildImageContainer(text)
+              : Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isMe
+                        ? AppColors.color0xFF8338EC
+                        : AppColors.blackF2F7FB,
+                    borderRadius: BorderRadius.only(
+                        topLeft: isMe ? const Radius.circular(10) : Radius.zero,
+                        bottomLeft: const Radius.circular(10),
+                        bottomRight: const Radius.circular(10),
+                        topRight:
+                            isMe ? Radius.zero : const Radius.circular(10)),
+                  ),
+                  child: component.text(text,
+                      style: theme.publicSansFonts.regularStyle(
+                        fontSize: 12,
+                        fontColor:
+                            isMe ? AppColors.white : AppColors.black000E08,
+                      )),
+                ),
     );
   }
 
@@ -287,6 +359,32 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       child: component.networkImage(
           url: url, height: 68, width: 68, borderRadius: 8),
+    );
+  }
+
+  Widget _buildPdfWidget(String url) {
+    return InkWell(
+      onTap: () {
+        context.read<ChatCubit>().downloadPdf(url);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: AppColors.color0xFFF5F5F5,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            component.assetImage(path: Assets.iconsDocument),
+            component.spacer(width: 5),
+            component.text('Download Prescription',
+                style: theme.publicSansFonts.regularStyle(
+                  fontColor: AppColors.color0xFF8338EC,
+                ))
+          ],
+        ),
+      ),
     );
   }
 
@@ -348,13 +446,14 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _sendMessage(String message, {bool? isImage}) {
+  void _sendMessage(String message, {bool? isImage, bool? isPdf}) {
     context.read<ChatCubit>().sendMessage(SendMessageParams(
           senderID: widget.args.currentUserId,
           timeStamp: Timestamp.now(),
           roomId: widget.args.roomId,
           message: message,
           isImage: isImage,
+          isPdf: isPdf,
         ));
   }
 
@@ -363,9 +462,11 @@ class _ChatScreenState extends State<ChatScreen> {
     return format.format(time);
   }
 
-  void _callUploadAPI(XFile? result) {
+  void _callUploadAPI(XFile? result, {bool isPdf = false}) {
     if (result != null) {
-      context.read<RegistrationCubit>().uploadDoc(result, isLoading: true);
+      context
+          .read<RegistrationCubit>()
+          .uploadDoc(result, isLoading: true, isPdf: isPdf);
     }
   }
 }
