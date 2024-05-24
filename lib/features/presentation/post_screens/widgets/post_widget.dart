@@ -241,7 +241,6 @@ class _PostWidgetState extends State<PostWidget> {
                   component.spacer(width: 10),
                   CommentButtonWidget(
                     commentCount: widget.postEntity.totalComments,
-                    postId: widget.postEntity.id,
                     onTap: () {
                       AiloitteNavigation.intentWithData(context,
                               AppRoutes.postRoute, widget.postEntity.id)

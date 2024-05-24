@@ -391,7 +391,6 @@ class _PostScreenState extends State<PostScreen> {
               component.spacer(width: 20),
               CommentButtonWidget(
                 commentCount: postDetail!.totalComments,
-                postId: postDetail!.id,
                 onTap: () {
                   setState(() {
                     comment = !comment;

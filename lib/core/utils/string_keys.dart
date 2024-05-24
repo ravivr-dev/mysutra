@@ -79,4 +79,5 @@ class StringKeys {
   static const String repost = 're_post';
   static const String articleName = 'article_name';
   static const String learningManagement = 'learning_management';
+  static const String article = 'article';
 }

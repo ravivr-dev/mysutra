@@ -5,7 +5,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/article_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/model/article_models/article_detail_model.dart';
-import 'package:my_sutra/features/data/model/article_models/article_models.dart';
+import 'package:my_sutra/features/data/model/article_models/articles_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 
 abstract class ArticleDatasource {

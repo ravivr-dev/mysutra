@@ -33,6 +33,7 @@ import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
@@ -82,6 +83,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
+import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
@@ -170,6 +172,9 @@ Future<void> init() async {
         deletePostUsecase: sl<DeletePostUsecase>(),
         editPostUsecase: sl<EditPostUsecase>(),
       ));
+  sl.registerFactory(() => ArticleCubit(
+      getArticlesUsecase: sl<GetArticlesUsecase>(),
+      createArticleUsecase: sl<CreateArticleUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -233,6 +238,7 @@ Future<void> init() async {
   sl.registerFactory(() => DeletePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => EditPostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => CreateArticleUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => GetArticlesUsecase(sl<ArticleRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

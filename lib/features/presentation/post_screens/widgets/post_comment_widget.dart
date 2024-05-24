@@ -140,7 +140,6 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             component.spacer(width: 20),
             CommentButtonWidget(
                 commentCount: widget.commentEntity.totalReplies,
-                postId: widget.commentEntity.id,
                 onTap: () {}),
             const Spacer(),
             InkWell(

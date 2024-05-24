@@ -5,6 +5,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/patient_entit
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/article/create_article_screen.dart';
+import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/lms_feed_screen.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
@@ -273,10 +274,18 @@ class Routes {
                 ));
 
       case AppRoutes.lmsFeedRoute:
-        return MaterialPageRoute(builder: (_) => const LMSUserFeed());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<ArticleCubit>(
+                  create: (context) => sl<ArticleCubit>(),
+                  child: const LMSUserFeed(),
+                ));
 
       case AppRoutes.createArticleRoute:
-        return MaterialPageRoute(builder: (_) => const CreateArticleScreen());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<ArticleCubit>(
+                  create: (context) => sl<ArticleCubit>(),
+                  child: const CreateArticleScreen(),
+                ));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

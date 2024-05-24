@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/model/article_models/article_comment_model.dart';
 import 'package:my_sutra/features/data/model/article_models/article_detail_model.dart';
-import 'package:my_sutra/features/data/model/article_models/article_models.dart';
+import 'package:my_sutra/features/data/model/article_models/articles_model.dart';
 import 'package:my_sutra/features/data/model/article_models/like_dislike_article_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';

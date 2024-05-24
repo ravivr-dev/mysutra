@@ -6,13 +6,12 @@ import 'package:my_sutra/generated/assets.dart';
 class CommentButtonWidget extends StatelessWidget {
   final int commentCount;
   final VoidCallback onTap;
-  final String postId;
 
-  const CommentButtonWidget(
-      {super.key,
-      required this.commentCount,
-      required this.postId,
-      required this.onTap});
+  const CommentButtonWidget({
+    super.key,
+    required this.commentCount,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
