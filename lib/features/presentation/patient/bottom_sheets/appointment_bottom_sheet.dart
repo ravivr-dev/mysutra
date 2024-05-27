@@ -14,17 +14,18 @@ class AppointmentBottomSheet extends StatelessWidget {
       color: AppColors.white,
       padding: const EdgeInsets.all(16),
       child: Column(
+        // mainAxisSize: MainAxisSize.min,
         children: [
           _buildRow(
               icon: Assets.iconsStar,
               text: context.stringForKey(StringKeys.rateTheAppointment)),
           component.spacer(height: 7),
-          Divider(color: AppColors.grey92.withOpacity(.2)),
-          component.spacer(height: 7),
-          _buildRow(
-              icon: Assets.iconsDownload,
-              text:
-                  context.stringForKey(StringKeys.downloadAttachedPrescription))
+          // Divider(color: AppColors.grey92.withOpacity(.2)),
+          // component.spacer(height: 7),
+          // _buildRow(
+          //     icon: Assets.iconsDownload,
+          //     text:
+          //         context.stringForKey(StringKeys.downloadAttachedPrescription))
         ],
       ),
     );

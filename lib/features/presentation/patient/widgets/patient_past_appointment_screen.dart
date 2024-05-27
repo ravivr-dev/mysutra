@@ -14,6 +14,7 @@ import 'package:my_sutra/generated/assets.dart';
 import '../../../../routes/routes_constants.dart';
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../common/chat_screen/chat_screen.dart';
+import '../schedule_appointment_screen.dart';
 
 class PatientPastAppointmentsScreen extends StatefulWidget {
   const PatientPastAppointmentsScreen({super.key});
@@ -126,18 +127,31 @@ class _PatientPastAppointmentsScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 4),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: AppColors.color0xFF8338EC,
-                            ),
-                            child: component.text(
-                              context.stringForKey(StringKeys.bookAppointment),
-                              style: theme.publicSansFonts.regularStyle(
-                                fontColor: AppColors.white,
-                                fontSize: 12,
+                          InkWell(
+                            onTap: () {
+                              AiloitteNavigation.intentWithData(
+                                context,
+                                AppRoutes.scheduleAppointment,
+                                ScheduleAppointmentScreenArgs(
+                                  doctorId: entity.doctorId!,
+                                  isNewAppointment: true,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 4),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: AppColors.color0xFF8338EC,
+                              ),
+                              child: component.text(
+                                context
+                                    .stringForKey(StringKeys.bookAppointment),
+                                style: theme.publicSansFonts.regularStyle(
+                                  fontColor: AppColors.white,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
                           ),

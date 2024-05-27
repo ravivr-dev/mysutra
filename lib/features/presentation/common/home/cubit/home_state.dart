@@ -108,11 +108,17 @@ final class GetVideoRoomSuccessState extends HomeState {
   final VideoRoomResponseEntity data;
   final bool isVideoCall;
   final String name;
+  final String roomId;
+  final String remoteUserId;
+  final String currentUserId;
 
   GetVideoRoomSuccessState({
     required this.data,
     required this.isVideoCall,
     required this.name,
+    required this.roomId,
+    required this.remoteUserId,
+    required this.currentUserId,
   });
 }
 
