@@ -42,6 +42,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         ? RTCVideoView(
             _videoStream?.renderer as RTCVideoRenderer,
             objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+            mirror: true,
           )
         : Container(
             decoration: BoxDecoration(
@@ -76,11 +77,13 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
       }
     });
 
-    widget.participant.on(Events.streamDisabled, (Stream stream) {
-      if (stream.kind == 'video') {
-        setState(() => _videoStream = null);
-      }
-    });
+    /// Facing issue whlie swithcing view of camera and then trying to flip camera.
+
+    // widget.participant.on(Events.streamDisabled, (Stream stream) {
+    //   if (stream.kind == 'video') {
+    //     setState(() => _videoStream = null);
+    //   }
+    // });
 
   }
 }

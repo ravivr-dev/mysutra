@@ -61,6 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: widget.args.username,
         status: 'Active now',
         hasChatData: _chatMessages.isNotEmpty,
+        showBackButton:  widget.args.showBackButton,
         deleteCallback: () {
           // if (_chatMessages.isNotEmpty) {
           //   context
@@ -532,6 +533,7 @@ class ChatScreenArgs {
   final String currentUserId;
   final String? profilePic;
   final String remoteUserId;
+  final bool  showBackButton;
 
   ///if this flag is try than we will not allow current user to chat
   final bool showChatHistory;
@@ -543,5 +545,6 @@ class ChatScreenArgs {
     this.profilePic,
     required this.remoteUserId,
     this.showChatHistory = false,
+    this.showBackButton = true,
   });
 }
