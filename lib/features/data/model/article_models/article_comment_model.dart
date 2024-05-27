@@ -1,3 +1,5 @@
+import 'package:my_sutra/features/data/model/article_models/article_user_model.dart';
+
 class ArticleCommentModel {
   String? message;
   int? count;
@@ -30,7 +32,7 @@ class ArticleCommentModel {
 class ArticleCommentData {
   String? id;
   String? articleId;
-  UserId? userId;
+  ArticleUserModel? userId;
   String? comment;
   bool? isMyComment;
   bool? isLiked;
@@ -41,21 +43,22 @@ class ArticleCommentData {
 
   ArticleCommentData(
       {this.id,
-        this.articleId,
-        this.userId,
-        this.comment,
-        this.isMyComment,
-        this.isLiked,
-        this.totalLikes,
-        this.replies,
-        this.createdAt,
-        this.updatedAt});
+      this.articleId,
+      this.userId,
+      this.comment,
+      this.isMyComment,
+      this.isLiked,
+      this.totalLikes,
+      this.replies,
+      this.createdAt,
+      this.updatedAt});
 
   ArticleCommentData.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     articleId = json['articleId'];
-    userId =
-    json['userId'] != null ? UserId.fromJson(json['userId']) : null;
+    userId = json['userId'] != null
+        ? ArticleUserModel.fromJson(json['userId'])
+        : null;
     comment = json['comment'];
     isMyComment = json['isMyComment'];
     isLiked = json['isLiked'];
@@ -90,46 +93,9 @@ class ArticleCommentData {
   }
 }
 
-class UserId {
-  String? id;
-  String? role;
-  String? profilePic;
-  String? fullName;
-  String? username;
-  bool? isVerified;
-
-  UserId(
-      {this.id,
-        this.role,
-        this.profilePic,
-        this.fullName,
-        this.username,
-        this.isVerified});
-
-  UserId.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    role = json['role'];
-    profilePic = json['profilePic'];
-    fullName = json['fullName'];
-    username = json['username'];
-    isVerified = json['isVerified'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
-    data['role'] = role;
-    data['profilePic'] = profilePic;
-    data['fullName'] = fullName;
-    data['username'] = username;
-    data['isVerified'] = isVerified;
-    return data;
-  }
-}
-
 class Replies {
   String? id;
-  UserId? userId;
+  ArticleUserModel? userId;
   String? reply;
   bool? isMyReply;
   bool? isLiked;
@@ -139,18 +105,19 @@ class Replies {
 
   Replies(
       {this.id,
-        this.userId,
-        this.reply,
-        this.isMyReply,
-        this.isLiked,
-        this.totalLikes,
-        this.createdAt,
-        this.updatedAt});
+      this.userId,
+      this.reply,
+      this.isMyReply,
+      this.isLiked,
+      this.totalLikes,
+      this.createdAt,
+      this.updatedAt});
 
   Replies.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
-    userId =
-    json['userId'] != null ? UserId.fromJson(json['userId']) : null;
+    userId = json['userId'] != null
+        ? ArticleUserModel.fromJson(json['userId'])
+        : null;
     reply = json['reply'];
     isMyReply = json['isMyReply'];
     isLiked = json['isLiked'];
