@@ -37,6 +37,7 @@ class Utils {
         now.month == dateTime.month &&
         now.year == dateTime.year;
   }
+
 //We can make these conditions more better
   static bool isFutureTime(DateTime dateTime) {
     DateTime now = DateTime.now();
@@ -55,6 +56,15 @@ class Utils {
       } else if (dateTime.hour == now.hour && dateTime.minute > now.minute) {
         return true;
       }
+    }
+    return false;
+  }
+
+  static bool isSameTime(DateTime first, DateTime second) {
+    if (first.year == second.year &&
+        first.month == second.month &&
+        first.day == second.day) {
+      return true;
     }
     return false;
   }

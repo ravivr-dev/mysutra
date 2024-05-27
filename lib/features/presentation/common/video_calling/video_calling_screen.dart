@@ -1,12 +1,19 @@
 import 'dart:async';
 import 'package:ailoitte_components/ailoitte_components.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/features/presentation/common/video_calling/widgets/participant_widget.dart';
 import 'package:videosdk/videosdk.dart';
+
+import '../../../../injection_container.dart';
+import '../chat_screen/chat_cubit/chat_cubit.dart';
+import '../registration/cubit/registration_cubit.dart';
 
 class VideoCallingScreen extends StatefulWidget {
   final VideoCallingArgs args;
@@ -26,6 +33,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
   bool _showLocalParticipantFullVideo = false;
   final ValueNotifier<String> _timerNotifier = ValueNotifier('00:00');
   late Timer _timer;
+  bool _isChatEnabled = false;
 
   @override
   void initState() {
@@ -57,45 +65,87 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
     final Participant? localParticipant = _room?.localParticipant;
 
     return Scaffold(
-      body: !_isJoined
-          ? const Center(child: CircularProgressIndicator())
-          : Stack(
-              children: [
-                if (_showLocalParticipantFullVideo || remoteParticipant != null)
+      body: _isChatEnabled
+          ? _buildChatWidget()
+          : !_isJoined
+              ? const Center(child: CircularProgressIndicator())
+              : Stack(
+                  children: [
+                    if (_showLocalParticipantFullVideo ||
+                        remoteParticipant != null)
 
-                  ///This is a widget that will show video in full screen
-                  ParticipantWidget(
-                      participant: _showLocalParticipantFullVideo
-                          ? localParticipant!
-                          : remoteParticipant!)
-                else
-                  Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: const [0.01, 0.4],
-                      colors: [
-                        AppColors.blackColor.withOpacity(.01),
-                        AppColors.color0xFFEEEEEE,
-                      ],
-                    )),
-                    child: component.text(
-                        '${UserHelper.role == UserRole.patient ? 'Doctor' : 'Patient'} will be joining soon',
-                        style: theme.publicSansFonts.regularStyle(
-                          fontSize: 20,
-                          fontColor: AppColors.color0xFF5C5C5C,
+                      ///This is a widget that will show video in full screen
+                      ParticipantWidget(
+                          participant: _showLocalParticipantFullVideo
+                              ? localParticipant!
+                              : remoteParticipant!)
+                    else
+                      Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: const [0.01, 0.4],
+                          colors: [
+                            AppColors.blackColor.withOpacity(.01),
+                            AppColors.color0xFFEEEEEE,
+                          ],
                         )),
-                  ),
-                _buildSmallVideoRow(!_showLocalParticipantFullVideo
-                    ? localParticipant
-                    : remoteParticipant),
-                _buildBottomSheetWidget(),
-              ],
+                        child: component.text(
+                            '${UserHelper.role == UserRole.patient ? 'Doctor' : 'Patient'} will be joining soon',
+                            style: theme.publicSansFonts.regularStyle(
+                              fontSize: 20,
+                              fontColor: AppColors.color0xFF5C5C5C,
+                            )),
+                      ),
+                    _buildSmallVideoRow(!_showLocalParticipantFullVideo
+                        ? localParticipant
+                        : remoteParticipant),
+                    _buildBottomSheetWidget(),
+                  ],
+                ),
+    );
+  }
+
+  Widget _buildChatWidget() {
+    return SafeArea(
+       child: Column(
+        children: [
+          InkWell(
+            onTap: (){
+              setState(() {
+                _isChatEnabled=false;
+              });
+            },
+            child: Container(
+              height: 50,
+              color: AppColors.green2BEF83,
             ),
+          ),
+          Expanded(
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => sl<RegistrationCubit>(),
+                ),
+                BlocProvider(
+                  create: (context) => sl<ChatCubit>(),
+                ),
+              ],
+              child: ChatScreen(
+                  args: ChatScreenArgs(
+                roomId: widget.args.roomId,
+                username: widget.args.name,
+                currentUserId: widget.args.currentUserId,
+                remoteUserId: widget.args.remoteUserId,
+              )),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -197,6 +247,12 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
                       });
                     },
                   ),
+                  _buildBottomCallButton(
+                      icon: Icons.chat_bubble_outline,
+                      name: 'Chat',
+                      onClick: () => setState(() {
+                            _isChatEnabled = true;
+                          })),
                   if (_room?.camEnabled ?? true)
                     _buildBottomCallButton(
                         icon: Icons.flip_camera_ios_rounded,
@@ -302,7 +358,16 @@ class VideoCallingArgs {
   VideoRoomResponseEntity entity;
   final bool isVideoCall;
   final String name;
+  final String roomId;
+  final String currentUserId;
+  final String remoteUserId;
 
-  VideoCallingArgs(
-      {required this.entity, required this.name, required this.isVideoCall});
+  VideoCallingArgs({
+    required this.entity,
+    required this.name,
+    required this.isVideoCall,
+    required this.roomId,
+    required this.remoteUserId,
+    required this.currentUserId,
+  });
 }

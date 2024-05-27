@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
@@ -33,12 +34,14 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final List<MessageItemEntity> _chatMessages = [];
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _chatController = ScrollController();
 
   // XFile? uploadedMedia;
 
   @override
   void dispose() {
     _messageController.dispose();
+    _chatController.dispose();
     super.dispose();
   }
 
@@ -52,6 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat('MMM dd, yyyy');
     return Scaffold(
       appBar: ChatAppBar(
         title: widget.args.username,
@@ -66,6 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
         },
         profileUrl: widget.args.profilePic,
         userId: widget.args.remoteUserId,
+        isChatHistory: widget.args.showChatHistory,
       ),
       body: BlocListener<ChatCubit, ChattingState>(
           listener: (_, state) {
@@ -90,6 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   );
                 }
                 ChatEntity entity = snapshot.data!;
+                final messageList = entity.messages;
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Column(
@@ -111,27 +117,47 @@ class _ChatScreenState extends State<ChatScreen> {
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
+                                reverse: true,
                                 padding: const EdgeInsets.only(top: 5),
-                                itemCount: entity.messages.length,
+                                itemCount: messageList.length,
                                 itemBuilder: (_, index) {
-                                  final messageEntity = entity.messages[index];
+                                  ///Reversed this list because reverse is true show listview is showing item from last
+                                  final messageEntity = messageList[index];
                                   final isMe = messageEntity.senderId ==
                                       widget.args.currentUserId;
-                                  final showTime =
-                                      _shouldShowTime(entity, index);
-                                  final showAvatar =
-                                      _shouldShowAvatar(entity, index);
-                                  return isMe
-                                      ? _buildMessageAndTimeWidget(
-                                          showTime: showTime,
-                                          isMe: isMe,
-                                          entity: messageEntity,
-                                        )
-                                      : _buildRemoteUserChatWidget(
-                                          showAvatar: showAvatar,
-                                          showTime: showTime,
-                                          entity: messageEntity,
-                                        );
+                                  final showTime = _shouldShowTime(
+                                      entity, index, messageList);
+                                  final showAvatar = _shouldShowAvatar(
+                                      entity, index, messageList);
+                                  final showDate =
+                                      _showTime(entity, index, messageList);
+                                  final isToday =
+                                      Utils.isTodayDate(messageEntity.time);
+
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      if (showDate) ...[
+                                        _buildTimeWidget(
+                                          isToday: isToday,
+                                          time: dateFormat
+                                              .format(messageEntity.time),
+                                        ),
+                                        component.spacer(height: 8)
+                                      ],
+                                      isMe
+                                          ? _buildMessageAndTimeWidget(
+                                              showTime: showTime,
+                                              isMe: isMe,
+                                              entity: messageEntity,
+                                            )
+                                          : _buildRemoteUserChatWidget(
+                                              showAvatar: showAvatar,
+                                              showTime: showTime,
+                                              entity: messageEntity,
+                                            ),
+                                    ],
+                                  );
                                 }));
                       }),
                       if (!widget.args.showChatHistory)
@@ -208,6 +234,23 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  Widget _buildTimeWidget({required bool isToday, required String time}) {
+    return Center(
+        child: component.text(isToday ? 'Today' : time,
+            style: theme.publicSansFonts.mediumStyle(
+              fontSize: 12,
+              fontColor: AppColors.black000E08,
+            )));
+  }
+
+  // void _navigateToLastMessage() {
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     _chatController.animateTo(_chatController.position.maxScrollExtent,
+  //         duration: const Duration(microseconds: 1),
+  //         curve: Curves.fastOutSlowIn);
+  //   });
+  // }
+
   Widget _buildSendDocWidget() {
     return InkWell(
       onTap: () async {
@@ -255,25 +298,37 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
 //todo these bold methods should not depend upon ChatEntity
-  bool _shouldShowTime(ChatEntity entity, int index) {
-    final list = entity.messages;
-    final int nextMessageIndex = index + 1;
-    if (list.length > nextMessageIndex) {
-      if (list[index].senderId == list[nextMessageIndex].senderId) {
+  bool _shouldShowTime(
+      ChatEntity entity, int index, List<MessageEntity> messages) {
+    final int nextMessageIndex = index - 1;
+    if (nextMessageIndex >= 0) {
+      if (messages[index].senderId == messages[nextMessageIndex].senderId) {
         return false;
       }
     }
     return true;
   }
 
-  bool _shouldShowAvatar(ChatEntity entity, int index) {
-    final list = entity.messages;
-    final int previousChatIndex = index - 1;
-    if (previousChatIndex >= 0 &&
-        list[previousChatIndex].senderId == list[index].senderId) {
+  bool _shouldShowAvatar(
+      ChatEntity entity, int index, List<MessageEntity> messages) {
+    final int nextIndex = index + 1;
+    if (nextIndex < messages.length &&
+        messages[nextIndex].senderId == messages[index].senderId) {
       return false;
     }
     return true;
+  }
+
+  bool _showTime(ChatEntity entity, int index, List<MessageEntity> messages) {
+    if (index == messages.length - 1) {
+      return true;
+    }
+    final lastMessageTime = messages[index + 1].time;
+    final currentMessageTime = messages[index].time;
+    if (!Utils.isSameTime(lastMessageTime, currentMessageTime)) {
+      return true;
+    }
+    return false;
   }
 
   Widget _buildMessageAndTimeWidget({
