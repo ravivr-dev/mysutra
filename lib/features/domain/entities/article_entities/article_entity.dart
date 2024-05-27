@@ -7,12 +7,12 @@ class ArticleEntity {
   String? heading;
   String? content;
   bool? isMyArticle;
-  bool? isLiked;
+  bool isLiked;
   bool? isViewed;
   int? totalViews;
-  int? totalLikes;
-  int? totalComments;
-  int? totalShares;
+  int totalLikes;
+  int totalComments;
+  int totalShares;
   int? repostedArticleCount;
   bool? isRepostedByMe;
   ArticleIdEntity? articleId;
@@ -23,14 +23,24 @@ class ArticleEntity {
     this.heading,
     this.content,
     this.isMyArticle,
-    this.isLiked,
+    required this.isLiked,
     this.isViewed,
     this.totalViews,
-    this.totalLikes,
-    this.totalComments,
-    this.totalShares,
+    required this.totalLikes,
+    required this.totalComments,
+    required this.totalShares,
     this.repostedArticleCount,
     this.isRepostedByMe,
     this.articleId,
   });
+
+  void reInitIsLiked() {
+    isLiked = !isLiked;
+
+    if (isLiked) {
+      totalLikes += 1;
+    } else {
+      totalLikes -= 1;
+    }
+  }
 }

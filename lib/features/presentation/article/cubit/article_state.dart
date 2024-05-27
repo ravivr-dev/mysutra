@@ -31,3 +31,17 @@ final class GetArticlesError extends ArticleState {
 
   GetArticlesError({required this.error});
 }
+
+final class LikeDislikeArticleLoading extends ArticleState {}
+
+final class LikeDislikeArticleError extends ArticleState {
+  final String error;
+
+  LikeDislikeArticleError({required this.error});
+}
+
+final class LikeDislikeArticleLoaded extends ArticleState {
+  final String articleId;
+
+  LikeDislikeArticleLoaded({required this.articleId});
+}

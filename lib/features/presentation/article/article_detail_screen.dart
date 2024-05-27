@@ -1,9 +1,12 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
+import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
@@ -30,18 +33,18 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12), color: AppColors.white),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            component.text(widget.article.heading,
-                style: theme.publicSansFonts.semiBoldStyle(fontSize: 20)),
-            _buildInfo(),
-            component.text(widget.article.content,
-                style: theme.publicSansFonts.regularStyle(
-                    fontColor: AppColors.color0xFF636A80, fontSize: 14)),
-            const Spacer(),
-            _buildFooter(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeading(),
+              _buildInfo(),
+              component.text(widget.article.content,
+                  style: theme.publicSansFonts.regularStyle(
+                      fontColor: AppColors.color0xFF636A80, fontSize: 14)),
+              _buildFooter(),
+            ],
+          ),
         ),
       ),
     );
@@ -55,38 +58,57 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
           thickness: 1,
           height: 40,
         ),
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: AppColors.transparent,
-              child: component.networkImage(
-                  isCircular: true,
-                  borderRadius: 20,
-                  url: widget.article.userId!.profilePic!,
-                  errorWidget: component.assetImage(
-                      path: Assets.imagesDefaultAvatar, fit: BoxFit.fill)),
-            ),
-            component.spacer(width: 8),
-            component.text(
-              widget.article.userId!.fullName ??
-                  widget.article.userId!.username,
-              style: theme.publicSansFonts.mediumStyle(fontSize: 16),
-            ),
-          ],
+        InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: AppColors.transparent,
+                child: component.networkImage(
+                    isCircular: true,
+                    borderRadius: 20,
+                    url: widget.article.userId!.profilePic!,
+                    errorWidget: component.assetImage(
+                        path: Assets.imagesDefaultAvatar, fit: BoxFit.fill)),
+              ),
+              component.spacer(width: 8),
+              component.text(
+                widget.article.userId!.fullName ??
+                    widget.article.userId!.username,
+                style: theme.publicSansFonts.mediumStyle(fontSize: 16),
+              ),
+            ],
+          ),
         ),
         component.divider(
             color: AppColors.dividerColor, thickness: 1, height: 30),
-        Row(
-          children: [
-            LikeDislikeButtonWidget(
-                isLiked: widget.article.isLiked!,
-                onTap: () {},
-                likeCount: widget.article.totalLikes!),
-            component.spacer(width: 20),
-            CommentButtonWidget(
-                commentCount: widget.article.totalComments!, onTap: () {}),
-          ],
+        BlocConsumer<ArticleCubit, ArticleState>(
+          listener: (context, state) {
+            if (state is LikeDislikeArticleLoaded &&
+                widget.article.id == state.articleId) {
+              widget.article.reInitIsLiked();
+            } else if (state is LikeDislikeArticleError) {
+              widget.showErrorToast(context: context, message: state.error);
+            }
+          },
+          builder: (context, state) {
+            return Row(
+              children: [
+                LikeDislikeButtonWidget(
+                    isLiked: widget.article.isLiked,
+                    onTap: () {
+                      context
+                          .read<ArticleCubit>()
+                          .likeDislikeArticle(articleId: widget.article.id!);
+                    },
+                    likeCount: widget.article.totalLikes),
+                component.spacer(width: 20),
+                CommentButtonWidget(
+                    commentCount: widget.article.totalComments, onTap: () {}),
+              ],
+            );
+          },
         ),
         component.divider(
             color: AppColors.dividerColor, thickness: 1, height: 20),
@@ -104,6 +126,26 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             component.text('',
                 style: theme.publicSansFonts.semiBoldStyle(fontSize: 16))
           ],
+        )
+      ],
+    );
+  }
+
+  Widget _buildHeading() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          child: component.text(widget.article.heading,
+              style: theme.publicSansFonts.semiBoldStyle(fontSize: 20),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 5),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.more_vert),
+          iconSize: 20,
         )
       ],
     );

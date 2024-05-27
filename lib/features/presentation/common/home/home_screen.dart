@@ -175,7 +175,7 @@ abstract class _HomeScreenState extends State<HomeScreen>
                 child: Icon(Icons.add, color: AppColors.white)),
           ),
           label: ''),
-      _buildBottomBarItem(icon: Assets.iconsPayment, label: 'Payments'),
+      _buildBottomBarItem(icon: Assets.iconsLms, label: 'LMS'),
       _buildBottomBarItem(icon: Assets.iconsUser2, label: 'My Profile'),
     ];
   }

@@ -34,6 +34,7 @@ import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
@@ -174,7 +175,8 @@ Future<void> init() async {
       ));
   sl.registerFactory(() => ArticleCubit(
       getArticlesUsecase: sl<GetArticlesUsecase>(),
-      createArticleUsecase: sl<CreateArticleUsecase>()));
+      createArticleUsecase: sl<CreateArticleUsecase>(),
+      likeDislikeArticleUsecase: sl<LikeDislikeArticleUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -239,6 +241,7 @@ Future<void> init() async {
   sl.registerFactory(() => EditPostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => CreateArticleUsecase(sl<ArticleRepository>()));
   sl.registerFactory(() => GetArticlesUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => LikeDislikeArticleUsecase(sl<ArticleRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

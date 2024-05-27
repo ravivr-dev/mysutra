@@ -21,12 +21,21 @@ class LMSUserFeed extends StatefulWidget {
 
 class _LMSUserFeedState extends State<LMSUserFeed> {
   List<ArticleEntity> articles = [];
+  final ScrollController _scrollCtrl = ScrollController();
   int pagination = 1;
   int limit = 10;
+  bool noMoreData = false;
 
   @override
   void initState() {
     _loadArticles();
+    _scrollCtrl.addListener(() {
+      if (_scrollCtrl.position.pixels == _scrollCtrl.position.maxScrollExtent &&
+          !noMoreData) {
+        pagination += 1;
+        _loadArticles();
+      }
+    });
     super.initState();
   }
 
@@ -35,7 +44,15 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
     return BlocConsumer<ArticleCubit, ArticleState>(
       listener: (context, state) {
         if (state is GetArticlesLoaded) {
-          articles = state.articles;
+          if (pagination == 1) {
+            articles = state.articles;
+          } else {
+            articles.addAll(state.articles);
+          }
+
+          if (state.articles.length < limit) {
+            noMoreData = true;
+          }
         } else if (state is GetArticlesError) {
           widget.showErrorToast(context: context, message: state.error);
         }
@@ -48,26 +65,28 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
             centerTitle: true,
           ),
           body: ListView.builder(
+            controller: _scrollCtrl,
             physics: const ScrollPhysics(),
             itemBuilder: (_, index) {
               return ArticleWidget(
                 articleEntity: articles[index],
                 onTap: () {
-                  AiloitteNavigation.intentWithData(
-                      context, AppRoutes.articleDetailRoute, articles[index]);
+                  AiloitteNavigation.intentWithData(context,
+                          AppRoutes.articleDetailRoute, articles[index])
+                      .then((value) => _loadArticles());
                 },
               );
             },
             itemCount: articles.length,
           ),
           floatingActionButton:
-              UserHelper.role != UserRole.patient ? _buildSendButton() : null,
+              UserHelper.role != UserRole.patient ? _buildCreateNewButton() : null,
         );
       },
     );
   }
 
-  Widget _buildSendButton() {
+  Widget _buildCreateNewButton() {
     return InkWell(
       onTap: () {
         AiloitteNavigation.intent(context, AppRoutes.createArticleRoute)

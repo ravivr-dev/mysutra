@@ -77,6 +77,8 @@ abstract class ArticleRestClient {
   Future<ArticleCommentModel> getArticleComments(
       @Path('articleId') String articleId, @Queries() Map<String, dynamic> map);
 
+
+  // todo: change model
   @POST(EndPoints.likeDislikeArticleComment)
   Future<SuccessMessageModel> likeDislikeArticleComment(
       @Body() Map<String, dynamic> map);

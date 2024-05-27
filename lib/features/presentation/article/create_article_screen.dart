@@ -54,8 +54,6 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                       heading: _titleController.text,
                       content: _bodyController.text);
                 }
-                _titleController.clear();
-                _bodyController.clear();
               }),
             ],
           ),

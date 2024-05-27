@@ -1,7 +1,9 @@
 import 'package:my_sutra/features/data/model/article_models/articles_model.dart';
+import 'package:my_sutra/features/data/model/article_models/like_dislike_article_model.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_id_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_user_entity.dart';
+import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_entity.dart';
 
 class ArticleRepoConv {
   static List<ArticleEntity> convertGetArticlesModelToEntity(
@@ -20,12 +22,12 @@ class ArticleRepoConv {
               heading: e.heading,
               content: e.content,
               isMyArticle: e.isMyArticle,
-              isLiked: e.isLiked,
+              isLiked: e.isLiked!,
               isViewed: e.isViewed,
               totalViews: e.totalViews,
-              totalLikes: e.totalLikes,
-              totalComments: e.totalComments,
-              totalShares: e.totalShares,
+              totalLikes: e.totalLikes!,
+              totalComments: e.totalComments!,
+              totalShares: e.totalShares!,
               repostedArticleCount: e.repostedArticleCount,
               isRepostedByMe: e.isRepostedByMe,
               articleId: e.articleId == null
@@ -54,5 +56,17 @@ class ArticleRepoConv {
                     ),
             ))
         .toList();
+  }
+
+  static LikeDislikeArticleEntity convertLikeDislikeArticleModelToEntity(
+      LikeDislikeArticleModel model) {
+    return LikeDislikeArticleEntity(
+      likedBy: model.data!.likedBy,
+      articleId: model.data!.articleId,
+      id: model.data!.id,
+      createdAt: model.data!.createdAt,
+      updatedAt: model.data!.updatedAt,
+      iV: model.data!.iV,
+    );
   }
 }

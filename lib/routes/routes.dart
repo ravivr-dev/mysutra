@@ -291,8 +291,10 @@ class Routes {
 
       case AppRoutes.articleDetailRoute:
         return MaterialPageRoute(
-            builder: (_) =>
-                ArticleDetailScreen(article: args as ArticleEntity));
+            builder: (_) => BlocProvider<ArticleCubit>(
+                  create: (context) => sl<ArticleCubit>(),
+                  child: ArticleDetailScreen(article: args as ArticleEntity),
+                ));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
