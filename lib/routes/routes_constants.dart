@@ -46,6 +46,7 @@ class AppRoutes {
 
   static const String lmsFeedRoute = '/article/lms_feed_screen';
   static const String createArticleRoute = '/article/create_article';
+  static const String articleDetailRoute = '/article/article_detail_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

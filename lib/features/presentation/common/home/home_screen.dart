@@ -56,8 +56,9 @@ abstract class _HomeScreenState extends State<HomeScreen>
       create: (context) => sl<PostsCubit>(),
       child: const CreatePostScreen(),
     ),
-    Container(),
-    BlocProvider(
+    BlocProvider<ArticleCubit>(
+        create: (context) => sl<ArticleCubit>(), child: const LMSUserFeed()),
+    BlocProvider<ProfileCubit>(
       create: (BuildContext context) => sl<ProfileCubit>(),
       child: const MyProfileScreen(),
     )

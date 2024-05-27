@@ -52,7 +52,10 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
             itemBuilder: (_, index) {
               return ArticleWidget(
                 articleEntity: articles[index],
-                onTap: () {},
+                onTap: () {
+                  AiloitteNavigation.intentWithData(
+                      context, AppRoutes.articleDetailRoute, articles[index]);
+                },
               );
             },
             itemCount: articles.length,
