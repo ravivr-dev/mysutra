@@ -33,8 +33,12 @@ import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/delete_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/write_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
@@ -174,6 +178,10 @@ Future<void> init() async {
         editPostUsecase: sl<EditPostUsecase>(),
       ));
   sl.registerFactory(() => ArticleCubit(
+      likeDislikeArticleCommentUsecase: sl<LikeDislikeArticleCommentUsecase>(),
+      deleteArticleUsecase: sl<DeleteArticleUsecase>(),
+      writeCommentUsecase: sl<WriteCommentUsecase>(),
+      articleCommentUsecase: sl<GetArticleCommentUsecase>(),
       getArticlesUsecase: sl<GetArticlesUsecase>(),
       createArticleUsecase: sl<CreateArticleUsecase>(),
       likeDislikeArticleUsecase: sl<LikeDislikeArticleUsecase>()));
@@ -242,6 +250,11 @@ Future<void> init() async {
   sl.registerFactory(() => CreateArticleUsecase(sl<ArticleRepository>()));
   sl.registerFactory(() => GetArticlesUsecase(sl<ArticleRepository>()));
   sl.registerFactory(() => LikeDislikeArticleUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => GetArticleCommentUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => WriteCommentUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => DeleteArticleUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(
+      () => LikeDislikeArticleCommentUsecase(sl<ArticleRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

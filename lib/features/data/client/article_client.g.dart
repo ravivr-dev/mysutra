@@ -273,7 +273,7 @@ class _ArticleRestClient implements ArticleRestClient {
   }
 
   @override
-  Future<SuccessMessageModel> likeDislikeArticleComment(
+  Future<LikeDislikeArticleCommentModel> likeDislikeArticleComment(
       Map<String, dynamic> map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -281,7 +281,7 @@ class _ArticleRestClient implements ArticleRestClient {
     final _data = <String, dynamic>{};
     _data.addAll(map);
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SuccessMessageModel>(Options(
+        _setStreamType<LikeDislikeArticleCommentModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -297,7 +297,7 @@ class _ArticleRestClient implements ArticleRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SuccessMessageModel.fromJson(_result.data!);
+    final value = LikeDislikeArticleCommentModel.fromJson(_result.data!);
     return value;
   }
 

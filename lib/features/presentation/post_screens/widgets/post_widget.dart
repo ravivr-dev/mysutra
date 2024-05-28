@@ -255,7 +255,10 @@ class _PostWidgetState extends State<PostWidget> {
                         widget.postEntity.repostCount,
                     onTap: () {
                       AiloitteNavigation.intentWithData(
-                          context, AppRoutes.repostRoute, widget.postEntity);
+                              context, AppRoutes.repostRoute, widget.postEntity)
+                          .then((_) => context
+                              .read<PostsCubit>()
+                              .getPosts(pagination: 1, limit: 50));
                     },
                   ),
                 ],

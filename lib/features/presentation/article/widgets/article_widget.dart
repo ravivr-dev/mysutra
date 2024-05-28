@@ -24,7 +24,7 @@ class ArticleWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10), color: AppColors.white),
         margin: const EdgeInsets.symmetric(
           horizontal: 22,
-          vertical: 12,
+          vertical: 8,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: 12,

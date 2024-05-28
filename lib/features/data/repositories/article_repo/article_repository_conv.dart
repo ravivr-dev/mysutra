@@ -1,8 +1,12 @@
+import 'package:my_sutra/features/data/model/article_models/article_comment_model.dart';
 import 'package:my_sutra/features/data/model/article_models/articles_model.dart';
+import 'package:my_sutra/features/data/model/article_models/like_dislike_article_comment_model.dart';
 import 'package:my_sutra/features/data/model/article_models/like_dislike_article_model.dart';
+import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_id_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_user_entity.dart';
+import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_entity.dart';
 
 class ArticleRepoConv {
@@ -64,6 +68,45 @@ class ArticleRepoConv {
       likedBy: model.data!.likedBy,
       articleId: model.data!.articleId,
       id: model.data!.id,
+      createdAt: model.data!.createdAt,
+      updatedAt: model.data!.updatedAt,
+      iV: model.data!.iV,
+    );
+  }
+
+  static List<ArticleCommentEntity> convertArticleCommentModelToEntity(
+      ArticleCommentModel model) {
+    return model.data!
+        .map((e) => ArticleCommentEntity(
+              id: e.id,
+              articleId: e.articleId,
+              userId: ArticleUserEntity(
+                id: e.userId!.id,
+                role: e.userId!.role,
+                profilePic: e.userId!.profilePic,
+                fullName: e.userId!.fullName,
+                username: e.userId!.username,
+                isVerified: e.userId!.isVerified,
+              ),
+              comment: e.comment,
+              isMyComment: e.isMyComment,
+              isLiked: e.isLiked,
+              totalLikes: e.totalLikes,
+              replies: e.replies?.map((e) => RepliesEntity()).toList(),
+              createdAt: e.createdAt,
+              updatedAt: e.updatedAt,
+            ))
+        .toList();
+  }
+
+  static LikeDislikeArticleCommentEntity
+      convertLikeDislikeArticleCommentModelToEntity(
+          LikeDislikeArticleCommentModel model) {
+    return LikeDislikeArticleCommentEntity(
+      likedBy: model.data!.likedBy,
+      articleId: model.data!.articleId,
+      commentId: model.data!.commentId,
+      id: model.data!.sId,
       createdAt: model.data!.createdAt,
       updatedAt: model.data!.updatedAt,
       iV: model.data!.iV,
