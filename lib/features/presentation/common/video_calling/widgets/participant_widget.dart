@@ -32,6 +32,11 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return _videoStream != null
         ? RTCVideoView(
@@ -76,5 +81,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         setState(() => _videoStream = null);
       }
     });
+
   }
 }

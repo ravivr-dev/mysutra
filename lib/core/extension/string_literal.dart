@@ -104,6 +104,12 @@ extension StringFunctions on String {
     return null;
   }
 
+  bool get isValidEmail {
+    final emailRegex = RegExp(
+        r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    return emailRegex.hasMatch(this);
+  }
+
   // String? getCommentTimeAgoFormat() {
   //   final DateTime date = DateTime.parse(this);
   //
@@ -165,9 +171,9 @@ extension StringFunctions on String {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 
-  // bool validUrl() {
-  //   return isURL(this) && (isValidUrl == null);
-  // }
+// bool validUrl() {
+//   return isURL(this) && (isValidUrl == null);
+// }
 }
 
 class RandomStringGenerator {

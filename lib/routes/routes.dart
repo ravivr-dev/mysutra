@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
-import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/article/article_detail_screen.dart';
 import 'package:my_sutra/features/presentation/article/create_article_screen.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/lms_feed_screen.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
@@ -156,7 +156,12 @@ class Routes {
 
       case AppRoutes.patientPastAppointment:
         return MaterialPageRoute(
-            builder: (_) => const PatientPastAppointmentsScreen());
+          //todo will implement pagination in this
+            builder: (_) => BlocProvider<AppointmentCubit>(
+                  create: (context) => sl<AppointmentCubit>()
+                    ..getPastAppointments(pagination: 1, limit: 10),
+                  child: PatientPastAppointmentsScreen(),
+                ));
 
       case AppRoutes.patientMyFollowing:
         final args = settings?.arguments as List<UserDataEntity>;

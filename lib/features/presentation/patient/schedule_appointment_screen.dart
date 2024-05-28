@@ -38,6 +38,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
   String? _selectedTimeSlot;
   List<AvailableTimeSlotEntity> _availableTImeSlots = [];
   final GlobalKey<FormState> _formKey = GlobalKey();
+
   // final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
@@ -157,7 +158,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                             _buildTextField(
                                 controller: _ageController,
                                 errorText: 'Age',
-                                maxLength: 3,
+                                maxLength: 2,
                                 textInputType: TextInputType.number),
                             _buildText(
                                 value: context
@@ -170,6 +171,8 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                 additionalValidation: (value) {
                                   if (int.tryParse(value ?? '') == null) {
                                     return 'Please Enter Valid Mobile Number';
+                                  } else if (value!.length != 10) {
+                                    return 'Please Enter Valid Mobile Number';
                                   }
                                   return null;
                                 },
@@ -179,7 +182,11 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                             component.spacer(height: 10),
                             _buildTextField(
                                 controller: _emailController,
-                                errorText: 'Email'),
+                                errorText: 'Email',
+                                additionalValidation: (value) =>
+                                    !value!.isValidEmail
+                                        ? 'Please Enter Valid Email'
+                                        : null),
                             _buildText(
                                 value: context.stringForKey(StringKeys.gender)),
                             component.spacer(height: 10),

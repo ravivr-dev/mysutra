@@ -62,7 +62,8 @@ class ChatRepositoryImpl extends ChatRepository {
           'senderId': data.senderID,
           'time': data.timeStamp,
           'message': data.message,
-          if (data.isImage != null) 'isImage': data.isImage
+          if (data.isImage != null) 'isImage': data.isImage,
+          if (data.isPdf != null) 'isPdf': data.isPdf
         });
 
         return Right(result);

@@ -2,19 +2,17 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:my_sutra/features/data/model/user_models/create_chat_model.dart';
+import 'package:my_sutra/core/extension/custom_ext.dart';
+import 'package:my_sutra/core/extension/dio_error.dart';
+import 'package:my_sutra/core/utils/constants.dart';
+import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
-import 'package:retrofit/http.dart';
-import 'package:my_sutra/core/extension/custom_ext.dart';
-import 'package:my_sutra/core/extension/dio_error.dart';
-import 'package:my_sutra/core/utils/constants.dart';
-import 'package:my_sutra/core/utils/endpoint_constants.dart';
-import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/user_models/generate_username_model.dart';
@@ -136,4 +134,8 @@ abstract class UserRestClient {
 
   @POST(EndPoints.userFollow)
   Future<dynamic> followUser(@Body() Map<String, dynamic> map);
+
+  @GET('{url}')
+  @DioResponseType(ResponseType.bytes)
+  Future<HttpResponse<List<int>>> downloadPdf(@Path('url') String url);
 }

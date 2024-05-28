@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:my_sutra/core/utils/endpoint_constants.dart';
-import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
-import 'package:retrofit/http.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
+import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
+import 'package:retrofit/http.dart';
 
 import '../model/patient_models/available_time_slot.dart';
 import '../model/patient_models/get_appointment_response_model.dart';
@@ -74,4 +74,8 @@ abstract class PatientRestClient {
 
   @POST(EndPoints.cancelAppointment)
   Future<dynamic> cancelAppointment(@Body() Map<String, dynamic> map);
+
+  @GET(EndPoints.pastAppointment)
+  Future<GetAppointmentResponseModel> pastAppointments(
+      @Queries() Map<String, dynamic> map);
 }

@@ -56,6 +56,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appoi
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/past_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
@@ -73,6 +74,7 @@ import 'package:my_sutra/features/domain/usecases/post_usecases/report_post_usec
 import 'package:my_sutra/features/domain/usecases/post_usecases/repost_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/download_pdf_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
@@ -142,10 +144,12 @@ Future<void> init() async {
       updateAboutOrFeesUseCase: sl<UpdateAboutOrFeesUseCase>(),
       getTimeSlotsUseCase: sl<GetTimeSlotsUseCase>()));
   sl.registerFactory(() => AppointmentCubit(
-      getAvailableSlotsUseCase: sl<GetAvailableSlotsForPatientUseCase>(),
-      scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
-      confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
-      cancelAppointmentUseCase: sl<CancelAppointmentUseCase>()));
+        getAvailableSlotsUseCase: sl<GetAvailableSlotsForPatientUseCase>(),
+        scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
+        confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
+        cancelAppointmentUseCase: sl<CancelAppointmentUseCase>(),
+        pastAppointmentUseCase: sl<PastAppointmentUseCase>(),
+      ));
   sl.registerFactory(() => ProfileCubit(
         getFollowingUseCase: sl<GetFollowingUseCase>(),
         getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
@@ -160,6 +164,7 @@ Future<void> init() async {
         sendMessageUseCase: sl<SendMessageUseCase>(),
         listenRoomUseCase: sl<ListenUserDataUseCase>(),
         setUserDataUseCase: sl<SetUserDataUseCase>(),
+        downloadPdfUseCase: sl<DownloadPdfUseCase>(),
       ));
   sl.registerFactory(() => PostsCubit(
         uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
@@ -207,6 +212,8 @@ Future<void> init() async {
   sl.registerFactory(() => ScheduleAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => ConfirmAppointmentUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => CancelAppointmentUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => PastAppointmentUseCase(sl<PatientRepository>()));
+
   sl.registerFactory(() => GetProfileDetailsUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetFollowingUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetTimeSlotsUseCase(sl<DoctorRepository>()));
@@ -233,6 +240,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetVideoRoomIdUseCase(sl<UserRepository>()));
   sl.registerFactory(() => ListenUserDataUseCase(sl<ChatRepository>()));
   sl.registerFactory(() => SetUserDataUseCase(sl<ChatRepository>()));
+  sl.registerFactory(() => DownloadPdfUseCase(sl<UserRepository>()));
 
   sl.registerFactory(() => CreatePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => GetPostsUsecase(sl<PostRepository>()));

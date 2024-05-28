@@ -43,13 +43,14 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     });
   }
 
-  void uploadDoc(XFile file, {bool isLoading = false}) async {
+  void uploadDoc(XFile file,
+      {bool isLoading = false, bool isPdf = false}) async {
     if (isLoading) {
       emit(UploadDocLoading());
     }
     final result = await uploadDocUsecase.call(File(file.path));
     result.fold((l) => _emitFailure(l), (data) {
-      emit(UploadDocumentSuccessState(data, file));
+      emit(UploadDocumentSuccessState(data, file, isPdf));
     });
   }
 

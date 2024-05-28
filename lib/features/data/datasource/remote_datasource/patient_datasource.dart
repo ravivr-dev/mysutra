@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:my_sutra/core/error/exceptions.dart';
+import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
-import 'package:my_sutra/core/extension/dio_error.dart';
 
 import '../../model/patient_models/available_time_slot.dart';
 import '../../model/patient_models/get_appointment_response_model.dart';
@@ -27,6 +27,9 @@ abstract class PatientDataSource {
   Future<GetAppointmentResponseModel> getAppointments(Map<String, dynamic> map);
 
   Future<dynamic> cancelAppointment(Map<String, dynamic> map);
+
+  Future<GetAppointmentResponseModel> pastAppointments(
+      Map<String, dynamic> map);
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -153,6 +156,23 @@ class PatientDataSourceImpl extends PatientDataSource {
   Future<dynamic> cancelAppointment(Map<String, dynamic> map) async {
     try {
       return await client.cancelAppointment(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GetAppointmentResponseModel> pastAppointments(
+      Map<String, dynamic> map) async {
+    try {
+      return await client.pastAppointments(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

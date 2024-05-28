@@ -100,6 +100,9 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
               entity: state.data,
               isVideoCall: state.isVideoCall,
               name: state.name,
+              roomId: state.roomId,
+              remoteUserId: state.remoteUserId,
+              currentUserId: state.currentUserId,
             ),
           );
         } else if (state is GetVideoRoomErrorState) {
@@ -143,12 +146,15 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
         _buildCallingRowItem(
             icon: Assets.iconsPhone,
             onTap: () => _onVideoCallClick(
-                appointment: appointment, isVideoCall: false)),
+                appointment: appointment,
+                isVideoCall: false,
+                isDoctor: isDoctor)),
         component.spacer(width: 8),
         _buildCallingRowItem(
             icon: Assets.iconsVideo2,
             color: AppColors.color0xFF8338EC,
-            onTap: () => _onVideoCallClick(appointment: appointment)),
+            onTap: () => _onVideoCallClick(
+                appointment: appointment, isDoctor: isDoctor)),
       ],
     );
   }
@@ -183,12 +189,14 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   }
 
   void _onVideoCallClick(
-      {required AppointmentEntity appointment, bool isVideoCall = true}) {
+      {required AppointmentEntity appointment,
+      bool isVideoCall = true,
+      required bool isDoctor}) {
     if (_canJoinAppointment(appointment: appointment)) {
       _callVideoSdkRoomApi(
-        appointment.id,
-        appointment.fullName ?? appointment.username ?? '',
+        appointment,
         isVideoCall: isVideoCall,
+        isDoctor: isDoctor,
       );
     }
   }
@@ -274,10 +282,16 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
     );
   }
 
-  void _callVideoSdkRoomApi(String appointmentId, String name,
-      {bool isVideoCall = true}) {
+  void _callVideoSdkRoomApi(AppointmentEntity appointment,
+      {bool isVideoCall = true, required bool isDoctor}) {
     context.read<HomeCubit>().getVideoRoomId(
-        appointmentId: appointmentId, isVideoCall: isVideoCall, name: name);
+          appointmentId: appointment.id,
+          isVideoCall: isVideoCall,
+          name: appointment.fullName ?? appointment.username ?? '',
+          currentUserId: isDoctor ? appointment.doctorId! : appointment.userId!,
+          remoteUserId: isDoctor ? appointment.userId! : appointment.doctorId!,
+          roomId: '${appointment.doctorId}${appointment.userId}',
+        );
   }
 
   Widget _buildAppointmentDateWidget() {

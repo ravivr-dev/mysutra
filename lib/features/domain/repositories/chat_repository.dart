@@ -15,6 +15,5 @@ abstract class ChatRepository {
 
   Stream<RoomUserEntity> listenUserData({required ListenUserDataParams data});
 
-  Future<Either<Failure, void>> setUserData(
-      {required SetUserDataParams data});
+  Future<Either<Failure, void>> setUserData({required SetUserDataParams data});
 }

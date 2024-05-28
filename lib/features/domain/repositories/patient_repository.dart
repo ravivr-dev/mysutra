@@ -11,6 +11,7 @@ import '../usecases/patient_usecases/confirm_appointment_usecase.dart';
 import '../usecases/patient_usecases/get_appointments_usecase.dart';
 import '../usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import '../usecases/patient_usecases/get_doctor_details_usecase.dart';
+import '../usecases/patient_usecases/past_appointments_usecase.dart';
 import '../usecases/patient_usecases/schedule_appointment_usecase.dart';
 
 abstract class PatientRepository {
@@ -34,4 +35,7 @@ abstract class PatientRepository {
 
   Future<Either<Failure, dynamic>> cancelAppointment(
       CancelAppointmentParams data);
+
+  Future<Either<Failure, List<AppointmentEntity>>> pastAppointments(
+      PastAppointmentsParams data);
 }

@@ -98,7 +98,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void getVideoRoomId(
-      {required String appointmentId,
+      {required String roomId,
+      required String remoteUserId,
+      required String currentUserId,
+      required String appointmentId,
       required bool isVideoCall,
       required String name}) async {
     final result = await getVideoRoomIdUseCase
@@ -107,7 +110,12 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
         (l) => emit(GetVideoRoomErrorState(message: l.message)),
         (r) => emit(GetVideoRoomSuccessState(
-            data: r, isVideoCall: isVideoCall, name: name)));
+            data: r,
+            isVideoCall: isVideoCall,
+            name: name,
+            roomId: roomId,
+            remoteUserId: remoteUserId,
+            currentUserId: currentUserId)));
   }
 
 // FutureOr<void> _emitFailure(

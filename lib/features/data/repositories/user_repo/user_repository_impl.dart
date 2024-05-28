@@ -6,6 +6,7 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/network/network_info.dart';
 import 'package:my_sutra/core/utils/constants.dart';
+import 'package:my_sutra/core/utils/file_manager.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/user_datasource.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
@@ -15,7 +16,6 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
-
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
@@ -26,6 +26,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/registration_use
 import '../../../domain/entities/patient_entities/follow_entity.dart';
 import '../../../domain/entities/user_entities/user_data_entity.dart';
 import '../../../domain/entities/user_entities/user_entity.dart';
+import '../../../domain/usecases/user_usecases/download_pdf_usecase.dart';
 import '../../../domain/usecases/user_usecases/get_following_usecase.dart';
 import '../../model/patient_models/follow_model.dart';
 
@@ -332,6 +333,26 @@ class UserRepositoryImpl extends UserRepository {
 
         return Right(UserRepoConv.followModelToEntity(
             FollowModel.fromJson(result['data'] ?? {})));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> downloadPdf(DownloadPdfParams data) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.downloadPdf(data.url);
+        final directory = await FileManager().getApplicationDirectory();
+        final filePath = '${directory.path}/${data.url.split('/').last}';
+        final file = File(filePath);
+
+        file.writeAsBytes(result.response.data);
+
+        return Right(file.path);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

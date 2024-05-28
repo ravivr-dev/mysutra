@@ -21,8 +21,9 @@ final class RegistrationSuccess extends RegistrationState {
 final class UploadDocumentSuccessState extends RegistrationState {
   final UploadDocModel data;
   final XFile file;
+  final bool isPdf;
 
-  UploadDocumentSuccessState(this.data, this.file);
+  UploadDocumentSuccessState(this.data, this.file, this.isPdf);
 }
 
 final class RegistrationError extends RegistrationState {
@@ -41,6 +42,7 @@ final class GenerateUserNamesSuccessState extends RegistrationState {
 
 final class GenerateUserNamesErrorState extends RegistrationState {
   final String message;
+
   GenerateUserNamesErrorState({
     required this.message,
   });
