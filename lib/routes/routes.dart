@@ -11,6 +11,7 @@ import 'package:my_sutra/features/presentation/article/lms_feed_screen.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/image_view_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/booking_cancelled_screen.dart';
@@ -156,11 +157,11 @@ class Routes {
 
       case AppRoutes.patientPastAppointment:
         return MaterialPageRoute(
-          //todo will implement pagination in this
+            //todo will implement pagination in this
             builder: (_) => BlocProvider<AppointmentCubit>(
                   create: (context) => sl<AppointmentCubit>()
                     ..getPastAppointments(pagination: 1, limit: 10),
-                  child: PatientPastAppointmentsScreen(),
+                  child: const PatientPastAppointmentsScreen(),
                 ));
 
       case AppRoutes.patientMyFollowing:
@@ -300,6 +301,13 @@ class Routes {
                   create: (context) => sl<ArticleCubit>(),
                   child: ArticleDetailScreen(article: args as ArticleEntity),
                 ));
+
+      case AppRoutes.imageViewScreen:
+        return MaterialPageRoute(
+          builder: (_) => ImageViewScreen(
+            imageUrl: args as String,
+          ),
+        );
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

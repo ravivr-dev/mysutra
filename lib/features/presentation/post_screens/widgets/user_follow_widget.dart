@@ -36,13 +36,21 @@ class UserFollowWidget extends StatefulWidget {
 }
 
 class _UserFollowWidgetState extends State<UserFollowWidget> {
+  late bool isFollowing;
+
+  @override
+  void initState() {
+    isFollowing = widget.isFollowing;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SearchDoctorCubit, SearchDoctorState>(
       listener: (context, state) {
         if (state is FollowDoctorSuccessState) {
-          widget.isFollowing != widget.isFollowing;
-          widget.userFollowing?.call(widget.isFollowing);
+          isFollowing = !isFollowing;
+          widget.userFollowing?.call(isFollowing);
         }
       },
       builder: (context, state) {
@@ -99,16 +107,16 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                           vertical: 2, horizontal: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3),
-                        color: widget.isFollowing
+                        color: isFollowing
                             ? AppColors.grey0xFFEAECF0
                             : AppColors.color0xFFEBE2FF,
                       ),
                       child: component.text(
-                          widget.isFollowing
+                          isFollowing
                               ? context.stringForKey(StringKeys.unfollow)
                               : context.stringForKey(StringKeys.follow),
                           style: theme.publicSansFonts.mediumStyle(
-                            fontColor: widget.isFollowing
+                            fontColor: isFollowing
                                 ? AppColors.color0xFF85799E
                                 : AppColors.color0xFF8338EC,
                           )),

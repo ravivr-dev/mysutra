@@ -31,8 +31,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final List<String> taggedUserIds = [];
   XFile? media;
 
-  // bool _isKeyboardOpen = false;
-
   @override
   void dispose() {
     _postController.dispose();
@@ -44,8 +42,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return BlocConsumer<PostsCubit, PostsState>(
       listener: (context, state) {
         if (state is UploadDocument) {
-          mediaUrls.add(
-              MediaUrlEntity(mediaType: 'IMAGE_URL', url: state.data.key!));
+          mediaUrls.add(MediaUrlEntity(
+              mediaType: 'IMAGE_URL',
+              url: removeUntilLastSlash(state.data.key ?? "")));
           imageList.add(state.data.fileUrl!);
         } else if (state is UploadDocumentError) {
           widget.showErrorToast(context: context, message: state.error);
@@ -56,7 +55,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             AiloitteNavigation.intentWithClearAllRoutesWithData(
                 context, AppRoutes.homeRoute, 1);
           } else {
-            AiloitteNavigation.intentWithClearAllRoutes(context, AppRoutes.homeRoute);
+            AiloitteNavigation.intentWithClearAllRoutes(
+                context, AppRoutes.homeRoute);
           }
         } else if (state is CreatePostError) {
           widget.showErrorToast(context: context, message: state.error);
@@ -70,11 +70,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
         if (state is GetPostDetailLoaded) {
           _postController.text = state.post.content;
+
           if (state.post.mediaUrls.isNotEmpty) {
-            state.post.mediaUrls.map((e) => imageList.add(e.url ?? ''));
+            for (MediaUrlEntity e in state.post.mediaUrls) {
+              mediaUrls.add(MediaUrlEntity(
+                  mediaType: e.mediaType,
+                  url: removeUntilLastSlash(e.url ?? "")));
+              imageList.add(e.url ?? '');
+            }
           }
           if (state.post.taggedUserIds.isNotEmpty) {
-            state.post.taggedUserIds.map((e) => taggedUserIds.add(e));
+            for (String e in state.post.taggedUserIds) {
+              taggedUserIds.add(e);
+            }
           }
         }
       },
@@ -287,5 +295,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             onChange: onChange);
       },
     );
+  }
+
+  String removeUntilLastSlash(String url) {
+    int lastSlashIndex = url.lastIndexOf('/');
+    if (lastSlashIndex != -1 && lastSlashIndex + 1 < url.length) {
+      return url.substring(lastSlashIndex + 1);
+    }
+    return url; // Return the original URL if no slash is found or if it's the last character
   }
 }
