@@ -72,12 +72,18 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
               } else if (state is WriteCommentError) {
                 widget.showErrorToast(context: context, message: state.error);
               }
+
+              if (state is DeleteArticleLoaded) {
+                AiloitteNavigation.back(context);
+              } else if (state is DeleteArticleError) {
+                widget.showErrorToast(context: context, message: state.error);
+              }
             },
             builder: (context, state) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeading(),
+                  _buildHeading(context),
                   _buildInfo(),
                   component.text(widget.article.content,
                       style: theme.publicSansFonts.regularStyle(
@@ -189,7 +195,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     );
   }
 
-  Widget _buildHeading() {
+  Widget _buildHeading(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,15 +208,17 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
         ),
         IconButton(
           onPressed: () {
-            showBottomSheet(
+            showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return const EditDeleteBottomsheet();
+                  return EditDeleteBottomsheet(
+                    articleId: widget.article.id!,
+                  );
                 });
           },
           icon: const Icon(Icons.more_vert),
           iconSize: 20,
-        )
+        ),
       ],
     );
   }

@@ -7,7 +7,6 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/widgets/save_button_widget.dart';
-import 'package:my_sutra/generated/assets.dart';
 
 class CreateArticleScreen extends StatefulWidget {
   const CreateArticleScreen({super.key});
@@ -90,25 +89,25 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
               ],
             ),
           ),
-          floatingActionButton: _buildFooter(),
-          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+          // floatingActionButton: _buildFooter(),
+          // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         );
       },
     );
   }
 
-  Widget _buildFooter() {
-    return Container(
-      height: 60,
-      width: 60,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: AppColors.color0xFFF1F5F9,
-      ),
-      child: InkWell(
-        onTap: () {},
-        child: component.assetImage(path: Assets.iconsAddSquare),
-      ),
-    );
-  }
+  // Widget _buildFooter() {
+  //   return Container(
+  //     height: 60,
+  //     width: 60,
+  //     decoration: const BoxDecoration(
+  //       borderRadius: BorderRadius.all(Radius.circular(10)),
+  //       color: AppColors.color0xFFF1F5F9,
+  //     ),
+  //     child: InkWell(
+  //       onTap: () {},
+  //       child: component.assetImage(path: Assets.iconsAddSquare),
+  //     ),
+  //   );
+  // }
 }
