@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/schedule_appointment_response_entity.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
@@ -18,6 +20,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   final ConfirmAppointmentUseCase confirmAppointmentUseCase;
   final CancelAppointmentUseCase cancelAppointmentUseCase;
   final PastAppointmentUseCase pastAppointmentUseCase;
+  final GetRasorpayKeyUseCase getRasorpayKeyUseCase;
 
   AppointmentCubit({
     required this.getAvailableSlotsUseCase,
@@ -25,6 +28,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required this.confirmAppointmentUseCase,
     required this.cancelAppointmentUseCase,
     required this.pastAppointmentUseCase,
+    required this.getRasorpayKeyUseCase,
   }) : super(AppointmentInitial());
 
   void getAvailableSlotsForPatients(
@@ -67,5 +71,12 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         .call(PastAppointmentsParams(pagination: pagination, limit: limit));
     result.fold((l) => emit(PastAppointmentErrorState(message: l.message)),
         (r) => emit(PastAppointmentSuccessState(appointmentEntities: r)));
+  }
+
+  void getRsaoppayKey() async {
+    emit(PastAppointmentLoadingState());
+    final result = await getRasorpayKeyUseCase.call(NoParams());
+    result.fold((l) => emit(RazorpayKeyErrorState(message: l.message)),
+        (r) => emit(RazorpayKeySuccessState(key: r)));
   }
 }

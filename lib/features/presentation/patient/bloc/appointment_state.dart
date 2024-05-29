@@ -76,3 +76,19 @@ final class PastAppointmentErrorState extends AppointmentState {
     required this.message,
   });
 }
+
+final class RazorpayKeySuccessState extends AppointmentState {
+  final String key;
+
+  RazorpayKeySuccessState({
+    required this.key,
+  });
+}
+
+final class RazorpayKeyErrorState extends AppointmentState {
+  final String message;
+
+  RazorpayKeyErrorState({
+    required this.message,
+  });
+}

@@ -10,7 +10,7 @@ class EndPoints {
 
 // patient endpoints
   static const String patientSearch = '/patient/search';
-
+  static const String rasorpayKey = '/payment/razorpay-key';
   static const String doctorFollow = '/patient/doctor/follow';
   static const String availableSlots = '/patient/available-slots';
   static const String doctorDetails = '/patient/doctor';

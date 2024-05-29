@@ -12,11 +12,14 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class ConfirmYourBookingBottomSheet extends StatefulWidget {
   final String token;
+  final int fee;
 
-  const ConfirmYourBookingBottomSheet({super.key, required this.token});
+  const ConfirmYourBookingBottomSheet(
+      {super.key, required this.token, required this.fee});
 
   @override
   State<ConfirmYourBookingBottomSheet> createState() =>
@@ -29,10 +32,15 @@ class _ConfirmYourBookingBottomSheetState
   final TextEditingController _otpController = TextEditingController();
   final int _timerInitVal = 60;
   late Timer _resendOtpTimer;
+  late Razorpay _razorpay;
 
   @override
   void initState() {
     _resendOtp();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     super.initState();
   }
 
@@ -41,6 +49,7 @@ class _ConfirmYourBookingBottomSheetState
     _resendOtpTimer.cancel();
     _timeCounter.dispose();
     _otpController.dispose();
+    _razorpay.clear();
     super.dispose();
   }
 
@@ -55,13 +64,18 @@ class _ConfirmYourBookingBottomSheetState
           BlocConsumer<AppointmentCubit, AppointmentState>(
             listener: (context, state) {
               if (state is ConfirmAppointmentErrorState) {
-                widget.showErrorToast(
-                    context: context, message: 'Something Went Wrong');
+                widget.showErrorToast(context: context, message: state.message);
               } else if (state is ConfirmAppointmentSuccessState) {
-                widget.showErrorToast(
-                    context: context,
-                    message: 'Appointment Confirmed Successfully');
-                _navigateToBookingSuccessfulScreen();
+                // widget.showErrorToast(
+                //     context: context,
+                //     message: 'Appointment Confirmed Successfully');
+                // _navigateToBookingSuccessfulScreen();
+                _getRasorpayKey();
+              } else if (state is RazorpayKeySuccessState) {
+                // TODO: 
+                // _paymentWithRazorpay(state.key);
+              } else if (state is RazorpayKeyErrorState) {
+                widget.showErrorToast(context: context, message: state.message);
               }
             },
             builder: (context, state) {
@@ -173,6 +187,44 @@ class _ConfirmYourBookingBottomSheetState
         AppRoutes.bookingSuccessful, (route) => route.isFirst);
   }
 
+  void _paymentWithRazorpay({required String key, required String orderId}) {
+    var options = {
+      'key': key,
+      'amount': widget.fee * 100,
+      'name': 'My Sutra',
+      'description': 'Payment for Booking Appointment',
+      'order_id': orderId, 
+      'prefill': {'contact': '8888888888', 'email': 'test@example.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    widget.showSuccessToast(
+        context: context, message: 'Appointment Confirmed Successfully');
+    _navigateToBookingSuccessfulScreen();
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    widget.showErrorToast(
+        context: context, message: response.message ?? 'Payment Failed');
+    AiloitteNavigation.back(context);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    widget.showSuccessToast(
+        context: context, message: response.walletName ?? 'External Wallet');
+    AiloitteNavigation.back(context);
+  }
+
   void _confirmAppointment() {
     context.read<AppointmentCubit>().confirmAppointment(
         data: ConfirmAppointmentParams(
@@ -181,6 +233,10 @@ class _ConfirmYourBookingBottomSheetState
 
   Widget _buildOtpTextField() {
     return CustomOtpField(otpController: _otpController);
+  }
+
+  void _getRasorpayKey() {
+    context.read<AppointmentCubit>().getRsaoppayKey();
   }
 
   void _resendOtp() {

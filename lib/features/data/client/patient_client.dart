@@ -78,4 +78,7 @@ abstract class PatientRestClient {
   @GET(EndPoints.pastAppointment)
   Future<GetAppointmentResponseModel> pastAppointments(
       @Queries() Map<String, dynamic> map);
+
+  @GET(EndPoints.rasorpayKey)
+  Future<String> getRasorpayKey();
 }

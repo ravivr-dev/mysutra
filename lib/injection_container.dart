@@ -56,6 +56,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appoi
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/past_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
@@ -149,6 +150,7 @@ Future<void> init() async {
         confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
         cancelAppointmentUseCase: sl<CancelAppointmentUseCase>(),
         pastAppointmentUseCase: sl<PastAppointmentUseCase>(),
+        getRasorpayKeyUseCase: sl<GetRasorpayKeyUseCase>(),
       ));
   sl.registerFactory(() => ProfileCubit(
         getFollowingUseCase: sl<GetFollowingUseCase>(),
@@ -263,6 +265,7 @@ Future<void> init() async {
   sl.registerFactory(() => DeleteArticleUsecase(sl<ArticleRepository>()));
   sl.registerFactory(
       () => LikeDislikeArticleCommentUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => GetRasorpayKeyUseCase(sl<PatientRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

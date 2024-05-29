@@ -38,4 +38,6 @@ abstract class PatientRepository {
 
   Future<Either<Failure, List<AppointmentEntity>>> pastAppointments(
       PastAppointmentsParams data);
+
+  Future<Either<Failure, String>> getRasorpayKey();
 }

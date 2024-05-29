@@ -30,6 +30,8 @@ abstract class PatientDataSource {
 
   Future<GetAppointmentResponseModel> pastAppointments(
       Map<String, dynamic> map);
+
+   Future<String>           getRasorpayKey() ;
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -173,6 +175,22 @@ class PatientDataSourceImpl extends PatientDataSource {
       Map<String, dynamic> map) async {
     try {
       return await client.pastAppointments(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<String> getRasorpayKey() async {
+ try {
+      return await client.getRasorpayKey().catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {
