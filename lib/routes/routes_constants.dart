@@ -44,6 +44,11 @@ class AppRoutes {
   static const String repostRoute = '/post_screens/repost_screen';
   static const String editPostRoute = '/post_screens/create_post';
 
+  static const String lmsFeedRoute = '/article/lms_feed_screen';
+  static const String createArticleRoute = '/article/create_article';
+  static const String articleDetailRoute = '/article/article_detail_screen';
+
+  static const String imageViewScreen = '/image_view_screen';
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";
   // static const String markAttendanceRoute = "/mark_attendance_screen";

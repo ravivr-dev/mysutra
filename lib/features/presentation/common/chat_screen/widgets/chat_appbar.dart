@@ -16,6 +16,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool hasChatData;
   final String userId;
   final bool isChatHistory;
+  final bool showBackButton;
 
   const ChatAppBar({
     super.key,
@@ -26,6 +27,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.deleteCallback,
     required this.userId,
     required this.isChatHistory,
+    this.showBackButton = true,
   });
 
   @override
@@ -47,7 +49,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
       flexibleSpace: Container(),
-      leading: InkWell(
+      leading: showBackButton ? InkWell(
         borderRadius: BorderRadius.circular(
           20,
         ),
@@ -56,7 +58,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.transparent,
           child: component.assetImage(path: Assets.iconsArrowBack),
         ),
-      ),
+      ) : const SizedBox(),
       titleSpacing: 5,
       title: Row(
         children: [

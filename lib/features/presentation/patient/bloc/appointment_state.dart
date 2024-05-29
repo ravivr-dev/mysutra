@@ -39,7 +39,11 @@ final class GetAvailableAppointmentSuccessState extends AppointmentState {
 
 final class ConfirmAppointmentLoadingState extends AppointmentState {}
 
-final class ConfirmAppointmentSuccessState extends AppointmentState {}
+final class ConfirmAppointmentSuccessState extends AppointmentState {
+  final String id;
+
+  ConfirmAppointmentSuccessState({required this.id});
+}
 
 final class ConfirmAppointmentErrorState extends AppointmentState {
   final String message;
@@ -73,6 +77,40 @@ final class PastAppointmentErrorState extends AppointmentState {
   final String message;
 
   PastAppointmentErrorState({
+    required this.message,
+  });
+}
+
+final class RazorpayKeySuccessState extends AppointmentState {
+  final String key;
+  final PaymentOrderEntity data;
+
+  RazorpayKeySuccessState({
+    required this.key,
+    required this.data,
+  });
+}
+
+final class RazorpayKeyErrorState extends AppointmentState {
+  final String message;
+
+  RazorpayKeyErrorState({
+    required this.message,
+  });
+}
+
+final class PaymentSuccessState extends AppointmentState {
+  final PaymentOrderEntity data;
+
+  PaymentSuccessState({
+    required this.data,
+  });
+}
+
+final class PaymentErrorState extends AppointmentState {
+  final String message;
+
+  PaymentErrorState({
     required this.message,
   });
 }

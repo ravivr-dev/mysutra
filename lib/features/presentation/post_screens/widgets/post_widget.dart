@@ -241,7 +241,6 @@ class _PostWidgetState extends State<PostWidget> {
                   component.spacer(width: 10),
                   CommentButtonWidget(
                     commentCount: widget.postEntity.totalComments,
-                    postId: widget.postEntity.id,
                     onTap: () {
                       AiloitteNavigation.intentWithData(context,
                               AppRoutes.postRoute, widget.postEntity.id)
@@ -256,7 +255,10 @@ class _PostWidgetState extends State<PostWidget> {
                         widget.postEntity.repostCount,
                     onTap: () {
                       AiloitteNavigation.intentWithData(
-                          context, AppRoutes.repostRoute, widget.postEntity);
+                              context, AppRoutes.repostRoute, widget.postEntity)
+                          .then((_) => context
+                              .read<PostsCubit>()
+                              .getPosts(pagination: 1, limit: 50));
                     },
                   ),
                 ],

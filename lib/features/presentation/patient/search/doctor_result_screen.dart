@@ -206,7 +206,9 @@ class DoctorResultScreen extends StatelessWidget {
         context,
         AppRoutes.scheduleAppointment,
         ScheduleAppointmentScreenArgs(
-            doctorId: doctorID, isNewAppointment: true));
+            doctorId: doctorID,
+            isNewAppointment: true,
+            fees: doctorEntity.fees));
   }
 
   Widget _buildBookAppointmentButton(BuildContext context) {

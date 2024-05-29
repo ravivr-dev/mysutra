@@ -80,12 +80,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           reply: widget.commentEntity.replies[index]);
                     },
                     separatorBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          component.spacer(height: 16),
-                          const Divider(color: AppColors.color0xFFEAECF0),
-                          component.spacer(height: 16),
-                        ],
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Divider(color: AppColors.color0xFFEAECF0),
                       );
                     },
                   ),
@@ -140,7 +137,6 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             component.spacer(width: 20),
             CommentButtonWidget(
                 commentCount: widget.commentEntity.totalReplies,
-                postId: widget.commentEntity.id,
                 onTap: () {}),
             const Spacer(),
             InkWell(

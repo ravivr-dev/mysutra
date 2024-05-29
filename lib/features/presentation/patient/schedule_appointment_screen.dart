@@ -70,7 +70,10 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
         if (state is GetAvailableAppointmentSuccessState) {
           _availableTImeSlots = state.timeSlots;
         } else if (state is ScheduleAppointmentSuccessState) {
-          if (widget.args.isNewAppointment) {
+          if (widget.args.fees == null) {
+            widget.showErrorToast(
+                context: context, message: "Payment Amount is missing");
+          } else if (widget.args.isNewAppointment) {
             _showConfirmBottomSheet(state.entity.token!);
             return;
           }
@@ -263,6 +266,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
           },
           child: ConfirmYourBookingBottomSheet(
             token: token,
+            fee: widget.args.fees!,
           ),
         ),
         isScrollControlled: true);
@@ -295,6 +299,8 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
           patientAge: isNewAppointment ? _ageController.text : null,
           patientGender: isNewAppointment ? _selectedGender! : null,
           patientEmail: isNewAppointment ? _emailController.text : null,
+
+          fees: widget.args.fees,
           // patientName: isNewAppointment ? _nameController.text : null,
           // patientProblem: isNewAppointment ? _reasonController.text : null,
           time: _selectedTimeSlot!,
@@ -387,10 +393,12 @@ class ScheduleAppointmentScreenArgs {
   final String doctorId;
   bool isNewAppointment;
   final String? appointmentId;
+  final int? fees;
 
   ScheduleAppointmentScreenArgs({
     required this.doctorId,
     bool? isNewAppointment,
     this.appointmentId,
+    this.fees,
   }) : isNewAppointment = isNewAppointment ?? false;
 }

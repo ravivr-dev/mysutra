@@ -4,7 +4,10 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
+import 'package:my_sutra/features/data/model/patient_models/schedule_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
 import '../../model/patient_models/available_time_slot.dart';
@@ -21,7 +24,7 @@ abstract class PatientDataSource {
   Future<ScheduleAppointmentResponseModel> scheduleAppointment(
       Map<String, dynamic> map);
 
-  Future confirmAppointment(
+  Future<ScheduleAppointmentModel> confirmAppointment(
       {required Map<String, dynamic> map, required String token});
 
   Future<GetAppointmentResponseModel> getAppointments(Map<String, dynamic> map);
@@ -30,6 +33,10 @@ abstract class PatientDataSource {
 
   Future<GetAppointmentResponseModel> pastAppointments(
       Map<String, dynamic> map);
+
+  Future<String> getRasorpayKey();
+
+  Future<PaymentOrderModel> paymentOrder(Map<String, dynamic> map);
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -119,7 +126,7 @@ class PatientDataSourceImpl extends PatientDataSource {
   }
 
   @override
-  Future confirmAppointment(
+  Future<ScheduleAppointmentModel> confirmAppointment(
       {required Map<String, dynamic> map, required String token}) async {
     try {
       return await client.confirmAppointment(map, token).catchError((err) {
@@ -173,6 +180,38 @@ class PatientDataSourceImpl extends PatientDataSource {
       Map<String, dynamic> map) async {
     try {
       return await client.pastAppointments(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> getRasorpayKey() async {
+    try {
+      return await client.getRasorpayKey().catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PaymentOrderModel> paymentOrder(Map<String, dynamic> map) async {
+    try {
+      return await client.paymentOrder(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

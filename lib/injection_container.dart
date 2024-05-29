@@ -9,25 +9,36 @@ import 'package:my_sutra/core/config/my_shared_pref.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/network/network_info.dart';
 import 'package:my_sutra/core/utils/constants.dart';
+import 'package:my_sutra/features/data/client/article_client.dart';
 import 'package:my_sutra/features/data/client/doctor_client.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/client/post_client.dart';
 import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/datasource/remote_datasource/article_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/firebase_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/patient_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/post_datasource.dart';
 import 'package:my_sutra/features/data/datasource/remote_datasource/user_datasource.dart';
+import 'package:my_sutra/features/data/repositories/article_repo/article_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/post_repo/post_repository_impl.dart';
 import 'package:my_sutra/features/data/repositories/user_repo/user_repository_impl.dart';
+import 'package:my_sutra/features/domain/repositories/article_repository.dart';
 import 'package:my_sutra/features/domain/repositories/chat_repository.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/delete_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/write_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
@@ -45,7 +56,9 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appoi
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/past_appointments_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
@@ -79,6 +92,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_otp_usecase.dart';
+import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/login_cubit.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
@@ -137,6 +151,8 @@ Future<void> init() async {
         confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
         cancelAppointmentUseCase: sl<CancelAppointmentUseCase>(),
         pastAppointmentUseCase: sl<PastAppointmentUseCase>(),
+        getRasorpayKeyUseCase: sl<GetRasorpayKeyUseCase>(),
+        paymentOrderUsercase: sl<PaymentOrderUseCase>(),
       ));
   sl.registerFactory(() => ProfileCubit(
         getFollowingUseCase: sl<GetFollowingUseCase>(),
@@ -170,6 +186,14 @@ Future<void> init() async {
         deletePostUsecase: sl<DeletePostUsecase>(),
         editPostUsecase: sl<EditPostUsecase>(),
       ));
+  sl.registerFactory(() => ArticleCubit(
+      likeDislikeArticleCommentUsecase: sl<LikeDislikeArticleCommentUsecase>(),
+      deleteArticleUsecase: sl<DeleteArticleUsecase>(),
+      writeCommentUsecase: sl<WriteCommentUsecase>(),
+      articleCommentUsecase: sl<GetArticleCommentUsecase>(),
+      getArticlesUsecase: sl<GetArticlesUsecase>(),
+      createArticleUsecase: sl<CreateArticleUsecase>(),
+      likeDislikeArticleUsecase: sl<LikeDislikeArticleUsecase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -235,6 +259,16 @@ Future<void> init() async {
   sl.registerFactory(() => RePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => DeletePostUsecase(sl<PostRepository>()));
   sl.registerFactory(() => EditPostUsecase(sl<PostRepository>()));
+  sl.registerFactory(() => CreateArticleUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => GetArticlesUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => LikeDislikeArticleUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => GetArticleCommentUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => WriteCommentUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => DeleteArticleUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(
+      () => LikeDislikeArticleCommentUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => GetRasorpayKeyUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => PaymentOrderUseCase(sl<PatientRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(
@@ -264,6 +298,10 @@ Future<void> init() async {
     () => ChatRepositoryImpl(
         dataSource: sl<FirebaseDataSource>(), networkInfo: sl<NetworkInfo>()),
   );
+  sl.registerLazySingleton<ArticleRepository>(() => ArticleRepositoryImpl(
+      localDataSource: sl<LocalDataSource>(),
+      remoteDatasource: sl<ArticleDatasource>(),
+      networkInfo: sl<NetworkInfo>()));
 
   /// DataSource
   sl.registerLazySingleton<LocalDataSource>(
@@ -277,6 +315,8 @@ Future<void> init() async {
   sl.registerLazySingleton<PostDatasource>(() => PostDatasourceImpl(
       client: sl<PostRestClient>(), localDataSource: sl<LocalDataSource>()));
   sl.registerLazySingleton<FirebaseDataSource>(() => FirebaseDataSourceImpl());
+  sl.registerLazySingleton<ArticleDatasource>(() => ArticleDatasourceImpl(
+      client: sl<ArticleRestClient>(), localDataSource: sl<LocalDataSource>()));
 
   sl.registerLazySingleton<AppTheme>(() => AppTheme());
   sl.registerLazySingleton<CustomWidgets>(() => CustomWidgets());
@@ -317,4 +357,6 @@ Future<void> init() async {
       () => PatientRestClient(dio, sl()));
   sl.registerLazySingleton<DoctorClient>(() => DoctorClient(dio, sl()));
   sl.registerLazySingleton<PostRestClient>(() => PostRestClient(dio, sl()));
+  sl.registerLazySingleton<ArticleRestClient>(
+      () => ArticleRestClient(dio, sl()));
 }

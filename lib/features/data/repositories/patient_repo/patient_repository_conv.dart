@@ -1,8 +1,10 @@
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/patient_models/follow_model.dart';
+import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
@@ -128,5 +130,21 @@ class PatientRepoConv {
               duration: e.duration ?? 0,
             ))
         .toList();
+  }
+
+  static PaymentOrderEntity paymnetOrderModelToEntity(PaymentOrderModel data) {
+    return PaymentOrderEntity(
+      amount: data.amount,
+      amountDue: data.amountDue,
+      amountPaid: data.amountPaid,
+      attempts: data.amount,
+      createdAt: data.createdAt,
+      currency: data.currency,
+      entity: data.entity,
+      id: data.id,
+      receipt: data.receipt,
+      notes: data.notes,
+      status: data.status,
+    );
   }
 }

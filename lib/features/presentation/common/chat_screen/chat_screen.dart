@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +12,15 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/utils.dart';
+import 'package:my_sutra/features/domain/entities/chat_entities/chat_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/messages_entity.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 import 'package:open_file/open_file.dart';
-
-import '../../../domain/entities/chat_entities/chat_entity.dart';
 import 'widgets/chat_appbar.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -61,6 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: widget.args.username,
         status: 'Active now',
         hasChatData: _chatMessages.isNotEmpty,
+        showBackButton: widget.args.showBackButton,
         deleteCallback: () {
           // if (_chatMessages.isNotEmpty) {
           //   context
@@ -411,14 +413,20 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildImageContainer(String url) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: AppColors.blackF2F7FB,
-        borderRadius: BorderRadius.circular(8),
+    return InkWell(
+      onTap: () {
+        AiloitteNavigation.intentWithData(
+            context, AppRoutes.imageViewScreen, url);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.blackF2F7FB,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: component.networkImage(
+            url: url, height: 68, width: 68, borderRadius: 8),
       ),
-      child: component.networkImage(
-          url: url, height: 68, width: 68, borderRadius: 8),
     );
   }
 
@@ -537,6 +545,7 @@ class ChatScreenArgs {
   final String currentUserId;
   final String? profilePic;
   final String remoteUserId;
+  final bool showBackButton;
 
   ///if this flag is try than we will not allow current user to chat
   final bool showChatHistory;
@@ -548,5 +557,6 @@ class ChatScreenArgs {
     this.profilePic,
     required this.remoteUserId,
     this.showChatHistory = false,
+    this.showBackButton = true,
   });
 }

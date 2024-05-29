@@ -119,6 +119,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 component.spacer(height: 12),
                 if (userRole == UserRole.doctor) ...[
                   _buildCard(
+                      value: 'Learning Management',
+                      icons: Assets.iconsLms,
+                      onTap: () {
+                        AiloitteNavigation.intent(
+                            context, AppRoutes.lmsFeedRoute);
+                      }),
+                  component.spacer(height: 10),
+                  _buildCard(
                       value: 'Settings',
                       icons: Assets.iconsSetting,
                       onTap: () {
@@ -199,7 +207,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildUserName(),
+          Flexible(child: _buildUserName()),
           component.spacer(width: 4),
           component.assetImage(
             path: Assets.iconsVerify,

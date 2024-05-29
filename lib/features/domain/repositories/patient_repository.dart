@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
 import '../entities/patient_entities/appointment_entity.dart';
@@ -27,7 +29,7 @@ abstract class PatientRepository {
   Future<Either<Failure, ScheduleAppointmentResponseEntity>>
       scheduleAppointment(ScheduleAppointmentParams data);
 
-  Future<Either<Failure, dynamic>> confirmAppointment(
+  Future<Either<Failure, String>> confirmAppointment(
       ConfirmAppointmentParams data);
 
   Future<Either<Failure, List<AppointmentEntity>>> getAppointments(
@@ -38,4 +40,9 @@ abstract class PatientRepository {
 
   Future<Either<Failure, List<AppointmentEntity>>> pastAppointments(
       PastAppointmentsParams data);
+
+  Future<Either<Failure, String>> getRasorpayKey();
+
+  Future<Either<Failure, PaymentOrderEntity>> paymentOrder(
+      PaymentOrderParams params);
 }

@@ -71,5 +71,8 @@
   "user_name": "Username",
   "unfollow": "Unfollow",
   "no_comments": "No Comments",
-  "re_post" : "RePost"
+  "re_post": "RePost",
+  "article_name": "Article Name",
+  "learning_management": "Learning Management",
+  "article": "Article"
 }

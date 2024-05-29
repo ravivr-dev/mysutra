@@ -7,13 +7,12 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
+import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/common/video_calling/widgets/participant_widget.dart';
+import 'package:my_sutra/injection_container.dart';
 import 'package:videosdk/videosdk.dart';
-
-import '../../../../injection_container.dart';
-import '../chat_screen/chat_cubit/chat_cubit.dart';
-import '../registration/cubit/registration_cubit.dart';
 
 class VideoCallingScreen extends StatefulWidget {
   final VideoCallingArgs args;
@@ -65,86 +64,88 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
     final Participant? localParticipant = _room?.localParticipant;
 
     return Scaffold(
-      body: _isChatEnabled
-          ? _buildChatWidget()
-          : !_isJoined
-              ? const Center(child: CircularProgressIndicator())
-              : Stack(
-                  children: [
-                    if (_showLocalParticipantFullVideo ||
-                        remoteParticipant != null)
+      body: !_isJoined
+          ? const Center(child: CircularProgressIndicator())
+          : Stack(
+              children: [
+                if (_showLocalParticipantFullVideo || remoteParticipant != null)
 
-                      ///This is a widget that will show video in full screen
-                      ParticipantWidget(
-                          participant: _showLocalParticipantFullVideo
-                              ? localParticipant!
-                              : remoteParticipant!)
-                    else
-                      Container(
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: const [0.01, 0.4],
-                          colors: [
-                            AppColors.blackColor.withOpacity(.01),
-                            AppColors.color0xFFEEEEEE,
-                          ],
+                  ///This is a widget that will show video in full screen
+                  ParticipantWidget(
+                      participant: _showLocalParticipantFullVideo
+                          ? localParticipant!
+                          : remoteParticipant!)
+                else
+                  Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: const [0.01, 0.4],
+                      colors: [
+                        AppColors.blackColor.withOpacity(.01),
+                        AppColors.color0xFFEEEEEE,
+                      ],
+                    )),
+                    child: component.text(
+                        '${UserHelper.role == UserRole.patient ? 'Doctor' : 'Patient'} will be joining soon',
+                        style: theme.publicSansFonts.regularStyle(
+                          fontSize: 20,
+                          fontColor: AppColors.color0xFF5C5C5C,
                         )),
-                        child: component.text(
-                            '${UserHelper.role == UserRole.patient ? 'Doctor' : 'Patient'} will be joining soon',
-                            style: theme.publicSansFonts.regularStyle(
-                              fontSize: 20,
-                              fontColor: AppColors.color0xFF5C5C5C,
-                            )),
-                      ),
-                    _buildSmallVideoRow(!_showLocalParticipantFullVideo
-                        ? localParticipant
-                        : remoteParticipant),
-                    _buildBottomSheetWidget(),
-                  ],
-                ),
+                  ),
+                _buildSmallVideoRow(!_showLocalParticipantFullVideo
+                    ? localParticipant
+                    : remoteParticipant),
+                _buildBottomSheetWidget(),
+                if (_isChatEnabled) _buildChatWidget()
+              ],
+            ),
     );
   }
 
   Widget _buildChatWidget() {
     return SafeArea(
-       child: Column(
-        children: [
-          InkWell(
-            onTap: (){
-              setState(() {
-                _isChatEnabled=false;
-              });
-            },
-            child: Container(
-              height: 50,
-              color: AppColors.green2BEF83,
+      child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) => setState(() => _isChatEnabled = false),
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _isChatEnabled = false;
+                });
+              },
+              child: Container(
+                height: 50,
+                color: AppColors.green2BEF83,
+              ),
             ),
-          ),
-          Expanded(
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => sl<RegistrationCubit>(),
-                ),
-                BlocProvider(
-                  create: (context) => sl<ChatCubit>(),
-                ),
-              ],
-              child: ChatScreen(
-                  args: ChatScreenArgs(
-                roomId: widget.args.roomId,
-                username: widget.args.name,
-                currentUserId: widget.args.currentUserId,
-                remoteUserId: widget.args.remoteUserId,
-              )),
-            ),
-          )
-        ],
+            Expanded(
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => sl<RegistrationCubit>(),
+                  ),
+                  BlocProvider(
+                    create: (context) => sl<ChatCubit>(),
+                  ),
+                ],
+                child: ChatScreen(
+                    args: ChatScreenArgs(
+                        roomId: widget.args.roomId,
+                        username: widget.args.name,
+                        currentUserId: widget.args.currentUserId,
+                        remoteUserId: widget.args.remoteUserId,
+                        showBackButton: false)),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

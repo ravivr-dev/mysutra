@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
+import 'package:my_sutra/features/presentation/article/article_detail_screen.dart';
+import 'package:my_sutra/features/presentation/article/create_article_screen.dart';
+import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
+import 'package:my_sutra/features/presentation/article/lms_feed_screen.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/image_view_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/home_screen.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/booking_cancelled_screen.dart';
@@ -151,11 +157,11 @@ class Routes {
 
       case AppRoutes.patientPastAppointment:
         return MaterialPageRoute(
-          //todo will implement pagination in this
+            //todo will implement pagination in this
             builder: (_) => BlocProvider<AppointmentCubit>(
                   create: (context) => sl<AppointmentCubit>()
                     ..getPastAppointments(pagination: 1, limit: 10),
-                  child: PatientPastAppointmentsScreen(),
+                  child: const PatientPastAppointmentsScreen(),
                 ));
 
       case AppRoutes.patientMyFollowing:
@@ -265,16 +271,43 @@ class Routes {
                 ));
 
       case AppRoutes.editPostRoute:
-        final args = settings?.arguments as String;
         return MaterialPageRoute(
             builder: (_) => BlocProvider<PostsCubit>(
                   create: (context) =>
-                      sl<PostsCubit>()..getPostDetail(postId: args),
+                      sl<PostsCubit>()..getPostDetail(postId: args as String),
                   child: CreatePostScreen(
                     isEditing: true,
-                    postId: args,
+                    postId: args as String,
                   ),
                 ));
+
+      case AppRoutes.lmsFeedRoute:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<ArticleCubit>(
+                  create: (context) => sl<ArticleCubit>(),
+                  child: const LMSUserFeed(),
+                ));
+
+      case AppRoutes.createArticleRoute:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<ArticleCubit>(
+                  create: (context) => sl<ArticleCubit>(),
+                  child: const CreateArticleScreen(),
+                ));
+
+      case AppRoutes.articleDetailRoute:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<ArticleCubit>(
+                  create: (context) => sl<ArticleCubit>(),
+                  child: ArticleDetailScreen(article: args as ArticleEntity),
+                ));
+
+      case AppRoutes.imageViewScreen:
+        return MaterialPageRoute(
+          builder: (_) => ImageViewScreen(
+            imageUrl: args as String,
+          ),
+        );
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

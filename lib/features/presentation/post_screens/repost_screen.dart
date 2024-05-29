@@ -208,7 +208,6 @@ class _RePostScreenState extends State<RePostScreen> {
               component.spacer(width: 20),
               CommentButtonWidget(
                 commentCount: widget.postEntity.totalComments,
-                postId: widget.postEntity.id,
                 onTap: () {},
               ),
               const Spacer(),

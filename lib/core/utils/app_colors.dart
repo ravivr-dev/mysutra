@@ -21,7 +21,6 @@ class AppColors {
   static const Color fillColor = Color(0xffF3F6F6);
   static const Color textColor = Color(0xff797C7B);
 
-
   // old colors
   static const Color black33 = Color(0xff333333);
   static const Color black37 = Color(0xff373737);
@@ -89,4 +88,5 @@ class AppColors {
   static const Color color0xFF3D3D3D = Color(0xFF3D3D3D);
   static const Color color0xFFEEEEEE = Color(0xFFEEEEEE);
   static const Color color0xFF5C5C5C = Color(0xFF5C5C5C);
+  static const Color color0xFF636A80 = Color(0xFF636A80);
 }

@@ -10,7 +10,12 @@ class _InfluencerHomeScreenState extends _HomeScreenState {
 
   void _addLearningManagement() {
     //We don't have any LearningManagement Screen now so we are adding SizedBox for showing empty Screen
-    _screens.insert(1, const SizedBox());
+    _screens.insert(
+        1,
+        BlocProvider<ArticleCubit>(
+          create: (context) => sl<ArticleCubit>(),
+          child: const LMSUserFeed(),
+        ));
     _bottomNavigationBarList.insert(
         1,
         _buildBottomBarItem(

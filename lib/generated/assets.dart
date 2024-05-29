@@ -17,6 +17,7 @@ class Assets {
   static const String fontsPublicSansSemiBold = 'assets/fonts/PublicSans-SemiBold.ttf';
   static const String fontsPublicSansThin = 'assets/fonts/PublicSans-Thin.ttf';
   static const String i18nEn = 'assets/i18n/en.json';
+  static const String iconsAddSquare = 'assets/icons/add_square.svg';
   static const String iconsArrowBack = 'assets/icons/arrow_back.svg';
   static const String iconsArrowForward = 'assets/icons/arrow_forward.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -54,6 +55,7 @@ class Assets {
   static const String iconsImage = 'assets/icons/image.svg';
   static const String iconsInfluencer = 'assets/icons/Influencer.svg';
   static const String iconsLearningManagement = 'assets/icons/learning_management.svg';
+  static const String iconsLms = 'assets/icons/lms.svg';
   static const String iconsLocation = 'assets/icons/location.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
   static const String iconsLogo1 = 'assets/icons/logo_1.png';
@@ -62,6 +64,8 @@ class Assets {
   static const String iconsPayment = 'assets/icons/payment.svg';
   static const String iconsPhone = 'assets/icons/phone.svg';
   static const String iconsPhone2 = 'assets/icons/phone2.svg';
+  static const String iconsPickImage = 'assets/icons/pick_image.svg';
+  static const String iconsPlusSign = 'assets/icons/plus_sign.svg';
   static const String iconsReport = 'assets/icons/report.svg';
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSetting = 'assets/icons/setting.svg';
@@ -85,4 +89,5 @@ class Assets {
   static const String mysutraAssetsMessage = 'assets/message.json';
   static const String pickImage = 'assets/icons/pick_image.svg';
   static const String iconsDocs2 = 'assets/icons/doc2.svg';
+
 }

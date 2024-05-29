@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
+import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
+import 'package:my_sutra/features/presentation/article/lms_feed_screen.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/cubit/home_cubit.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/appointment_screen.dart';
@@ -52,8 +54,9 @@ abstract class _HomeScreenState extends State<HomeScreen>
       create: (context) => sl<PostsCubit>(),
       child: const CreatePostScreen(),
     ),
-    Container(),
-    BlocProvider(
+    BlocProvider<ArticleCubit>(
+        create: (context) => sl<ArticleCubit>(), child: const LMSUserFeed()),
+    BlocProvider<ProfileCubit>(
       create: (BuildContext context) => sl<ProfileCubit>(),
       child: const MyProfileScreen(),
     )
@@ -172,7 +175,7 @@ abstract class _HomeScreenState extends State<HomeScreen>
                 child: Icon(Icons.add, color: AppColors.white)),
           ),
           label: ''),
-      _buildBottomBarItem(icon: Assets.iconsPayment, label: 'Payments'),
+      _buildBottomBarItem(icon: Assets.iconsLms, label: 'LMS'),
       _buildBottomBarItem(icon: Assets.iconsUser2, label: 'My Profile'),
     ];
   }
