@@ -28,6 +28,7 @@ class VerificationPendingBottomSheet extends StatelessWidget {
       },
       child: Container(
         color: AppColors.white,
+        width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 70),
         child: Column(
           mainAxisSize: MainAxisSize.min,
