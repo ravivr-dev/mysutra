@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   static String getTimeFromMinutes(int minutes) {
@@ -36,6 +37,13 @@ class Utils {
     return now.day == dateTime.day &&
         now.month == dateTime.month &&
         now.year == dateTime.year;
+  }
+
+  static void openTermsAndConditionPage() async {
+    const termsAndConditionLink = 'https://mysutra.org.in/terms-of-use';
+    if (await canLaunchUrl(Uri.parse(termsAndConditionLink))) {
+      launchUrl(Uri.parse(termsAndConditionLink));
+    }
   }
 
 //We can make these conditions more better

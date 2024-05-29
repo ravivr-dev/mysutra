@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 class AppLogoWithTermsConditionWidget extends StatelessWidget {
@@ -19,10 +20,13 @@ class AppLogoWithTermsConditionWidget extends StatelessWidget {
           child: component.assetImage(
               path: Assets.iconsLogo1, fit: BoxFit.fitHeight),
         ),
-        Text(
-          "T&C | Privacy policy",
-          style: theme.publicSansFonts
-              .semiBoldStyle(fontSize: 14, fontColor: AppColors.primaryColor),
+        InkWell(
+          onTap: () => Utils.openTermsAndConditionPage(),
+          child: Text(
+            "T&C | Privacy policy",
+            style: theme.publicSansFonts
+                .semiBoldStyle(fontSize: 14, fontColor: AppColors.primaryColor),
+          ),
         )
       ],
     );
