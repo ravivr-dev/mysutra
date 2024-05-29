@@ -115,50 +115,55 @@ class _ChatScreenState extends State<ChatScreen> {
                         }
                       }, builder: (context, state) {
                         return Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                reverse: true,
-                                padding: const EdgeInsets.only(top: 5),
-                                itemCount: messageList.length,
-                                itemBuilder: (_, index) {
-                                  ///Reversed this list because reverse is true show listview is showing item from last
-                                  final messageEntity = messageList[index];
-                                  final isMe = messageEntity.senderId ==
-                                      widget.args.currentUserId;
-                                  final showTime = _shouldShowTime(
-                                      entity, index, messageList);
-                                  final showAvatar = _shouldShowAvatar(
-                                      entity, index, messageList);
-                                  final showDate =
-                                      _showTime(entity, index, messageList);
-                                  final isToday =
-                                      Utils.isTodayDate(messageEntity.time);
+                            child: messageList.isEmpty
+                                ? Center(
+                                    child:
+                                        component.text('No chat history found'))
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    reverse: true,
+                                    padding: const EdgeInsets.only(top: 5),
+                                    itemCount: messageList.length,
+                                    itemBuilder: (_, index) {
+                                      ///Reversed this list because reverse is true show listview is showing item from last
+                                      final messageEntity = messageList[index];
+                                      final isMe = messageEntity.senderId ==
+                                          widget.args.currentUserId;
+                                      final showTime = _shouldShowTime(
+                                          entity, index, messageList);
+                                      final showAvatar = _shouldShowAvatar(
+                                          entity, index, messageList);
+                                      final showDate =
+                                          _showTime(entity, index, messageList);
+                                      final isToday =
+                                          Utils.isTodayDate(messageEntity.time);
 
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      if (showDate) ...[
-                                        _buildTimeWidget(
-                                          isToday: isToday,
-                                          time: dateFormat
-                                              .format(messageEntity.time),
-                                        ),
-                                        component.spacer(height: 8)
-                                      ],
-                                      isMe
-                                          ? _buildMessageAndTimeWidget(
-                                              showTime: showTime,
-                                              isMe: isMe,
-                                              entity: messageEntity,
-                                            )
-                                          : _buildRemoteUserChatWidget(
-                                              showAvatar: showAvatar,
-                                              showTime: showTime,
-                                              entity: messageEntity,
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          if (showDate) ...[
+                                            _buildTimeWidget(
+                                              isToday: isToday,
+                                              time: dateFormat
+                                                  .format(messageEntity.time),
                                             ),
-                                    ],
-                                  );
-                                }));
+                                            component.spacer(height: 8)
+                                          ],
+                                          isMe
+                                              ? _buildMessageAndTimeWidget(
+                                                  showTime: showTime,
+                                                  isMe: isMe,
+                                                  entity: messageEntity,
+                                                )
+                                              : _buildRemoteUserChatWidget(
+                                                  showAvatar: showAvatar,
+                                                  showTime: showTime,
+                                                  entity: messageEntity,
+                                                ),
+                                        ],
+                                      );
+                                    }));
                       }),
                       if (!widget.args.showChatHistory)
                         ValueListenableBuilder(
