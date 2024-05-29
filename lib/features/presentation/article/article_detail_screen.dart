@@ -8,12 +8,14 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/presentation/article/bottomsheet/edit_delete_bottomsheet.dart';
+import 'package:my_sutra/features/presentation/article/create_or_edit_article_screen.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/widgets/article_comment_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/send_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class ArticleDetailScreen extends StatefulWidget {
   final String articleId;
@@ -116,14 +118,25 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                             onPressed: () {
                               showModalBottomSheet(
                                   context: context,
-                                  builder: (context) {
+                                  builder: (_) {
                                     return EditDeleteBottomsheet(
                                       articleId: article!.id!,
                                       onTapDelete: () {
                                         AiloitteNavigation.back(context);
                                         _confirmDeleteDialog();
                                       },
-                                      onTapEdit: () {},
+                                      onTapEdit: () {
+                                        AiloitteNavigation.back(context);
+                                        AiloitteNavigation.intentWithData(
+                                                context,
+                                                AppRoutes
+                                                    .createOrEditArticleRoute,
+                                                CreateOrEditScreenParams(
+                                                    isEditing: true,
+                                                    articleId:
+                                                        widget.articleId))
+                                            .then((value) => _loadArticle());
+                                      },
                                     );
                                   });
                             },
