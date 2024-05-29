@@ -68,6 +68,21 @@ class Utils {
     return false;
   }
 
+  static bool isPastTime(DateTime time) {
+    final now = DateTime.now();
+    if (time.year < now.year ||
+        (time.year == now.year && time.month < now.month) ||
+        ((time.year == now.year &&
+            time.month == now.month &&
+            time.day < now.day))) {
+      return true;
+    } else if (time.hour < now.hour ||
+        (time.hour == now.hour && time.minute < now.minute)) {
+      return true;
+    }
+    return false;
+  }
+
   static bool isSameTime(DateTime first, DateTime second) {
     if (first.year == second.year &&
         first.month == second.month &&

@@ -115,6 +115,19 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
                         ),
                         InkWell(
                             onTap: () {
+                              final appointmentHours =
+                                  DateFormat('hh:mm a').parse(appointment.time);
+                              DateTime appointmentTime =
+                                  DateTime.parse(appointment.date).toUtc().add(
+                                      Duration(
+                                          hours: appointmentHours.hour,
+                                          minutes: appointmentHours.minute));
+                              if (Utils.isPastTime(appointmentTime)) {
+                                widget.showErrorToast(
+                                    context: context,
+                                    message: "Can't modify past appointment");
+                                return;
+                              }
                               context.showBottomSheet(
                                 DrBottomSheet(
                                   appointment: appointment,
