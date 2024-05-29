@@ -20,9 +20,7 @@ import '../../../../injection_container.dart';
 import '../../../domain/entities/user_entities/user_entity.dart';
 
 part 'home_screen_states/doctor_home_screen_state.dart';
-
 part 'home_screen_states/influencer_home_screen_state.dart';
-
 part 'home_screen_states/patient_home_screen_state.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -152,11 +150,13 @@ abstract class _HomeScreenState extends State<HomeScreen>
   }
 
   void _setUserOnlineOfflineStatus({required isOnline}) {
-    context.read<ChatCubit>().setUserData(SetUserDataParams(
-          userId: _userEntity!.id,
-          lastOnlineAt: Timestamp.now(),
-          isOnline: isOnline,
-        ));
+    if (mounted) {
+      context.read<ChatCubit>().setUserData(SetUserDataParams(
+            userId: _userEntity!.id,
+            lastOnlineAt: Timestamp.now(),
+            isOnline: isOnline,
+          ));
+    }
   }
 
   List<BottomNavigationBarItem> _getNavigationBarList() {
