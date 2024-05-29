@@ -1,6 +1,6 @@
 import 'dart:async';
+
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -219,14 +219,14 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
               color: AppColors.black37.withOpacity(.3)),
           child: Column(
             children: [
-              component.spacer(height: 10),
-              Container(
-                height: 4,
-                width: 50,
-                decoration: BoxDecoration(
-                    color: AppColors.color0xFFD8D8D8,
-                    borderRadius: BorderRadius.circular(10)),
-              ),
+              // component.spacer(height: 10),
+              // Container(
+              //   height: 4,
+              //   width: 50,
+              //   decoration: BoxDecoration(
+              //       color: AppColors.color0xFFD8D8D8,
+              //       borderRadius: BorderRadius.circular(10)),
+              // ),
               component.spacer(height: 33),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
