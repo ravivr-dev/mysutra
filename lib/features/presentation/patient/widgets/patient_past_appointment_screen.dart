@@ -71,103 +71,112 @@ class _PatientPastAppointmentsScreenState
   Widget _buildCard(BuildContext context, AppointmentEntity entity) {
     final dateFormat = DateFormat('dd/MM/yyyy');
     final date = dateFormat.format(DateTime.parse(entity.date));
-    return InkWell(
-      onTap: () {
-        context.showBottomSheet(const AppointmentBottomSheet());
-      },
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(horizontal: 23),
-        decoration: AppDeco.cardDecoration,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            component.text(date,
-                style: theme.publicSansFonts.regularStyle(
-                  fontColor: AppColors.black81,
-                )),
-            component.spacer(height: 8),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                component.networkImage(
-                    url: entity.profilePic ?? '',
-                    height: 72,
-                    width: 72,
-                    borderRadius: 8,
-                    errorWidget:
-                        component.assetImage(path: Assets.imagesDefaultAvatar)),
-                component.spacer(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: component.text(
-                              'Dr. ${entity.fullName}',
-                              style: theme.publicSansFonts.mediumStyle(
-                                fontSize: 16,
-                              ),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 23),
+      decoration: AppDeco.cardDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              component.text(date,
+                  style: theme.publicSansFonts.regularStyle(
+                    fontColor: AppColors.black81,
+                  )),
+              component.spacer(width: 5),
+              component.text(entity.time,
+                  style: theme.publicSansFonts.regularStyle(
+                    fontColor: AppColors.black81,
+                  ))
+            ],
+          ),
+          component.spacer(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              component.networkImage(
+                  url: entity.profilePic ?? '',
+                  height: 72,
+                  width: 72,
+                  borderRadius: 8,
+                  errorWidget:
+                      component.assetImage(path: Assets.imagesDefaultAvatar)),
+              component.spacer(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: component.text(
+                            'Dr. ${entity.fullName}',
+                            style: theme.publicSansFonts.mediumStyle(
+                              fontSize: 16,
                             ),
                           ),
-                          const Icon(
+                        ),
+                        InkWell(
+                          onTap: () {
+                            context.showBottomSheet(
+                                const AppointmentBottomSheet());
+                          },
+                          child: const Icon(
                             Icons.more_horiz,
                             color: AppColors.color0xFFC4C4C4,
                             size: 20,
-                          )
-                        ],
-                      ),
-                      component.text(entity.specialization ?? '',
-                          style: theme.publicSansFonts.regularStyle(
-                            fontColor: AppColors.black81,
-                          )),
-                      component.spacer(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              AiloitteNavigation.intentWithData(
-                                context,
-                                AppRoutes.scheduleAppointment,
-                                ScheduleAppointmentScreenArgs(
-                                  doctorId: entity.doctorId!,
-                                  isNewAppointment: true,
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 4),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: AppColors.color0xFF8338EC,
+                          ),
+                        )
+                      ],
+                    ),
+                    component.text(entity.specialization ?? '',
+                        style: theme.publicSansFonts.regularStyle(
+                          fontColor: AppColors.black81,
+                        )),
+                    component.spacer(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            AiloitteNavigation.intentWithData(
+                              context,
+                              AppRoutes.scheduleAppointment,
+                              ScheduleAppointmentScreenArgs(
+                                doctorId: entity.doctorId!,
+                                isNewAppointment: true,
                               ),
-                              child: component.text(
-                                context
-                                    .stringForKey(StringKeys.bookAppointment),
-                                style: theme.publicSansFonts.regularStyle(
-                                  fontColor: AppColors.white,
-                                  fontSize: 12,
-                                ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: AppColors.color0xFF8338EC,
+                            ),
+                            child: component.text(
+                              context.stringForKey(StringKeys.bookAppointment),
+                              style: theme.publicSansFonts.regularStyle(
+                                fontColor: AppColors.white,
+                                fontSize: 12,
                               ),
                             ),
                           ),
-                          // component.spacer(width: 19),
-                          _buildChatIcon(context, entity)
-                        ],
-                      ),
-                      component.spacer(width: 5)
-                    ],
-                  ),
+                        ),
+                        // component.spacer(width: 19),
+                        _buildChatIcon(context, entity)
+                      ],
+                    ),
+                    component.spacer(width: 5)
+                  ],
                 ),
-              ],
-            ),
-            // component.spacer(height: 8),
-          ],
-        ),
+              ),
+            ],
+          ),
+          // component.spacer(height: 8),
+        ],
       ),
     );
   }
