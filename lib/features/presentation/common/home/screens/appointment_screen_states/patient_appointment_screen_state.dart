@@ -90,11 +90,14 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  component.text(
-                                    "Dr. ${appointment.fullName}",
-                                    style: theme.publicSansFonts.mediumStyle(
-                                        fontSize: 16,
-                                        fontColor: AppColors.blackColor),
+                                  Flexible(
+                                    child: component.text(
+                                      "Dr. ${appointment.fullName}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: theme.publicSansFonts.mediumStyle(
+                                          fontSize: 16,
+                                          fontColor: AppColors.blackColor),
+                                    ),
                                   ),
                                   const SizedBox(width: 5),
                                   component.assetImage(

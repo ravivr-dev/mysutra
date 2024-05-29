@@ -30,11 +30,14 @@ class DrBottomSheet extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              component.text('Dr ${appointment.fullName}',
-                  style: theme.publicSansFonts.semiBoldStyle(
-                    fontSize: 18,
-                    fontColor: AppColors.color0xFF1E293B,
-                  )),
+              Flexible(
+                child: component.text('Dr ${appointment.fullName}',
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.publicSansFonts.semiBoldStyle(
+                      fontSize: 18,
+                      fontColor: AppColors.color0xFF1E293B,
+                    )),
+              ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                 decoration: BoxDecoration(
