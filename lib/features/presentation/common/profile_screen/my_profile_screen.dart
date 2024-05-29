@@ -207,7 +207,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildUserName(),
+          Flexible(child: _buildUserName()),
           component.spacer(width: 4),
           component.assetImage(
             path: Assets.iconsVerify,

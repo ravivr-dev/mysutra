@@ -3,7 +3,9 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/common_widgets/custom_otp_field.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appointment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
@@ -66,19 +68,16 @@ class _ConfirmYourBookingBottomSheetState
               if (state is ConfirmAppointmentErrorState) {
                 widget.showErrorToast(context: context, message: state.message);
               } else if (state is ConfirmAppointmentSuccessState) {
+                _getPaymentOrder(
+                    PaymentOrderParams(amount: widget.fee, id: state.id));
 
-                // TODO: id milegi yaha p
-
-                // state.id
-                widget.showErrorToast(
-                    context: context,
-                    message: state.id);
-                // _navigateToBookingSuccessfulScreen();
-                _getRasorpayKey();
               } else if (state is RazorpayKeySuccessState) {
-                // TODO: 
-                // _paymentWithRazorpay(state.key);
+                _paymentWithRazorpay(key: state.key, paymentInfo: state.data);
               } else if (state is RazorpayKeyErrorState) {
+                widget.showErrorToast(context: context, message: state.message);
+              } else if (state is PaymentSuccessState) {
+                _getRasorpayKey(state.data);
+              } else if (state is PaymentErrorState) {
                 widget.showErrorToast(context: context, message: state.message);
               }
             },
@@ -191,14 +190,15 @@ class _ConfirmYourBookingBottomSheetState
         AppRoutes.bookingSuccessful, (route) => route.isFirst);
   }
 
-  void _paymentWithRazorpay({required String key, required String orderId}) {
+  void _paymentWithRazorpay(
+      {required String key, required PaymentOrderEntity paymentInfo}) {
     var options = {
       'key': key,
-      'amount': widget.fee * 100,
+      'amount': widget.fee,
       'name': 'My Sutra',
       'description': 'Payment for Booking Appointment',
-      'order_id': orderId, 
-      'prefill': {'contact': '8888888888', 'email': 'test@example.com'},
+      'order_id': paymentInfo.id,
+      // 'prefill': {'contact': '8888888888', 'email': 'test@example.com'},
       'external': {
         'wallets': ['paytm']
       }
@@ -239,8 +239,8 @@ class _ConfirmYourBookingBottomSheetState
     return CustomOtpField(otpController: _otpController);
   }
 
-  void _getRasorpayKey() {
-    context.read<AppointmentCubit>().getRsaoppayKey();
+  void _getRasorpayKey(PaymentOrderEntity data) {
+    context.read<AppointmentCubit>().getRsaoppayKey(data);
   }
 
   void _resendOtp() {
@@ -250,5 +250,9 @@ class _ConfirmYourBookingBottomSheetState
         time.cancel();
       }
     });
+  }
+
+  void _getPaymentOrder(PaymentOrderParams params) {
+    context.read<AppointmentCubit>().getOrderId(params);
   }
 }

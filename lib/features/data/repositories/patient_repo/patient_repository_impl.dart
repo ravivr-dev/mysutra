@@ -9,7 +9,9 @@ import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
@@ -206,6 +208,23 @@ class PatientRepositoryImpl extends PatientRepository {
         final result = await remoteDataSource.getRasorpayKey();
 
         return Right(result);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PaymentOrderEntity>> paymentOrder(
+      PaymentOrderParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.paymentOrder(
+            {"appointmentId": params.id, "amount": params.amount});
+
+        return Right(PatientRepoConv.paymnetOrderModelToEntity(result));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/usecase/usecase.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/schedule_appointment_response_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
@@ -21,6 +23,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   final CancelAppointmentUseCase cancelAppointmentUseCase;
   final PastAppointmentUseCase pastAppointmentUseCase;
   final GetRasorpayKeyUseCase getRasorpayKeyUseCase;
+  final PaymentOrderUseCase paymentOrderUsercase;
 
   AppointmentCubit({
     required this.getAvailableSlotsUseCase,
@@ -29,6 +32,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required this.cancelAppointmentUseCase,
     required this.pastAppointmentUseCase,
     required this.getRasorpayKeyUseCase,
+    required this.paymentOrderUsercase,
   }) : super(AppointmentInitial());
 
   void getAvailableSlotsForPatients(
@@ -73,10 +77,15 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         (r) => emit(PastAppointmentSuccessState(appointmentEntities: r)));
   }
 
-  void getRsaoppayKey() async {
-    emit(PastAppointmentLoadingState());
+  void getRsaoppayKey( PaymentOrderEntity data) async {
     final result = await getRasorpayKeyUseCase.call(NoParams());
     result.fold((l) => emit(RazorpayKeyErrorState(message: l.message)),
-        (r) => emit(RazorpayKeySuccessState(key: r)));
+        (r) => emit(RazorpayKeySuccessState(key: r, data: data)));
+  }
+
+  void getOrderId(PaymentOrderParams params) async {
+    final result = await paymentOrderUsercase.call(params);
+    result.fold((l) => emit(PaymentErrorState(message: l.message)),
+        (r) => emit(PaymentSuccessState(data: r)));
   }
 }
