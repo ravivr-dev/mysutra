@@ -18,7 +18,7 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
   @override
   void didPopNext() {
     if (mounted) {
-      _callAppointmentApi();
+      // _callAppointmentApi();
     }
     super.didPopNext();
   }
