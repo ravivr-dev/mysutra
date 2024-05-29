@@ -3,7 +3,9 @@ import 'package:my_sutra/features/domain/entities/article_entities/article_comme
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/delete_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/edit_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
@@ -14,13 +16,17 @@ part 'article_state.dart';
 class ArticleCubit extends Cubit<ArticleState> {
   final CreateArticleUsecase createArticleUsecase;
   final GetArticlesUsecase getArticlesUsecase;
+  final ArticleDetailUsecase getArticleDetailUsecase;
   final LikeDislikeArticleUsecase likeDislikeArticleUsecase;
   final GetArticleCommentUsecase articleCommentUsecase;
   final WriteCommentUsecase writeCommentUsecase;
   final DeleteArticleUsecase deleteArticleUsecase;
   final LikeDislikeArticleCommentUsecase likeDislikeArticleCommentUsecase;
+  final EditArticleUsecase editArticleUsecase;
 
   ArticleCubit({
+    required this.editArticleUsecase,
+    required this.getArticleDetailUsecase,
     required this.likeDislikeArticleCommentUsecase,
     required this.deleteArticleUsecase,
     required this.writeCommentUsecase,
@@ -42,12 +48,32 @@ class ArticleCubit extends Cubit<ArticleState> {
         (r) => emit(CreateArticleLoaded(message: r)));
   }
 
+  void editArticle(
+      {required String articleId,
+      required String heading,
+      required String content}) async {
+    final result = await editArticleUsecase.call(EditArticleParams(
+        articleId: articleId, heading: heading, content: content));
+
+    result.fold((l) => emit(EditArticleError(error: l.message)),
+        (r) => emit(EditArticleLoaded(message: r)));
+  }
+
   void getArticles({required int pagination, required int limit}) async {
     final result = await getArticlesUsecase
         .call(GetArticlesParams(pagination: pagination, limit: limit));
 
     result.fold((l) => emit(GetArticlesError(error: l.message)),
         (r) => emit(GetArticlesLoaded(articles: r)));
+  }
+
+  void getArticleDetail({required String articleId}) async {
+    emit(GetArticleDetailLoading());
+    final result = await getArticleDetailUsecase
+        .call(ArticleDetailParams(articleId: articleId));
+
+    result.fold((l) => emit(GetArticleDetailError(error: l.message)),
+        (r) => emit(GetArticleDetailLoaded(article: r)));
   }
 
   void likeDislikeArticle({required String articleId}) async {

@@ -34,7 +34,9 @@ import 'package:my_sutra/features/domain/repositories/post_repository.dart';
 import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/delete_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/edit_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
@@ -187,6 +189,8 @@ Future<void> init() async {
         editPostUsecase: sl<EditPostUsecase>(),
       ));
   sl.registerFactory(() => ArticleCubit(
+      editArticleUsecase: sl<EditArticleUsecase>(),
+      getArticleDetailUsecase: sl<ArticleDetailUsecase>(),
       likeDislikeArticleCommentUsecase: sl<LikeDislikeArticleCommentUsecase>(),
       deleteArticleUsecase: sl<DeleteArticleUsecase>(),
       writeCommentUsecase: sl<WriteCommentUsecase>(),
@@ -267,6 +271,8 @@ Future<void> init() async {
   sl.registerFactory(() => DeleteArticleUsecase(sl<ArticleRepository>()));
   sl.registerFactory(
       () => LikeDislikeArticleCommentUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => ArticleDetailUsecase(sl<ArticleRepository>()));
+  sl.registerFactory(() => EditArticleUsecase(sl<ArticleRepository>()));
   sl.registerFactory(() => GetRasorpayKeyUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => PaymentOrderUseCase(sl<PatientRepository>()));
 

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/article/article_detail_screen.dart';
-import 'package:my_sutra/features/presentation/article/create_article_screen.dart';
+import 'package:my_sutra/features/presentation/article/create_or_edit_article_screen.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/lms_feed_screen.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/user_data_entity.dart';
@@ -288,18 +287,19 @@ class Routes {
                   child: const LMSUserFeed(),
                 ));
 
-      case AppRoutes.createArticleRoute:
+      case AppRoutes.createOrEditArticleRoute:
         return MaterialPageRoute(
             builder: (_) => BlocProvider<ArticleCubit>(
                   create: (context) => sl<ArticleCubit>(),
-                  child: const CreateArticleScreen(),
+                  child: CreateArticleScreen(
+                      params: args as CreateOrEditScreenParams),
                 ));
 
       case AppRoutes.articleDetailRoute:
         return MaterialPageRoute(
             builder: (_) => BlocProvider<ArticleCubit>(
                   create: (context) => sl<ArticleCubit>(),
-                  child: ArticleDetailScreen(article: args as ArticleEntity),
+                  child: ArticleDetailScreen(articleId: args as String),
                 ));
 
       case AppRoutes.imageViewScreen:

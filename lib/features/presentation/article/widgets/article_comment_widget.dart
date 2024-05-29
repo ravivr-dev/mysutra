@@ -31,9 +31,14 @@ class _ArticleCommentWidgetState extends State<ArticleCommentWidget> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         _buildComment(),
         if (widget.comment.replies!.isNotEmpty) ...[
-          ListView.builder(itemBuilder: (context, index) {
-            return const ArticleReplyWidget();
-          }),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return const ArticleReplyWidget();
+            },
+            itemCount: widget.comment.replies!.length,
+          ),
         ],
       ]),
     );

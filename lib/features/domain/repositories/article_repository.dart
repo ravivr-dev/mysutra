@@ -5,7 +5,9 @@ import 'package:my_sutra/features/domain/entities/article_entities/article_entit
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_entity.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/edit_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
@@ -29,4 +31,9 @@ abstract class ArticleRepository {
 
   Future<Either<Failure, LikeDislikeArticleCommentEntity>>
       likeDislikeArticleComment(LikeDislikeArticleCommentParams params);
+
+  Future<Either<Failure, ArticleEntity>> getArticleDetail(
+      ArticleDetailParams params);
+
+  Future<Either<Failure, String>> editArticle(EditArticleParams params);
 }

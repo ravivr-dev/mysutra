@@ -1,3 +1,4 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
@@ -7,6 +8,7 @@ import 'package:my_sutra/features/domain/entities/article_entities/article_entit
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class ArticleWidget extends StatelessWidget {
   final ArticleEntity articleEntity;
@@ -70,7 +72,15 @@ class ArticleWidget extends StatelessWidget {
                     component.spacer(width: 20),
                     CommentButtonWidget(
                         commentCount: articleEntity.totalComments,
-                        onTap: () {}),
+                        onTap: () {
+                          AiloitteNavigation.intentWithData(
+                                  context,
+                                  AppRoutes.articleDetailRoute,
+                                  articleEntity.id)
+                              .then((value) => context
+                                  .read<ArticleCubit>()
+                                  .getArticles(pagination: 1, limit: 50));
+                        }),
                     // const Spacer(),
                   ],
                 );

@@ -16,6 +16,8 @@ abstract class ArticleDatasource {
 
   Future<ArticlesModel> getArticles(Map<String, dynamic> map);
 
+  Future<SuccessMessageModel> editArticle(Map<String, dynamic> map);
+
   Future<ArticleDetailModel> getArticleDetails(String articleId);
 
   Future<LikeDislikeArticleModel> likeDislikeArticle(Map<String, dynamic> map);
@@ -67,6 +69,21 @@ class ArticleDatasourceImpl extends ArticleDatasource {
   Future<ArticlesModel> getArticles(Map<String, dynamic> map) async {
     try {
       return await client.getArticles(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              localDataSource: localDataSource, validateAuthentication: true));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessMessageModel> editArticle(Map<String, dynamic> map) async {
+    try {
+      return await client.editArticle(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

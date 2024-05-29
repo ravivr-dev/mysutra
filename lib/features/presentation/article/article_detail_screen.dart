@@ -8,17 +8,19 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/presentation/article/bottomsheet/edit_delete_bottomsheet.dart';
+import 'package:my_sutra/features/presentation/article/create_or_edit_article_screen.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/widgets/article_comment_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/send_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class ArticleDetailScreen extends StatefulWidget {
-  final ArticleEntity article;
+  final String articleId;
 
-  const ArticleDetailScreen({super.key, required this.article});
+  const ArticleDetailScreen({super.key, required this.articleId});
 
   @override
   State<ArticleDetailScreen> createState() => _ArticleDetailScreenState();
@@ -27,6 +29,8 @@ class ArticleDetailScreen extends StatefulWidget {
 class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   final TextEditingController _commentController = TextEditingController();
   final FocusNode _commentFocusCtrl = FocusNode();
+  ArticleEntity? article;
+  bool isLoading = false;
   bool commentButton = false;
   int pagination = 1;
   int limit = 50;
@@ -34,6 +38,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
 
   @override
   void initState() {
+    _loadArticle();
     _loadComments();
     super.initState();
   }
@@ -46,58 +51,119 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        title: Text(context.stringForKey(StringKeys.article)),
-      ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12), color: AppColors.white),
-        child: SingleChildScrollView(
-          child: BlocConsumer<ArticleCubit, ArticleState>(
-            listener: (context, state) {
-              if (state is GetArticleCommentsLoaded) {
-                comments = state.articleComments;
-              } else if (state is GetArticleCommentsError) {
-                widget.showErrorToast(context: context, message: state.error);
-              }
+    return BlocConsumer<ArticleCubit, ArticleState>(listener: (context, state) {
+      if (state is GetArticleDetailLoading) {
+        isLoading = true;
+      } else if (state is GetArticleDetailLoaded) {
+        article = state.article;
+        isLoading = false;
+      } else if (state is GetArticleDetailError) {
+        widget.showErrorToast(context: context, message: state.error);
+      }
 
-              if (state is WriteCommentLoaded) {
-                _loadComments();
-                _commentController.clear();
-                _commentFocusCtrl.unfocus();
-              } else if (state is WriteCommentError) {
-                widget.showErrorToast(context: context, message: state.error);
-              }
-            },
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeading(),
-                  _buildInfo(),
-                  component.text(widget.article.content,
-                      style: theme.publicSansFonts.regularStyle(
-                          fontColor: AppColors.color0xFF636A80, fontSize: 14)),
-                  _buildFooter(),
-                  if (comments.isNotEmpty) ...[
-                    component.spacer(height: 20),
-                    component.text(context.stringForKey(StringKeys.comments),
-                        style:
-                            theme.publicSansFonts.semiBoldStyle(fontSize: 16)),
-                    _buildComment(),
-                  ],
-                  if (commentButton) ...[_buildWriteYourCommentWidget()],
-                ],
-              );
-            },
-          ),
+      if (state is GetArticleCommentsLoaded) {
+        comments = state.articleComments;
+      } else if (state is GetArticleCommentsError) {
+        widget.showErrorToast(context: context, message: state.error);
+      }
+
+      if (state is WriteCommentLoaded) {
+        _loadComments();
+        _commentController.clear();
+        _commentFocusCtrl.unfocus();
+      } else if (state is WriteCommentError) {
+        widget.showErrorToast(context: context, message: state.error);
+      }
+
+      if (state is DeleteArticleLoaded) {
+        AiloitteNavigation.back(context);
+      } else if (state is DeleteArticleError) {
+        widget.showErrorToast(context: context, message: state.error);
+      }
+    }, builder: (context, state) {
+      return Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: AppBar(
+          title: Text(context.stringForKey(StringKeys.article)),
         ),
-      ),
-    );
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.white),
+                child: SingleChildScrollView(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: component.text(article?.heading ?? '',
+                              style: theme.publicSansFonts
+                                  .semiBoldStyle(fontSize: 20),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 5),
+                        ),
+                        if (article?.isMyArticle ?? false)
+                          IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (_) {
+                                    return EditDeleteBottomsheet(
+                                      articleId: article!.id!,
+                                      onTapDelete: () {
+                                        AiloitteNavigation.back(context);
+                                        _confirmDeleteDialog();
+                                      },
+                                      onTapEdit: () {
+                                        AiloitteNavigation.back(context);
+                                        AiloitteNavigation.intentWithData(
+                                                context,
+                                                AppRoutes
+                                                    .createOrEditArticleRoute,
+                                                CreateOrEditScreenParams(
+                                                    isEditing: true,
+                                                    articleId:
+                                                        widget.articleId))
+                                            .then((value) => _loadArticle());
+                                      },
+                                    );
+                                  });
+                            },
+                            icon: const Icon(Icons.more_vert),
+                            iconSize: 20,
+                          ),
+                      ],
+                    ),
+                    _buildInfo(),
+                    component.text(article?.content ?? '',
+                        style: theme.publicSansFonts.regularStyle(
+                            fontColor: AppColors.color0xFF636A80,
+                            fontSize: 14)),
+                    _buildFooter(),
+                    if (comments.isNotEmpty) ...[
+                      component.spacer(height: 20),
+                      component.text(context.stringForKey(StringKeys.comments),
+                          style: theme.publicSansFonts
+                              .semiBoldStyle(fontSize: 16)),
+                      _buildComment(),
+                    ],
+                    if (commentButton) ...[_buildWriteYourCommentWidget()],
+                  ],
+                )),
+              ),
+      );
+    });
   }
 
   Widget _buildInfo() {
@@ -118,14 +184,13 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                 child: component.networkImage(
                     isCircular: true,
                     borderRadius: 20,
-                    url: widget.article.userId!.profilePic!,
+                    url: article?.userId?.profilePic ?? '',
                     errorWidget: component.assetImage(
                         path: Assets.imagesDefaultAvatar, fit: BoxFit.fill)),
               ),
               component.spacer(width: 8),
               component.text(
-                widget.article.userId!.fullName ??
-                    widget.article.userId!.username,
+                article?.userId?.fullName ?? article?.userId?.username,
                 style: theme.publicSansFonts.mediumStyle(fontSize: 16),
               ),
             ],
@@ -136,8 +201,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
         BlocConsumer<ArticleCubit, ArticleState>(
           listener: (context, state) {
             if (state is LikeDislikeArticleLoaded &&
-                widget.article.id == state.articleId) {
-              widget.article.reInitIsLiked();
+                article!.id == state.articleId) {
+              article!.reInitIsLiked();
             } else if (state is LikeDislikeArticleError) {
               widget.showErrorToast(context: context, message: state.error);
             }
@@ -146,16 +211,16 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             return Row(
               children: [
                 LikeDislikeButtonWidget(
-                    isLiked: widget.article.isLiked,
+                    isLiked: article?.isLiked ?? false,
                     onTap: () {
                       context
                           .read<ArticleCubit>()
-                          .likeDislikeArticle(articleId: widget.article.id!);
+                          .likeDislikeArticle(articleId: article!.id!);
                     },
-                    likeCount: widget.article.totalLikes),
+                    likeCount: article?.totalLikes ?? 0),
                 component.spacer(width: 20),
                 CommentButtonWidget(
-                    commentCount: widget.article.totalComments,
+                    commentCount: article?.totalComments ?? 0,
                     onTap: () {
                       _commentFocusCtrl.requestFocus();
                       if (!commentButton) {
@@ -184,32 +249,6 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             component.text('Share : ',
                 style: theme.publicSansFonts.semiBoldStyle(fontSize: 16))
           ],
-        )
-      ],
-    );
-  }
-
-  Widget _buildHeading() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          child: component.text(widget.article.heading,
-              style: theme.publicSansFonts.semiBoldStyle(fontSize: 20),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 5),
-        ),
-        IconButton(
-          onPressed: () {
-            showBottomSheet(
-                context: context,
-                builder: (context) {
-                  return const EditDeleteBottomsheet();
-                });
-          },
-          icon: const Icon(Icons.more_vert),
-          iconSize: 20,
         )
       ],
     );
@@ -255,8 +294,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             SendButtonWidget(
               onTap: () {
                 context.read<ArticleCubit>().writeComment(
-                    articleId: widget.article.id!,
-                    comment: _commentController.text);
+                    articleId: article!.id!, comment: _commentController.text);
               },
             ),
           ],
@@ -267,6 +305,67 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
 
   void _loadComments() {
     context.read<ArticleCubit>().getArticleComments(
-        articleId: widget.article.id!, pagination: pagination, limit: limit);
+        articleId: widget.articleId, pagination: pagination, limit: limit);
+  }
+
+  void _loadArticle() {
+    context.read<ArticleCubit>().getArticleDetail(articleId: widget.articleId);
+  }
+
+  void callDeleteApi() {
+    context.read<ArticleCubit>().deleteArticle(articleId: widget.articleId);
+  }
+
+  void _confirmDeleteDialog() {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            iconPadding: const EdgeInsets.only(top: 40, bottom: 25),
+            content: component.text(
+              "Are you sure you want to delete ?",
+              style: theme.publicSansFonts
+                  .regularStyle(fontSize: 16, fontColor: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+            actionsPadding:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      context
+                          .read<ArticleCubit>()
+                          .deleteArticle(articleId: widget.articleId);
+                      AiloitteNavigation.back(context);
+                    },
+                    child: Text(
+                      'Yes',
+                      style: theme.publicSansFonts.mediumStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextButton(
+                    child: Text(
+                      "No",
+                      style: theme.publicSansFonts.mediumStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }

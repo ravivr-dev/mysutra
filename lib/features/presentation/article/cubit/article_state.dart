@@ -18,6 +18,20 @@ final class CreateArticleError extends ArticleState {
   CreateArticleError({required this.error});
 }
 
+final class EditArticleLoading extends ArticleState {}
+
+final class EditArticleLoaded extends ArticleState {
+  final String message;
+
+  EditArticleLoaded({required this.message});
+}
+
+final class EditArticleError extends ArticleState {
+  final String error;
+
+  EditArticleError({required this.error});
+}
+
 final class GetArticlesLoading extends ArticleState {}
 
 final class GetArticlesLoaded extends ArticleState {
@@ -30,6 +44,20 @@ final class GetArticlesError extends ArticleState {
   final String error;
 
   GetArticlesError({required this.error});
+}
+
+final class GetArticleDetailLoading extends ArticleState {}
+
+final class GetArticleDetailLoaded extends ArticleState {
+  final ArticleEntity article;
+
+  GetArticleDetailLoaded({required this.article});
+}
+
+final class GetArticleDetailError extends ArticleState {
+  final String error;
+
+  GetArticleDetailError({required this.error});
 }
 
 final class LikeDislikeArticleLoading extends ArticleState {}

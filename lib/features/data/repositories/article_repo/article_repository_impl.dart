@@ -12,7 +12,9 @@ import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_entity.dart';
 import 'package:my_sutra/features/domain/repositories/article_repository.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/edit_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/article_usecases/get_article_detail_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
@@ -54,6 +56,24 @@ class ArticleRepositoryImpl extends ArticleRepository {
             {"pagination": params.pagination, "limit": params.limit});
 
         return Right(ArticleRepoConv.convertGetArticlesModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> editArticle(EditArticleParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDatasource.editArticle({
+          "articleId": params.articleId,
+          "heading": params.heading,
+          "content": params.content
+        });
+        return Right(result.message ?? 'Edit Article Success');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
@@ -141,6 +161,23 @@ class ArticleRepositoryImpl extends ArticleRepository {
         return Right(
             ArticleRepoConv.convertLikeDislikeArticleCommentModelToEntity(
                 result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ArticleEntity>> getArticleDetail(
+      ArticleDetailParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result =
+            await remoteDatasource.getArticleDetails(params.articleId);
+
+        return Right(ArticleRepoConv.convertArticleDetailModelToEntity(result));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
