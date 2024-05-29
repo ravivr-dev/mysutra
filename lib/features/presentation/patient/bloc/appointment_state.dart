@@ -39,7 +39,12 @@ final class GetAvailableAppointmentSuccessState extends AppointmentState {
 
 final class ConfirmAppointmentLoadingState extends AppointmentState {}
 
-final class ConfirmAppointmentSuccessState extends AppointmentState {}
+final class ConfirmAppointmentSuccessState extends AppointmentState {
+  final String id;
+
+  ConfirmAppointmentSuccessState({required this.id});
+  
+}
 
 final class ConfirmAppointmentErrorState extends AppointmentState {
   final String message;

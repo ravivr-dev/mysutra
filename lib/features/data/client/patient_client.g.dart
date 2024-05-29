@@ -145,7 +145,7 @@ class _PatientRestClient implements PatientRestClient {
   }
 
   @override
-  Future<dynamic> confirmAppointment(
+  Future<ScheduleAppointmentModel> confirmAppointment(
     Map<String, dynamic> data,
     dynamic token,
   ) async {
@@ -155,23 +155,24 @@ class _PatientRestClient implements PatientRestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(data);
-    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ScheduleAppointmentModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/patient/appointment/confirm',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-    final value = _result.data;
+            .compose(
+              _dio.options,
+              '/patient/appointment/confirm',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ScheduleAppointmentModel.fromJson(_result.data!);
     return value;
   }
 

@@ -4,7 +4,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 abstract class LocalDataSource {
   String? getAccessToken();
 
-  setAccessToken(String token);
+    setAccessToken(String token);
 
   setUserProfilePic(String url);
 

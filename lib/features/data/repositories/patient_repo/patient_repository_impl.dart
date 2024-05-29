@@ -95,6 +95,7 @@ class PatientRepositoryImpl extends PatientRepository {
           if (data.doctorID != null) 'doctorId': data.doctorID,
           'date': data.date,
           'time': data.time,
+          'fees': data.fees,
           if (data.appointmentId != null) 'appointmentId': data.appointmentId,
           if (data.patientNumber != null)
             'patientDetails': {
@@ -119,7 +120,7 @@ class PatientRepositoryImpl extends PatientRepository {
   }
 
   @override
-  Future<Either<Failure, dynamic>> confirmAppointment(
+  Future<Either<Failure, String>> confirmAppointment(
       ConfirmAppointmentParams data) async {
     try {
       if (await networkInfo.isConnected) {
@@ -129,11 +130,11 @@ class PatientRepositoryImpl extends PatientRepository {
           },
           token: 'Bearer ${data.token}',
         );
-        if (result['token'] != null) {
-          localDataSource.setAccessToken(result['token']);
+        if (result.token != null) {
+          localDataSource.setAccessToken(result.token!);
         }
 
-        return Right(result);
+        return Right(result.data?.id ?? '');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
@@ -197,7 +198,7 @@ class PatientRepositoryImpl extends PatientRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
-  
+
   @override
   Future<Either<Failure, String>> getRasorpayKey() async {
     try {

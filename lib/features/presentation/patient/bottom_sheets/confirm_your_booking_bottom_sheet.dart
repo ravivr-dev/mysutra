@@ -66,9 +66,13 @@ class _ConfirmYourBookingBottomSheetState
               if (state is ConfirmAppointmentErrorState) {
                 widget.showErrorToast(context: context, message: state.message);
               } else if (state is ConfirmAppointmentSuccessState) {
-                // widget.showErrorToast(
-                //     context: context,
-                //     message: 'Appointment Confirmed Successfully');
+
+                // TODO: id milegi yaha p
+
+                // state.id
+                widget.showErrorToast(
+                    context: context,
+                    message: state.id);
                 // _navigateToBookingSuccessfulScreen();
                 _getRasorpayKey();
               } else if (state is RazorpayKeySuccessState) {

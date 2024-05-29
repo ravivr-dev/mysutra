@@ -4,6 +4,7 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/schedule_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
 import 'package:retrofit/http.dart';
 
@@ -65,7 +66,7 @@ abstract class PatientRestClient {
       @Body() Map<String, dynamic> data);
 
   @POST(EndPoints.confirmAppointment)
-  Future<dynamic> confirmAppointment(@Body() Map<String, dynamic> data,
+  Future<ScheduleAppointmentModel> confirmAppointment(@Body() Map<String, dynamic> data,
       @Header(Constants.authorization) token);
 
   @GET(EndPoints.appointments)

@@ -53,7 +53,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     emit(ConfirmAppointmentLoadingState());
     final result = await confirmAppointmentUseCase.call(data);
     result.fold((l) => emit(ConfirmAppointmentErrorState(message: l.message)),
-        (r) => emit(ConfirmAppointmentSuccessState()));
+        (r) => emit(ConfirmAppointmentSuccessState(id: r)));
   }
 
   void cancelAppointment({required String appointmentId}) async {

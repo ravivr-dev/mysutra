@@ -4,6 +4,7 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/schedule_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
@@ -21,7 +22,7 @@ abstract class PatientDataSource {
   Future<ScheduleAppointmentResponseModel> scheduleAppointment(
       Map<String, dynamic> map);
 
-  Future confirmAppointment(
+  Future<ScheduleAppointmentModel> confirmAppointment(
       {required Map<String, dynamic> map, required String token});
 
   Future<GetAppointmentResponseModel> getAppointments(Map<String, dynamic> map);
@@ -121,7 +122,7 @@ class PatientDataSourceImpl extends PatientDataSource {
   }
 
   @override
-  Future confirmAppointment(
+  Future<ScheduleAppointmentModel> confirmAppointment(
       {required Map<String, dynamic> map, required String token}) async {
     try {
       return await client.confirmAppointment(map, token).catchError((err) {

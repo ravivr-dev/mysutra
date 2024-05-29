@@ -297,6 +297,8 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
           patientAge: isNewAppointment ? _ageController.text : null,
           patientGender: isNewAppointment ? _selectedGender! : null,
           patientEmail: isNewAppointment ? _emailController.text : null,
+
+          fees: widget.args.fees,
           // patientName: isNewAppointment ? _nameController.text : null,
           // patientProblem: isNewAppointment ? _reasonController.text : null,
           time: _selectedTimeSlot!,

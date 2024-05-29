@@ -27,7 +27,7 @@ abstract class PatientRepository {
   Future<Either<Failure, ScheduleAppointmentResponseEntity>>
       scheduleAppointment(ScheduleAppointmentParams data);
 
-  Future<Either<Failure, dynamic>> confirmAppointment(
+  Future<Either<Failure, String>> confirmAppointment(
       ConfirmAppointmentParams data);
 
   Future<Either<Failure, List<AppointmentEntity>>> getAppointments(

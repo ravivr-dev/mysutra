@@ -4,13 +4,13 @@ import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import '../../../../core/usecase/usecase.dart';
 
 class ConfirmAppointmentUseCase
-    extends UseCase<dynamic, ConfirmAppointmentParams> {
+    extends UseCase<String, ConfirmAppointmentParams> {
   final PatientRepository _patientRepository;
 
   ConfirmAppointmentUseCase(this._patientRepository);
 
   @override
-  Future<Either<Failure, dynamic>> call(ConfirmAppointmentParams params) {
+  Future<Either<Failure, String>> call(ConfirmAppointmentParams params) {
     return _patientRepository.confirmAppointment(params);
   }
 }
