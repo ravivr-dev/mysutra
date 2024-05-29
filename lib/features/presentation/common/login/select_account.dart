@@ -129,7 +129,7 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                                         ),
                                       if (user.role == 'DOCTOR')
                                         component.text(
-                                            '${user.specialization}'
+                                            (user.specialization ?? '')
                                                 .capitalizeFirstLetterOfEveryWord,
                                             style: theme.publicSansFonts
                                                 .regularStyle(
