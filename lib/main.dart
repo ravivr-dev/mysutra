@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -36,15 +35,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => sl<MainCubit>(),
-        ),
-        BlocProvider<ArticleCubit>(
-          create: (context) => sl<ArticleCubit>(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => sl<MainCubit>(),
       child: MaterialApp(
         title: 'My Sutra',
         localizationsDelegates: const [

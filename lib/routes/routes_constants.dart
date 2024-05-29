@@ -45,7 +45,7 @@ class AppRoutes {
   static const String editPostRoute = '/post_screens/create_post';
 
   static const String lmsFeedRoute = '/article/lms_feed_screen';
-  static const String createArticleRoute = '/article/create_article';
+  static const String createOrEditArticleRoute = '/article/create_article';
   static const String articleDetailRoute = '/article/article_detail_screen';
 
   static const String imageViewScreen = '/image_view_screen';

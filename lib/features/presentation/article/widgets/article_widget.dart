@@ -73,8 +73,10 @@ class ArticleWidget extends StatelessWidget {
                     CommentButtonWidget(
                         commentCount: articleEntity.totalComments,
                         onTap: () {
-                          AiloitteNavigation.intentWithData(context,
-                                  AppRoutes.articleDetailRoute, articleEntity)
+                          AiloitteNavigation.intentWithData(
+                                  context,
+                                  AppRoutes.articleDetailRoute,
+                                  articleEntity.id)
                               .then((value) => context
                                   .read<ArticleCubit>()
                                   .getArticles(pagination: 1, limit: 50));

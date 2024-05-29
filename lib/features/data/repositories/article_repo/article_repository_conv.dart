@@ -1,4 +1,5 @@
 import 'package:my_sutra/features/data/model/article_models/article_comment_model.dart';
+import 'package:my_sutra/features/data/model/article_models/article_detail_model.dart';
 import 'package:my_sutra/features/data/model/article_models/articles_model.dart';
 import 'package:my_sutra/features/data/model/article_models/like_dislike_article_comment_model.dart';
 import 'package:my_sutra/features/data/model/article_models/like_dislike_article_model.dart';
@@ -110,6 +111,54 @@ class ArticleRepoConv {
       createdAt: model.data!.createdAt,
       updatedAt: model.data!.updatedAt,
       iV: model.data!.iV,
+    );
+  }
+
+  static ArticleEntity convertArticleDetailModelToEntity(
+      ArticleDetailModel model) {
+    return ArticleEntity(
+      id: model.data!.id,
+      userId: ArticleUserEntity(
+        id: model.data!.userId!.id,
+        role: model.data!.userId!.role,
+        profilePic: model.data!.userId!.profilePic,
+        fullName: model.data!.userId!.fullName,
+        username: model.data!.userId!.username,
+        isVerified: model.data!.userId!.isVerified,
+      ),
+      heading: model.data!.heading,
+      content: model.data!.content,
+      isMyArticle: model.data!.isMyArticle,
+      isLiked: model.data!.isLiked!,
+      isViewed: model.data!.isViewed,
+      totalViews: model.data!.totalViews,
+      totalLikes: model.data!.totalLikes!,
+      totalComments: model.data!.totalComments!,
+      totalShares: model.data!.totalShares!,
+      repostedArticleCount: model.data!.repostedArticleCount,
+      isRepostedByMe: model.data!.isRepostedByMe,
+      articleId: model.data!.articleId == null ? null : ArticleIdEntity(
+        id: model.data!.articleId!.id,
+        userId: ArticleUserEntity(
+          id: model.data!.articleId!.userId!.id,
+          role: model.data!.articleId!.userId!.role,
+          profilePic: model.data!.articleId!.userId!.profilePic,
+          fullName: model.data!.articleId!.userId!.fullName,
+          username: model.data!.articleId!.userId!.username,
+          isVerified: model.data!.articleId!.userId!.isVerified,
+        ),
+        heading: model.data!.articleId!.heading,
+        content: model.data!.articleId!.content,
+        isMyArticle: model.data!.articleId!.isMyArticle,
+        isLiked: model.data!.articleId!.isLiked,
+        isViewed: model.data!.articleId!.isViewed,
+        totalViews: model.data!.articleId!.totalViews,
+        totalLikes: model.data!.articleId!.totalLikes,
+        totalComments: model.data!.articleId!.totalComments,
+        totalShares: model.data!.articleId!.totalShares,
+        repostedArticleCount: model.data!.articleId!.repostedArticleCount,
+        isRepostedByMe: model.data!.articleId!.isRepostedByMe,
+      ),
     );
   }
 }

@@ -32,10 +32,13 @@ class _ArticleCommentWidgetState extends State<ArticleCommentWidget> {
         _buildComment(),
         if (widget.comment.replies!.isNotEmpty) ...[
           ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return const ArticleReplyWidget();
-              }),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return const ArticleReplyWidget();
+            },
+            itemCount: widget.comment.replies!.length,
+          ),
         ],
       ]),
     );

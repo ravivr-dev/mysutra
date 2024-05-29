@@ -7,6 +7,7 @@ import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
+import 'package:my_sutra/features/presentation/article/create_or_edit_article_screen.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/widgets/article_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
@@ -72,15 +73,16 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
                 articleEntity: articles[index],
                 onTap: () {
                   AiloitteNavigation.intentWithData(context,
-                          AppRoutes.articleDetailRoute, articles[index])
-                      .then((value) => _loadArticles());
+                          AppRoutes.articleDetailRoute, articles[index].id)
+                      .then((_) => _loadArticles());
                 },
               );
             },
             itemCount: articles.length,
           ),
-          floatingActionButton:
-              UserHelper.role != UserRole.patient ? _buildCreateNewButton() : null,
+          floatingActionButton: UserHelper.role != UserRole.patient
+              ? _buildCreateNewButton()
+              : null,
         );
       },
     );
@@ -89,7 +91,10 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
   Widget _buildCreateNewButton() {
     return InkWell(
       onTap: () {
-        AiloitteNavigation.intent(context, AppRoutes.createArticleRoute)
+        AiloitteNavigation.intentWithData(
+                context,
+                AppRoutes.createOrEditArticleRoute,
+                CreateOrEditScreenParams(isEditing: false, articleId: ''))
             .then((value) => _loadArticles());
       },
       child: Container(
