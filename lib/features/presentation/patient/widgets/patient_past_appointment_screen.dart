@@ -51,7 +51,7 @@ class _PatientPastAppointmentsScreenState
       }, builder: (_, state) {
         if (_appointmentEntities.isEmpty) {
           return Center(
-            child: component.text('No Past Appointment Fund',
+            child: component.text('No Past Appointment Found',
                 style: theme.publicSansFonts.mediumStyle(
                   fontSize: 20,
                 )),
