@@ -18,6 +18,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/custom_inkwell.dart';
 import 'package:my_sutra/core/utils/screentop_handler.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
@@ -259,8 +260,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     component.spacer(height: 20),
                     TextFormFieldWidget(
                       title: "Email",
-                      validator: (value) =>
-                          value.isEmpty ? 'Please Enter Email' : null,
+                      validator: (value) => value.isEmpty
+                          ? 'Please Enter Email'
+                          : !value.isValidEmail
+                              ? 'Please Enter Valid Email'
+                              : null,
                       hintText: 'Enter Email Address',
                       hintTextStyle: theme.publicSansFonts.regularStyle(
                           fontSize: 16, fontColor: AppColors.grey92),
@@ -273,10 +277,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       controller: _ageCtrl,
                       textInputType: TextInputType.number,
                       hintText: 'Enter Age',
+                      maxLength: 2,
                       hintTextStyle: theme.publicSansFonts.regularStyle(
                           fontSize: 16, fontColor: AppColors.grey92),
-                      validator: (value) =>
-                          value.isEmpty ? 'Please Enter Age' : null,
+                      validator: (value) => value.isEmpty
+                          ? 'Please Enter Age'
+                          : Utils.isValidAge(value),
                       suffixWidget: Padding(
                         padding: const EdgeInsets.only(top: 10, right: 20),
                         child: Text(

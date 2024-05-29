@@ -76,4 +76,15 @@ class Utils {
     }
     return false;
   }
+
+  static String? isValidAge(String? value) {
+    final age = int.tryParse(value!);
+
+    if (age == null) {
+      return 'Please Enter Valid Age';
+    } else if (age < 1) {
+      return 'Age should be greater than 0';
+    }
+    return null;
+  }
 }

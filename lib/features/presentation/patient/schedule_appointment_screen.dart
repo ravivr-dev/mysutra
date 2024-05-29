@@ -159,6 +159,8 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                                 controller: _ageController,
                                 errorText: 'Age',
                                 maxLength: 2,
+                                additionalValidation: (value) =>
+                                    Utils.isValidAge(value),
                                 textInputType: TextInputType.number),
                             _buildText(
                                 value: context
