@@ -14,6 +14,10 @@ import 'package:my_sutra/features/presentation/common/login/cubit/select_account
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
+import '../../../../injection_container.dart';
+import '../../doctor_screens/bottom_sheets/verification_pending_bottom_sheet.dart';
+import '../home/cubit/home_cubit.dart';
+
 class SelectAccountScreen extends StatefulWidget {
   const SelectAccountScreen({super.key});
 
@@ -56,6 +60,11 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
                 } else if (state is SelectAccountLoaded) {
                   users = state.data;
                 } else if (state is SelectedAccountLoaded) {
+                  if (state.data.role == 'DOCTOR' &&
+                      (state.data.isVerified ?? false) == false) {
+                    _showPendingBottomSheet();
+                    return;
+                  }
                   UserHelper.init(role: state.data.role!);
                   AiloitteNavigation.intentWithClearAllRoutes(
                       context, AppRoutes.homeRoute);
@@ -178,6 +187,15 @@ class _SelectAccountScreenState extends State<SelectAccountScreen> {
           ),
           const SizedBox(height: 30),
         ],
+      ),
+    );
+  }
+
+  void _showPendingBottomSheet() {
+    context.showBottomSheet(
+      BlocProvider(
+        create: (_) => sl<HomeCubit>(),
+        child: const VerificationPendingBottomSheet(),
       ),
     );
   }
