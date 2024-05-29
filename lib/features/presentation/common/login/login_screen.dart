@@ -31,11 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _mobCtrl = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _countryCode.dispose();
     _mobCtrl.dispose();
