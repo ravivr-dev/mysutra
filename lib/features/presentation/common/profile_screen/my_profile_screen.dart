@@ -119,11 +119,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 component.spacer(height: 12),
                 if (userRole == UserRole.doctor) ...[
                   _buildCard(
-                      value: 'Learning Management',
-                      icons: Assets.iconsLms,
+                      value: 'Payment',
+                      icons: Assets.iconsPayment,
                       onTap: () {
-                        AiloitteNavigation.intent(
-                            context, AppRoutes.lmsFeedRoute);
+                        // AiloitteNavigation.intent(
+                        //     context, AppRoutes.lmsFeedRoute);
                       }),
                   component.spacer(height: 10),
                   _buildCard(
@@ -140,6 +140,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             .patient /*||
                       userRole == UserRole.guest*/
                     ) ...[
+                  _buildCard(
+                      value: 'Payment History',
+                      icons: Assets.iconsPayment,
+                      onTap: () {
+                        AiloitteNavigation.intent(
+                            context, AppRoutes.paymentHistoryRoute);
+                      }),
+                  component.spacer(height: 10),
                   _buildCard(
                       value: 'Past Appointments',
                       icons: Assets.iconsClock,

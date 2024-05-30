@@ -48,7 +48,9 @@ class AppRoutes {
   static const String createOrEditArticleRoute = '/article/create_article';
   static const String articleDetailRoute = '/article/article_detail_screen';
 
-  static const String imageViewScreen = '/image_view_screen';
+  static const String imageViewRoute = '/image_view_screen';
+  static const String paymentHistoryRoute = '/payment_history_screen';
+
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";
   // static const String markAttendanceRoute = "/mark_attendance_screen";

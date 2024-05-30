@@ -35,6 +35,7 @@ import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/blo
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
+import 'package:my_sutra/features/presentation/patient/payment_history/payment_history_screen.dart';
 import 'package:my_sutra/features/presentation/patient/schedule_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/doctor_result_screen.dart';
@@ -302,11 +303,16 @@ class Routes {
                   child: ArticleDetailScreen(articleId: args as String),
                 ));
 
-      case AppRoutes.imageViewScreen:
+      case AppRoutes.imageViewRoute:
         return MaterialPageRoute(
           builder: (_) => ImageViewScreen(
             imageUrl: args as String,
           ),
+        );
+
+      case AppRoutes.paymentHistoryRoute:
+        return MaterialPageRoute(
+          builder: (_) => const PaymentHistoryScreen(),
         );
 
       // case AppRoutes.myBatchesRoute:
