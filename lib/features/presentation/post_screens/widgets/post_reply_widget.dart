@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/reply_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
@@ -36,7 +36,7 @@ class PostReplyWidget extends StatelessWidget {
               isPost: false,
             ),
             component.spacer(height: 10),
-            component.text(DateFormat('d/M/y').format(reply.updatedAt),
+            component.text(Utils.formatElapsedTime(reply.updatedAt.toLocal()),
                 style: theme.publicSansFonts.regularStyle(
                   fontColor: AppColors.neutral,
                 )),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
 import 'package:my_sutra/features/presentation/article/widgets/article_reply_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
@@ -50,8 +50,8 @@ class _ArticleCommentWidgetState extends State<ArticleCommentWidget> {
       children: [
         component.spacer(height: 10),
         component.text(
-            DateFormat('d/M/y')
-                .format(DateTime.parse(widget.comment.updatedAt!)),
+            Utils.formatElapsedTime(
+                DateTime.parse(widget.comment.updatedAt!).toLocal()),
             style: theme.publicSansFonts.regularStyle(
               fontColor: AppColors.neutral,
             )),

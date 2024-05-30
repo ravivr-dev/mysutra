@@ -62,8 +62,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           widget.showErrorToast(context: context, message: state.error);
         }
         if (state is EditPostLoaded) {
-          AiloitteNavigation.intentWithClearAllRoutes(
-              context, AppRoutes.homeRoute);
+          AiloitteNavigation.intentWithClearAllRoutesWithData(
+              context, AppRoutes.homeRoute, 1);
         } else if (state is EditPostError) {
           widget.showErrorToast(context: context, message: state.error);
         }
@@ -158,42 +158,51 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.only(right: 30),
-              decoration: BoxDecoration(
-                  color: AppColors.black01.withOpacity(.74),
-                  borderRadius: BorderRadius.circular(30)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // ImagePicker().pickImage(source: ImageSource.gallery);
-                      updateImageSheet(onChange: (image) {
-                        if (image != null) {
-                          context.read<PostsCubit>().uploadDoc(image);
-                          AiloitteNavigation.back(context);
-                        }
-                      });
-                    },
-                    child: component.assetImage(path: Assets.iconsImage),
-                  ),
-                  // InkWell(
-                  //     onTap: () =>
-                  //         ImagePicker().pickVideo(source: ImageSource.gallery),
-                  //     child: component.assetImage(path: Assets.iconsVideo)),
-                  InkWell(
-                    onTap: () {
-                      //Navigate to document screen
-                    },
-                    child: component.assetImage(path: Assets.iconsDocs),
-                  ),
-                ],
-              ),
+          Container(
+            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.only(right: 30),
+            decoration: BoxDecoration(
+                color: AppColors.black01.withOpacity(.74),
+                borderRadius: BorderRadius.circular(25)),
+            child: InkWell(
+              onTap: () {
+                // ImagePicker().pickImage(source: ImageSource.gallery);
+                updateImageSheet(onChange: (image) {
+                  if (image != null) {
+                    context.read<PostsCubit>().uploadDoc(image);
+                    AiloitteNavigation.back(context);
+                  }
+                });
+              },
+              child: component.assetImage(path: Assets.iconsImage),
             ),
+            // Row(
+            //   mainAxisSize: MainAxisSize.min,
+            //   children: [
+            //     InkWell(
+            //       onTap: () {
+            //         // ImagePicker().pickImage(source: ImageSource.gallery);
+            //         updateImageSheet(onChange: (image) {
+            //           if (image != null) {
+            //             context.read<PostsCubit>().uploadDoc(image);
+            //             AiloitteNavigation.back(context);
+            //           }
+            //         });
+            //       },
+            //       child: component.assetImage(path: Assets.iconsImage),
+            //     ),
+            //     // InkWell(
+            //     //     onTap: () =>
+            //     //         ImagePicker().pickVideo(source: ImageSource.gallery),
+            //     //     child: component.assetImage(path: Assets.iconsVideo)),
+            //     // InkWell(
+            //     //   onTap: () {
+            //     //     //Navigate to document screen
+            //     //   },
+            //     //   child: component.assetImage(path: Assets.iconsDocs),
+            //     // ),
+            //   ],
+            // ),
           ),
           const Spacer(),
           InkWell(
