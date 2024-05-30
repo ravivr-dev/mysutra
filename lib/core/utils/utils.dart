@@ -118,4 +118,10 @@ class Utils {
       return 'Just now';
     }
   }
+
+  static void launchURL(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      launchUrl(Uri.parse(url));
+    }
+  }
 }

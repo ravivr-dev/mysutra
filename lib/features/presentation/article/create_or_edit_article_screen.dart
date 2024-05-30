@@ -27,7 +27,6 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
   final TextEditingController _bodyController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final List<ArticleMediaUrlEntity> mediaUrl = [];
-  final List<String> imageList = [];
   ArticleEntity? article;
   XFile? media;
 
@@ -59,10 +58,11 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
           widget.showErrorToast(context: context, message: state.error);
         }
         if (state is UploadDocLoaded) {
-          mediaUrl.add(ArticleMediaUrlEntity(
-              mediaType: 'IMAGE_URL',
-              url: removeUntilLastSlash(state.data.key ?? "")));
-          imageList.add(state.data.fileUrl!);
+          // mediaUrl.add(ArticleMediaUrlEntity(
+          //     mediaType: 'IMAGE_URL',
+          //     url: removeUntilLastSlash(state.data.key ?? "")));
+
+          _bodyController.text += ' ${state.data.fileUrl} ';
         } else if (state is UploadDocError) {
           widget.showErrorToast(context: context, message: state.error);
         }
@@ -122,7 +122,6 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                         : null;
                   },
                 ),
-                _buildImageWidget(),
                 component.textField(
                   controller: _bodyController,
                   hintText: 'Note',
@@ -144,55 +143,6 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
         );
       },
     );
-  }
-
-  List<Widget> _processTextWithLinks(String text) {
-    final urlRegex = RegExp(
-      r'(?:(?:https?|ftp):\/\/[^\s/$.?#].[^\s]*)',
-      caseSensitive: false,
-    );
-    final imageUrlRegex = RegExp(
-      r'(?:(?:https?|ftp):\/\/[^\s/$.?#].[^\s]*\.(?:jpg|jpeg|png|gif))',
-      caseSensitive: false,
-    );
-
-    List<Widget> widgets = [];
-    final splitText = text.split(' ');
-
-    for (var word in splitText) {
-      if (imageUrlRegex.hasMatch(word)) {
-        widgets.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Image.network(word),
-          ),
-        );
-      } else if (urlRegex.hasMatch(word)) {
-        widgets.add(
-          GestureDetector(
-            onTap: () => _launchURL(word),
-            child: Text(
-              word,
-              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
-            ),
-          ),
-        );
-      } else {
-        widgets.add(
-          Text(word + ' '),
-        );
-      }
-    }
-
-    return widgets;
-  }
-
-  void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   Widget _buildImageUploadButton() {

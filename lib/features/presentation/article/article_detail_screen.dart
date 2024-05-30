@@ -5,6 +5,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/presentation/article/bottomsheet/edit_delete_bottomsheet.dart';
@@ -35,6 +36,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   int pagination = 1;
   int limit = 50;
   List<ArticleCommentEntity> comments = [];
+  List<Widget> widgets = [];
 
   @override
   void initState() {
@@ -57,6 +59,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
       } else if (state is GetArticleDetailLoaded) {
         article = state.article;
         isLoading = false;
+        widgets = _processTextWithLinks(state.article.content ?? '');
       } else if (state is GetArticleDetailError) {
         widget.showErrorToast(context: context, message: state.error);
       }
@@ -146,10 +149,11 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                       ],
                     ),
                     _buildInfo(),
-                    component.text(article?.content ?? '',
-                        style: theme.publicSansFonts.regularStyle(
-                            fontColor: AppColors.color0xFF636A80,
-                            fontSize: 14)),
+                    // component.text(article?.content ?? '',
+                    //     style: theme.publicSansFonts.regularStyle(
+                    //         fontColor: AppColors.color0xFF636A80,
+                    //         fontSize: 14)),
+                    ...widgets,
                     _buildFooter(),
                     if (comments.isNotEmpty) ...[
                       component.spacer(height: 20),
@@ -312,10 +316,6 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     context.read<ArticleCubit>().getArticleDetail(articleId: widget.articleId);
   }
 
-  void callDeleteApi() {
-    context.read<ArticleCubit>().deleteArticle(articleId: widget.articleId);
-  }
-
   void _confirmDeleteDialog() {
     showDialog(
         context: context,
@@ -367,5 +367,66 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             ],
           );
         });
+  }
+
+  List<Widget> _processTextWithLinks(String text) {
+    final urlRegex = RegExp(
+      r'(?:https?|ftp)://[^\s/$.?#].\S*',
+      caseSensitive: false,
+    );
+    final imageUrlRegex = RegExp(
+      r'(?:https?|ftp)://[^\s/$.?#].\S*\.(?:jpg|jpeg|png|gif)',
+      caseSensitive: false,
+    );
+
+    List<Widget> widgets = [];
+    final matches = urlRegex.allMatches(text);
+
+    int lastMatchEnd = 0;
+
+    matches.forEach((match) {
+      if (lastMatchEnd != match.start) {
+        widgets.add(_buildRichText(text.substring(lastMatchEnd, match.start)));
+      }
+
+      final matchedText = text.substring(match.start, match.end);
+
+      if (imageUrlRegex.hasMatch(matchedText)) {
+        widgets.add(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.network(matchedText),
+          ),
+        );
+      } else {
+        widgets.add(
+          GestureDetector(
+            onTap: () => Utils.launchURL(matchedText),
+            child: Text(
+              matchedText,
+              style: TextStyle(
+                  color: Colors.blue, decoration: TextDecoration.underline),
+            ),
+          ),
+        );
+      }
+
+      lastMatchEnd = match.end;
+    });
+
+    if (lastMatchEnd != text.length) {
+      widgets.add(_buildRichText(text.substring(lastMatchEnd)));
+    }
+
+    return widgets;
+  }
+
+  Widget _buildRichText(String text) {
+    return RichText(
+      text: TextSpan(
+        text: text,
+        style: TextStyle(color: Colors.black, fontSize: 16),
+      ),
+    );
   }
 }
