@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/presentation/article/article_detail_screen.dart';
 import 'package:my_sutra/features/presentation/article/create_or_edit_article_screen.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
@@ -33,8 +34,9 @@ import 'package:my_sutra/features/presentation/doctor_screens/my_patients/doctor
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_patients_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
-import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/find_doctor_screen.dart';
+import 'package:my_sutra/features/presentation/patient/payment_history/cubit/payment_history_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/payment_history/payment_history_screen.dart';
 import 'package:my_sutra/features/presentation/patient/schedule_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
@@ -312,7 +314,11 @@ class Routes {
 
       case AppRoutes.paymentHistoryRoute:
         return MaterialPageRoute(
-          builder: (_) => const PaymentHistoryScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                sl<PaymentHistoryCubit>()..getData(PaginationParams()),
+            child: const PaymentHistoryScreen(),
+          ),
         );
 
       // case AppRoutes.myBatchesRoute:

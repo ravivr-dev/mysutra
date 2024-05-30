@@ -157,6 +157,7 @@ class PatientRepoConv {
               id: e.id,
               fullName: e.doctor?.fullName,
               specialization: e.specialization?.name,
+              amount: e.totalAmount,
               date: e.date,
               time: e.time,
             ))

@@ -7,7 +7,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
 import 'package:my_sutra/features/presentation/common/home/screens/bottom_sheets/cancel_appointment_bottom_sheet.dart';
-import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 

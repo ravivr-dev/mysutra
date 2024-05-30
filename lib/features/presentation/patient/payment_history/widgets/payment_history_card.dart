@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_history_entity.dart';
 
 class PaymentHistoryCard extends StatelessWidget {
+  final PaymentHistoryEntity data;
   const PaymentHistoryCard({
-    super.key,
+    super.key, required this.data,
   });
 
   @override
@@ -27,8 +30,9 @@ class PaymentHistoryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (data.date != null)
           Text(
-            '17/09/2024',
+           "${DateFormat('dd/MM/yyyy').format(DateTime.parse(data.date!))}  ${data.time ?? ''}",
             style: theme.publicSansFonts.regularStyle(
                 fontSize: 14, height: 20, fontColor: AppColors.grey81),
           ),
@@ -37,7 +41,7 @@ class PaymentHistoryCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Dr. Rita Rawat',
+                  data.fullName ?? '',
                   style: theme.publicSansFonts.mediumStyle(
                       fontSize: 16,
                       height: 20,
@@ -45,7 +49,7 @@ class PaymentHistoryCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '₹ 200.0',
+                '₹ ${data.amount}',
                 style: theme.publicSansFonts.semiBoldStyle(
                     fontSize: 16, height: 20, fontColor: AppColors.blackColor),
               ),
@@ -56,7 +60,7 @@ class PaymentHistoryCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Otologist',
+                  data.specialization ?? '',
                   style: theme.publicSansFonts.regularStyle(
                       fontSize: 14, height: 20, fontColor: AppColors.black01),
                 ),

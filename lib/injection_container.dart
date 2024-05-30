@@ -60,6 +60,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/past_appointments_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
@@ -102,7 +103,8 @@ import 'package:my_sutra/features/presentation/common/login/cubit/select_account
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
-import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/payment_history/cubit/payment_history_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/search/cubit/search_doctor_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -198,6 +200,10 @@ Future<void> init() async {
       getArticlesUsecase: sl<GetArticlesUsecase>(),
       createArticleUsecase: sl<CreateArticleUsecase>(),
       likeDislikeArticleUsecase: sl<LikeDislikeArticleUsecase>()));
+  sl.registerFactory(
+    () =>
+        PaymentHistoryCubit(paymentHistoryUsecase: sl<PaymentHistoryUseCase>()),
+  );
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -275,6 +281,7 @@ Future<void> init() async {
   sl.registerFactory(() => EditArticleUsecase(sl<ArticleRepository>()));
   sl.registerFactory(() => GetRasorpayKeyUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => PaymentOrderUseCase(sl<PatientRepository>()));
+  sl.registerFactory(() => PaymentHistoryUseCase(sl<PatientRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(
