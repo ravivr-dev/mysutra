@@ -70,7 +70,6 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _callAppointmentApi();
     });
-
     super.initState();
   }
 

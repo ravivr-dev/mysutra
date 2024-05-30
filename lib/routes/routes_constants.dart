@@ -50,6 +50,7 @@ class AppRoutes {
 
   static const String imageViewRoute = '/image_view_screen';
   static const String paymentHistoryRoute = '/payment_history_screen';
+  static const String paymentCheckoutRoute = '/payment_checkout_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";

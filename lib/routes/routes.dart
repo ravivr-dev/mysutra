@@ -32,6 +32,7 @@ import 'package:my_sutra/features/presentation/common/video_calling/video_callin
 import 'package:my_sutra/features/presentation/doctor_screens/my_following/doctor_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/doctor_past_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_patients_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/payment_checkout_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
@@ -318,6 +319,14 @@ class Routes {
             create: (context) =>
                 sl<PaymentHistoryCubit>()..getData(PaginationParams()),
             child: const PaymentHistoryScreen(),
+          ),
+        );
+
+      case AppRoutes.paymentCheckoutRoute:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<PaymentHistoryCubit>(),
+            child: const PaymentCheckoutScreen(),
           ),
         );
 

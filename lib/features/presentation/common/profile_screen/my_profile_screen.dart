@@ -122,8 +122,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       value: 'Payment',
                       icons: Assets.iconsPayment,
                       onTap: () {
-                        // AiloitteNavigation.intent(
-                        //     context, AppRoutes.lmsFeedRoute);
+                        AiloitteNavigation.intent(
+                            context, AppRoutes.paymentCheckoutRoute);
                       }),
                   component.spacer(height: 10),
                   _buildCard(

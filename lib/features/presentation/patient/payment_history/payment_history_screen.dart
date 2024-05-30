@@ -23,14 +23,23 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        context
-            .read<PaymentHistoryCubit>()
-            .getData(PaginationParams(pagination: _page));
-      }
-    });
+    _scrollController.addListener(() => _onScroll());
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        0.7 * _scrollController.position.maxScrollExtent) {
+      context
+          .read<PaymentHistoryCubit>()
+          .getData(PaginationParams(pagination: _page));
+    }
   }
 
   final circularProgressIndicator =
@@ -58,6 +67,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
             return circularProgressIndicator;
           }
           return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 50),
               controller: _scrollController,
               shrinkWrap: true,
               itemCount: cubit.paymentHistoty.length + 1,
