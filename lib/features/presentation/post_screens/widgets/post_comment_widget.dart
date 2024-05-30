@@ -1,11 +1,11 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/comment_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/comment_button_widget.dart';
@@ -112,7 +112,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
         ),
         component.spacer(height: 10),
         component.text(
-            DateFormat('d/M/y').format(widget.commentEntity.updatedAt),
+            Utils.formatElapsedTime(widget.commentEntity.updatedAt.toLocal()),
             style: theme.publicSansFonts.regularStyle(
               fontColor: AppColors.neutral,
             )),
@@ -136,8 +136,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                 likeCount: widget.commentEntity.totalLikes),
             component.spacer(width: 20),
             CommentButtonWidget(
-                commentCount: widget.commentEntity.totalReplies,
-                onTap: () {}),
+                commentCount: widget.commentEntity.totalReplies, onTap: () {}),
             const Spacer(),
             InkWell(
               onTap: () {

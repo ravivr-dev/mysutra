@@ -1,13 +1,7 @@
-// import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 
-// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-
-// import 'package:my_sutra/features/presentation/article/create_or_edit_article_screen.dart';
-// import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
-// import 'package:my_sutra/routes/routes_constants.dart';
 
 class EditDeleteBottomsheet extends StatelessWidget {
   final String articleId;
@@ -35,14 +29,6 @@ class EditDeleteBottomsheet extends StatelessWidget {
         children: [
           InkWell(
               onTap: onTapEdit,
-              //     () {
-              //   AiloitteNavigation.back(context);
-              //   AiloitteNavigation.intentWithData(
-              //       context,
-              //       AppRoutes.createOrEditArticleRoute,
-              //       CreateOrEditScreenParams(
-              //           isEditing: true, articleId: articleId));
-              // },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -59,10 +45,6 @@ class EditDeleteBottomsheet extends StatelessWidget {
           component.divider(),
           InkWell(
               onTap: onTapDelete,
-              //     () {
-              //   AiloitteNavigation.back(context);
-              //   _confirmDeleteDialog(context);
-              // },
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 const Icon(
@@ -78,57 +60,4 @@ class EditDeleteBottomsheet extends StatelessWidget {
       ),
     );
   }
-
-// void _confirmDeleteDialog(BuildContext context) {
-//   showDialog(
-//       context: context,
-//       builder: (context) {
-//         return AlertDialog(
-//           elevation: 0,
-//           shape: const RoundedRectangleBorder(
-//             borderRadius: BorderRadius.all(
-//               Radius.circular(20),
-//             ),
-//           ),
-//           iconPadding: const EdgeInsets.only(top: 40, bottom: 25),
-//           content: component.text(
-//             "Are you sure you want to delete ?",
-//             style: theme.publicSansFonts
-//                 .regularStyle(fontSize: 16, fontColor: Colors.grey),
-//             textAlign: TextAlign.center,
-//           ),
-//           actionsPadding:
-//               const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-//           actions: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.end,
-//               children: [
-//                 TextButton(
-//                   onPressed: () {
-//                     context
-//                         .read<ArticleCubit>()
-//                         .deleteArticle(articleId: articleId);
-//                     AiloitteNavigation.back(context);
-//                   },
-//                   child: Text(
-//                     'Yes',
-//                     style: theme.publicSansFonts.mediumStyle(fontSize: 16),
-//                   ),
-//                 ),
-//                 const SizedBox(height: 15),
-//                 TextButton(
-//                   child: Text(
-//                     "No",
-//                     style: theme.publicSansFonts.mediumStyle(fontSize: 16),
-//                   ),
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                   },
-//                 ),
-//               ],
-//             ),
-//           ],
-//         );
-//       });
-// }
 }

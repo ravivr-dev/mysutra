@@ -17,6 +17,8 @@ class ReportingBottomSheet extends StatelessWidget {
       listener: (context, state) {
         if (state is ReportPostLoaded) {
           AiloitteNavigation.back(context);
+          showSuccessToast(
+              context: context, message: 'Post Reported Successfully');
         }
 
         if (state is ReportPostError) {

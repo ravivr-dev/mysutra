@@ -42,7 +42,9 @@ class EditOrDeletePostBottomSheet extends StatelessWidget {
             }, key: 'Edit Post', icon: Assets.iconsReport, color: Colors.black),
             const Divider(color: AppColors.color0xFFEAECF0),
             _buildRow(context, onTap: () {
-              context.read<PostsCubit>().deletePost(postId: postId);
+              // context.read<PostsCubit>().deletePost(postId: postId);
+              // AiloitteNavigation.back(context);
+              _confirmDeleteDialog(context);
             },
                 key: 'Delete Post',
                 icon: Assets.iconsWarning,
@@ -75,5 +77,56 @@ class EditOrDeletePostBottomSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _confirmDeleteDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            iconPadding: const EdgeInsets.only(top: 40, bottom: 25),
+            content: component.text(
+              "Are you sure you want to delete ?",
+              style: theme.publicSansFonts
+                  .regularStyle(fontSize: 16, fontColor: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+            actionsPadding:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      context.read<PostsCubit>().deletePost(postId: postId);
+                      AiloitteNavigation.back(context);
+                    },
+                    child: Text(
+                      'Yes',
+                      style: theme.publicSansFonts.mediumStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextButton(
+                    child: Text(
+                      "No",
+                      style: theme.publicSansFonts.mediumStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }
