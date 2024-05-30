@@ -384,7 +384,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
 
     int lastMatchEnd = 0;
 
-    matches.forEach((match) {
+    for (var match in matches) {
       if (lastMatchEnd != match.start) {
         widgets.add(_buildRichText(text.substring(lastMatchEnd, match.start)));
       }
@@ -404,7 +404,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             onTap: () => Utils.launchURL(matchedText),
             child: Text(
               matchedText,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.blue, decoration: TextDecoration.underline),
             ),
           ),
@@ -412,7 +412,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
       }
 
       lastMatchEnd = match.end;
-    });
+    }
 
     if (lastMatchEnd != text.length) {
       widgets.add(_buildRichText(text.substring(lastMatchEnd)));
@@ -425,7 +425,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     return RichText(
       text: TextSpan(
         text: text,
-        style: TextStyle(color: Colors.black, fontSize: 16),
+        style: const TextStyle(color: AppColors.color0xFF636A80, fontSize: 14),
       ),
     );
   }

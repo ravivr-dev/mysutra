@@ -7,6 +7,7 @@ import 'package:my_sutra/features/domain/entities/article_entities/article_comme
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_id_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_media_urls_entity.dart';
+import 'package:my_sutra/features/domain/entities/article_entities/article_reply_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_user_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_entity.dart';
@@ -100,9 +101,9 @@ class ArticleRepoConv {
               ),
               comment: e.comment,
               isMyComment: e.isMyComment,
-              isLiked: e.isLiked,
-              totalLikes: e.totalLikes,
-              replies: e.replies?.map((e) => RepliesEntity()).toList(),
+              isLiked: e.isLiked ?? false,
+              totalLikes: e.totalLikes ?? 0,
+              replies: e.replies?.map((e) => ArticleRepliesEntity()).toList(),
               createdAt: e.createdAt,
               updatedAt: e.updatedAt,
             ))

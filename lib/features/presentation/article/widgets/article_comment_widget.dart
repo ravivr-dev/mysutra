@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
+import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/widgets/article_reply_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/send_button_widget.dart';
@@ -22,25 +25,38 @@ class _ArticleCommentWidgetState extends State<ArticleCommentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 14),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-          border: Border.all(color: AppColors.color0xFFE2E8F0),
-          borderRadius: BorderRadius.circular(6)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        _buildComment(),
-        if (widget.comment.replies!.isNotEmpty) ...[
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return const ArticleReplyWidget();
-            },
-            itemCount: widget.comment.replies!.length,
-          ),
-        ],
-      ]),
+    return BlocConsumer<ArticleCubit, ArticleState>(
+      listener: (context, state) {
+        if (state is LikeDislikeCommentLoaded &&
+            state.commentId == widget.comment.id) {
+          widget.comment.reInitIsLiked();
+        } else if (state is LikeDislikeCommentError) {
+          widget.showErrorToast(context: context, message: state.error);
+        }
+      },
+      builder: (context, state) {
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 14),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+              border: Border.all(color: AppColors.color0xFFE2E8F0),
+              borderRadius: BorderRadius.circular(6)),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            _buildComment(),
+            if (widget.comment.replies!.isNotEmpty) ...[
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return const ArticleReplyWidget();
+                },
+                itemCount: widget.comment.replies!.length,
+              ),
+            ],
+          ]),
+        );
+      },
     );
   }
 
@@ -64,13 +80,13 @@ class _ArticleCommentWidgetState extends State<ArticleCommentWidget> {
         ),
         component.spacer(height: 12),
         LikeDislikeButtonWidget(
-            isLiked: widget.comment.isLiked!,
+            isLiked: widget.comment.isLiked,
             onTap: () {
-              // context
-              //     .read<PostsCubit>()
-              //     .likeDislikeComment(commentId: widget.comment.id);
+              context
+                  .read<ArticleCubit>()
+                  .likeDislikeComment(commentId: widget.comment.id!);
             },
-            likeCount: widget.comment.totalLikes!),
+            likeCount: widget.comment.totalLikes),
         // Row(
         //   children: [
         //     const Spacer(),

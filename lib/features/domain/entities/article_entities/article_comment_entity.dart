@@ -1,3 +1,4 @@
+import 'package:my_sutra/features/domain/entities/article_entities/article_reply_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_user_entity.dart';
 
 class ArticleCommentEntity {
@@ -6,9 +7,9 @@ class ArticleCommentEntity {
   ArticleUserEntity? userId;
   String? comment;
   bool? isMyComment;
-  bool? isLiked;
-  int? totalLikes;
-  List<RepliesEntity>? replies;
+  bool isLiked;
+  int totalLikes;
+  List<ArticleRepliesEntity>? replies;
   String? createdAt;
   String? updatedAt;
 
@@ -18,30 +19,19 @@ class ArticleCommentEntity {
       this.userId,
       this.comment,
       this.isMyComment,
-      this.isLiked,
-      this.totalLikes,
+      required this.isLiked,
+      required this.totalLikes,
       this.replies,
       this.createdAt,
       this.updatedAt});
-}
 
-class RepliesEntity {
-  String? id;
-  ArticleUserEntity? userId;
-  String? reply;
-  bool? isMyReply;
-  bool? isLiked;
-  int? totalLikes;
-  String? createdAt;
-  String? updatedAt;
+  void reInitIsLiked() {
+    isLiked = !isLiked;
 
-  RepliesEntity(
-      {this.id,
-      this.userId,
-      this.reply,
-      this.isMyReply,
-      this.isLiked,
-      this.totalLikes,
-      this.createdAt,
-      this.updatedAt});
+    if (isLiked) {
+      totalLikes += 1;
+    } else {
+      totalLikes -= 1;
+    }
+  }
 }

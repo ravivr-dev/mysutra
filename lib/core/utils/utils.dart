@@ -120,7 +120,8 @@ class Utils {
   }
 
   static void launchURL(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
+    final canLaunch=await canLaunchUrl(Uri.parse(url));
+    if (canLaunch) {
       launchUrl(Uri.parse(url));
     }
   }
