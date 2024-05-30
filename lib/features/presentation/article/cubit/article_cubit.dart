@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
+import 'package:my_sutra/features/domain/entities/article_entities/article_media_urls_entity.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/create_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/delete_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/edit_article_usecase.dart';
@@ -10,10 +15,12 @@ import 'package:my_sutra/features/domain/usecases/article_usecases/get_articles_
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_comment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/like_dislike_article_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/article_usecases/write_comment_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 
 part 'article_state.dart';
 
 class ArticleCubit extends Cubit<ArticleState> {
+  final UploadDocumentUsecase uploadDocumentUsecase;
   final CreateArticleUsecase createArticleUsecase;
   final GetArticlesUsecase getArticlesUsecase;
   final ArticleDetailUsecase getArticleDetailUsecase;
@@ -25,6 +32,7 @@ class ArticleCubit extends Cubit<ArticleState> {
   final EditArticleUsecase editArticleUsecase;
 
   ArticleCubit({
+    required this.uploadDocumentUsecase,
     required this.editArticleUsecase,
     required this.getArticleDetailUsecase,
     required this.likeDislikeArticleCommentUsecase,
@@ -36,13 +44,27 @@ class ArticleCubit extends Cubit<ArticleState> {
     required this.getArticlesUsecase,
   }) : super(ArticleInitial());
 
+  void uploadDoc(XFile file) async {
+    emit(UploadDocLoading());
+
+    final result = await uploadDocumentUsecase.call(File(file.path));
+
+    result.fold(
+        (l) => emit(UploadDocError(
+            error:
+                'There is some error while uploading selected image. TRY AGAIN.')),
+        (r) => emit(UploadDocLoaded(data: r)));
+  }
+
   void createPost({
     required String heading,
     required String content,
+    required List<ArticleMediaUrlEntity> mediaUrls,
   }) async {
     final result = await createArticleUsecase.call(CreateArticleParams(
       heading: heading,
       content: content,
+      mediaUrls: mediaUrls,
     ));
     result.fold((l) => emit(CreateArticleError(error: l.message)),
         (r) => emit(CreateArticleLoaded(message: r)));

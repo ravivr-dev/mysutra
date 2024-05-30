@@ -35,8 +35,11 @@ class ArticleRepositoryImpl extends ArticleRepository {
       CreateArticleParams params) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDatasource.createArticle(
-            {"heading": params.heading, "content": params.content});
+        final result = await remoteDatasource.createArticle({
+          "heading": params.heading,
+          "content": params.content,
+          "mediaUrls": params.mediaUrls.map((e) => e.toJson()).toList()
+        });
 
         return Right(result.message ?? 'New Article Created Success');
       } else {

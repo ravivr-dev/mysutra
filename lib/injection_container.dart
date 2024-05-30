@@ -189,6 +189,7 @@ Future<void> init() async {
         editPostUsecase: sl<EditPostUsecase>(),
       ));
   sl.registerFactory(() => ArticleCubit(
+      uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
       editArticleUsecase: sl<EditArticleUsecase>(),
       getArticleDetailUsecase: sl<ArticleDetailUsecase>(),
       likeDislikeArticleCommentUsecase: sl<LikeDislikeArticleCommentUsecase>(),

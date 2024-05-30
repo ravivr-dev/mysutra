@@ -6,6 +6,7 @@ import 'package:my_sutra/features/data/model/article_models/like_dislike_article
 import 'package:my_sutra/features/domain/entities/article_entities/article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_id_entity.dart';
+import 'package:my_sutra/features/domain/entities/article_entities/article_media_urls_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_user_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_comment_entity.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/like_dislike_article_entity.dart';
@@ -26,6 +27,10 @@ class ArticleRepoConv {
               ),
               heading: e.heading,
               content: e.content,
+              mediaUrls: e.mediaUrls
+                  ?.map((e) =>
+                      ArticleMediaUrlEntity(mediaType: e.mediaType, url: e.url))
+                  .toList(),
               isMyArticle: e.isMyArticle,
               isLiked: e.isLiked!,
               isViewed: e.isViewed,
@@ -49,6 +54,10 @@ class ArticleRepoConv {
                       ),
                       heading: e.articleId!.heading,
                       content: e.articleId!.content,
+                      mediaUrls: e.articleId!.mediaUrls
+                          ?.map((e) => ArticleMediaUrlEntity(
+                              mediaType: e.mediaType, url: e.url))
+                          .toList(),
                       isMyArticle: e.articleId!.isMyArticle,
                       isLiked: e.articleId!.isLiked,
                       isViewed: e.articleId!.isViewed,
@@ -128,6 +137,10 @@ class ArticleRepoConv {
       ),
       heading: model.data!.heading,
       content: model.data!.content,
+      mediaUrls: model.data!.mediaUrls
+          ?.map(
+              (e) => ArticleMediaUrlEntity(mediaType: e.mediaType, url: e.url))
+          .toList(),
       isMyArticle: model.data!.isMyArticle,
       isLiked: model.data!.isLiked!,
       isViewed: model.data!.isViewed,
@@ -137,28 +150,34 @@ class ArticleRepoConv {
       totalShares: model.data!.totalShares!,
       repostedArticleCount: model.data!.repostedArticleCount,
       isRepostedByMe: model.data!.isRepostedByMe,
-      articleId: model.data!.articleId == null ? null : ArticleIdEntity(
-        id: model.data!.articleId!.id,
-        userId: ArticleUserEntity(
-          id: model.data!.articleId!.userId!.id,
-          role: model.data!.articleId!.userId!.role,
-          profilePic: model.data!.articleId!.userId!.profilePic,
-          fullName: model.data!.articleId!.userId!.fullName,
-          username: model.data!.articleId!.userId!.username,
-          isVerified: model.data!.articleId!.userId!.isVerified,
-        ),
-        heading: model.data!.articleId!.heading,
-        content: model.data!.articleId!.content,
-        isMyArticle: model.data!.articleId!.isMyArticle,
-        isLiked: model.data!.articleId!.isLiked,
-        isViewed: model.data!.articleId!.isViewed,
-        totalViews: model.data!.articleId!.totalViews,
-        totalLikes: model.data!.articleId!.totalLikes,
-        totalComments: model.data!.articleId!.totalComments,
-        totalShares: model.data!.articleId!.totalShares,
-        repostedArticleCount: model.data!.articleId!.repostedArticleCount,
-        isRepostedByMe: model.data!.articleId!.isRepostedByMe,
-      ),
+      articleId: model.data!.articleId == null
+          ? null
+          : ArticleIdEntity(
+              id: model.data!.articleId!.id,
+              userId: ArticleUserEntity(
+                id: model.data!.articleId!.userId!.id,
+                role: model.data!.articleId!.userId!.role,
+                profilePic: model.data!.articleId!.userId!.profilePic,
+                fullName: model.data!.articleId!.userId!.fullName,
+                username: model.data!.articleId!.userId!.username,
+                isVerified: model.data!.articleId!.userId!.isVerified,
+              ),
+              heading: model.data!.articleId!.heading,
+              content: model.data!.articleId!.content,
+              mediaUrls: model.data!.articleId!.mediaUrls
+                  ?.map((e) =>
+                      ArticleMediaUrlEntity(mediaType: e.mediaType, url: e.url))
+                  .toList(),
+              isMyArticle: model.data!.articleId!.isMyArticle,
+              isLiked: model.data!.articleId!.isLiked,
+              isViewed: model.data!.articleId!.isViewed,
+              totalViews: model.data!.articleId!.totalViews,
+              totalLikes: model.data!.articleId!.totalLikes,
+              totalComments: model.data!.articleId!.totalComments,
+              totalShares: model.data!.articleId!.totalShares,
+              repostedArticleCount: model.data!.articleId!.repostedArticleCount,
+              isRepostedByMe: model.data!.articleId!.isRepostedByMe,
+            ),
     );
   }
 }

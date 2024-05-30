@@ -62,8 +62,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           widget.showErrorToast(context: context, message: state.error);
         }
         if (state is EditPostLoaded) {
-          AiloitteNavigation.intentWithClearAllRoutesWithData(
-              context, AppRoutes.homeRoute, 1);
+          if (UserHelper.role == UserRole.doctor) {
+            AiloitteNavigation.intentWithClearAllRoutesWithData(
+                context, AppRoutes.homeRoute, 1);
+          } else {
+            AiloitteNavigation.intentWithClearAllRoutes(
+                context, AppRoutes.homeRoute);
+          }
         } else if (state is EditPostError) {
           widget.showErrorToast(context: context, message: state.error);
         }
@@ -176,6 +181,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               },
               child: component.assetImage(path: Assets.iconsImage),
             ),
+          ),
             // Row(
             //   mainAxisSize: MainAxisSize.min,
             //   children: [
@@ -203,7 +209,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             //     // ),
             //   ],
             // ),
-          ),
+          // ),
           const Spacer(),
           InkWell(
             onTap: () {

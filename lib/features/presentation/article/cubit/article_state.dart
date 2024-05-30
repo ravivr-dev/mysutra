@@ -4,6 +4,20 @@ abstract class ArticleState {}
 
 final class ArticleInitial extends ArticleState {}
 
+final class UploadDocLoading extends ArticleState {}
+
+final class UploadDocLoaded extends ArticleState {
+  final UploadDocModel data;
+
+  UploadDocLoaded({required this.data});
+}
+
+final class UploadDocError extends ArticleState {
+  final String error;
+
+  UploadDocError({required this.error});
+}
+
 final class CreateArticleLoading extends ArticleState {}
 
 final class CreateArticleLoaded extends ArticleState {
