@@ -4,6 +4,7 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/payment_history_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/schedule_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
@@ -87,4 +88,7 @@ abstract class PatientRestClient {
 
   @POST(EndPoints.payment)
   Future<PaymentOrderModel> paymentOrder(@Body() Map<String, dynamic> map);
+
+  @GET(EndPoints.paymentHistory)
+  Future<PaymentHistoryModel> paymentHistory(@Queries() Map<String, int> map);
 }
