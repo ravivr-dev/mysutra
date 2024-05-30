@@ -8,6 +8,7 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/specialisation
 import 'package:my_sutra/features/domain/entities/user_entities/generate_username_entity.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_followers_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
 import '../entities/patient_entities/follow_entity.dart';
@@ -62,4 +63,7 @@ abstract class UserRepository {
   Future<Either<Failure, FollowEntity>> followUser(FollowUserParams data);
 
   Future<Either<Failure, String>> downloadPdf(DownloadPdfParams data);
+
+  Future<Either<Failure, List<UserDataEntity>>> getFollowers(
+      GetFollowersParams params);
 }

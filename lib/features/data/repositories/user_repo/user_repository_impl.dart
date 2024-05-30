@@ -20,6 +20,7 @@ import 'package:my_sutra/features/domain/repositories/user_repository.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_followers_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_video_room_id_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 
@@ -353,6 +354,23 @@ class UserRepositoryImpl extends UserRepository {
         file.writeAsBytes(result.response.data);
 
         return Right(file.path);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserDataEntity>>> getFollowers(
+      GetFollowersParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getFollowers(
+            {"pagination": params.pagination, "limit": params.limit});
+        return Right(
+            UserRepoConv.convertUserDataModelToEntity(result.userDataList));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

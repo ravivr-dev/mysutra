@@ -94,3 +94,17 @@ final class VerifyChangeErrorState extends ProfileState {
 
   VerifyChangeErrorState({required this.message});
 }
+
+final class GetFollowersLoading extends ProfileState {}
+
+final class GetFollowersLoaded extends ProfileState {
+  final List<UserDataEntity> followers;
+
+  GetFollowersLoaded({required this.followers});
+}
+
+final class GetFollowersError extends ProfileState {
+  final String error;
+
+  GetFollowersError({required this.error});
+}

@@ -81,6 +81,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_num
 import 'package:my_sutra/features/domain/usecases/user_usecases/download_pdf_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/follow_user_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/generate_usernames_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_followers_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_profile_details_usecase.dart';
@@ -157,6 +158,7 @@ Future<void> init() async {
         paymentOrderUsercase: sl<PaymentOrderUseCase>(),
       ));
   sl.registerFactory(() => ProfileCubit(
+        getFollowersUsecase: sl<GetFollowersUsecase>(),
         getFollowingUseCase: sl<GetFollowingUseCase>(),
         getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
         getPatientUseCaseUseCase: sl<GetPatientUseCaseUseCase>(),
@@ -225,6 +227,7 @@ Future<void> init() async {
 
   sl.registerFactory(() => GetProfileDetailsUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetFollowingUseCase(sl<UserRepository>()));
+  sl.registerFactory(() => GetFollowersUsecase(sl<UserRepository>()));
   sl.registerFactory(() => GetTimeSlotsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetPatientUseCaseUseCase(sl<DoctorRepository>()));
   sl.registerLazySingleton(

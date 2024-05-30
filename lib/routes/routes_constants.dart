@@ -26,6 +26,8 @@ class AppRoutes {
       '/common/home/widgets/patient_my_following_screen';
   static const String doctorMyFollowing =
       '/doctor_screens/my_following/doctor_my_following_screen';
+  static const String doctorMyFollowers =
+      '/doctor_screens/my_follower/my_followers_screen';
   static const String myPatients =
       '/doctor_screens/my_patients/my_patients_screen';
   static const String doctorPastAppointment =
@@ -49,6 +51,7 @@ class AppRoutes {
   static const String articleDetailRoute = '/article/article_detail_screen';
 
   static const String imageViewScreen = '/image_view_screen';
+
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";
   // static const String markAttendanceRoute = "/mark_attendance_screen";

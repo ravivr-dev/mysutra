@@ -128,6 +128,9 @@ abstract class UserRestClient {
   @GET(EndPoints.userFollowing)
   Future<ResponseModel> getFollowings(@Queries() Map<String, dynamic> map);
 
+  @GET(EndPoints.userFollowers)
+  Future<ResponseModel> getFollowers(@Queries() Map<String, dynamic> map);
+
   @POST(EndPoints.videoSdkRoom)
   Future<VideoRoomResponseModel> getVideoRoomId(
       @Body() Map<String, dynamic> map);

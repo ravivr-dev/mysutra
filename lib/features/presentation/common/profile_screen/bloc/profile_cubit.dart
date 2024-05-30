@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/get_followers_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
@@ -14,6 +15,7 @@ import '../../../../domain/usecases/user_usecases/get_profile_details_usecase.da
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
+  final GetFollowersUsecase getFollowersUsecase;
   final GetProfileDetailsUseCase getProfileDetailsUseCase;
   final GetPatientUseCaseUseCase getPatientUseCaseUseCase;
   final GetFollowingUseCase getFollowingUseCase;
@@ -23,6 +25,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   final VerifyChangePhoneNumberUseCase verifyChangePhoneNumberUseCase;
 
   ProfileCubit({
+    required this.getFollowersUsecase,
     required this.changeEmailUseCase,
     required this.changePhoneNumberUseCase,
     required this.verifyChangeEmailUseCase,
@@ -88,5 +91,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     final result = await verifyChangePhoneNumberUseCase.call(otp);
     result.fold((l) => emit(VerifyChangeErrorState(message: l.message)),
         (r) => emit(VerifyChangeLoadedState(message: r)));
+  }
+
+  void getFollowers({required int pagination, required int limit}) async {
+    emit(GetFollowersLoading());
+    final result = await getFollowersUsecase
+        .call(GetFollowersParams(pagination: pagination, limit: limit));
+
+    result.fold((l) => emit(GetFollowersError(error: l.message)),
+        (r) => emit(GetFollowersLoaded(followers: r)));
   }
 }

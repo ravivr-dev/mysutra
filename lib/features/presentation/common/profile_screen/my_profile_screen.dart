@@ -59,6 +59,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         } else if (state is GetFollowingErrorState) {
           _showToast(message: state.message);
         }
+        if (state is GetFollowersLoaded) {
+          AiloitteNavigation.intentWithData(
+              context, AppRoutes.doctorMyFollowers, state.followers);
+        } else if (state is GetFollowersError) {
+          widget.showErrorToast(context: context, message: state.error);
+        }
       },
       builder: (context, state) {
         // if (userRole != UserRole.guest ||
@@ -106,6 +112,18 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         }
                       },
                       icons: Assets.iconsUserCircle),
+                  component.spacer(height: 12),
+                ],
+                if (userRole == UserRole.doctor ||
+                    userRole == UserRole.influencer) ...[
+                  _buildCard(
+                      value: 'My Followers',
+                      icons: Assets.iconsUserAdd,
+                      onTap: () {
+                        context
+                            .read<ProfileCubit>()
+                            .getFollowers(pagination: 1, limit: 35);
+                      }),
                   component.spacer(height: 12),
                 ],
                 _buildCard(
