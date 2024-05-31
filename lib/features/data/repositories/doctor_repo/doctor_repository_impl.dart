@@ -9,6 +9,7 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
@@ -106,7 +107,6 @@ class DoctorRepositoryImpl extends DoctorRepository {
     }
   }
 
-
   @override
   Future<Either<Failure, GetDoctorAppointmentEntity>> getAppointments(
       GetDoctorAppointmentsParams data) async {
@@ -175,6 +175,26 @@ class DoctorRepositoryImpl extends DoctorRepository {
 
         return Right(
             DoctorRepositoryConv.convertAvailableSlotModelToEntity(result));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> createPayoutContact(
+      CreatePayoutContactParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.createPayoutContact({
+          "name": params.name,
+          "email": params.email,
+          "contact": params.contact
+        });
+
+        return Right(result.message ?? 'Account Created');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

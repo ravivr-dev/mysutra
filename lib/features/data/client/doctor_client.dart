@@ -77,4 +77,8 @@ abstract class DoctorClient {
   Future<AvailableTimeSlotResponse> getAvailableSlots(
     @Queries() Map<String, dynamic> map,
   );
+
+  @POST(EndPoints.createContact)
+  Future<SuccessMessageModel> createPayoutContact(
+      @Body() Map<String, String> map);
 }
