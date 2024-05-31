@@ -416,7 +416,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return InkWell(
       onTap: () {
         AiloitteNavigation.intentWithData(
-            context, AppRoutes.imageViewScreen, url);
+            context, AppRoutes.imageViewRoute, url);
       },
       child: Container(
         padding: const EdgeInsets.all(8),

@@ -11,7 +11,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
-import 'package:my_sutra/features/presentation/patient/bloc/appointment_cubit.dart';
+import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bottom_sheets/confirm_your_booking_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/week_picker.dart';
 

@@ -1,9 +1,11 @@
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/patient_models/follow_model.dart';
+import 'package:my_sutra/features/data/model/patient_models/payment_history_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_history_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
@@ -146,5 +148,19 @@ class PatientRepoConv {
       notes: data.notes,
       status: data.status,
     );
+  }
+
+  static List<PaymentHistoryEntity> paymentHistoryModelToEntity(
+      List<PaymentHistory> list) {
+    return list
+        .map((e) => PaymentHistoryEntity(
+              id: e.id,
+              fullName: e.doctor?.fullName,
+              specialization: e.specialization?.name,
+              amount: e.totalAmount,
+              date: e.date,
+              time: e.time,
+            ))
+        .toList();
   }
 }

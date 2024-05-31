@@ -184,7 +184,7 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
               subText,
               style: theme.publicSansFonts.boldStyle(
                 fontSize: 20,
-                fontColor: AppColors.color0xFF2F1455,
+                fontColor: AppColors.primaryColor,
               ),
             )
           ],

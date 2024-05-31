@@ -74,5 +74,7 @@
   "re_post": "RePost",
   "article_name": "Article Name",
   "learning_management": "Learning Management",
-  "article": "Article"
+  "article": "Article",
+  "payment_history" : "Payment history",
+  "earning" : "Earning"
 }

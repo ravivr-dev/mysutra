@@ -4,6 +4,7 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/payment_history_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/schedule_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
@@ -37,6 +38,8 @@ abstract class PatientDataSource {
   Future<String> getRasorpayKey();
 
   Future<PaymentOrderModel> paymentOrder(Map<String, dynamic> map);
+
+  Future<PaymentHistoryModel>   paymentHistory(Map<String, int> map) ;
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -212,6 +215,22 @@ class PatientDataSourceImpl extends PatientDataSource {
   Future<PaymentOrderModel> paymentOrder(Map<String, dynamic> map) async {
     try {
       return await client.paymentOrder(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.getErrorFromDio(
+            validateAuthentication: true, localDataSource: localDataSource),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<PaymentHistoryModel> paymentHistory(Map<String, int> map) async {
+    try {
+      return await client.paymentHistory(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

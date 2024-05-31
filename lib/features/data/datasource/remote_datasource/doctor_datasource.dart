@@ -27,6 +27,12 @@ abstract class DoctorDataSource {
   Future<SuccessMessageModel> cancelAppointment(Map<String, dynamic> map);
 
   Future<AvailableTimeSlotResponse> getAvailableSlots(Map<String, dynamic> map);
+
+  Future<SuccessMessageModel> createPayoutContact(Map<String, dynamic> map);
+
+  Future<dynamic> createFundAccount(Map<String, Object> map);
+
+  Future<dynamic>   createUpi(String upi) ;
 }
 
 class DoctorDataSourceImpl extends DoctorDataSource {
@@ -161,8 +167,9 @@ class DoctorDataSourceImpl extends DoctorDataSource {
   }
 
   @override
-  Future<AvailableTimeSlotResponse> getAvailableSlots(Map<String, dynamic> map) async {
-    try{
+  Future<AvailableTimeSlotResponse> getAvailableSlots(
+      Map<String, dynamic> map) async {
+    try {
       return await client.getAvailableSlots(map).catchError((err) {
         _processDio(err);
       });
@@ -175,4 +182,49 @@ class DoctorDataSourceImpl extends DoctorDataSource {
     }
   }
 
+  @override
+  Future<SuccessMessageModel> createPayoutContact(
+      Map<String, dynamic> map) async {
+    try {
+      return await client.createPayoutContact(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              validateAuthentication: true, localDataSource: localDataSource));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<dynamic> createFundAccount(Map<String, Object> map) async {
+    try {
+      return await client.createFundAccount(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              validateAuthentication: true, localDataSource: localDataSource));
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<dynamic> createUpi(String upi) async {
+    try {
+      return await client.createUpi(upi).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              validateAuthentication: true, localDataSource: localDataSource));
+    } on Exception {
+      rethrow;
+    }
+  }
 }

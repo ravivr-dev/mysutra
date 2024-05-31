@@ -80,4 +80,6 @@ class StringKeys {
   static const String articleName = 'article_name';
   static const String learningManagement = 'learning_management';
   static const String article = 'article';
+  static const String paymentHistory = 'payment_history';
+  static const String earning = 'earning';
 }

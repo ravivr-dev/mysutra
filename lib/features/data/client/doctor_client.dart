@@ -77,4 +77,14 @@ abstract class DoctorClient {
   Future<AvailableTimeSlotResponse> getAvailableSlots(
     @Queries() Map<String, dynamic> map,
   );
+
+  @POST(EndPoints.createContact)
+  Future<SuccessMessageModel> createPayoutContact(
+      @Body() Map<String, dynamic> map);
+
+  @POST(EndPoints.createFundAccount)
+  Future<dynamic> createFundAccount(@Body() Map<String, Object> map);
+
+  @POST(EndPoints.createUpi)
+  Future<dynamic> createUpi(@Field('vpa') String upi);
 }

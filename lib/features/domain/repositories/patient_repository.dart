@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/payment_history_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
@@ -45,4 +47,7 @@ abstract class PatientRepository {
 
   Future<Either<Failure, PaymentOrderEntity>> paymentOrder(
       PaymentOrderParams params);
+
+  Future<Either<Failure, List<PaymentHistoryEntity>>> paymentHistory(
+      PaginationParams params);
 }

@@ -19,7 +19,8 @@ class EndPoints {
   static const String appointments = '/patient/appointments';
   static const String cancelAppointment = '/patient/appointment/cancel';
   static const String pastAppointment = '/patient/appointments/past';
-   static const String payment = '/payment';
+  static const String payment = '/payment';
+  static const String paymentHistory = '/payment/patient/history';
 
   // doctor endpoints
   static const String timeSlots = '/doctor/time-slots';
@@ -31,6 +32,9 @@ class EndPoints {
       '/doctor/appointment/re-schedule';
   static const String doctorAppointmentCancel = '/doctor/appointment/cancel';
   static const String doctorAvailableSlots = '/doctor/available-slots';
+  static const String createContact = '/payment/payout/contact';
+  static const String createFundAccount = '/payment/payout/fund-account/bank';
+  static const String createUpi = '/payment/payout/fund-account/vpa';
 
 // user endpoints (these endpoints are common for all type of user (doctor/patient/influencer))
   static const String userProfile = '/user/profile';
@@ -59,11 +63,12 @@ class EndPoints {
   static const String replyLikeDislike = '/reply/like-dislike';
 
   //Article Endpoints
-static const String article = '/article';
-static const String likeDislikeArticle = '/article/like';
-static const String reportArticle = '/article/report';
-static const String articleComment = '/article/comment';
-static const String likeDislikeArticleComment = '/article/comment/like-dislike';
-static const String articleReply = '/article/reply';
-static const String likeDislikeArticleReply = '/article/like-dislike';
+  static const String article = '/article';
+  static const String likeDislikeArticle = '/article/like';
+  static const String reportArticle = '/article/report';
+  static const String articleComment = '/article/comment';
+  static const String likeDislikeArticleComment =
+      '/article/comment/like-dislike';
+  static const String articleReply = '/article/reply';
+  static const String likeDislikeArticleReply = '/article/like-dislike';
 }

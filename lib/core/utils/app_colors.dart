@@ -16,6 +16,7 @@ class AppColors {
   static const Color greyEC = Color(0xffECECEC);
   static const Color transparent = Color(0x00000000);
   static const Color black24 = Color(0xff242424);
+  static const Color black23 = Color(0xff232323);
   static const Color black000E08 = Color(0xff000E08);
   static const Color blackF2F7FB = Color(0xffF2F7FB);
   static const Color fillColor = Color(0xffF3F6F6);
@@ -30,6 +31,7 @@ class AppColors {
   static const Color blackTokens = Color(0xff1C2024);
   static const Color greyF3 = Color(0xffF3F5F7);
   static const Color grey92 = Color(0xff929292);
+  static const Color grey81 = Color(0xff818181);
   static const Color light = Color(0xffF3F5F7);
   static const Color grey858699 = Color(0xff858699);
   static const Color neutralAlpha = Color(0xff000509);
