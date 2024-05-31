@@ -57,6 +57,10 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
         } else if (state is GetArticlesError) {
           widget.showErrorToast(context: context, message: state.error);
         }
+
+        if (state is DeleteArticleLoaded) {
+          _loadArticles();
+        }
       },
       builder: (context, state) {
         return Scaffold(

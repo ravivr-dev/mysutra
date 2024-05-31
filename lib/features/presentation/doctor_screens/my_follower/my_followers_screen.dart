@@ -17,16 +17,24 @@ class MyFollowersScreen extends StatelessWidget {
         title: const Text('My Followers'),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          if (followers[index].userName != null &&
-              followers[index].userName != '') {
-            return _buildFollowerCard(followers[index]);
-          }
-          return Container();
-        },
-        itemCount: followers.length,
-      ),
+      body: followers.isEmpty
+          ? Center(
+              child: Text(
+                'No Followers Found',
+                style: theme.publicSansFonts
+                    .mediumStyle(fontSize: 20, fontColor: AppColors.grey92),
+              ),
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) {
+                if (followers[index].userName != null &&
+                    followers[index].userName != '') {
+                  return _buildFollowerCard(followers[index]);
+                }
+                return Container();
+              },
+              itemCount: followers.length,
+            ),
     );
   }
 
