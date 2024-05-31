@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:my_sutra/core/extension/custom_ext.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
+import 'package:my_sutra/features/data/model/doctor_models/get_bank_accounts_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';
@@ -87,4 +88,7 @@ abstract class DoctorClient {
 
   @POST(EndPoints.createUpi)
   Future<dynamic> createUpi(@Field('vpa') String upi);
+
+@GET(EndPoints.fundAccounts)
+ Future<GetBankAccountsModel> getFundAccounts() ;
 }

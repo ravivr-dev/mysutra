@@ -1,6 +1,8 @@
+import 'package:my_sutra/features/data/model/doctor_models/get_bank_accounts_model.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_doctor_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
@@ -89,5 +91,22 @@ class DoctorRepositoryConv {
           endTime: e.endTime));
     }
     return list;
+  }
+
+  static List<BankAccountEntity> convertBankAccountModelToEntity(
+      List<BankAccountModel> data) {
+    return data
+        .map((e) => BankAccountEntity(
+              id: e.id,
+              entity: e.entity,
+              contactId: e.contactId,
+              accountType: e.accountType,
+              bankAccount: e.bankAccount,
+              batchId: e.batchId,
+              active: e.active,
+              createdAt: e.createdAt,
+              vpa: e.vpa,
+            ))
+        .toList();
   }
 }

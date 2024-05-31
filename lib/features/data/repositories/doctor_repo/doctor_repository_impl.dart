@@ -5,6 +5,7 @@ import 'package:my_sutra/features/data/datasource/local_datasource/local_datasou
 import 'package:my_sutra/features/data/datasource/remote_datasource/doctor_datasource.dart';
 import 'package:my_sutra/features/data/repositories/doctor_repo/doctor_repository_conv.dart';
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_conv.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
@@ -223,7 +224,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
-  
+
   @override
   Future<Either<Failure, dynamic>> createUpi(String upi) async {
     try {
@@ -231,6 +232,22 @@ class DoctorRepositoryImpl extends DoctorRepository {
         final result = await remoteDataSource.createUpi(upi);
 
         return Right(result);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<BankAccountEntity>>> getAccounts() async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getAccounts();
+
+        return Right(DoctorRepositoryConv.convertBankAccountModelToEntity(
+            result.items ?? []));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
