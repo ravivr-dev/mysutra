@@ -36,9 +36,14 @@ abstract class DoctorRepository {
   Future<Either<Failure, String>> rescheduleAppointment(
       RescheduleAppointmentParams params);
 
-  Future<Either<Failure, List<AvailableTimeSlotEntity>>> getAvailableSlots(GetAvailableSlotsForDoctorParams params);
+  Future<Either<Failure, List<AvailableTimeSlotEntity>>> getAvailableSlots(
+      GetAvailableSlotsForDoctorParams params);
 
-  Future<Either<Failure, String>> createPayoutContact(CreatePayoutContactParams params) ;
+  Future<Either<Failure, String>> createPayoutContact(
+      CreatePayoutContactParams params);
 
-  Future<Either<Failure, dynamic>> createFundAccount(CreateFundAccountParams params) ;
+  Future<Either<Failure, dynamic>> createFundAccount(
+      CreateFundAccountParams params);
+
+  Future<Either<Failure, dynamic>> createUpi(String upi);
 }

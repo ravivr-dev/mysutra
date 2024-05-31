@@ -45,6 +45,7 @@ import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
@@ -284,6 +285,7 @@ Future<void> init() async {
   sl.registerFactory(() => PaymentOrderUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => PaymentHistoryUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => CreatePayoutContactUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => CreateFundAccountUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(
