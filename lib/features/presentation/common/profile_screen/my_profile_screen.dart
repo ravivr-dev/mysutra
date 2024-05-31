@@ -63,7 +63,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           AiloitteNavigation.intentWithData(
               context, AppRoutes.doctorMyFollowers, state.followers);
         } else if (state is GetFollowersError) {
-          widget.showErrorToast(context: context, message: state.error);
+          _showToast(message: state.error);
         }
       },
       builder: (context, state) {

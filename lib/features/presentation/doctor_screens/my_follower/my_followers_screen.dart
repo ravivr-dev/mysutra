@@ -19,7 +19,11 @@ class MyFollowersScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         itemBuilder: (context, index) {
-          return _buildFollowerCard(followers[index]);
+          if (followers[index].userName != null &&
+              followers[index].userName != '') {
+            return _buildFollowerCard(followers[index]);
+          }
+          return Container();
         },
         itemCount: followers.length,
       ),
@@ -35,11 +39,16 @@ class MyFollowersScreen extends StatelessWidget {
       child: Row(
         children: [
           component.networkImage(
+              height: 50,
+              width: 50,
+              borderRadius: 5,
               url: follower.profilePic,
               errorWidget:
                   component.assetImage(path: Assets.imagesDefaultAvatar)),
           component.spacer(width: 8),
-          component.text(follower.fullName ?? follower.userName),
+          component.text(follower.fullName != '' && follower.fullName != null
+              ? follower.fullName
+              : follower.userName),
         ],
       ),
     );

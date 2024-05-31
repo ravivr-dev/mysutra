@@ -1,11 +1,11 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/media_urls_entity.dart';
 import 'package:my_sutra/features/domain/entities/post_entities/post_entity.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
@@ -161,7 +161,7 @@ class _RePostScreenState extends State<RePostScreen> {
           ),
           component.spacer(height: 10),
           component.text(
-              DateFormat('d/M/y').format(widget.postEntity.updatedAt),
+              Utils.formatElapsedTime(widget.postEntity.updatedAt.toLocal()),
               style: theme.publicSansFonts.mediumStyle(
                 fontColor: AppColors.neutral,
               )),

@@ -177,9 +177,10 @@ class Routes {
 
       case AppRoutes.doctorMyFollowers:
         return MaterialPageRoute(
-            builder: (_) => MyFollowersScreen(
-                  followers: args as List<UserDataEntity>,
-                ));
+          builder: (_) => MyFollowersScreen(
+            followers: args as List<UserDataEntity>,
+          ),
+        );
 
       case AppRoutes.myPatients:
         final args = settings?.arguments as List<PatientEntity>;

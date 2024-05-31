@@ -392,9 +392,9 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<ResponseModel> getFollowers(Map<String, dynamic> map) {
+  Future<ResponseModel> getFollowers(Map<String, dynamic> map) async {
     try {
-      return client.getFollowers(map).catchError((err) {
+      return await client.getFollowers(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

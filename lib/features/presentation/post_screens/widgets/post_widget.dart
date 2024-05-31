@@ -16,8 +16,10 @@ import 'package:my_sutra/routes/routes_constants.dart';
 
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
+  final VoidCallback onTapShare;
 
-  const PostWidget({super.key, required this.postEntity});
+  const PostWidget(
+      {super.key, required this.postEntity, required this.onTapShare});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -253,13 +255,14 @@ class _PostWidgetState extends State<PostWidget> {
                   ShareButtonWidget(
                     shareCount: widget.postEntity.totalShares +
                         widget.postEntity.repostCount,
-                    onTap: () {
-                      AiloitteNavigation.intentWithData(
-                              context, AppRoutes.repostRoute, widget.postEntity)
-                          .then((_) => context
-                              .read<PostsCubit>()
-                              .getPosts(pagination: 1, limit: 50));
-                    },
+                    onTap: widget.onTapShare,
+                    //     () {
+                    //   AiloitteNavigation.intentWithData(
+                    //           context, AppRoutes.repostRoute, widget.postEntity)
+                    //       .then((_) => context
+                    //           .read<PostsCubit>()
+                    //           .getPosts(pagination: 1, limit: 50));
+                    // },
                   ),
                 ],
               )

@@ -29,13 +29,13 @@ class UserRepoConv {
       List<UserData> data) {
     return data
         .map((e) => UserDataEntity(
-            id: e.id!,
-            role: e.role!,
+            id: e.id ?? '',
+            role: e.role ?? '',
             profilePic: e.profilePic ?? '',
-            fullName: e.fullName,
-            userName: e.userName,
+            fullName: e.fullName ?? '',
+            userName: e.userName ?? '',
             isVerified: e.isVerified ?? false,
-            specialization: e.specialization,
+            specialization: e.specialization ?? '',
             isFollowing: e.isFollowing ?? false,
             totalFollowers: e.totalFollowers ?? 0,
             socialProfileUrls: e.socialProfileUrls))
