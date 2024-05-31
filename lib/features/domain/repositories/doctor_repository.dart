@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/failures.dart';
+import 'package:my_sutra/core/usecase/usecase.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
@@ -46,4 +48,8 @@ abstract class DoctorRepository {
       CreateFundAccountParams params);
 
   Future<Either<Failure, dynamic>> createUpi(String upi);
+
+  Future<Either<Failure, List<BankAccountEntity>>> getAccounts() ;
+
+
 }
