@@ -70,12 +70,14 @@ class ArticleCubit extends Cubit<ArticleState> {
         (r) => emit(CreateArticleLoaded(message: r)));
   }
 
-  void editArticle(
-      {required String articleId,
-      required String heading,
-      required String content}) async {
+  void editArticle({
+    required String articleId,
+    required String heading,
+    required String content,
+    required List<ArticleMediaUrlEntity> mediaUrls,
+  }) async {
     final result = await editArticleUsecase.call(EditArticleParams(
-        articleId: articleId, heading: heading, content: content));
+        articleId: articleId, heading: heading, content: content, mediaUrls: mediaUrls));
 
     result.fold((l) => emit(EditArticleError(error: l.message)),
         (r) => emit(EditArticleLoaded(message: r)));

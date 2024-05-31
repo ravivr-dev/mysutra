@@ -8,6 +8,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
+import 'package:my_sutra/features/data/model/user_models/follow_user_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
@@ -136,7 +137,7 @@ abstract class UserRestClient {
       @Body() Map<String, dynamic> map);
 
   @POST(EndPoints.userFollow)
-  Future<dynamic> followUser(@Body() Map<String, dynamic> map);
+  Future<FollowUserModel> followUser(@Body() Map<String, dynamic> map);
 
   @GET('{url}')
   @DioResponseType(ResponseType.bytes)

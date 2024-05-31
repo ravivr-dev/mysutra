@@ -29,9 +29,10 @@ class ArticleRepoConv {
               heading: e.heading,
               content: e.content,
               mediaUrls: e.mediaUrls
-                  ?.map((e) =>
-                      ArticleMediaUrlEntity(mediaType: e.mediaType, url: e.url))
-                  .toList(),
+                      ?.map((e) => ArticleMediaUrlEntity(
+                          mediaType: e.mediaType, url: e.url))
+                      .toList() ??
+                  [],
               isMyArticle: e.isMyArticle,
               isLiked: e.isLiked!,
               isViewed: e.isViewed,
@@ -139,9 +140,10 @@ class ArticleRepoConv {
       heading: model.data!.heading,
       content: model.data!.content,
       mediaUrls: model.data!.mediaUrls
-          ?.map(
-              (e) => ArticleMediaUrlEntity(mediaType: e.mediaType, url: e.url))
-          .toList(),
+              ?.map((e) =>
+                  ArticleMediaUrlEntity(mediaType: e.mediaType, url: e.url))
+              .toList() ??
+          [],
       isMyArticle: model.data!.isMyArticle,
       isLiked: model.data!.isLiked!,
       isViewed: model.data!.isViewed,

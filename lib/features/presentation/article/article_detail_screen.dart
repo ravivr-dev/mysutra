@@ -153,6 +153,30 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                     //     style: theme.publicSansFonts.regularStyle(
                     //         fontColor: AppColors.color0xFF636A80,
                     //         fontSize: 14)),
+                    if (article != null && article!.mediaUrls.isNotEmpty) ...[
+                      SizedBox(
+                        height: 150,
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index) {
+                            return component.networkImage(
+                              url: article!.mediaUrls[index].url ?? '',
+                              // height: 153,
+                              // width: context.screenWidth,
+                              borderRadius: 20,
+                              fit: BoxFit.fitWidth,
+                              errorWidget:
+                              component.assetImage(path: Assets.imagesDefaultAvatar),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return component.spacer(width: 10);
+                          },
+                          itemCount: article!.mediaUrls.length,
+                        ),
+                      ),
+                    ],
                     ...widgets,
                     _buildFooter(),
                     if (comments.isNotEmpty) ...[
@@ -374,10 +398,10 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
       r'(?:https?|ftp)://[^\s/$.?#].\S*',
       caseSensitive: false,
     );
-    final imageUrlRegex = RegExp(
-      r'(?:https?|ftp)://[^\s/$.?#].\S*\.(?:jpg|jpeg|png|gif)',
-      caseSensitive: false,
-    );
+    // final imageUrlRegex = RegExp(
+    //   r'(?:https?|ftp)://[^\s/$.?#].\S*\.(?:jpg|jpeg|png|gif)',
+    //   caseSensitive: false,
+    // );
 
     List<Widget> widgets = [];
     final matches = urlRegex.allMatches(text);
@@ -391,14 +415,14 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
 
       final matchedText = text.substring(match.start, match.end);
 
-      if (imageUrlRegex.hasMatch(matchedText)) {
-        widgets.add(
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.network(matchedText),
-          ),
-        );
-      } else {
+      if (urlRegex.hasMatch(matchedText)) {
+      //   widgets.add(
+      //     Padding(
+      //       padding: const EdgeInsets.all(8.0),
+      //       child: Image.network(matchedText),
+      //     ),
+      //   );
+      // } else {
         widgets.add(
           GestureDetector(
             onTap: () => Utils.launchURL(matchedText),

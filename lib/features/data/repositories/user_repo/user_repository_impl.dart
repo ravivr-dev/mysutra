@@ -29,7 +29,6 @@ import '../../../domain/entities/user_entities/user_data_entity.dart';
 import '../../../domain/entities/user_entities/user_entity.dart';
 import '../../../domain/usecases/user_usecases/download_pdf_usecase.dart';
 import '../../../domain/usecases/user_usecases/get_following_usecase.dart';
-import '../../model/patient_models/follow_model.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
@@ -332,8 +331,7 @@ class UserRepositoryImpl extends UserRepository {
           'userId': data.userId,
         });
 
-        return Right(UserRepoConv.followModelToEntity(
-            FollowModel.fromJson(result['data'] ?? {})));
+        return Right(UserRepoConv.followModelToEntity(result));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
