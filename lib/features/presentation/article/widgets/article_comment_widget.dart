@@ -9,6 +9,7 @@ import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart'
 import 'package:my_sutra/features/presentation/article/widgets/article_reply_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/like_dislike_button_widget.dart';
 import 'package:my_sutra/features/presentation/post_screens/widgets/send_button_widget.dart';
+import 'package:my_sutra/generated/assets.dart';
 
 class ArticleCommentWidget extends StatefulWidget {
   final ArticleCommentEntity comment;
@@ -64,6 +65,23 @@ class _ArticleCommentWidgetState extends State<ArticleCommentWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Row(
+          children: [
+            component.networkImage(
+              height: 30,
+              width: 30,
+              borderRadius: 10,
+              fit: BoxFit.fill,
+              url: widget.comment.userId?.profilePic ?? '',
+              errorWidget: component.assetImage(
+                  path: Assets.imagesDefaultAvatar, fit: BoxFit.fill),
+            ),
+            component.spacer(width: 10),
+            component.text(widget.comment.userId?.fullName ??
+                widget.comment.userId?.username ??
+                '')
+          ],
+        ),
         component.spacer(height: 10),
         component.text(
             Utils.formatElapsedTime(
