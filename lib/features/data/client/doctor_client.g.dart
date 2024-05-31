@@ -274,7 +274,7 @@ class _DoctorClient implements DoctorClient {
 
   @override
   Future<SuccessMessageModel> createPayoutContact(
-      Map<String, String> map) async {
+      Map<String, dynamic> map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -298,6 +298,33 @@ class _DoctorClient implements DoctorClient {
               baseUrl,
             ))));
     final value = SuccessMessageModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> createFundAccount(Map<String, Object> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/payment/payout/fund-account/bank',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
     return value;
   }
 

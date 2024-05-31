@@ -80,5 +80,8 @@ abstract class DoctorClient {
 
   @POST(EndPoints.createContact)
   Future<SuccessMessageModel> createPayoutContact(
-      @Body() Map<String, String> map);
+      @Body() Map<String, dynamic> map);
+
+  @POST(EndPoints.createFundAccount)
+  Future<dynamic> createFundAccount(@Body() Map<String, Object> map);
 }

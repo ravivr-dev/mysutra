@@ -18,7 +18,7 @@ class CreatePayoutContactUseCase
 class CreatePayoutContactParams {
   final String name;
   final String email;
-  final String contact;
+  final int contact;
 
   CreatePayoutContactParams(
       {required this.name, required this.email, required this.contact});
