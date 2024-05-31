@@ -6,6 +6,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/widgets/booking_card.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/widgets/withdraw_card.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class PaymentCheckoutScreen extends StatefulWidget {
   const PaymentCheckoutScreen({super.key});
@@ -41,6 +42,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 10),
           _revenueBuilder(),
           _availableBuilder(),
           _buildDateBuilder(),
@@ -172,11 +174,26 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          component.text(
-            'Revenue',
-            style: theme.publicSansFonts.mediumStyle(
-              fontSize: 16,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              component.text(
+                'Revenue',
+                style: theme.publicSansFonts.mediumStyle(
+                  fontSize: 16,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  AiloitteNavigation.intent(context, AppRoutes.paymentMethodRoute);
+                },
+                child: component.text(
+                  'Payment Methods',
+                  style: theme.publicSansFonts.semiBoldStyle(
+                      fontSize: 16, fontColor: AppColors.primaryColor),
+                ),
+              ),
+            ],
           ),
           component.spacer(height: 12),
           _buildTodayAppointments(),

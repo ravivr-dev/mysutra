@@ -45,11 +45,13 @@ import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/add_upi_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_time_slots_usecase.dart';
@@ -105,6 +107,7 @@ import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank_account_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/payment_history/cubit/payment_history_cubit.dart';
@@ -209,6 +212,12 @@ Future<void> init() async {
     () =>
         PaymentHistoryCubit(paymentHistoryUsecase: sl<PaymentHistoryUseCase>()),
   );
+  sl.registerFactory(() => BankAccountCubit(
+        getBankAccountUseCase: sl<GetBankAccountUseCase>(),
+        addUpiUseCase: sl<AddUpiUseCase>(),
+        createFundAccountUseCase: sl<CreateFundAccountUseCase>(),
+        createPayoutContactUseCase: sl<CreatePayoutContactUseCase>(),
+      ));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -290,6 +299,8 @@ Future<void> init() async {
   sl.registerFactory(() => PaymentHistoryUseCase(sl<PatientRepository>()));
   sl.registerFactory(() => CreatePayoutContactUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => CreateFundAccountUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => GetBankAccountUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => AddUpiUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

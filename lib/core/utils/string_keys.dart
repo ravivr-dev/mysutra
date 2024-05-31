@@ -82,4 +82,5 @@ class StringKeys {
   static const String article = 'article';
   static const String paymentHistory = 'payment_history';
   static const String earning = 'earning';
+  static const String paymentMethod = 'Payment_Methods';
 }

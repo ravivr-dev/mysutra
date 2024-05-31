@@ -4,10 +4,10 @@ import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 
-class GetAccountUseCase extends UseCase<List<BankAccountEntity>, NoParams> {
+class GetBankAccountUseCase extends UseCase<List<BankAccountEntity>, NoParams> {
   final DoctorRepository _doctorRepository;
 
-  GetAccountUseCase(this._doctorRepository);
+  GetBankAccountUseCase(this._doctorRepository);
 
   @override
   Future<Either<Failure, List<BankAccountEntity>>> call(NoParams params) {
