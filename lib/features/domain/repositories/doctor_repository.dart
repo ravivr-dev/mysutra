@@ -5,6 +5,7 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_e
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
@@ -49,7 +50,8 @@ abstract class DoctorRepository {
 
   Future<Either<Failure, dynamic>> createUpi(String upi);
 
-  Future<Either<Failure, List<BankAccountEntity>>> getAccounts() ;
+  Future<Either<Failure, List<BankAccountEntity>>> getAccounts();
 
-
+  Future<Either<Failure, dynamic>> activateDeactivateBankAccount(
+      ActivateDeactivateBankAccountParams params);
 }

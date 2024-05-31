@@ -23,3 +23,7 @@ final class BankAccountContactAdd extends BankAccountState {
 }
 
 final class BankAccountBankAdd extends BankAccountState {}
+
+final class BankAccountUpdate extends BankAccountState {}
+
+final class BankAccountButtonLoader extends BankAccountState {}

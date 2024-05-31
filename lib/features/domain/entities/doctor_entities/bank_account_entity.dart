@@ -21,4 +21,8 @@ class BankAccountEntity {
       this.active,
       this.createdAt,
       this.vpa});
+
+  set updateAccountStatus(bool status) {
+    active = status;
+  }
 }

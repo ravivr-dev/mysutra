@@ -89,6 +89,10 @@ abstract class DoctorClient {
   @POST(EndPoints.createUpi)
   Future<dynamic> createUpi(@Field('vpa') String upi);
 
-@GET(EndPoints.fundAccounts)
- Future<GetBankAccountsModel> getFundAccounts() ;
+  @GET(EndPoints.fundAccounts)
+  Future<GetBankAccountsModel> getFundAccounts();
+
+  @PATCH(EndPoints.fundAccounts)
+  Future<dynamic> activateDeactivateBankAccount(
+      @Body() Map<String, Object> map);
 }

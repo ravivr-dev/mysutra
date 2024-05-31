@@ -10,6 +10,7 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
@@ -248,6 +249,23 @@ class DoctorRepositoryImpl extends DoctorRepository {
 
         return Right(DoctorRepositoryConv.convertBankAccountModelToEntity(
             result.items ?? []));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> activateDeactivateBankAccount(
+      ActivateDeactivateBankAccountParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.activateDeactivateBankAccount(
+            {"fundAccountId": params.accountId, "active": params.activate});
+
+        return Right(result);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

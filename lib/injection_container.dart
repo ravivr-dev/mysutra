@@ -45,6 +45,7 @@ import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_messages_
 import 'package:my_sutra/features/domain/usecases/chat_usecases/listen_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/add_upi_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
@@ -217,6 +218,8 @@ Future<void> init() async {
         addUpiUseCase: sl<AddUpiUseCase>(),
         createFundAccountUseCase: sl<CreateFundAccountUseCase>(),
         createPayoutContactUseCase: sl<CreatePayoutContactUseCase>(),
+        activateDeactivateBankAccountUsecase:
+            sl<ActivateDeactivateBankAccountUsecase>(),
       ));
 
   // UseCases
@@ -301,6 +304,8 @@ Future<void> init() async {
   sl.registerFactory(() => CreateFundAccountUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetBankAccountUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => AddUpiUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(
+      () => ActivateDeactivateBankAccountUsecase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

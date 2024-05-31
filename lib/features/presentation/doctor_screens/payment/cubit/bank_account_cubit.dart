@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/add_upi_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
@@ -13,11 +14,14 @@ class BankAccountCubit extends Cubit<BankAccountState> {
   final AddUpiUseCase addUpiUseCase;
   final CreateFundAccountUseCase createFundAccountUseCase;
   final CreatePayoutContactUseCase createPayoutContactUseCase;
+  final ActivateDeactivateBankAccountUsecase
+      activateDeactivateBankAccountUsecase;
   BankAccountCubit({
     required this.getBankAccountUseCase,
     required this.addUpiUseCase,
     required this.createFundAccountUseCase,
     required this.createPayoutContactUseCase,
+    required this.activateDeactivateBankAccountUsecase,
   }) : super(BankAccountInitial());
 
   List<BankAccountEntity> accounts = [];
@@ -52,6 +56,16 @@ class BankAccountCubit extends Cubit<BankAccountState> {
     final result = await createPayoutContactUseCase.call(params);
     result.fold((l) => emit(BankAccountError(l.message)), (data) {
       emit(BankAccountContactAdd(data));
+    });
+  }
+
+  void updateAccount(
+      ActivateDeactivateBankAccountParams params, int index) async {
+    emit(BankAccountButtonLoader());
+    final result = await activateDeactivateBankAccountUsecase.call(params);
+    result.fold((l) => emit(BankAccountError(l.message)), (data) {
+      accounts[index].updateAccountStatus = params.activate;
+      emit(BankAccountUpdate());
     });
   }
 }

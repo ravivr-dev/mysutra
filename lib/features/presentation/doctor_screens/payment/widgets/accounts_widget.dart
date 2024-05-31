@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank_account_cubit.dart';
 
 class AccountsWidget extends StatelessWidget {
@@ -27,32 +28,55 @@ class AccountsWidget extends StatelessWidget {
             String? account = cubit.accounts[index].bankAccount?.accountNumber;
             String? upi = cubit.accounts[index].vpa?.address;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (account != null) ...[
-                  Text(
-                    getMaskedAccountNumber(account),
-                    style: theme.publicSansFonts.mediumStyle(
-                        fontSize: 16, fontColor: AppColors.blackColor),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (account != null) ...[
+                      Text(
+                        getMaskedAccountNumber(account),
+                        style: theme.publicSansFonts.mediumStyle(
+                            fontSize: 16, fontColor: AppColors.blackColor),
+                      ),
+                      Text(
+                        "Bank Account",
+                        style: theme.publicSansFonts.regularStyle(
+                            fontSize: 16, fontColor: AppColors.color0xFF000713),
+                      ),
+                    ] else if (upi != null) ...[
+                      Text(
+                        getMaskedAccountNumber(upi),
+                        style: theme.publicSansFonts.mediumStyle(
+                            fontSize: 16, fontColor: AppColors.blackColor),
+                      ),
+                      Text(
+                        "UPI ID",
+                        style: theme.publicSansFonts.regularStyle(
+                            fontSize: 16, fontColor: AppColors.color0xFF000713),
+                      ),
+                    ]
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    cubit.updateAccount(
+                        ActivateDeactivateBankAccountParams(
+                            accountId: cubit.accounts[index].id ?? '',
+                            activate: cubit.accounts[index].active != null
+                                ? !cubit.accounts[index].active!
+                                : true),
+                        index);
+                  },
+                  child: Text(
+                    cubit.accounts[index].active == true
+                        ? 'Deactivate'
+                        : 'Activate',
+                    style: theme.publicSansFonts.semiBoldStyle(
+                        fontSize: 14, fontColor: AppColors.primaryColor),
                   ),
-                  Text(
-                    "Bank Account",
-                    style: theme.publicSansFonts.regularStyle(
-                        fontSize: 16, fontColor: AppColors.color0xFF000713),
-                  ),
-                ] else if (upi != null) ...[
-                  Text(
-                    getMaskedAccountNumber(upi),
-                    style: theme.publicSansFonts.mediumStyle(
-                        fontSize: 16, fontColor: AppColors.blackColor),
-                  ),
-                  Text(
-                    "UPI ID",
-                    style: theme.publicSansFonts.regularStyle(
-                        fontSize: 16, fontColor: AppColors.color0xFF000713),
-                  ),
-                ]
+                )
               ],
             );
           },

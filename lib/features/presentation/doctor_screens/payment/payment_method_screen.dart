@@ -59,6 +59,4 @@ class PaymentMethodScreen extends StatelessWidget {
     }
     return const EmptyAccountCard();
   }
-
- 
 }
