@@ -8,6 +8,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank_account_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/widgets/accounts_widget.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/widgets/empty_account_card.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class PaymentMethodScreen extends StatelessWidget {
   const PaymentMethodScreen({super.key});
@@ -38,21 +39,23 @@ class PaymentMethodScreen extends StatelessWidget {
     );
   }
 
-  InkWell _addButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showBottomSheet(context);
-      },
-      child: Container(
-        margin: const EdgeInsets.only(right: 24),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: AppColors.primaryColor),
-        child: Text(
-          'Add',
-          style: theme.publicSansFonts
-              .regularStyle(fontSize: 14, fontColor: AppColors.white),
+  Padding _addButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 24),
+      child: InkWell(
+        onTap: () {
+          _showBottomSheet(context);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: AppColors.primaryColor),
+          child: Text(
+            'Add',
+            style: theme.publicSansFonts
+                .regularStyle(fontSize: 14, fontColor: AppColors.white),
+          ),
         ),
       ),
     );
@@ -88,14 +91,22 @@ class PaymentMethodScreen extends StatelessWidget {
               const SizedBox(height: 20),
               _dropDownItem(
                 text: 'Bank Account',
-                onTap: () {},
+                onTap: () {
+                  AiloitteNavigation.back(context);
+                  AiloitteNavigation.intentWithData(
+                      context, AppRoutes.addBankAccountRoute, false);
+                },
               ),
               const Divider(
                 color: AppColors.color0xFFEAECF0,
               ),
               _dropDownItem(
                 text: 'UPI ID',
-                onTap: () {},
+                onTap: () {
+                  AiloitteNavigation.back(context);
+                  AiloitteNavigation.intentWithData(
+                      context, AppRoutes.addUpiIdRoute, false);
+                },
               ),
               const SizedBox(height: 30),
             ],

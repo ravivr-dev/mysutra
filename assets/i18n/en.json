@@ -77,5 +77,7 @@
   "article": "Article",
   "payment_history" : "Payment history",
   "earning" : "Earning",
-  "Payment_Methods" : "Payment Methods"
+  "payment_methods" : "Payment Methods",
+  "add_bank_account" : "Add Bank Account",
+  "add_upi_id" : "Add UPI ID"
 }

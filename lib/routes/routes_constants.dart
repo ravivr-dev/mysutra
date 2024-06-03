@@ -56,6 +56,8 @@ class AppRoutes {
   static const String paymentHistoryRoute = '/payment_history_screen';
   static const String paymentCheckoutRoute = '/payment_checkout_screen';
   static const String paymentMethodRoute = '/payment_method_screen';
+  static const String addBankAccountRoute = '/add_bank_account_screen';
+  static const String addUpiIdRoute = '/add_upi_id_screen';
 
   /// old routes
   // static const String myBatchesRoute = "/my_batches_screen";
