@@ -6,7 +6,9 @@ import 'package:my_sutra/features/data/client/doctor_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_bank_accounts_model.dart';
+import 'package:my_sutra/features/data/model/doctor_models/get_bookings_model.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_doctor_appointment_model.dart';
+import 'package:my_sutra/features/data/model/doctor_models/get_withdrawal_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/patient_models/get_patient_response_model.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
@@ -38,9 +40,11 @@ abstract class DoctorDataSource {
 
   Future<GetBankAccountsModel> getAccounts();
 
+  Future<dynamic> activateDeactivateBankAccount(Map<String, Object> map);
 
-Future<dynamic>
-  activateDeactivateBankAccount(Map<String, Object> map);
+  Future<GetWithdrawalModel> getWithdrawals(Map<String, Object> map);
+
+Future<GetBookingsModel>  getBookings(Map<String, Object> map) ;
 }
 
 class DoctorDataSourceImpl extends DoctorDataSource {
@@ -235,9 +239,9 @@ class DoctorDataSourceImpl extends DoctorDataSource {
       rethrow;
     }
   }
-  
+
   @override
-  Future<GetBankAccountsModel> getAccounts()async {
+  Future<GetBankAccountsModel> getAccounts() async {
     try {
       return await client.getFundAccounts().catchError((err) {
         _processDio(err);
@@ -250,11 +254,41 @@ class DoctorDataSourceImpl extends DoctorDataSource {
       rethrow;
     }
   }
-  
+
   @override
   Future<dynamic> activateDeactivateBankAccount(Map<String, Object> map) async {
     try {
       return await client.activateDeactivateBankAccount(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              validateAuthentication: true, localDataSource: localDataSource));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GetWithdrawalModel> getWithdrawals(Map<String, Object> map) async {
+    try {
+      return await client.getWithdrawals(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              validateAuthentication: true, localDataSource: localDataSource));
+    } on Exception {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<GetBookingsModel> getBookings(Map<String, Object> map)async {
+    try {
+      return await client.getBookings(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

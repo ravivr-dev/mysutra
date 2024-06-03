@@ -169,7 +169,7 @@ Future<void> init() async {
         getFollowersUsecase: sl<GetFollowersUsecase>(),
         getFollowingUseCase: sl<GetFollowingUseCase>(),
         getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
-        getPatientUseCaseUseCase: sl<GetPatientUseCaseUseCase>(),
+        getPatientUseCaseUseCase: sl<GetPatientUseCase>(),
         changeEmailUseCase: sl<ChangeEmailUseCase>(),
         verifyChangeEmailUseCase: sl<VerifyChangeEmailUseCase>(),
         changePhoneNumberUseCase: sl<ChangePhoneNumberUseCase>(),
@@ -249,7 +249,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetFollowingUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetFollowersUsecase(sl<UserRepository>()));
   sl.registerFactory(() => GetTimeSlotsUseCase(sl<DoctorRepository>()));
-  sl.registerFactory(() => GetPatientUseCaseUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => GetPatientUseCase(sl<DoctorRepository>()));
   sl.registerLazySingleton(
       () => GenerateUsernamesUseCase(sl<UserRepository>()));
   sl.registerFactory(() => GetAppointmentUseCase(sl<PatientRepository>()));

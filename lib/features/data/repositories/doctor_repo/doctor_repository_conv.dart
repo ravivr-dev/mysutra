@@ -1,9 +1,13 @@
 import 'package:my_sutra/features/data/model/doctor_models/get_bank_accounts_model.dart';
+import 'package:my_sutra/features/data/model/doctor_models/get_bookings_model.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_doctor_appointment_model.dart';
+import 'package:my_sutra/features/data/model/doctor_models/get_withdrawal_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/booking_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/withdrawal_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/follower_entity.dart';
@@ -107,6 +111,36 @@ class DoctorRepositoryConv {
               createdAt: e.createdAt,
               vpa: e.vpa,
             ))
+        .toList();
+  }
+
+  static WithdrawalEntity convertWithrawalModelToEntity(
+      GetWithdrawalModel data) {
+    return WithdrawalEntity(
+        booking: data.booking,
+        earnings: data.earnings,
+        commision: data.commision,
+        data: data.data == null
+            ? []
+            : data.data!
+                .map((e) => WithdrawalData(
+                    amount: e.amount,
+                    id: e.sId,
+                    currency: e.currency,
+                    status: e.status))
+                .toList());
+  }
+
+  static List<BookingEntity> convertBookingModelToEntity(
+      List<BookingItem> data) {
+    return data
+        .map((e) => BookingEntity(
+            date: e.date,
+            id: e.id,
+            userId: e.userId?.username,
+            time: e.time,
+            timeInMinutes: e.timeInMinutes,
+            totalAmount: e.totalAmount))
         .toList();
   }
 }

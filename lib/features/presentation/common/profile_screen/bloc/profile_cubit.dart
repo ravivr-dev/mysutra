@@ -17,7 +17,7 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final GetFollowersUsecase getFollowersUsecase;
   final GetProfileDetailsUseCase getProfileDetailsUseCase;
-  final GetPatientUseCaseUseCase getPatientUseCaseUseCase;
+  final GetPatientUseCase getPatientUseCaseUseCase;
   final GetFollowingUseCase getFollowingUseCase;
   final ChangeEmailUseCase changeEmailUseCase;
   final ChangePhoneNumberUseCase changePhoneNumberUseCase;
