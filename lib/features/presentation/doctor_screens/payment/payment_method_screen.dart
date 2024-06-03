@@ -20,15 +20,15 @@ class PaymentMethodScreen extends StatelessWidget {
           showErrorToast(context: context, message: state.error);
         }
       },
-      builder: (context, state) {
-        BankAccountCubit cubit = context.read<BankAccountCubit>();
+      builder: (_, state) {
+        BankAccountCubit cubit = _.read<BankAccountCubit>();
 
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
             title:
                 component.text(context.stringForKey(StringKeys.paymentMethod)),
-            actions: [if (cubit.accounts.isNotEmpty) _addButton()],
+            actions: [if (cubit.accounts.isNotEmpty) _addButton(context)],
           ),
           body: (state is BankAccountLoading)
               ? const Center(child: CircularProgressIndicator())
@@ -38,17 +38,22 @@ class PaymentMethodScreen extends StatelessWidget {
     );
   }
 
-  Container _addButton() {
-    return Container(
-      margin: const EdgeInsets.only(right: 24),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: AppColors.primaryColor),
-      child: Text(
-        'Add',
-        style: theme.publicSansFonts
-            .regularStyle(fontSize: 14, fontColor: AppColors.white),
+  InkWell _addButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        _showBottomSheet(context);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: AppColors.primaryColor),
+        child: Text(
+          'Add',
+          style: theme.publicSansFonts
+              .regularStyle(fontSize: 14, fontColor: AppColors.white),
+        ),
       ),
     );
   }
@@ -58,5 +63,55 @@ class PaymentMethodScreen extends StatelessWidget {
       return AccountsWidget(cubit: cubit);
     }
     return const EmptyAccountCard();
+  }
+
+  _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Add payment method',
+                style: theme.publicSansFonts.semiBoldStyle(
+                    fontSize: 18, fontColor: AppColors.color0xFF1E293B),
+              ),
+              const SizedBox(height: 20),
+              _dropDownItem(
+                text: 'Bank Account',
+                onTap: () {},
+              ),
+              const Divider(
+                color: AppColors.color0xFFEAECF0,
+              ),
+              _dropDownItem(
+                text: 'UPI ID',
+                onTap: () {},
+              ),
+              const SizedBox(height: 30),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  _dropDownItem({required String text, required Function() onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        style: theme.publicSansFonts.regularStyle(fontSize: 16),
+      ),
+    );
   }
 }
