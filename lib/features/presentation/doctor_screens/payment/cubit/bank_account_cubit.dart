@@ -36,7 +36,7 @@ class BankAccountCubit extends Cubit<BankAccountState> {
   }
 
   void addUpi(String upi) async {
-    emit(BankAccountLoading());
+    emit(BankAccountButtonLoader());
     final result = await addUpiUseCase.call(upi);
     result.fold((l) => emit(BankAccountError(l.message)), (data) {
       emit(BankAccountUpiAdd());
@@ -44,7 +44,7 @@ class BankAccountCubit extends Cubit<BankAccountState> {
   }
 
   void createAccount(CreateFundAccountParams params) async {
-    emit(BankAccountLoading());
+    emit(BankAccountButtonLoader());
     final result = await createFundAccountUseCase.call(params);
     result.fold((l) => emit(BankAccountError(l.message)), (data) {
       emit(BankAccountBankAdd());
@@ -52,7 +52,7 @@ class BankAccountCubit extends Cubit<BankAccountState> {
   }
 
   void addContact(CreatePayoutContactParams params) async {
-    emit(BankAccountLoading());
+    emit(BankAccountButtonLoader());
     final result = await createPayoutContactUseCase.call(params);
     result.fold((l) => emit(BankAccountError(l.message)), (data) {
       emit(BankAccountContactAdd(data));
@@ -68,4 +68,6 @@ class BankAccountCubit extends Cubit<BankAccountState> {
       emit(BankAccountUpdate());
     });
   }
+
+  stringForKey(String mobileNumber) {}
 }

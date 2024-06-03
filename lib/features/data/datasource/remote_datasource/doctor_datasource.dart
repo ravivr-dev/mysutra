@@ -32,7 +32,7 @@ abstract class DoctorDataSource {
 
   Future<SuccessMessageModel> createPayoutContact(Map<String, dynamic> map);
 
-  Future<dynamic> createFundAccount(Map<String, Object> map);
+  Future<dynamic> createFundAccount(Map<String, String> map);
 
   Future<dynamic> createUpi(String upi);
 
@@ -207,7 +207,7 @@ class DoctorDataSourceImpl extends DoctorDataSource {
   }
 
   @override
-  Future<dynamic> createFundAccount(Map<String, Object> map) async {
+  Future<dynamic> createFundAccount(Map<String, String> map) async {
     try {
       return await client.createFundAccount(map).catchError((err) {
         _processDio(err);
