@@ -7,37 +7,34 @@ import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 
-class AddBankAccountScreen extends StatefulWidget {
+class AddUpiIdScreen extends StatefulWidget {
   final bool showBasicDetails;
-  const AddBankAccountScreen({super.key, required this.showBasicDetails});
+  const AddUpiIdScreen({super.key, required this.showBasicDetails});
 
   @override
-  State<AddBankAccountScreen> createState() => _AddBankAccountScreenState();
+  State<AddUpiIdScreen> createState() => _AddUpiIdScreenState();
 }
 
-class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
+class _AddUpiIdScreenState extends State<AddUpiIdScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _countryCode = TextEditingController();
   final TextEditingController _mobCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _nameCtrl = TextEditingController();
-  final TextEditingController _ifscCtrl = TextEditingController();
-  final TextEditingController _accountCtrl = TextEditingController();
-  final TextEditingController _confirmAccountCtrl = TextEditingController();
+  final TextEditingController _upiCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: component.text(context.stringForKey(StringKeys.addBankAccount)),
+        title: component.text(context.stringForKey(StringKeys.addUpiId)),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        child: Form(
-          key: _formKey,
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (widget.showBasicDetails) ...[
                 _title('Basic details'),
@@ -68,29 +65,12 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                 ),
                 const SizedBox(height: 20),
               ],
-              _title('Account information'),
-              if (!widget.showBasicDetails) ...[
-                TextFormFieldWidget(
-                  title: 'Account Name',
-                  controller: _nameCtrl,
-                ),
-                const SizedBox(height: 5),
-              ],
+              _title('UPI Details'),
               TextFormFieldWidget(
-                title: 'IFSC Code',
-                controller: _ifscCtrl,
+                title: 'Add your UPI Handle',
+                controller: _upiCtrl,
               ),
-              const SizedBox(height: 5),
-              TextFormFieldWidget(
-                title: 'Account number',
-                controller: _accountCtrl,
-              ),
-              const SizedBox(height: 5),
-              TextFormFieldWidget(
-                title: 'Confirm Account number',
-                controller: _confirmAccountCtrl,
-              ),
-          
+              const Spacer(),
               CustomButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {}
