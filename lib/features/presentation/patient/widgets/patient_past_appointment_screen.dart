@@ -119,8 +119,9 @@ class _PatientPastAppointmentsScreenState
                         ),
                         InkWell(
                           onTap: () {
-                            context.showBottomSheet(
-                                const AppointmentBottomSheet());
+                            context.showBottomSheet(AppointmentBottomSheet(
+                              appointmentEntity: entity,
+                            ));
                           },
                           child: const Icon(
                             Icons.more_horiz,

@@ -5,6 +5,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/payment_order
 import 'package:my_sutra/features/domain/entities/patient_entities/schedule_appointment_response_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/rate_appointment_usecase.dart';
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
@@ -24,8 +25,10 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   final PastAppointmentUseCase pastAppointmentUseCase;
   final GetRasorpayKeyUseCase getRasorpayKeyUseCase;
   final PaymentOrderUseCase paymentOrderUsercase;
+  final RateAppointmentUsecase rateAppointmentUsecase;
 
   AppointmentCubit({
+    required this.rateAppointmentUsecase,
     required this.getAvailableSlotsUseCase,
     required this.scheduleAppointmentUseCase,
     required this.confirmAppointmentUseCase,
@@ -77,7 +80,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         (r) => emit(PastAppointmentSuccessState(appointmentEntities: r)));
   }
 
-  void getRsaoppayKey( PaymentOrderEntity data) async {
+  void getRsaoppayKey(PaymentOrderEntity data) async {
     final result = await getRasorpayKeyUseCase.call(NoParams());
     result.fold((l) => emit(RazorpayKeyErrorState(message: l.message)),
         (r) => emit(RazorpayKeySuccessState(key: r, data: data)));
@@ -87,5 +90,11 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     final result = await paymentOrderUsercase.call(params);
     result.fold((l) => emit(PaymentErrorState(message: l.message)),
         (r) => emit(PaymentSuccessState(data: r)));
+  }
+
+  void rateAppointment(RateAppointmentParams params) async {
+    final result = await rateAppointmentUsecase.call(params);
+    result.fold((l) => emit(RateAppointmentError(error: l.message)),
+        (r) => emit(RateAppointmentSuccess(message: r)));
   }
 }
