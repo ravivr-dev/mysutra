@@ -23,3 +23,9 @@ final class EarningBooking extends EarningState {
 
   EarningBooking(this.data);
 }
+
+final class EarningAccountsLoaded extends EarningState {}
+
+final class EarningCheckout extends EarningState {}
+
+final class EarningWithdrawalLoader extends EarningState {}

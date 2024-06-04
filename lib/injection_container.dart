@@ -47,6 +47,7 @@ import 'package:my_sutra/features/domain/usecases/chat_usecases/send_message_use
 import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/add_upi_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
@@ -226,6 +227,8 @@ Future<void> init() async {
       ));
 
   sl.registerFactory(() => EarningCubit(
+        getBankAccountUseCase: sl<GetBankAccountUseCase>(),
+        checkoutUseCase: sl<CheckoutUseCase>(),
         getBookingsUseCase: sl<GetBookingsUseCase>(),
         getWithdrawalsUseCase: sl<GetWithdrawalsUseCase>(),
       ));
@@ -316,6 +319,7 @@ Future<void> init() async {
       () => ActivateDeactivateBankAccountUsecase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetBookingsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetWithdrawalsUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => CheckoutUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

@@ -6,6 +6,8 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/widgets/booking_card.dart';
@@ -77,6 +79,13 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
         listener: (context, state) {
           if (state is EarningError) {
             widget.showErrorToast(context: context, message: state.error);
+          } else if (state is EarningCheckout) {
+            context.read<EarningCubit>().getWithdrawalData(GetPayoutParams(
+                  date: DateFormat(format).format(now),
+                ));
+            context.read<EarningCubit>().getBookingData(GetPayoutParams(
+                  date: DateFormat(format).format(now),
+                ));
           }
         },
         builder: (_, state) {
@@ -86,43 +95,45 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
             children: [
               const SizedBox(height: 10),
               _revenueBuilder(cubit),
-              _availableBuilder(),
+              _availableBuilder(cubit, state),
               _buildDateBuilder(cubit),
               _tabBuilder(),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    ListView.separated(
-                      shrinkWrap: true,
-                      controller: _withdrawalCtrl,
-                      // physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 24),
-                      itemCount: cubit.withdrawals.length,
-                      itemBuilder: (_, index) => WithdrawCard(
-                        data: cubit.withdrawals[index],
-                      ),
-                      separatorBuilder: seperatedItemBuilder,
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      controller: _bookingCtrl,
-                      // physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 24),
-                      itemCount: cubit.bookings.length,
-                      itemBuilder: (_, index) => BookingCard(
-                        data: cubit.bookings[index],
-                      ),
-                      separatorBuilder: seperatedItemBuilder,
-                    ),
-                  ],
-                ),
-              ),
+              _tabViewBuilder(cubit),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Expanded _tabViewBuilder(EarningCubit cubit) {
+    return Expanded(
+      child: TabBarView(
+        controller: _tabController,
+        children: [
+          ListView.separated(
+            shrinkWrap: true,
+            controller: _withdrawalCtrl,
+            // physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+            itemCount: cubit.withdrawals.length,
+            itemBuilder: (_, index) => WithdrawCard(
+              data: cubit.withdrawals[index],
+            ),
+            separatorBuilder: seperatedItemBuilder,
+          ),
+          ListView.separated(
+            shrinkWrap: true,
+            controller: _bookingCtrl,
+            // physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+            itemCount: cubit.bookings.length,
+            itemBuilder: (_, index) => BookingCard(
+              data: cubit.bookings[index],
+            ),
+            separatorBuilder: seperatedItemBuilder,
+          ),
+        ],
       ),
     );
   }
@@ -155,7 +166,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
     );
   }
 
-  Container _availableBuilder() {
+  Container _availableBuilder(EarningCubit cubit, EarningState state) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 10),
       color: AppColors.color0xFFF3EBFF,
@@ -165,7 +176,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
             child: RichText(
               softWrap: true,
               text: TextSpan(
-                text: '₹ 8,000.00  ',
+                text: '₹ ${cubit.bookingAmount}  ',
                 style: theme.publicSansFonts.semiBoldStyle(
                   fontSize: 14,
                   height: 20,
@@ -183,17 +194,49 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-            decoration: BoxDecoration(
-                color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(4)),
-            child: Text(
-              'Withdraw',
-              style: theme.publicSansFonts.regularStyle(
-                  fontSize: 14, height: 20, fontColor: Colors.white),
-            ),
-          )
+          if (state is EarningWithdrawalLoader)
+            circularProgressIndicator
+          else
+            InkWell(
+              onTap: () {
+                if (cubit.bookingAmount < 1000) {
+                  widget.showErrorToast(
+                      context: context,
+                      message: 'Amount below ₹ 1000 cannot be withdraw');
+                } else if (cubit.accounts.isEmpty) {
+                  AiloitteNavigation.intent(
+                      context, AppRoutes.paymentMethodRoute);
+                  widget.showErrorToast(
+                      context: context, message: 'Please Add Account First');
+                } else {
+                  BankAccountEntity myAccount = cubit.accounts.firstWhere(
+                      (element) => element.active == true,
+                      orElse: () => BankAccountEntity());
+
+                  if (myAccount.id == null) {
+                    widget.showErrorToast(
+                        context: context,
+                        message: "You Don't have any active account for now");
+                  } else {
+                    cubit.checkout(CheckoutParams(
+                        accountId: myAccount.id!,
+                        mode: (myAccount.vpa != null) ? "VPA" : "BANK_ACCOUNT",
+                        amount: cubit.bookingAmount));
+                  }
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(4)),
+                child: Text(
+                  'Withdraw',
+                  style: theme.publicSansFonts.regularStyle(
+                      fontSize: 14, height: 20, fontColor: Colors.white),
+                ),
+              ),
+            )
         ],
       ),
     );

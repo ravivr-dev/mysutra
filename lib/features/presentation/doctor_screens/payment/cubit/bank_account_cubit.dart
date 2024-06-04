@@ -68,6 +68,4 @@ class BankAccountCubit extends Cubit<BankAccountState> {
       emit(BankAccountUpdate());
     });
   }
-
-  stringForKey(String mobileNumber) {}
 }

@@ -472,7 +472,7 @@ class _DoctorClient implements DoctorClient {
     final _data = <String, dynamic>{};
     _data.addAll(map);
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
-      method: 'PATCH',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
