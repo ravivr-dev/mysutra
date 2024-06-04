@@ -9,6 +9,7 @@ import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/user_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
+import 'package:my_sutra/features/data/model/user_models/follow_user_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/home_response_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
@@ -58,7 +59,7 @@ abstract class UserDataSource {
 
   Future<VideoRoomResponseModel> getVideoRoomId(Map<String, dynamic> data);
 
-  Future<dynamic> followUser(Map<String, dynamic> data);
+  Future<FollowUserModel> followUser(Map<String, dynamic> data);
 
   Future<HttpResponse> downloadPdf(String url);
 }
@@ -360,7 +361,7 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<dynamic> followUser(Map<String, dynamic> data) async {
+  Future<FollowUserModel> followUser(Map<String, dynamic> data) async {
     try {
       return await client.followUser(data).catchError((err) {
         _processDio(err);

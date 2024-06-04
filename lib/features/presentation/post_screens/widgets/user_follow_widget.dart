@@ -48,7 +48,8 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<SearchDoctorCubit, SearchDoctorState>(
       listener: (context, state) {
-        if (state is FollowDoctorSuccessState) {
+        if (state is FollowDoctorSuccessState &&
+            widget.userIdEntity.id == state.followEntity.followedUserId) {
           isFollowing = !isFollowing;
           widget.userFollowing?.call(isFollowing);
         }

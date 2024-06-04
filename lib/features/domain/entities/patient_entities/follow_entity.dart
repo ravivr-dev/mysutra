@@ -1,5 +1,5 @@
 class FollowEntity {
-  final String? followedUserId;
+  final String followedUserId;
 
   FollowEntity({required this.followedUserId});
 }

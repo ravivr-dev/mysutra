@@ -182,33 +182,33 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               child: component.assetImage(path: Assets.iconsImage),
             ),
           ),
-            // Row(
-            //   mainAxisSize: MainAxisSize.min,
-            //   children: [
-            //     InkWell(
-            //       onTap: () {
-            //         // ImagePicker().pickImage(source: ImageSource.gallery);
-            //         updateImageSheet(onChange: (image) {
-            //           if (image != null) {
-            //             context.read<PostsCubit>().uploadDoc(image);
-            //             AiloitteNavigation.back(context);
-            //           }
-            //         });
-            //       },
-            //       child: component.assetImage(path: Assets.iconsImage),
-            //     ),
-            //     // InkWell(
-            //     //     onTap: () =>
-            //     //         ImagePicker().pickVideo(source: ImageSource.gallery),
-            //     //     child: component.assetImage(path: Assets.iconsVideo)),
-            //     // InkWell(
-            //     //   onTap: () {
-            //     //     //Navigate to document screen
-            //     //   },
-            //     //   child: component.assetImage(path: Assets.iconsDocs),
-            //     // ),
-            //   ],
-            // ),
+          // Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: [
+          //     InkWell(
+          //       onTap: () {
+          //         // ImagePicker().pickImage(source: ImageSource.gallery);
+          //         updateImageSheet(onChange: (image) {
+          //           if (image != null) {
+          //             context.read<PostsCubit>().uploadDoc(image);
+          //             AiloitteNavigation.back(context);
+          //           }
+          //         });
+          //       },
+          //       child: component.assetImage(path: Assets.iconsImage),
+          //     ),
+          //     // InkWell(
+          //     //     onTap: () =>
+          //     //         ImagePicker().pickVideo(source: ImageSource.gallery),
+          //     //     child: component.assetImage(path: Assets.iconsVideo)),
+          //     // InkWell(
+          //     //   onTap: () {
+          //     //     //Navigate to document screen
+          //     //   },
+          //     //   child: component.assetImage(path: Assets.iconsDocs),
+          //     // ),
+          //   ],
+          // ),
           // ),
           const Spacer(),
           InkWell(
@@ -280,6 +280,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               child: IconButton(
                   onPressed: () {
                     mediaUrls.remove(mediaUrls[index]);
+                    imageList.remove(imageList[index]);
                     setState(() {});
                   },
                   icon: const Icon(

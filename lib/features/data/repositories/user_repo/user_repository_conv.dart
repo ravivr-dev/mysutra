@@ -1,3 +1,4 @@
+import 'package:my_sutra/features/data/model/user_models/follow_user_model.dart';
 import 'package:my_sutra/features/data/model/user_models/my_profile_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/video_room_response_model.dart';
@@ -8,7 +9,6 @@ import 'package:my_sutra/features/domain/entities/user_entities/video_room_respo
 import '../../../domain/entities/patient_entities/follow_entity.dart';
 import '../../../domain/entities/user_entities/my_profile_entity.dart';
 import '../../../domain/entities/user_entities/user_data_entity.dart';
-import '../../model/patient_models/follow_model.dart';
 import '../../model/user_models/home_response_model.dart';
 import '../../model/user_models/otp_model.dart';
 
@@ -81,7 +81,7 @@ class UserRepoConv {
         videoSdkToken: model.videoSdkToken);
   }
 
-  static FollowEntity followModelToEntity(FollowModel model) {
-    return FollowEntity(followedUserId: model.followedUserId);
+  static FollowEntity followModelToEntity(FollowUserModel model) {
+    return FollowEntity(followedUserId: model.data?.followedUserId ?? '');
   }
 }

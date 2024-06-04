@@ -53,7 +53,7 @@ class PatientRepoConv {
   }
 
   static FollowEntity followModelToEntity(FollowModel model) {
-    return FollowEntity(followedUserId: model.followedUserId);
+    return FollowEntity(followedUserId: model.followedUserId ?? '');
   }
 
   static DoctorEntity doctorModelToEntity(DoctorDataModel model) {

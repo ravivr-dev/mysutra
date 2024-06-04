@@ -74,7 +74,8 @@ class ArticleRepositoryImpl extends ArticleRepository {
         final result = await remoteDatasource.editArticle({
           "articleId": params.articleId,
           "heading": params.heading,
-          "content": params.content
+          "content": params.content,
+          "mediaUrls" : params.mediaUrls,
         });
         return Right(result.message ?? 'Edit Article Success');
       } else {

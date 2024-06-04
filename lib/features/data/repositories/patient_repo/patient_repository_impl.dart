@@ -14,6 +14,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/payment_order
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/rate_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
 import '../../../domain/entities/patient_entities/appointment_entity.dart';
@@ -245,6 +246,25 @@ class PatientRepositoryImpl extends PatientRepository {
 
         return Right(
             PatientRepoConv.paymentHistoryModelToEntity(result.data ?? []));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> rateAppointment(
+      RateAppointmentParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.rateAppointment({
+          "appointmentId": params.appointmentId,
+          "doctorId": params.doctorId,
+          "ratings": params.rating
+        });
+        return Right(result.message ?? 'Rate Appointment Success');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

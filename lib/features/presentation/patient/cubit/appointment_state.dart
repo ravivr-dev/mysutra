@@ -9,6 +9,7 @@ final class ScheduleAppointmentLoadingState extends AppointmentState {}
 
 final class ScheduleAppointmentSuccessState extends AppointmentState {
   final ScheduleAppointmentResponseEntity entity;
+
   ScheduleAppointmentSuccessState({
     required this.entity,
   });
@@ -16,6 +17,7 @@ final class ScheduleAppointmentSuccessState extends AppointmentState {
 
 final class ScheduleAppointmentErrorState extends AppointmentState {
   final String message;
+
   ScheduleAppointmentErrorState({
     required this.message,
   });
@@ -25,6 +27,7 @@ final class GetAvailableAppointmnetLoadingState extends AppointmentState {}
 
 final class GetAvailableAppointmentErrorState extends AppointmentState {
   final String message;
+
   GetAvailableAppointmentErrorState({
     required this.message,
   });
@@ -32,6 +35,7 @@ final class GetAvailableAppointmentErrorState extends AppointmentState {
 
 final class GetAvailableAppointmentSuccessState extends AppointmentState {
   final List<AvailableTimeSlotEntity> timeSlots;
+
   GetAvailableAppointmentSuccessState({
     required this.timeSlots,
   });
@@ -47,6 +51,7 @@ final class ConfirmAppointmentSuccessState extends AppointmentState {
 
 final class ConfirmAppointmentErrorState extends AppointmentState {
   final String message;
+
   ConfirmAppointmentErrorState({
     required this.message,
   });
@@ -58,6 +63,7 @@ final class CancelAppointmentSuccessState extends AppointmentState {}
 
 final class CancelAppointmentErrorState extends AppointmentState {
   final String message;
+
   CancelAppointmentErrorState({
     required this.message,
   });
@@ -113,4 +119,18 @@ final class PaymentErrorState extends AppointmentState {
   PaymentErrorState({
     required this.message,
   });
+}
+
+final class RateAppointmentLoading extends AppointmentState {}
+
+final class RateAppointmentSuccess extends AppointmentState {
+  final String message;
+
+  RateAppointmentSuccess({required this.message});
+}
+
+final class RateAppointmentError extends AppointmentState {
+  final String error;
+
+  RateAppointmentError({required this.error});
 }

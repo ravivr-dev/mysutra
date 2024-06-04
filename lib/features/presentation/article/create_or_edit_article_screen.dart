@@ -27,6 +27,7 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
   final TextEditingController _bodyController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final List<ArticleMediaUrlEntity> mediaUrl = [];
+  final List<String> imageList = [];
   ArticleEntity? article;
   XFile? media;
 
@@ -54,15 +55,26 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
         if (state is GetArticleDetailLoaded) {
           _bodyController.text = state.article.content ?? '';
           _titleController.text = state.article.heading ?? '';
+          if (state.article.mediaUrls.isNotEmpty) {
+            // _addImagesForEditing(state.article.mediaUrls);
+            for (ArticleMediaUrlEntity e in state.article.mediaUrls) {
+              imageList.add(e.url ?? '');
+              mediaUrl.add(ArticleMediaUrlEntity(
+                  mediaType: 'IMAGE_URL',
+                  url: removeUntilLastSlash(e.url ?? '')));
+            }
+          }
         } else if (state is GetArticleDetailError) {
           widget.showErrorToast(context: context, message: state.error);
         }
         if (state is UploadDocLoaded) {
-          // mediaUrl.add(ArticleMediaUrlEntity(
-          //     mediaType: 'IMAGE_URL',
-          //     url: removeUntilLastSlash(state.data.key ?? "")));
+          mediaUrl.add(ArticleMediaUrlEntity(
+              mediaType: 'IMAGE_URL',
+              url: removeUntilLastSlash(state.data.key ?? "")));
 
-          _bodyController.text += ' ${state.data.fileUrl} ';
+          imageList.add(state.data.fileUrl ?? '');
+
+          // _bodyController.text += ' ${state.data.fileUrl} ';
         } else if (state is UploadDocError) {
           widget.showErrorToast(context: context, message: state.error);
         }
@@ -91,9 +103,11 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                 if (_key.currentState!.validate()) {
                   if (widget.params.isEditing) {
                     context.read<ArticleCubit>().editArticle(
-                        articleId: widget.params.articleId,
-                        heading: _titleController.text,
-                        content: _bodyController.text);
+                          articleId: widget.params.articleId,
+                          heading: _titleController.text,
+                          content: _bodyController.text,
+                          mediaUrls: mediaUrl,
+                        );
                   } else {
                     context.read<ArticleCubit>().createPost(
                           heading: _titleController.text,
@@ -122,6 +136,9 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                         : null;
                   },
                 ),
+                if (imageList.isNotEmpty) ...[
+                  _buildImageWidget(),
+                ],
                 component.textField(
                   controller: _bodyController,
                   hintText: 'Note',
@@ -190,6 +207,62 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
       return url.substring(lastSlashIndex + 1);
     }
     return url; // Return the original URL if no slash is found or if it's the last character
+  }
+
+  Widget _buildImageWidget() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      height: 153,
+      child: ListView.separated(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (_, index) {
+          return _buildImage(index);
+        },
+        separatorBuilder: (_, __) {
+          return component.spacer(width: 10);
+        },
+        itemCount: imageList.length,
+      ),
+    );
+  }
+
+  Widget _buildImage(int index) {
+    return Stack(
+      children: [
+        ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: BorderRadius.circular(20),
+          child: component.networkImage(
+            url: imageList[index],
+            // height: 153,
+            // width: 153,
+            fit: BoxFit.fitWidth,
+            errorWidget: component.assetImage(path: Assets.imagesDefaultAvatar),
+          ),
+        ),
+        Positioned(
+          right: 10,
+          top: 10,
+          child: CircleAvatar(
+            radius: 16,
+            backgroundColor: AppColors.black01.withOpacity(.3),
+            child: Center(
+              child: IconButton(
+                  onPressed: () {
+                    mediaUrl.remove(mediaUrl[index]);
+                    imageList.remove(imageList[index]);
+                    setState(() {});
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: AppColors.white,
+                  )),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
 

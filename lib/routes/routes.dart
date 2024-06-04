@@ -52,6 +52,7 @@ import 'package:my_sutra/features/presentation/patient/search/search_result_scre
 import 'package:my_sutra/features/presentation/patient/search_filter_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/booking_successful_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/patient_past_appointment_screen.dart';
+import 'package:my_sutra/features/presentation/patient/widgets/rate_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/create_post_screen.dart';
 import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.dart';
 import 'package:my_sutra/features/presentation/post_screens/post_screen.dart';
@@ -366,6 +367,13 @@ class Routes {
             child: AddUpiIdScreen(showBasicDetails: args as bool),
           ),
         );
+      case AppRoutes.rateAppointmentRoute:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<AppointmentCubit>(
+                  create: (context) => sl<AppointmentCubit>(),
+                  child:
+                      RateAppointmentScreen(args: args as RateAppointmentArgs),
+                ));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

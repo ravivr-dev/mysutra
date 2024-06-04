@@ -8,7 +8,7 @@ class ArticleMediaUrlEntity {
   });
 
   Map<String, dynamic> toJson() => {
-    "mediaType": mediaType,
-    "url": url,
-  };
+        "mediaType": mediaType,
+        "url": url,
+      };
 }

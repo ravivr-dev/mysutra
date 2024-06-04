@@ -70,6 +70,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_
 import 'package:my_sutra/features/domain/usecases/patient_usecases/past_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/rate_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/schedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/post_usecases/create_post_usecase.dart';
@@ -161,6 +162,7 @@ Future<void> init() async {
       updateAboutOrFeesUseCase: sl<UpdateAboutOrFeesUseCase>(),
       getTimeSlotsUseCase: sl<GetTimeSlotsUseCase>()));
   sl.registerFactory(() => AppointmentCubit(
+        rateAppointmentUsecase: sl<RateAppointmentUsecase>(),
         getAvailableSlotsUseCase: sl<GetAvailableSlotsForPatientUseCase>(),
         scheduleAppointmentUseCase: sl<ScheduleAppointmentUseCase>(),
         confirmAppointmentUseCase: sl<ConfirmAppointmentUseCase>(),
@@ -320,6 +322,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetBookingsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => GetWithdrawalsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => CheckoutUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => RateAppointmentUsecase(sl<PatientRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

@@ -7,7 +7,7 @@ class ArticleEntity {
   ArticleUserEntity? userId;
   String? heading;
   String? content;
-  List<ArticleMediaUrlEntity>? mediaUrls;
+  List<ArticleMediaUrlEntity> mediaUrls;
   bool? isMyArticle;
   bool isLiked;
   bool? isViewed;
@@ -24,7 +24,7 @@ class ArticleEntity {
     this.userId,
     this.heading,
     this.content,
-    this.mediaUrls,
+    required this.mediaUrls,
     this.isMyArticle,
     required this.isLiked,
     this.isViewed,
@@ -45,5 +45,9 @@ class ArticleEntity {
     } else {
       totalLikes -= 1;
     }
+  }
+
+  List<String> getUrls() {
+    return mediaUrls.map((e) => e.url ?? '').toList();
   }
 }

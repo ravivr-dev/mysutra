@@ -115,7 +115,8 @@ class HomeCubit extends Cubit<HomeState> {
             name: name,
             roomId: roomId,
             remoteUserId: remoteUserId,
-            currentUserId: currentUserId)));
+            currentUserId: currentUserId,
+            appointmentId: appointmentId)));
   }
 
 // FutureOr<void> _emitFailure(

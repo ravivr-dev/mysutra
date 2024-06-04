@@ -20,6 +20,7 @@ import 'package:my_sutra/features/presentation/common/video_calling/video_callin
 import 'package:my_sutra/features/presentation/patient/search/bottomsheet/dr_bottom_sheet.dart';
 import 'package:my_sutra/features/presentation/patient/search/search_result_screen.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/date_widget.dart';
+import 'package:my_sutra/features/presentation/patient/widgets/rate_appointment_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/main.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
@@ -29,6 +30,7 @@ import '../../../patient/search_filter_screen.dart';
 import '../../chat_screen/chat_screen.dart';
 
 part 'appointment_screen_states/doctor_appointment_screen_state.dart';
+
 part 'appointment_screen_states/patient_appointment_screen_state.dart';
 
 class AppointmentScreen extends StatefulWidget {
@@ -103,7 +105,16 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
               remoteUserId: state.remoteUserId,
               currentUserId: state.currentUserId,
             ),
-          );
+          ).then((_) {
+            if (UserHelper.role == UserRole.patient) {
+              AiloitteNavigation.intentWithData(
+                  context,
+                  AppRoutes.rateAppointmentRoute,
+                  RateAppointmentArgs(
+                      appointmentId: state.appointmentId,
+                      doctorId: state.remoteUserId));
+            }
+          });
         } else if (state is GetVideoRoomErrorState) {
           widget.showErrorToast(context: context, message: state.message);
         }
