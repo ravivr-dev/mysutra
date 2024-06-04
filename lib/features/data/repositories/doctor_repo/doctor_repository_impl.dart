@@ -13,6 +13,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/available_tim
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_appointment_usecase.dart';
@@ -311,8 +312,27 @@ class DoctorRepositoryImpl extends DoctorRepository {
           "limit": params.limit
         });
 
-        return Right(
-            DoctorRepositoryConv.convertBookingModelToEntity(result.data ?? []));
+        return Right(DoctorRepositoryConv.convertBookingModelToEntity(
+            result.data ?? []));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> checkout(CheckoutParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.checkout({
+          "fundAccountId": params.accountId,
+          "mode": params.mode,
+          "amount": params.amount
+        });
+
+        return Right(result);
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

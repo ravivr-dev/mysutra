@@ -103,4 +103,7 @@ abstract class DoctorClient {
 
   @GET(EndPoints.payout)
   Future<GetBookingsModel> getBookings(@Queries() Map<String, Object> map);
+
+  @PATCH(EndPoints.payout)
+  Future<dynamic> checkout(@Body() Map<String, Object> map);
 }
