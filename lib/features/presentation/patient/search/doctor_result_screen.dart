@@ -25,16 +25,6 @@ class DoctorResultScreen extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppColors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            AiloitteNavigation.intentWithClearAllRoutes(
-                context, AppRoutes.homeRoute);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.greyD9,
-          ),
-        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24),
