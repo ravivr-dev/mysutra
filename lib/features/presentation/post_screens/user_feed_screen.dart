@@ -9,6 +9,7 @@ import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.da
 import 'package:my_sutra/features/presentation/post_screens/widgets/post_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserFeedScreen extends StatefulWidget {
   const UserFeedScreen({super.key});
@@ -20,6 +21,7 @@ class UserFeedScreen extends StatefulWidget {
 class _UserFeedScreenState extends State<UserFeedScreen> {
   List<PostEntity> posts = [];
   final ScrollController _scrollCtrl = ScrollController();
+  final RefreshController _refCtrl = RefreshController();
   int pagination = 1;
   bool noMoreData = false;
   int limit = 10;
@@ -37,12 +39,22 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
     super.initState();
   }
 
+  void _refresherControls() {
+    if (_refCtrl.isLoading) {
+      _refCtrl.loadComplete();
+    }
+    if (_refCtrl.isRefresh) {
+      _refCtrl.refreshCompleted();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PostsCubit, PostsState>(
       listener: (context, state) {
         if (state is GetPostsLoaded) {
           if (pagination == 1) {
+            _refresherControls();
             posts = state.posts;
           } else {
             posts.addAll(state.posts);
@@ -66,37 +78,41 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
-              child: SingleChildScrollView(
-                controller: _scrollCtrl,
-                child: Column(
-                  children: [
-                    _buildHeaderWidget(),
-                    component.spacer(height: 23),
-                    if (state is GetPostsLoading && posts.isEmpty)
-                      const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    else if (posts.isNotEmpty) ...[
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return PostWidget(
-                              postEntity: posts[index],
-                              onTapShare: () {
-                                AiloitteNavigation.intentWithData(context,
-                                        AppRoutes.repostRoute, posts[index])
-                                    .then((_) => _loadPosts());
-                              },
-                            );
-                          },
-                          itemCount: posts.length)
-                    ] else
-                      component.text('No Posts Here',
-                          style: theme.publicSansFonts.mediumStyle(
-                              fontSize: 25, fontColor: AppColors.grey92)),
-                  ],
+              child: SmartRefresher(
+                controller: _refCtrl,
+                onRefresh: _loadPosts,
+                child: SingleChildScrollView(
+                  controller: _scrollCtrl,
+                  child: Column(
+                    children: [
+                      _buildHeaderWidget(),
+                      component.spacer(height: 23),
+                      if (state is GetPostsLoading && posts.isEmpty)
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      else if (posts.isNotEmpty) ...[
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return PostWidget(
+                                postEntity: posts[index],
+                                onTapShare: () {
+                                  AiloitteNavigation.intentWithData(context,
+                                          AppRoutes.repostRoute, posts[index])
+                                      .then((_) => _loadPosts());
+                                },
+                              );
+                            },
+                            itemCount: posts.length)
+                      ] else
+                        component.text('No Posts Here',
+                            style: theme.publicSansFonts.mediumStyle(
+                                fontSize: 25, fontColor: AppColors.grey92)),
+                    ],
+                  ),
                 ),
               ),
             ),
