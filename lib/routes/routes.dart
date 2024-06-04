@@ -33,7 +33,12 @@ import 'package:my_sutra/features/presentation/doctor_screens/my_follower/my_fol
 import 'package:my_sutra/features/presentation/doctor_screens/my_following/doctor_my_following_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/doctor_past_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_patients_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/add_bank_account_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/add_upi_id_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank_account_cubit.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/payment_checkout_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/payment_method_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
@@ -334,11 +339,34 @@ class Routes {
       case AppRoutes.paymentCheckoutRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<PaymentHistoryCubit>(),
+            create: (context) => sl<EarningCubit>()..getAccounts(),
             child: const PaymentCheckoutScreen(),
           ),
         );
 
+      case AppRoutes.paymentMethodRoute:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<BankAccountCubit>()..getData(),
+            child: const PaymentMethodScreen(),
+          ),
+        );
+
+      case AppRoutes.addBankAccountRoute:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<BankAccountCubit>(),
+            child: AddBankAccountScreen(showBasicDetails: args as bool),
+          ),
+        );
+
+      case AppRoutes.addUpiIdRoute:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<BankAccountCubit>(),
+            child: AddUpiIdScreen(showBasicDetails: args as bool),
+          ),
+        );
       case AppRoutes.rateAppointmentRoute:
         return MaterialPageRoute(
             builder: (_) => BlocProvider<AppointmentCubit>(

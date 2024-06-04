@@ -76,5 +76,8 @@
   "learning_management": "Learning Management",
   "article": "Article",
   "payment_history" : "Payment history",
-  "earning" : "Earning"
+  "earning" : "Earning",
+  "payment_methods" : "Payment Methods",
+  "add_bank_account" : "Add Bank Account",
+  "add_upi_id" : "Add UPI ID"
 }

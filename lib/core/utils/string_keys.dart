@@ -82,4 +82,7 @@ class StringKeys {
   static const String article = 'article';
   static const String paymentHistory = 'payment_history';
   static const String earning = 'earning';
+  static const String paymentMethod = 'payment_methods';
+  static const String addBankAccount = 'add_bank_account';
+  static const String addUpiId = 'add_upi_id';
 }

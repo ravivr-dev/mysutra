@@ -55,6 +55,9 @@ class AppRoutes {
   static const String imageViewRoute = '/image_view_screen';
   static const String paymentHistoryRoute = '/payment_history_screen';
   static const String paymentCheckoutRoute = '/payment_checkout_screen';
+  static const String paymentMethodRoute = '/payment_method_screen';
+  static const String addBankAccountRoute = '/add_bank_account_screen';
+  static const String addUpiIdRoute = '/add_upi_id_screen';
 
   static const String rateAppointmentRoute =
       '/patient/widget/rate_appointment_screen';

@@ -18,7 +18,7 @@ class CreateFundAccountUseCase
 class CreateFundAccountParams {
   final String name;
   final String ifsc;
-  final int accountNumber;
+  final String accountNumber;
 
   CreateFundAccountParams({required this.name, required this.ifsc, required this.accountNumber});
 

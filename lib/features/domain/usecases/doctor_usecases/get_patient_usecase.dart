@@ -4,10 +4,10 @@ import 'package:my_sutra/features/domain/entities/patient_entities/patient_entit
 import 'package:my_sutra/features/domain/repositories/doctor_repository.dart';
 import '../../../../core/usecase/usecase.dart';
 
-class GetPatientUseCaseUseCase extends UseCase<List<PatientEntity>, GetPatientsParams> {
+class GetPatientUseCase extends UseCase<List<PatientEntity>, GetPatientsParams> {
   final DoctorRepository _doctorRepository;
 
-  GetPatientUseCaseUseCase(this._doctorRepository);
+  GetPatientUseCase(this._doctorRepository);
 
   @override
   Future<Either<Failure, List<PatientEntity>>> call(GetPatientsParams params) {
