@@ -154,6 +154,8 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                   hintTextStyle: theme.publicSansFonts
                       .regularStyle(fontSize: 16, fontColor: AppColors.greyD9),
                   filled: true,
+                  textInputType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
                   borderColor: AppColors.white,
                   validator: (val) {
                     return val!.trim().isEmpty
