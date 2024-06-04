@@ -31,16 +31,48 @@ class GetWithdrawalModel {
 
 class WithdrawalItem {
   String? sId;
+  String? userId;
+  String? payoutId;
+  String? date;
   int? amount;
+  int? commision;
   String? currency;
+  Null? utr;
+  String? mode;
   String? status;
+  // StatusDetails? statusDetails;
+  String? createdAt;
+  String? updatedAt;
 
-  WithdrawalItem({this.sId, this.amount, this.currency, this.status});
+  WithdrawalItem(
+      {this.sId,
+      this.userId,
+      this.payoutId,
+      this.date,
+      this.amount,
+      this.commision,
+      this.currency,
+      this.utr,
+      this.mode,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   WithdrawalItem.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    userId = json['userId'];
+    payoutId = json['payoutId'];
+    date = json['date'];
     amount = json['amount'];
+    commision = json['commision'];
     currency = json['currency'];
+    utr = json['utr'];
+    mode = json['mode'];
     status = json['status'];
+    // statusDetails = json['statusDetails'] != null
+    //     ? new StatusDetails.fromJson(json['statusDetails'])
+    //     : null;
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
   }
 }

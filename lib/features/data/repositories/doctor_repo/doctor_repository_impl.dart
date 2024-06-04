@@ -284,7 +284,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getWithdrawals({
           "earningType": params.earningType ?? 'WITHDRAWAL',
-          "date ": params.date,
+          "date": params.date,
           "pagination": params.pagination,
           "limit": params.limit
         });
@@ -306,7 +306,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getBookings({
           "earningType": params.earningType ?? 'BOOKING',
-          "date ": params.date,
+          "date": params.date,
           "pagination": params.pagination,
           "limit": params.limit
         });

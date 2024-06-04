@@ -13,13 +13,18 @@ class WithdrawalEntity {
 
 class WithdrawalData {
   final String? id;
+  final String? payoutId;
+  final String? date;
   final int? amount;
   final String? currency;
   final String? status;
 
-  WithdrawalData(
-      {required this.id,
-      required this.amount,
-      required this.currency,
-      required this.status});
+  WithdrawalData({
+    required this.payoutId,
+    required this.date,
+    required this.id,
+    required this.amount,
+    required this.currency,
+    required this.status,
+  });
 }

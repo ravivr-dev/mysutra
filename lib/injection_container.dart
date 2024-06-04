@@ -53,9 +53,11 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bank_account_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bookings_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_time_slots_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
@@ -109,6 +111,7 @@ import 'package:my_sutra/features/presentation/common/login/cubit/select_account
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank_account_cubit.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/payment_history/cubit/payment_history_cubit.dart';
@@ -222,6 +225,11 @@ Future<void> init() async {
             sl<ActivateDeactivateBankAccountUsecase>(),
       ));
 
+  sl.registerFactory(() => EarningCubit(
+        getBookingsUseCase: sl<GetBookingsUseCase>(),
+        getWithdrawalsUseCase: sl<GetWithdrawalsUseCase>(),
+      ));
+
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
   sl.registerLazySingleton(() => OtpUsecase(sl<UserRepository>()));
@@ -306,6 +314,8 @@ Future<void> init() async {
   sl.registerFactory(() => AddUpiUseCase(sl<DoctorRepository>()));
   sl.registerFactory(
       () => ActivateDeactivateBankAccountUsecase(sl<DoctorRepository>()));
+  sl.registerFactory(() => GetBookingsUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => GetWithdrawalsUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

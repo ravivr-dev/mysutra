@@ -124,6 +124,8 @@ class DoctorRepositoryConv {
             ? []
             : data.data!
                 .map((e) => WithdrawalData(
+                    payoutId: e.payoutId,
+                    date: e.date,
                     amount: e.amount,
                     id: e.sId,
                     currency: e.currency,
