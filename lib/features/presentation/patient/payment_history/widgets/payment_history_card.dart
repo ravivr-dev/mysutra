@@ -8,8 +8,12 @@ import 'package:my_sutra/features/domain/entities/patient_entities/payment_histo
 
 class PaymentHistoryCard extends StatelessWidget {
   final PaymentHistoryEntity data;
+  final VoidCallback onTapDownloadReceipt;
+
   const PaymentHistoryCard({
-    super.key, required this.data,
+    super.key,
+    required this.data,
+    required this.onTapDownloadReceipt,
   });
 
   @override
@@ -31,11 +35,11 @@ class PaymentHistoryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (data.date != null)
-          Text(
-           "${DateFormat('dd/MM/yyyy').format(DateTime.parse(data.date!))}  ${data.time ?? ''}",
-            style: theme.publicSansFonts.regularStyle(
-                fontSize: 14, height: 20, fontColor: AppColors.grey81),
-          ),
+            Text(
+              "${DateFormat('dd/MM/yyyy').format(DateTime.parse(data.date!))}  ${data.time ?? ''}",
+              style: theme.publicSansFonts.regularStyle(
+                  fontSize: 14, height: 20, fontColor: AppColors.grey81),
+            ),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -65,10 +69,16 @@ class PaymentHistoryCard extends StatelessWidget {
                       fontSize: 14, height: 20, fontColor: AppColors.black01),
                 ),
               ),
-              Text(
-                'Download receipt',
-                style: theme.publicSansFonts.semiBoldStyle(
-                    fontSize: 16, height: 20, fontColor: AppColors.color0xFF8338EC),
+              InkWell(
+                splashFactory: NoSplash.splashFactory,
+                onTap: onTapDownloadReceipt,
+                child: Text(
+                  'Download receipt',
+                  style: theme.publicSansFonts.semiBoldStyle(
+                      fontSize: 16,
+                      height: 20,
+                      fontColor: AppColors.color0xFF8338EC),
+                ),
               ),
             ],
           ),

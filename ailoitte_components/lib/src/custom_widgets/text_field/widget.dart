@@ -141,7 +141,7 @@ class _AiloitteTextFieldWidgetState extends State<AiloitteTextFieldWidget> {
 
   bool _showPassword = false;
 
-  bool _isFilled = false;
+  // bool _isFilled = false;
 
   @override
   void initState() {
@@ -156,8 +156,8 @@ class _AiloitteTextFieldWidgetState extends State<AiloitteTextFieldWidget> {
     if (widget.isDisposable) {
       // widget.controller.dispose();
       _focus.removeListener(_onFocusChange);
-      _focus.dispose();
-      widget.focusNode?.dispose();
+      // _focus.dispose();
+      // widget.focusNode?.dispose();
     }
     super.dispose();
   }
@@ -190,11 +190,11 @@ class _AiloitteTextFieldWidgetState extends State<AiloitteTextFieldWidget> {
               widget.onChange!(value);
             }
 
-            if (value.isNotEmpty) {
-              _isFilled = true;
-            } else {
-              _isFilled = false;
-            }
+            // if (value.isNotEmpty) {
+            //   _isFilled = true;
+            // } else {
+            //   _isFilled = false;
+            // }
             setState(() {});
           },
           onTapOutside: (event) {

@@ -3,6 +3,7 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_history_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_payment_receipt_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/rate_appointment_usecase.dart';
@@ -53,4 +54,6 @@ abstract class PatientRepository {
       PaginationParams params);
 
   Future<Either<Failure, String>> rateAppointment(RateAppointmentParams params);
+
+  Future<Either<Failure, String>> getPaymentReceipt(GetPaymentReceiptParams params);
 }

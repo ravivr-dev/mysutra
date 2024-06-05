@@ -24,7 +24,12 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
             return component.spacer(height: 12);
           },
           itemCount: entity?.list.length ?? 0,
-        )
+        ),
+        if (entity!.list.isEmpty) ...[
+          Align(
+              alignment: Alignment.center,
+              child: component.text('No Appointments Found'))
+        ],
       ],
     );
   }

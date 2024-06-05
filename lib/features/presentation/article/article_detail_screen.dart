@@ -72,6 +72,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
 
       if (state is WriteCommentLoaded) {
         _loadComments();
+        _loadArticle();
         _commentController.clear();
         _commentFocusCtrl.unfocus();
       } else if (state is WriteCommentError) {
@@ -166,8 +167,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                               // width: context.screenWidth,
                               borderRadius: 20,
                               fit: BoxFit.fitWidth,
-                              errorWidget:
-                              component.assetImage(path: Assets.imagesDefaultAvatar),
+                              errorWidget: component.assetImage(
+                                  path: Assets.imagesDefaultAvatar),
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) {
@@ -416,13 +417,13 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
       final matchedText = text.substring(match.start, match.end);
 
       if (urlRegex.hasMatch(matchedText)) {
-      //   widgets.add(
-      //     Padding(
-      //       padding: const EdgeInsets.all(8.0),
-      //       child: Image.network(matchedText),
-      //     ),
-      //   );
-      // } else {
+        //   widgets.add(
+        //     Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Image.network(matchedText),
+        //     ),
+        //   );
+        // } else {
         widgets.add(
           GestureDetector(
             onTap: () => Utils.launchURL(matchedText),

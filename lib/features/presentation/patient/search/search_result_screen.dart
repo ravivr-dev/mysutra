@@ -70,6 +70,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             } else if (state is GetDoctorDetailsErrorState) {
               _showToast(message: state.message);
             } else if (state is GetDoctorDetailsSuccessState) {
+              _searchController.clear();
               _navigateToDoctorDetailScreen(state.doctorEntity);
             }
           },
@@ -146,13 +147,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   Row(
                     children: [
                       Flexible(
-                        child:
-                            component.text(data.fullName?.capitalizeFirstLetter,
-                                style: theme.publicSansFonts.mediumStyle(
-                                  fontSize: 16,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                            ),
+                        child: component.text(
+                          data.fullName?.capitalizeFirstLetter,
+                          style: theme.publicSansFonts.mediumStyle(
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       if (data.isVerified != null) ...[
                         component.spacer(width: 4),
@@ -180,7 +181,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                           child: Row(
                             children: [
                               const Icon(Icons.star, color: AppColors.star),
-                              component.text(data.ratings.toString(),
+                              component.text(
+                                  data.ratings?.ceilToDouble().toString(),
                                   style: theme.publicSansFonts.regularStyle())
                             ],
                           ),
@@ -286,9 +288,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   }
 
   void _navigateToDoctorDetailScreen(DoctorEntity entity) {
-    // AiloitteNavigation.intentWithData(context, AppRoutes.doctorDetail, entity);
-    Navigator.pushNamed(context, AppRoutes.doctorDetail, arguments: entity)
-        .then((value) => setState(() {}));
+    AiloitteNavigation.intentWithData(context, AppRoutes.doctorDetail, entity)
+        .then((_) => _callSearchDoctorApi(
+            reviews: _doctorFilterDetails?.reviews,
+            experience: _doctorFilterDetails?.experience,
+            specializationId: _doctorFilterDetails?.specializationId));
+    // Navigator.pushNamed(context, AppRoutes.doctorDetail, arguments: entity)
+    //     .then((value) => setState(() {}));
   }
 }
 

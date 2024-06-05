@@ -25,16 +25,6 @@ class DoctorResultScreen extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppColors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            AiloitteNavigation.intentWithClearAllRoutes(
-                context, AppRoutes.homeRoute);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.greyD9,
-          ),
-        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -125,7 +115,7 @@ class DoctorResultScreen extends StatelessWidget {
               Expanded(
                   child: _buildDecoratedContainer(
                 color: AppColors.color0xFF8338EC,
-                text: '${doctorEntity.ratings ?? ''}',
+                text: '${doctorEntity.ratings?.ceilToDouble() ?? ''}',
                 subText: 'Ratings',
                 iconPath: Assets.iconsStar,
               )),

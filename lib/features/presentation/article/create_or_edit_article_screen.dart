@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/entities/article_entities/article_entity.dart';
@@ -12,6 +13,7 @@ import 'package:my_sutra/features/domain/entities/article_entities/article_media
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/widgets/save_button_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class CreateArticleScreen extends StatefulWidget {
   final CreateOrEditScreenParams params;
@@ -79,7 +81,14 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
           widget.showErrorToast(context: context, message: state.error);
         }
         if (state is CreateArticleLoaded) {
-          AiloitteNavigation.back(context);
+          if (UserHelper.role == UserRole.doctor) {
+            AiloitteNavigation.intentWithClearAllRoutesWithData(
+                context, AppRoutes.homeRoute, 3);
+          }
+          if (UserHelper.role == UserRole.influencer) {
+            AiloitteNavigation.intentWithClearAllRoutesWithData(
+                context, AppRoutes.homeRoute, 1);
+          }
         } else if (state is CreateArticleError) {
           widget.showErrorToast(context: context, message: state.error);
         }
@@ -145,6 +154,8 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                   hintTextStyle: theme.publicSansFonts
                       .regularStyle(fontSize: 16, fontColor: AppColors.greyD9),
                   filled: true,
+                  textInputType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
                   borderColor: AppColors.white,
                   validator: (val) {
                     return val!.trim().isEmpty

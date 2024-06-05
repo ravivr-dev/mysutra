@@ -3,7 +3,7 @@ class DoctorEntity {
   final String? profilePic;
   final String? fullName;
   final String? specialization;
-  final int? ratings;
+  final num? ratings;
   final int? reviews;
   final int? fees;
   bool? isFollowing;

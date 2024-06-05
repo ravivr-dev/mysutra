@@ -12,6 +12,7 @@ import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart'
 import 'package:my_sutra/features/presentation/article/widgets/article_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LMSUserFeed extends StatefulWidget {
   const LMSUserFeed({super.key});
@@ -23,6 +24,7 @@ class LMSUserFeed extends StatefulWidget {
 class _LMSUserFeedState extends State<LMSUserFeed> {
   List<ArticleEntity> articles = [];
   final ScrollController _scrollCtrl = ScrollController();
+  final RefreshController _refreshController = RefreshController();
   int pagination = 1;
   int limit = 10;
   bool noMoreData = false;
@@ -40,11 +42,21 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
     super.initState();
   }
 
+  void _refresherControls() {
+    if (_refreshController.isLoading) {
+      _refreshController.loadComplete();
+    }
+    if (_refreshController.isRefresh) {
+      _refreshController.refreshCompleted();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ArticleCubit, ArticleState>(
       listener: (context, state) {
         if (state is GetArticlesLoaded) {
+          _refresherControls();
           if (pagination == 1) {
             articles = state.articles;
           } else {
@@ -69,20 +81,24 @@ class _LMSUserFeedState extends State<LMSUserFeed> {
             title: Text(context.stringForKey(StringKeys.learningManagement)),
             centerTitle: true,
           ),
-          body: ListView.builder(
-            controller: _scrollCtrl,
-            physics: const ScrollPhysics(),
-            itemBuilder: (_, index) {
-              return ArticleWidget(
-                articleEntity: articles[index],
-                onTap: () {
-                  AiloitteNavigation.intentWithData(context,
-                          AppRoutes.articleDetailRoute, articles[index].id)
-                      .then((_) => _loadArticles());
-                },
-              );
-            },
-            itemCount: articles.length,
+          body: SmartRefresher(
+            controller: _refreshController,
+            onRefresh: _loadArticles,
+            child: ListView.builder(
+              controller: _scrollCtrl,
+              physics: const ScrollPhysics(),
+              itemBuilder: (_, index) {
+                return ArticleWidget(
+                  articleEntity: articles[index],
+                  onTap: () {
+                    AiloitteNavigation.intentWithData(context,
+                            AppRoutes.articleDetailRoute, articles[index].id)
+                        .then((_) => _loadArticles());
+                  },
+                );
+              },
+              itemCount: articles.length,
+            ),
           ),
           floatingActionButton: UserHelper.role != UserRole.patient
               ? _buildCreateNewButton()
