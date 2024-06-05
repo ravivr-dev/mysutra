@@ -98,6 +98,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/get_profile_deta
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_selected_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_video_room_id_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/logout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
@@ -130,7 +131,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // Blocs and Cubits
 
-  sl.registerLazySingleton(() => MainCubit(sl<LocalDataSource>()));
+  sl.registerLazySingleton(() => MainCubit( localDataSource:  sl<LocalDataSource>(), logoutUsecase: sl<LogOutUsecase>()));
   sl.registerFactory(() => HomeCubit(
       localDataSource: sl<LocalDataSource>(),
       getAppointmentUseCase: sl<GetAppointmentUseCase>(),
@@ -325,6 +326,7 @@ Future<void> init() async {
   sl.registerFactory(() => CheckoutUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => RateAppointmentUsecase(sl<PatientRepository>()));
   sl.registerFactory(() => UpdateDeviceTokenUsecase(sl<UserRepository>()));
+  sl.registerFactory(() => LogOutUsecase(sl<UserRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

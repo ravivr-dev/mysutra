@@ -55,6 +55,7 @@ class EndPoints {
   static const String videoSdkRoom = '/user/videosdk/room';
   static const String userFollow = '/user/follow';
   static const String deviceToken = '/user/device-token';
+  static const String logout = '/user/logout';
 
   // Posts Endpoints
   static const String searchUserName = '/post/search';

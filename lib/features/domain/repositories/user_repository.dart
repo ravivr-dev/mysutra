@@ -69,4 +69,6 @@ abstract class UserRepository {
       GetFollowersParams params);
 
   Future<Either<Failure, dynamic>> updateDeviceToken(DeviceTokenParams params);
+
+  Future<Either<Failure, dynamic>> logout();
 }

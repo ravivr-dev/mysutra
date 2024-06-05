@@ -145,4 +145,7 @@ abstract class UserRestClient {
 
   @PUT(EndPoints.deviceToken)
   Future<dynamic> updateDeviceToken(@Body() Map<String, String> map);
+
+  @POST(EndPoints.logout)
+  Future<dynamic> logout();
 }

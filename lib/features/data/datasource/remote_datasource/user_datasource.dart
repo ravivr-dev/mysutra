@@ -64,6 +64,8 @@ abstract class UserDataSource {
   Future<HttpResponse> downloadPdf(String url);
 
   Future<dynamic> updateDeviceToken(Map<String, String> map);
+
+  Future<dynamic> logout();
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -408,11 +410,26 @@ class UserDataSourceImpl extends UserDataSource {
       rethrow;
     }
   }
-  
+
   @override
-  Future updateDeviceToken(Map<String, String> map) async {
+  Future<dynamic> updateDeviceToken(Map<String, String> map) async {
     try {
       return await client.updateDeviceToken(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              localDataSource: localDataSource, validateAuthentication: true));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<dynamic> logout() async {
+    try {
+      return await client.logout().catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {
