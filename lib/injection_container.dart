@@ -101,6 +101,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/login_usecase.da
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/update_device_token_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
@@ -131,17 +132,17 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => MainCubit(sl<LocalDataSource>()));
   sl.registerFactory(() => HomeCubit(
-        localDataSource: sl<LocalDataSource>(),
-        getAppointmentUseCase: sl<GetAppointmentUseCase>(),
-        getHomeDataUseCase: sl<GetHomeDataUseCase>(),
-        getDoctorAppointmentUseCase: sl<GetDoctorAppointmentsUseCase>(),
-        doctorCancelAppointmentsUseCase: sl<DoctorCancelAppointmentsUseCase>(),
-        getAvailableSlotsForDoctorUseCase:
-            sl<GetAvailableSlotsForDoctorUseCase>(),
-        doctorRescheduleAppointmentsUseCase:
-            sl<DoctorRescheduleAppointmentsUseCase>(),
-        getVideoRoomIdUseCase: sl<GetVideoRoomIdUseCase>(),
-      ));
+      localDataSource: sl<LocalDataSource>(),
+      getAppointmentUseCase: sl<GetAppointmentUseCase>(),
+      getHomeDataUseCase: sl<GetHomeDataUseCase>(),
+      getDoctorAppointmentUseCase: sl<GetDoctorAppointmentsUseCase>(),
+      doctorCancelAppointmentsUseCase: sl<DoctorCancelAppointmentsUseCase>(),
+      getAvailableSlotsForDoctorUseCase:
+          sl<GetAvailableSlotsForDoctorUseCase>(),
+      doctorRescheduleAppointmentsUseCase:
+          sl<DoctorRescheduleAppointmentsUseCase>(),
+      getVideoRoomIdUseCase: sl<GetVideoRoomIdUseCase>(),
+      updateDeviceTokenUsecase: sl<UpdateDeviceTokenUsecase>()));
   sl.registerFactory(() => LoginCubit(sl<LoginUsecase>()));
   sl.registerFactory(() => SelectAccountCubit(
       sl<SelectAccountUsecase>(), sl<GetSelectedAccountUsecase>()));
@@ -323,6 +324,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetWithdrawalsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => CheckoutUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => RateAppointmentUsecase(sl<PatientRepository>()));
+  sl.registerFactory(() => UpdateDeviceTokenUsecase(sl<UserRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

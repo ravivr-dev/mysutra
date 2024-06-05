@@ -10,6 +10,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_use
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_followers_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/update_device_token_usecase.dart';
 
 import '../entities/patient_entities/follow_entity.dart';
 import '../entities/user_entities/my_profile_entity.dart';
@@ -66,4 +67,6 @@ abstract class UserRepository {
 
   Future<Either<Failure, List<UserDataEntity>>> getFollowers(
       GetFollowersParams params);
+
+  Future<Either<Failure, dynamic>> updateDeviceToken(DeviceTokenParams params);
 }

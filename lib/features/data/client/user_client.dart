@@ -142,4 +142,7 @@ abstract class UserRestClient {
   @GET('{url}')
   @DioResponseType(ResponseType.bytes)
   Future<HttpResponse<List<int>>> downloadPdf(@Path('url') String url);
+
+  @PUT(EndPoints.deviceToken)
+  Future<dynamic> updateDeviceToken(@Body() Map<String, String> map);
 }

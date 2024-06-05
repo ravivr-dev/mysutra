@@ -7,12 +7,14 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_resched
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_home_data_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/update_device_token_usecase.dart';
 
 import '../../../../domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
 import '../../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../../domain/entities/user_entities/video_room_response_entity.dart';
 import '../../../../domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import '../../../../domain/usecases/user_usecases/get_video_room_id_usecase.dart';
+import 'dart:io' show Platform;
 
 part 'home_state.dart';
 
@@ -25,6 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
   final DoctorRescheduleAppointmentsUseCase doctorRescheduleAppointmentsUseCase;
   final GetAvailableSlotsForDoctorUseCase getAvailableSlotsForDoctorUseCase;
   final GetVideoRoomIdUseCase getVideoRoomIdUseCase;
+  final UpdateDeviceTokenUsecase updateDeviceTokenUsecase;
 
   HomeCubit({
     required this.localDataSource,
@@ -35,6 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
     required this.getAvailableSlotsForDoctorUseCase,
     required this.doctorRescheduleAppointmentsUseCase,
     required this.getVideoRoomIdUseCase,
+    required this.updateDeviceTokenUsecase,
   }) : super(HomeInitial());
 
   void getAppointments(
@@ -117,6 +121,21 @@ class HomeCubit extends Cubit<HomeState> {
             remoteUserId: remoteUserId,
             currentUserId: currentUserId,
             appointmentId: appointmentId)));
+  }
+
+  Future<void> updateDeviceToken(String token) async {
+    String platformText = '';
+
+    if (Platform.isAndroid) {
+      platformText = "Android";
+    } else if (Platform.isIOS) {
+      platformText = "iOS";
+    } else {
+      platformText = "Other";
+    }
+    final result = await updateDeviceTokenUsecase
+        .call(DeviceTokenParams(deviceToken: token, deviceType: platformText));
+    result.fold((l) => null, (r) => emit(UpdateDeviceTokenState()));
   }
 
 // FutureOr<void> _emitFailure(

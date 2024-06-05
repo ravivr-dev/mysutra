@@ -85,6 +85,8 @@ abstract class _HomeScreenState extends State<HomeScreen>
     notificationServices = PushNotificationService();
     notificationServices.intiLocalNotifications();
     notificationServices.forgroundMessage();
+    updateDeviceToken();
+
     super.initState();
   }
 
@@ -192,5 +194,12 @@ abstract class _HomeScreenState extends State<HomeScreen>
         activeIcon:
             component.assetImage(path: icon, color: AppColors.primaryColor),
         label: label);
+  }
+
+  updateDeviceToken() async {
+    String deviceToken = await notificationServices.getToken();
+    if (mounted) {
+      context.read<HomeCubit>().updateDeviceToken(deviceToken);
+    }
   }
 }

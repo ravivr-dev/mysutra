@@ -131,3 +131,5 @@ final class GetVideoRoomErrorState extends HomeState {
 
   GetVideoRoomErrorState({required this.message});
 }
+
+final class UpdateDeviceTokenState extends HomeState {}
