@@ -115,7 +115,7 @@ class DoctorResultScreen extends StatelessWidget {
               Expanded(
                   child: _buildDecoratedContainer(
                 color: AppColors.color0xFF8338EC,
-                text: '${doctorEntity.ratings ?? ''}',
+                text: '${doctorEntity.ratings?.ceilToDouble() ?? ''}',
                 subText: 'Ratings',
                 iconPath: Assets.iconsStar,
               )),

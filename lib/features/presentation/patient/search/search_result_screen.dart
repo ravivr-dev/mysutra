@@ -181,7 +181,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                           child: Row(
                             children: [
                               const Icon(Icons.star, color: AppColors.star),
-                              component.text(data.ratings.toString(),
+                              component.text(
+                                  data.ratings?.ceilToDouble().toString(),
                                   style: theme.publicSansFonts.regularStyle())
                             ],
                           ),

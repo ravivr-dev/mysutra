@@ -24,7 +24,7 @@ class DoctorDataModel {
   String? profilePic;
   String? fullName;
   String? specialization;
-  int? ratings;
+  num? ratings;
   int? reviews;
   int? fees;
   bool? isVerified;
