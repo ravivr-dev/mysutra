@@ -9,6 +9,7 @@ import 'package:my_sutra/features/data/model/patient_models/payment_order_model.
 import 'package:my_sutra/features/data/model/patient_models/rate_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/schedule_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/search_doctor_usecase.dart';
 
 import '../../model/patient_models/available_time_slot.dart';
@@ -42,6 +43,8 @@ abstract class PatientDataSource {
   Future<PaymentHistoryModel> paymentHistory(Map<String, int> map);
 
   Future<RateAppointmentModel> rateAppointment(Map<String, dynamic> map);
+
+  Future<UploadDocModel> getPaymentReceipt(String paymentId);
 }
 
 class PatientDataSourceImpl extends PatientDataSource {
@@ -249,6 +252,21 @@ class PatientDataSourceImpl extends PatientDataSource {
   Future<RateAppointmentModel> rateAppointment(Map<String, dynamic> map) {
     try {
       return client.rateAppointment(map).catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              localDataSource: localDataSource, validateAuthentication: true));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UploadDocModel> getPaymentReceipt(String paymentId) {
+    try {
+      return client.getPaymentReceipt(paymentId).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

@@ -22,6 +22,7 @@ class EndPoints {
   static const String payment = '/payment';
   static const String paymentHistory = '/payment/patient/history';
   static const String appointmentRating = '/patient/appointments/rating';
+  static const String paymentReceipt = '/payment/receipt';
 
   // doctor endpoints
   static const String timeSlots = '/doctor/time-slots';

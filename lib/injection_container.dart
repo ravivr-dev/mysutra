@@ -66,6 +66,7 @@ import 'package:my_sutra/features/domain/usecases/patient_usecases/confirm_appoi
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_available_slots_for_patient_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_doctor_details_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_payment_receipt_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/past_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
@@ -216,8 +217,10 @@ Future<void> init() async {
       createArticleUsecase: sl<CreateArticleUsecase>(),
       likeDislikeArticleUsecase: sl<LikeDislikeArticleUsecase>()));
   sl.registerFactory(
-    () =>
-        PaymentHistoryCubit(paymentHistoryUsecase: sl<PaymentHistoryUseCase>()),
+    () => PaymentHistoryCubit(
+        getPaymentReceiptUsecase: sl<GetPaymentReceiptUsecase>(),
+        downloadPdfUseCase: sl<DownloadPdfUseCase>(),
+        paymentHistoryUsecase: sl<PaymentHistoryUseCase>()),
   );
   sl.registerFactory(() => BankAccountCubit(
         getBankAccountUseCase: sl<GetBankAccountUseCase>(),
@@ -323,6 +326,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetWithdrawalsUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => CheckoutUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => RateAppointmentUsecase(sl<PatientRepository>()));
+  sl.registerFactory(() => GetPaymentReceiptUsecase(sl<PatientRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

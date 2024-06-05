@@ -9,7 +9,9 @@ import 'package:my_sutra/features/data/model/patient_models/payment_order_model.
 import 'package:my_sutra/features/data/model/patient_models/rate_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/schedule_appointment_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../model/patient_models/available_time_slot.dart';
 import '../model/patient_models/get_appointment_response_model.dart';
@@ -96,4 +98,7 @@ abstract class PatientRestClient {
   @POST(EndPoints.appointmentRating)
   Future<RateAppointmentModel> rateAppointment(
       @Body() Map<String, dynamic> map);
+
+  @GET('${EndPoints.paymentReceipt}/{paymentId}')
+  Future<UploadDocModel> getPaymentReceipt(@Path('paymentId') String paymentId);
 }

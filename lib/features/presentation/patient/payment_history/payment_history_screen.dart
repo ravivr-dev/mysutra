@@ -8,6 +8,7 @@ import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/payment_history/cubit/payment_history_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/payment_history/widgets/payment_history_card.dart';
+import 'package:open_file/open_file.dart';
 
 class PaymentHistoryScreen extends StatefulWidget {
   const PaymentHistoryScreen({super.key});
@@ -60,6 +61,18 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
           } else if (state is PaymentHistoryError) {
             widget.showErrorToast(context: context, message: state.error);
           }
+
+          if (state is GetPaymentReceiptSuccess) {
+            context.read<PaymentHistoryCubit>().downloadPdf(state.url);
+          } else if (state is GetPaymentReceiptError) {
+            widget.showErrorToast(context: context, message: state.error);
+          }
+
+          if (state is DownloadPdfSuccessState) {
+            _showOpenFileToast(path: state.filePath);
+          } else if (state is DownloadPdfErrorState) {
+            widget.showErrorToast(context: context, message: state.error);
+          }
         },
         builder: (ctx, state) {
           PaymentHistoryCubit cubit = ctx.read<PaymentHistoryCubit>();
@@ -77,10 +90,36 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                       ? circularProgressIndicator
                       : const SizedBox();
                 }
-                return PaymentHistoryCard(data: cubit.paymentHistoty[ndx]);
+                return PaymentHistoryCard(
+                  data: cubit.paymentHistoty[ndx],
+                  onTapDownloadReceipt: () {
+                    context.read<PaymentHistoryCubit>().getPaymentReceiptUrl(
+                        paymentId: cubit.paymentHistoty[ndx].id ?? '');
+                  },
+                );
               });
         },
       ),
     );
+  }
+
+  void _showOpenFileToast({required String path}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        component.text('File downloaded successfully'),
+        TextButton(
+            onPressed: () {
+              OpenFile.open(path);
+            },
+            child: component.text(
+              'open file',
+              style: theme.publicSansFonts.regularStyle(
+                fontColor: AppColors.white,
+              ),
+            ))
+      ],
+    )));
   }
 }

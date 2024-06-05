@@ -17,3 +17,29 @@ final class PaymentHistoryError extends PaymentHistoryState {
 
   PaymentHistoryError(this.error);
 }
+
+final class GetPaymentReceiptLoading extends PaymentHistoryState {}
+
+final class GetPaymentReceiptSuccess extends PaymentHistoryState {
+  final String url;
+
+  GetPaymentReceiptSuccess({required this.url});
+}
+
+final class GetPaymentReceiptError extends PaymentHistoryState {
+  final String error;
+
+  GetPaymentReceiptError({required this.error});
+}
+
+final class DownloadPdfErrorState extends PaymentHistoryState {
+  final String error;
+
+  DownloadPdfErrorState({required this.error});
+}
+
+final class DownloadPdfSuccessState extends PaymentHistoryState {
+  final String filePath;
+
+  DownloadPdfSuccessState({required this.filePath});
+}

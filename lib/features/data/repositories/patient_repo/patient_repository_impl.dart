@@ -12,6 +12,7 @@ import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_history_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
+import 'package:my_sutra/features/domain/usecases/patient_usecases/get_payment_receipt_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_history_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/rate_appointment_usecase.dart';
@@ -265,6 +266,23 @@ class PatientRepositoryImpl extends PatientRepository {
           "ratings": params.rating
         });
         return Right(result.message ?? 'Rate Appointment Success');
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getPaymentReceipt(
+      GetPaymentReceiptParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result =
+            await remoteDataSource.getPaymentReceipt(params.paymentId);
+
+        return Right(result.fileUrl ?? 'File URL is null');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
