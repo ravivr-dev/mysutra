@@ -70,6 +70,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             } else if (state is GetDoctorDetailsErrorState) {
               _showToast(message: state.message);
             } else if (state is GetDoctorDetailsSuccessState) {
+              _searchController.clear();
               _navigateToDoctorDetailScreen(state.doctorEntity);
             }
           },
