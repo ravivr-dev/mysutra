@@ -234,6 +234,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
                   ),
                 ),
                 CustomButton(
+                  isLoading: state is ScheduleAppointmentLoadingState,
                   text: context.stringForKey(
                     widget.args.isNewAppointment
                         ? StringKeys.proceedToPay

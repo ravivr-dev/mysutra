@@ -35,6 +35,7 @@ class _ConfirmYourBookingBottomSheetState
   final int _timerInitVal = 60;
   late Timer _resendOtpTimer;
   late Razorpay _razorpay;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -66,18 +67,24 @@ class _ConfirmYourBookingBottomSheetState
           BlocConsumer<AppointmentCubit, AppointmentState>(
             listener: (context, state) {
               if (state is ConfirmAppointmentErrorState) {
+                isLoading = false;
                 widget.showErrorToast(context: context, message: state.message);
               } else if (state is ConfirmAppointmentSuccessState) {
                 _getPaymentOrder(
                     PaymentOrderParams(amount: widget.fee, id: state.id));
               } else if (state is RazorpayKeySuccessState) {
+                isLoading = false;
                 _paymentWithRazorpay(key: state.key, paymentInfo: state.data);
               } else if (state is RazorpayKeyErrorState) {
+                isLoading = false;
                 widget.showErrorToast(context: context, message: state.message);
               } else if (state is PaymentSuccessState) {
                 _getRasorpayKey(state.data);
               } else if (state is PaymentErrorState) {
+                isLoading = false;
                 widget.showErrorToast(context: context, message: state.message);
+              } else if (state is ConfirmAppointmentLoadingState) {
+                isLoading = true;
               }
             },
             builder: (context, state) {
@@ -143,7 +150,8 @@ class _ConfirmYourBookingBottomSheetState
                     child: CustomButton(
                       height: 70,
                       borderRadius: 20,
-                      isLoading: state is OtpLoading,
+                      // isLoading: state is ConfirmAppointmentLoadingState,
+                      isLoading: isLoading,
                       text: context.stringForKey(StringKeys.verify),
                       onPressed: () {
                         if (_otpController.text.length == 4) {
