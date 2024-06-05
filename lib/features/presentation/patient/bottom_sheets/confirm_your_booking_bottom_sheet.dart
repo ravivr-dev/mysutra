@@ -70,7 +70,6 @@ class _ConfirmYourBookingBottomSheetState
               } else if (state is ConfirmAppointmentSuccessState) {
                 _getPaymentOrder(
                     PaymentOrderParams(amount: widget.fee, id: state.id));
-
               } else if (state is RazorpayKeySuccessState) {
                 _paymentWithRazorpay(key: state.key, paymentInfo: state.data);
               } else if (state is RazorpayKeyErrorState) {
@@ -198,9 +197,22 @@ class _ConfirmYourBookingBottomSheetState
       'name': 'My Sutra',
       'description': 'Payment for Booking Appointment',
       'order_id': paymentInfo.id,
-      // 'prefill': {'contact': '8888888888', 'email': 'test@example.com'},
-      'external': {
-        'wallets': ['paytm']
+      'method': {
+        'netbanking': true,
+        'card': true,
+        'wallet': false,
+        'paylater': false,
+        'upi': true
+      },
+      "config": {
+        "display": {
+          "hide": [
+            {"method": "paylater"}
+          ],
+          "preferences": {
+            "show_default_blocks": "true",
+          },
+        },
       }
     };
 

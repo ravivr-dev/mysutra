@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "985473802548",
-    "project_id": "mysutra-2c963",
-    "storage_bucket": "mysutra-2c963.appspot.com"
+    "project_number": "301342070628",
+    "project_id": "mysutra-da737",
+    "storage_bucket": "mysutra-da737.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:985473802548:android:ed32f4e6d726e000c40561",
+        "mobilesdk_app_id": "1:301342070628:android:b606cc7bf06f32cd490c71",
         "android_client_info": {
           "package_name": "com.example.my_sutra"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDz5IdQLpgb16Z78tVsJxSEvz9y1LbzkqM"
+          "current_key": "AIzaSyCbWp-3cZXqsOnpZCVRnHZkvc5K6sA-2ao"
         }
       ],
       "services": {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/push_notification_services.dart';
 import 'package:my_sutra/features/domain/usecases/chat_usecases/set_user_data_usecase.dart';
 import 'package:my_sutra/features/presentation/article/cubit/article_cubit.dart';
 import 'package:my_sutra/features/presentation/article/lms_feed_screen.dart';
@@ -37,6 +38,7 @@ class HomeScreen extends StatefulWidget {
 abstract class _HomeScreenState extends State<HomeScreen>
     with WidgetsBindingObserver {
   late int _selectedScreen;
+  late PushNotificationService notificationServices;
   UserEntity? _userEntity;
   static bool _isUserOnline = false;
 
@@ -80,6 +82,9 @@ abstract class _HomeScreenState extends State<HomeScreen>
     _selectedScreen = widget.index ?? 0;
     _reInitScreens();
     WidgetsBinding.instance.addObserver(this);
+    notificationServices = PushNotificationService();
+    notificationServices.intiLocalNotifications();
+    notificationServices.forgroundMessage();
     super.initState();
   }
 

@@ -41,29 +41,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCu_F63iUt-9g-lg5UMrzfpEGddAU2Dp1w',
-    appId: '1:985473802548:web:2151227aa39b338dc40561',
-    messagingSenderId: '985473802548',
-    projectId: 'mysutra-2c963',
-    authDomain: 'mysutra-2c963.firebaseapp.com',
-    storageBucket: 'mysutra-2c963.appspot.com',
-    measurementId: 'G-S4XVK4K145',
+    apiKey: 'AIzaSyC1OW4Hw-_0ik7lLg84WNNEwjzTqGUS8Zs',
+    appId: '1:301342070628:web:43793cd7ee6279bb490c71',
+    messagingSenderId: '301342070628',
+    projectId: 'mysutra-da737',
+    authDomain: 'mysutra-da737.firebaseapp.com',
+    storageBucket: 'mysutra-da737.appspot.com',
+    measurementId: 'G-HPY7S1FQPM',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDz5IdQLpgb16Z78tVsJxSEvz9y1LbzkqM',
-    appId: '1:985473802548:android:ed32f4e6d726e000c40561',
-    messagingSenderId: '985473802548',
-    projectId: 'mysutra-2c963',
-    storageBucket: 'mysutra-2c963.appspot.com',
+    apiKey: 'AIzaSyCbWp-3cZXqsOnpZCVRnHZkvc5K6sA-2ao',
+    appId: '1:301342070628:android:b606cc7bf06f32cd490c71',
+    messagingSenderId: '301342070628',
+    projectId: 'mysutra-da737',
+    storageBucket: 'mysutra-da737.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB3R1gg4VcfcpnsHuM0ZE52M49byzK5U00',
-    appId: '1:985473802548:ios:5a8f3d870b31ce66c40561',
-    messagingSenderId: '985473802548',
-    projectId: 'mysutra-2c963',
-    storageBucket: 'mysutra-2c963.appspot.com',
+    apiKey: 'AIzaSyDnLoJRY0YeKip-j-NH-0vMo28JiBYGR6c',
+    appId: '1:301342070628:ios:7068652c3b3fe62f490c71',
+    messagingSenderId: '301342070628',
+    projectId: 'mysutra-da737',
+    storageBucket: 'mysutra-da737.appspot.com',
     iosBundleId: 'com.example.mySutra',
   );
 
