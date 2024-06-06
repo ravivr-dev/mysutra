@@ -175,7 +175,7 @@ Future<void> init() async {
         cancelAppointmentUseCase: sl<CancelAppointmentUseCase>(),
         pastAppointmentUseCase: sl<PastAppointmentUseCase>(),
         getRasorpayKeyUseCase: sl<GetRasorpayKeyUseCase>(),
-        paymentOrderUsercase: sl<PaymentOrderUseCase>(),
+        // paymentOrderUsercase: sl<PaymentOrderUseCase>(),
       ));
   sl.registerFactory(() => ProfileCubit(
         uploadDocumentUsecase: sl<UploadDocumentUsecase>(),

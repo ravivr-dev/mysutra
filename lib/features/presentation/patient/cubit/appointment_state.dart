@@ -89,11 +89,11 @@ final class PastAppointmentErrorState extends AppointmentState {
 
 final class RazorpayKeySuccessState extends AppointmentState {
   final String key;
-  final PaymentOrderEntity data;
+  final String orderId;
 
   RazorpayKeySuccessState({
     required this.key,
-    required this.data,
+    required this.orderId,
   });
 }
 
@@ -105,13 +105,13 @@ final class RazorpayKeyErrorState extends AppointmentState {
   });
 }
 
-final class PaymentSuccessState extends AppointmentState {
-  final PaymentOrderEntity data;
+// final class PaymentSuccessState extends AppointmentState {
+//   final PaymentOrderEntity data;
 
-  PaymentSuccessState({
-    required this.data,
-  });
-}
+//   PaymentSuccessState({
+//     required this.data,
+//   });
+// }
 
 final class PaymentErrorState extends AppointmentState {
   final String message;

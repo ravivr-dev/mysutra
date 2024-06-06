@@ -6,8 +6,6 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/widgets/booking_card.dart';
@@ -43,15 +41,11 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
         ));
     _withdrawalCtrl.addListener(() {
       if (_withdrawalCtrl.position.pixels ==
-          _withdrawalCtrl.position.maxScrollExtent) {
-        // TODO: call API
-      }
+          _withdrawalCtrl.position.maxScrollExtent) {}
     });
     _bookingCtrl.addListener(() {
       if (_bookingCtrl.position.pixels ==
-          _bookingCtrl.position.maxScrollExtent) {
-        // TODO: call API
-      }
+          _bookingCtrl.position.maxScrollExtent) {}
     });
     super.initState();
   }
@@ -73,6 +67,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: AppColors.white,
         title: component.text(context.stringForKey(StringKeys.earning)),
       ),
       body: BlocConsumer<EarningCubit, EarningState>(
@@ -93,7 +88,6 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10),
               _revenueBuilder(cubit),
               _availableBuilder(cubit, state),
               _buildDateBuilder(cubit),
@@ -176,7 +170,8 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
             child: RichText(
               softWrap: true,
               text: TextSpan(
-                text: '₹ ${cubit.bookingAmount}  ',
+                text:
+                    '₹ ${NumberFormat('#,##,##,###').format(cubit.bookingAmount)}  ',
                 style: theme.publicSansFonts.semiBoldStyle(
                   fontSize: 14,
                   height: 20,
@@ -203,26 +198,20 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                   widget.showErrorToast(
                       context: context,
                       message: 'Amount below ₹ 1000 cannot be withdraw');
-                } else if (cubit.accounts.isEmpty) {
-                  AiloitteNavigation.intent(
-                      context, AppRoutes.paymentMethodRoute);
-                  widget.showErrorToast(
-                      context: context, message: 'Please Add Account First');
                 } else {
-                  BankAccountEntity myAccount = cubit.accounts.firstWhere(
-                      (element) => element.active == true,
-                      orElse: () => BankAccountEntity());
+                  AiloitteNavigation.intentWithData(context,
+                      AppRoutes.withdrawBalanceRoute, cubit.bookingAmount);
 
-                  if (myAccount.id == null) {
-                    widget.showErrorToast(
-                        context: context,
-                        message: "You Don't have any active account for now");
-                  } else {
-                    cubit.checkout(CheckoutParams(
-                        accountId: myAccount.id!,
-                        mode: (myAccount.vpa != null) ? "VPA" : "BANK_ACCOUNT",
-                        amount: cubit.bookingAmount));
-                  }
+                  // if (myAccount.id == null) {
+                  //   widget.showErrorToast(
+                  //       context: context,
+                  //       message: "You Don't have any active account for now");
+                  // } else {
+                  //   cubit.checkout(CheckoutParams(
+                  //       accountId: myAccount.id!,
+                  //       mode: (myAccount.vpa != null) ? "VPA" : "BANK_ACCOUNT",
+                  //       amount: cubit.bookingAmount));
+                  // }
                 }
               },
               child: Container(
@@ -268,12 +257,14 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
     );
   }
 
-  Padding _revenueBuilder(EarningCubit cubit) {
-    return Padding(
+  Container _revenueBuilder(EarningCubit cubit) {
+    return Container(
+      color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -309,21 +300,22 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildTodayAppointmentsContainer(
-            text: 'Booking', subText: cubit.bookingAmount.toString()),
+            text: 'Booking', subText: cubit.bookingAmount),
         _buildTodayAppointmentsContainer(
-            text: 'Earnings', subText: cubit.earningAmount.toString()),
+            text: 'Earnings', subText: cubit.earningAmount),
         _buildTodayAppointmentsContainer(
-            text: 'Commission', subText: cubit.commisionAmount.toString()),
+            text: 'Commission', subText: cubit.commisionAmount),
       ],
     );
   }
 
   Widget _buildTodayAppointmentsContainer(
-      {required String text, required String subText}) {
+      {required String text, required int subText}) {
     return Flexible(
       child: Container(
         width: 100,
         height: 64,
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: AppColors.backgroundColor,
@@ -337,11 +329,13 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                 fontSize: 12,
               ),
             ),
-            component.text(
-              subText,
-              style: theme.publicSansFonts.boldStyle(
-                fontSize: 20,
-                fontColor: AppColors.color0xFF2F1455,
+            FittedBox(
+              child: component.text(
+                "₹ ${NumberFormat('#,##,##,###').format(subText)}",
+                style: theme.publicSansFonts.boldStyle(
+                  fontSize: 20,
+                  fontColor: AppColors.color0xFF2F1455,
+                ),
               ),
             )
           ],

@@ -15,7 +15,7 @@ class WithdrawalData {
   final String? id;
   final String? payoutId;
   final String? date;
-  final int? amount;
+  final num? amount;
   final String? currency;
   final String? status;
 

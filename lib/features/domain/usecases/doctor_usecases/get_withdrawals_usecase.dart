@@ -25,5 +25,5 @@ class GetPayoutParams {
       {this.earningType,
       required this.date,
       this.pagination = 1,
-      this.limit = 10});
+      this.limit = 30});
 }
