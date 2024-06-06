@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/core/usecase/usecase.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/past_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/schedule_appointment_response_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/get_rasorpay_key_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/payment_order_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/rate_appointment_usecase.dart';
 
-import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../../domain/entities/patient_entities/available_time_slot_entity.dart';
 import '../../../domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
 import '../../../domain/usecases/patient_usecases/confirm_appointment_usecase.dart';

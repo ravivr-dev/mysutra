@@ -1,10 +1,12 @@
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/patient_models/follow_model.dart';
+import 'package:my_sutra/features/data/model/patient_models/get_past_appointment_response_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_history_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/follow_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/past_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_history_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 
@@ -131,6 +133,30 @@ class PatientRepoConv {
               timeInMinutes: e.timeInMinutes,
               duration: e.duration ?? 0,
             ))
+        .toList();
+  }
+
+  static List<PastAppointmentResponseEntity> pastAppointmentModelToEntity(
+      List<PastAppointmentResponseModel> data) {
+    return data
+        .map((e) => PastAppointmentResponseEntity(
+            id: e.id ?? '',
+            doctorId: e.doctorId ?? '',
+            userId: e.userId ?? '',
+            profilePic: e.profilePic ?? '',
+            fullName: e.fullName ?? '',
+            username: e.username ?? '',
+            isVerified: e.isVerified ?? false,
+            specialization: e.specialization ?? '',
+            date: e.date ?? '',
+            time: e.time ?? '',
+            timeInMinutes: e.timeInMinutes ?? 0,
+            fees: e.fees ?? 0,
+            tax: e.tax ?? 0,
+            totalAmount: e.totalAmount ?? 0,
+            prescriptions: e.prescriptions ?? [],
+            videoSdkRoomId: e.videoSdkRoomId ?? '',
+            videoSdkToken: e.videoSdkToken ?? ''))
         .toList();
   }
 

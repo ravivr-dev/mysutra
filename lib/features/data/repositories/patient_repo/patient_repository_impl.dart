@@ -9,6 +9,7 @@ import 'package:my_sutra/features/data/model/patient_models/search_doctor_model.
 import 'package:my_sutra/features/data/repositories/patient_repo/patient_repository_conv.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/past_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_history_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/payment_order_entity.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
@@ -187,7 +188,7 @@ class PatientRepositoryImpl extends PatientRepository {
   }
 
   @override
-  Future<Either<Failure, List<AppointmentEntity>>> pastAppointments(
+  Future<Either<Failure, List<PastAppointmentResponseEntity>>> pastAppointments(
       PastAppointmentsParams data) async {
     try {
       if (await networkInfo.isConnected) {
@@ -196,7 +197,7 @@ class PatientRepositoryImpl extends PatientRepository {
           'limit': data.limit,
         });
 
-        return Right(PatientRepoConv.appointmentModelListToEntity(result.data));
+        return Right(PatientRepoConv.pastAppointmentModelToEntity(result.data!));
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/past_appointment_entity.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/rate_appointment_screen.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class AppointmentBottomSheet extends StatelessWidget {
-  final AppointmentEntity appointmentEntity;
+  final PastAppointmentResponseEntity appointmentEntity;
 
   const AppointmentBottomSheet({super.key, required this.appointmentEntity});
 
@@ -29,7 +29,7 @@ class AppointmentBottomSheet extends StatelessWidget {
                     AppRoutes.rateAppointmentRoute,
                     RateAppointmentArgs(
                       appointmentId: appointmentEntity.id,
-                      doctorId: appointmentEntity.doctorId!,
+                      doctorId: appointmentEntity.doctorId,
                       appointmentEntity: appointmentEntity,
                     ));
               },

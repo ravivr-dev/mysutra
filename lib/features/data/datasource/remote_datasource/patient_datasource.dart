@@ -4,6 +4,7 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/features/data/client/patient_client.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/get_past_appointment_response_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_history_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/rate_appointment_model.dart';
@@ -33,7 +34,7 @@ abstract class PatientDataSource {
 
   Future<dynamic> cancelAppointment(Map<String, dynamic> map);
 
-  Future<GetAppointmentResponseModel> pastAppointments(
+  Future<GetPastAppointmentResponseModel> pastAppointments(
       Map<String, dynamic> map);
 
   Future<String> getRasorpayKey();
@@ -184,7 +185,7 @@ class PatientDataSourceImpl extends PatientDataSource {
   }
 
   @override
-  Future<GetAppointmentResponseModel> pastAppointments(
+  Future<GetPastAppointmentResponseModel> pastAppointments(
       Map<String, dynamic> map) async {
     try {
       return await client.pastAppointments(map).catchError((err) {
