@@ -39,6 +39,7 @@ import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/payment_checkout_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/payment_method_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/select_bank_account_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/withdraw_balance_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
@@ -368,16 +369,26 @@ class Routes {
             child: AddUpiIdScreen(showBasicDetails: args as bool),
           ),
         );
+
       case AppRoutes.rateAppointmentRoute:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<AppointmentCubit>(
-                  create: (context) => sl<AppointmentCubit>(),
-                  child:
-                      RateAppointmentScreen(args: args as RateAppointmentArgs),
-                ));
+          builder: (_) => BlocProvider<AppointmentCubit>(
+            create: (context) => sl<AppointmentCubit>(),
+            child: RateAppointmentScreen(args: args as RateAppointmentArgs),
+          ),
+        );
 
       case AppRoutes.withdrawBalanceRoute:
-        return MaterialPageRoute(builder: (_) => WithDrawBalanceScreen(amount:  args as int,));
+        return MaterialPageRoute(
+          builder: (_) => WithDrawBalanceScreen(amount: args as int),
+        );
+
+      case AppRoutes.selectBankAccountRoute:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => sl<EarningCubit>()..getAccounts(),
+                  child: SelectBankAccountScreen(amount: args as int),
+                ));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(

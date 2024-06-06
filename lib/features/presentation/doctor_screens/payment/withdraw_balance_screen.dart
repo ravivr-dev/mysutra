@@ -1,9 +1,10 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
-import 'package:my_sutra/core/common_widgets/text_form_field_widget.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class WithDrawBalanceScreen extends StatefulWidget {
   final int amount;
@@ -16,9 +17,9 @@ class WithDrawBalanceScreen extends StatefulWidget {
 class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
   final TextEditingController _ctrl = TextEditingController();
 
-@override
+  @override
   void initState() {
-   _ctrl.text = widget.amount.toString();
+    _ctrl.text = widget.amount.toString();
     super.initState();
   }
 
@@ -39,11 +40,55 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
                   .mediumStyle(fontSize: 20, fontColor: AppColors.blackColor),
             ),
             const SizedBox(height: 16),
-            TextFormFieldWidget(
-              prefix: const Text('₹'),
-              borderRadius: 40,
-              controller: _ctrl,
+
+            Container(
+              height: 70,
+              width: double.maxFinite,
+              padding: const EdgeInsets.only(left: 50, right: 80),
+              decoration: const ShapeDecoration(
+                  shape: StadiumBorder(
+                      side: BorderSide(color: AppColors.color0xFFD8D8D8)),
+                  color: AppColors.white),
+              child: Center(
+                child: TextFormField(
+                  showCursor: false,
+                  controller: _ctrl,
+                  // style: theme.publicSansFonts.semiBoldStyle(
+                  //     fontSize: 22,
+                  //     letterSpacing: (context.screenWidth * .129)),
+                  maxLength: 7,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  autofocus: true,
+                  style: theme.publicSansFonts.semiBoldStyle(
+                      fontColor: AppColors.black21, fontSize: 24),
+                  decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text(
+                          '₹',
+                          style: theme.publicSansFonts.semiBoldStyle(
+                              fontColor: AppColors.black21, fontSize: 24),
+                        ),
+                      )),
+                  validator: (val) {
+                    // if (val != null && val.length <= 6) {
+                    //   showErrorToast(
+                    //       context: context, message: 'Please enter a valid OTP!');
+                    // }
+                    // return null;
+                  },
+                ),
+              ),
             ),
+
+            // TextFormFieldWidget(
+            //   prefix: const Text('₹'),
+            //   borderRadius: 40,
+            //   controller: _ctrl,
+            // ),
             const SizedBox(height: 16),
             RichText(
               softWrap: true,
@@ -70,7 +115,10 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
             const Spacer(),
             CustomButton(
               text: "Add Withdraw Request",
-              onPressed: () {},
+              onPressed: () {
+                AiloitteNavigation.intentWithData(
+                    context, AppRoutes.selectBankAccountRoute, widget.amount);
+              },
             ),
             const Spacer(),
           ],

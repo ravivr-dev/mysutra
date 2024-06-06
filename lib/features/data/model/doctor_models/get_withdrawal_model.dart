@@ -34,8 +34,8 @@ class WithdrawalItem {
   String? userId;
   String? payoutId;
   String? date;
-  int? amount;
-  int? commision;
+  num? amount;
+  num? commision;
   String? currency;
   Null? utr;
   String? mode;

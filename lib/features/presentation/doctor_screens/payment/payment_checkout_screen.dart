@@ -43,15 +43,11 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
         ));
     _withdrawalCtrl.addListener(() {
       if (_withdrawalCtrl.position.pixels ==
-          _withdrawalCtrl.position.maxScrollExtent) {
-        // TODO: call API
-      }
+          _withdrawalCtrl.position.maxScrollExtent) {}
     });
     _bookingCtrl.addListener(() {
       if (_bookingCtrl.position.pixels ==
-          _bookingCtrl.position.maxScrollExtent) {
-        // TODO: call API
-      }
+          _bookingCtrl.position.maxScrollExtent) {}
     });
     super.initState();
   }
@@ -205,9 +201,8 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                       context: context,
                       message: 'Amount below ₹ 1000 cannot be withdraw');
                 } else {
-
-                  AiloitteNavigation.intentWithData(context, AppRoutes.withdrawBalanceRoute, cubit.bookingAmount);
-                  
+                  AiloitteNavigation.intentWithData(context,
+                      AppRoutes.withdrawBalanceRoute, cubit.bookingAmount);
 
                   // if (myAccount.id == null) {
                   //   widget.showErrorToast(
@@ -322,7 +317,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
       child: Container(
         width: 100,
         height: 64,
-        padding:const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: AppColors.backgroundColor,

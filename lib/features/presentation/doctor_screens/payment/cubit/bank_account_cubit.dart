@@ -3,6 +3,7 @@ import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/add_upi_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bank_account_usecase.dart';
@@ -68,4 +69,6 @@ class BankAccountCubit extends Cubit<BankAccountState> {
       emit(BankAccountUpdate());
     });
   }
+
+
 }
