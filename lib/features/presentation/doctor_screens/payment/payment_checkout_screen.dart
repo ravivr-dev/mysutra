@@ -6,8 +6,6 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/widgets/booking_card.dart';

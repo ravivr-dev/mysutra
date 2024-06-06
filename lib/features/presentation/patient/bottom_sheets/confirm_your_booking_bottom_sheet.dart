@@ -69,16 +69,17 @@ class _ConfirmYourBookingBottomSheetState
                 isLoading = false;
                 widget.showErrorToast(context: context, message: state.message);
               } else if (state is ConfirmAppointmentSuccessState) {
-                _getPaymentOrder(
-                    PaymentOrderParams(amount: widget.fee, id: state.id));
+                // _getPaymentOrder(
+                //     PaymentOrderParams(amount: widget.fee, id: state.id));
+                _getRazorpayKey(orderId: state.id);
               } else if (state is RazorpayKeySuccessState) {
                 isLoading = false;
-                _paymentWithRazorpay(key: state.key, paymentInfo: state.data);
+                _paymentWithRazorpay(key: state.key, orderId: state.orderId);
               } else if (state is RazorpayKeyErrorState) {
                 isLoading = false;
                 widget.showErrorToast(context: context, message: state.message);
-              } else if (state is PaymentSuccessState) {
-                _getRasorpayKey(state.data);
+                // } else if (state is PaymentSuccessState) {
+                //   _getRasorpayKey(state.data);
               } else if (state is PaymentErrorState) {
                 isLoading = false;
                 widget.showErrorToast(context: context, message: state.message);
@@ -196,14 +197,13 @@ class _ConfirmYourBookingBottomSheetState
         AppRoutes.bookingSuccessful, (route) => route.isFirst);
   }
 
-  void _paymentWithRazorpay(
-      {required String key, required PaymentOrderEntity paymentInfo}) {
+  void _paymentWithRazorpay({required String key, required String orderId}) {
     var options = {
       'key': key,
       'amount': widget.fee,
       'name': 'My Sutra',
       'description': 'Payment for Booking Appointment',
-      'order_id': paymentInfo.id,
+      'order_id': orderId,
       'method': {
         'netbanking': true,
         'card': true,
@@ -258,8 +258,8 @@ class _ConfirmYourBookingBottomSheetState
     return CustomOtpField(otpController: _otpController);
   }
 
-  void _getRasorpayKey(PaymentOrderEntity data) {
-    context.read<AppointmentCubit>().getRsaoppayKey(data);
+  void _getRazorpayKey({required String orderId}) {
+    context.read<AppointmentCubit>().getRazorpayKey(orderId: orderId);
   }
 
   void _resendOtp() {
@@ -271,7 +271,7 @@ class _ConfirmYourBookingBottomSheetState
     });
   }
 
-  void _getPaymentOrder(PaymentOrderParams params) {
-    context.read<AppointmentCubit>().getOrderId(params);
-  }
+  // void _getPaymentOrder(PaymentOrderParams params) {
+  //   context.read<AppointmentCubit>().getOrderId(params);
+  // }
 }

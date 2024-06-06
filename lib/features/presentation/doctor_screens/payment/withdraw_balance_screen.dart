@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
@@ -73,13 +74,6 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
                               fontColor: AppColors.black21, fontSize: 24),
                         ),
                       )),
-                  validator: (val) {
-                    // if (val != null && val.length <= 6) {
-                    //   showErrorToast(
-                    //       context: context, message: 'Please enter a valid OTP!');
-                    // }
-                    // return null;
-                  },
                 ),
               ),
             ),
@@ -116,8 +110,15 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
             CustomButton(
               text: "Add Withdraw Request",
               onPressed: () {
-                AiloitteNavigation.intentWithData(
-                    context, AppRoutes.selectBankAccountRoute, widget.amount);
+                int val = int.parse(_ctrl.text);
+                if (val > 1000) {
+                  AiloitteNavigation.intentWithData(context,
+                      AppRoutes.selectBankAccountRoute, int.parse(_ctrl.text));
+                } else {
+                  widget.showErrorToast(
+                      context: context,
+                      message: 'Minimum withdrawal limit is 1000');
+                }
               },
             ),
             const Spacer(),

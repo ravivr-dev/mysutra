@@ -5,9 +5,7 @@ import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/features/data/model/doctor_models/get_bank_accounts_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 

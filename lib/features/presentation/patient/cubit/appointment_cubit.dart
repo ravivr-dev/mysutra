@@ -24,7 +24,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   final CancelAppointmentUseCase cancelAppointmentUseCase;
   final PastAppointmentUseCase pastAppointmentUseCase;
   final GetRasorpayKeyUseCase getRasorpayKeyUseCase;
-  final PaymentOrderUseCase paymentOrderUsercase;
+  // final PaymentOrderUseCase paymentOrderUsercase;
   final RateAppointmentUsecase rateAppointmentUsecase;
 
   AppointmentCubit({
@@ -35,7 +35,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required this.cancelAppointmentUseCase,
     required this.pastAppointmentUseCase,
     required this.getRasorpayKeyUseCase,
-    required this.paymentOrderUsercase,
+    // required this.paymentOrderUsercase,
   }) : super(AppointmentInitial());
 
   void getAvailableSlotsForPatients(
@@ -80,17 +80,18 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         (r) => emit(PastAppointmentSuccessState(appointmentEntities: r)));
   }
 
-  void getRsaoppayKey(PaymentOrderEntity data) async {
+  void getRazorpayKey( {
+  required String orderId}) async {
     final result = await getRasorpayKeyUseCase.call(NoParams());
     result.fold((l) => emit(RazorpayKeyErrorState(message: l.message)),
-        (r) => emit(RazorpayKeySuccessState(key: r, data: data)));
+        (r) => emit(RazorpayKeySuccessState(key: r, orderId: orderId)));
   }
 
-  void getOrderId(PaymentOrderParams params) async {
-    final result = await paymentOrderUsercase.call(params);
-    result.fold((l) => emit(PaymentErrorState(message: l.message)),
-        (r) => emit(PaymentSuccessState(data: r)));
-  }
+  // void getOrderId(PaymentOrderParams params) async {
+  //   final result = await paymentOrderUsercase.call(params);
+  //   result.fold((l) => emit(PaymentErrorState(message: l.message)),
+  //       (r) => emit(PaymentSuccessState(data: r)));
+  // }
 
   void rateAppointment(RateAppointmentParams params) async {
     final result = await rateAppointmentUsecase.call(params);

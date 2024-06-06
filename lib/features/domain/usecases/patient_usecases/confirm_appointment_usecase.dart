@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:my_sutra/core/error/failures.dart';
+// import 'package:my_sutra/features/domain/entities/patient_entities/confirm_appointment_entity.dart';
 import 'package:my_sutra/features/domain/repositories/patient_repository.dart';
 import '../../../../core/usecase/usecase.dart';
 
