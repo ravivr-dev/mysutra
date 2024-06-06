@@ -58,6 +58,7 @@ class AppRoutes {
   static const String paymentMethodRoute = '/payment_method_screen';
   static const String addBankAccountRoute = '/add_bank_account_screen';
   static const String addUpiIdRoute = '/add_upi_id_screen';
+  static const String withdrawBalanceRoute = '/withdraw_balance_screen';
 
   static const String rateAppointmentRoute =
       '/patient/widget/rate_appointment_screen';

@@ -12,7 +12,6 @@ import 'package:my_sutra/core/common_widgets/custom_button.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
-import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 

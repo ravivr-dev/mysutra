@@ -19,7 +19,8 @@ class Constants {
   static const String errorTypeTimeout = "Time Out";
 
   static const String baseUrl =
-      "http://mysutra-dev.ap-south-1.elasticbeanstalk.com";
+      // "http://mysutra-dev.ap-south-1.elasticbeanstalk.com";
+      "https://api-dev.mysutra.org.in";
 
   //Patient Constants
   static const String id = '_id';

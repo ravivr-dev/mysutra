@@ -39,6 +39,7 @@ import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/payment_checkout_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/payment_method_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/payment/withdraw_balance_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/settings_screen.dart';
 import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
@@ -339,7 +340,7 @@ class Routes {
       case AppRoutes.paymentCheckoutRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<EarningCubit>()..getAccounts(),
+            create: (context) => sl<EarningCubit>(),
             child: const PaymentCheckoutScreen(),
           ),
         );
@@ -374,6 +375,9 @@ class Routes {
                   child:
                       RateAppointmentScreen(args: args as RateAppointmentArgs),
                 ));
+
+      case AppRoutes.withdrawBalanceRoute:
+        return MaterialPageRoute(builder: (_) => WithDrawBalanceScreen(amount:  args as int,));
 
       // case AppRoutes.myBatchesRoute:
       //   return MaterialPageRoute(
