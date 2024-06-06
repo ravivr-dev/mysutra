@@ -13,6 +13,7 @@ import 'package:my_sutra/features/data/model/user_models/follow_user_model.dart'
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/home_response_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/profile_update_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
@@ -66,6 +67,8 @@ abstract class UserDataSource {
   Future<dynamic> updateDeviceToken(Map<String, String> map);
 
   Future<dynamic> logout();
+
+  Future<ProfileUpdateModel> updateProfile(Map<String, dynamic> map);
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -430,6 +433,21 @@ class UserDataSourceImpl extends UserDataSource {
   Future<dynamic> logout() async {
     try {
       return await client.logout().catchError((err) {
+        _processDio(err);
+      });
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.getErrorFromDio(
+              localDataSource: localDataSource, validateAuthentication: true));
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ProfileUpdateModel> updateProfile(Map<String, dynamic> map) {
+    try {
+      return client.updateProfile(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

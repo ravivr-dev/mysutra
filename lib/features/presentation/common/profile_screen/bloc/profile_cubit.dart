@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/change_phone_number_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_followers_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_following_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/update_profile_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
 import '../../../../domain/entities/patient_entities/patient_entity.dart';
@@ -23,8 +29,12 @@ class ProfileCubit extends Cubit<ProfileState> {
   final ChangePhoneNumberUseCase changePhoneNumberUseCase;
   final VerifyChangeEmailUseCase verifyChangeEmailUseCase;
   final VerifyChangePhoneNumberUseCase verifyChangePhoneNumberUseCase;
+  final UpdateProfileUsecase updateProfileUsecase;
+  final UploadDocumentUsecase uploadDocumentUsecase;
 
   ProfileCubit({
+    required this.uploadDocumentUsecase,
+    required this.updateProfileUsecase,
     required this.getFollowersUsecase,
     required this.changeEmailUseCase,
     required this.changePhoneNumberUseCase,
@@ -100,5 +110,20 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     result.fold((l) => emit(GetFollowersError(error: l.message)),
         (r) => emit(GetFollowersLoaded(followers: r)));
+  }
+
+  void uploadPicture({required XFile file}) async {
+    final result = await uploadDocumentUsecase.call(File(file.path));
+
+    result.fold((l) => emit(UploadPictureError(error: l.message)),
+        (r) => emit(UploadPictureSuccess(model: r)));
+  }
+
+  void updateProfile({required String profilePic}) async {
+    final result = await updateProfileUsecase
+        .call(UpdateProfileParams(profilePic: profilePic));
+
+    result.fold((l) => emit(UpdateProfileError(error: l.message)),
+        (r) => emit(UpdateProfileSuccess(message: r)));
   }
 }

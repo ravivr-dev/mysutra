@@ -24,6 +24,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/get_followers_us
 import 'package:my_sutra/features/domain/usecases/user_usecases/get_video_room_id_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/registration_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/update_device_token_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/update_profile_usecase.dart';
 
 import '../../../domain/entities/patient_entities/follow_entity.dart';
 import '../../../domain/entities/user_entities/user_data_entity.dart';
@@ -402,6 +403,23 @@ class UserRepositoryImpl extends UserRepository {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.logout();
         return Right(result);
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updateProfile(
+      UpdateProfileParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource
+            .updateProfile({"profilePic": params.profilePic});
+
+        return Right(result.message ?? 'Update Profile Success');
       } else {
         return const Left(ServerFailure(message: Constants.errorNoInternet));
       }
