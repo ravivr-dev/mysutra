@@ -231,12 +231,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Widget _buildProfileWidget() {
     return InkWell(
       onTap: () {
-        updateProfileImageSheet(onChange: (image) {
-          if (image != null) {
-            context.read<ProfileCubit>().uploadPicture(file: image);
-          }
-          AiloitteNavigation.back(context);
-        });
+        if (UserHelper.role != UserRole.patient) {
+          updateProfileImageSheet(onChange: (image) {
+            if (image != null) {
+              context.read<ProfileCubit>().uploadPicture(file: image);
+            }
+            AiloitteNavigation.back(context);
+          });
+        }
       },
       child: Container(
         height: 130,
