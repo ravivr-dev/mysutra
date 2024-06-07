@@ -45,7 +45,7 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
             Container(
               height: 70,
               width: double.maxFinite,
-              padding: const EdgeInsets.only(left: 50, right: 80),
+              padding: const EdgeInsets.only(left: 100, right: 80),
               decoration: const ShapeDecoration(
                   shape: StadiumBorder(
                       side: BorderSide(color: AppColors.color0xFFD8D8D8)),
@@ -87,7 +87,7 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
             RichText(
               softWrap: true,
               text: TextSpan(
-                text: 'available for checkout',
+                text: 'Available Balance',
                 style: theme.publicSansFonts.regularStyle(
                   fontSize: 14,
                   height: 20,

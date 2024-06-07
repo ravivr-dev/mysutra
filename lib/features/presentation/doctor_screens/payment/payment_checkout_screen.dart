@@ -171,7 +171,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
               softWrap: true,
               text: TextSpan(
                 text:
-                    '₹ ${NumberFormat('#,##,##,###').format(cubit.bookingAmount)}  ',
+                    '₹ ${NumberFormat('#,##,##,###').format((cubit.bookingAmount - cubit.processingAmount) < 0 ? 0 : cubit.bookingAmount - cubit.processingAmount)}  ',
                 style: theme.publicSansFonts.semiBoldStyle(
                   fontSize: 14,
                   height: 20,
@@ -194,13 +194,15 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
           else
             InkWell(
               onTap: () {
-                if (cubit.bookingAmount < 1000) {
+                if ((cubit.bookingAmount - cubit.processingAmount) < 999) {
                   widget.showErrorToast(
                       context: context,
                       message: 'Amount below ₹ 1000 cannot be withdraw');
                 } else {
-                  AiloitteNavigation.intentWithData(context,
-                      AppRoutes.withdrawBalanceRoute, cubit.bookingAmount);
+                  AiloitteNavigation.intentWithData(
+                      context,
+                      AppRoutes.withdrawBalanceRoute,
+                      cubit.bookingAmount - cubit.processingAmount);
 
                   // if (myAccount.id == null) {
                   //   widget.showErrorToast(
