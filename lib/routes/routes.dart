@@ -341,7 +341,7 @@ class Routes {
       case AppRoutes.paymentCheckoutRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<EarningCubit>(),
+            create: (context) => sl<EarningCubit>()..getProcessingAmount(),
             child: const PaymentCheckoutScreen(),
           ),
         );

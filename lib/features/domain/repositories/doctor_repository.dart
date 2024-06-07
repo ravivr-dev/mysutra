@@ -65,4 +65,6 @@ abstract class DoctorRepository {
       GetPayoutParams params);
 
   Future<Either<Failure, dynamic>> checkout(CheckoutParams params);
+
+  Future<Either<Failure, String>> getProcessingAmount();
 }

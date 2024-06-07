@@ -296,15 +296,28 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
   }
 
   Widget _buildTodayAppointments(EarningCubit cubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTodayAppointmentsContainer(
-            text: 'Booking', subText: cubit.bookingAmount),
-        _buildTodayAppointmentsContainer(
-            text: 'Earnings', subText: cubit.earningAmount),
-        _buildTodayAppointmentsContainer(
-            text: 'Commission', subText: cubit.commisionAmount),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildTodayAppointmentsContainer(
+                text: 'Booking', subText: cubit.bookingAmount),
+            _buildTodayAppointmentsContainer(
+                text: 'Earnings', subText: cubit.earningAmount),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildTodayAppointmentsContainer(
+                text: 'Commission', subText: cubit.commisionAmount),
+            _buildTodayAppointmentsContainer(
+                text: 'Processing', subText: cubit.processingAmount),
+          ],
+        ),
       ],
     );
   }

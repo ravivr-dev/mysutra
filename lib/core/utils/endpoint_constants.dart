@@ -39,6 +39,7 @@ class EndPoints {
   static const String createUpi = '/payment/payout/fund-account/vpa';
   static const String fundAccounts = '/payment/payout/fund-account';
   static const String payout = '/payment/payout';
+  static const String processingAmount = '/payment/payout/processing-amount';
 
 // user endpoints (these endpoints are common for all type of user (doctor/patient/influencer))
   static const String userProfile = '/user/profile';

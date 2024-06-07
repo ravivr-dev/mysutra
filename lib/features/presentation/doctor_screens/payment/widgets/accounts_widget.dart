@@ -47,7 +47,7 @@ class AccountsWidget extends StatelessWidget {
                       ),
                     ] else if (upi != null) ...[
                       Text(
-                        getMaskedAccountNumber(upi),
+                        getMaskedUpi(upi),
                         style: theme.publicSansFonts.mediumStyle(
                             fontSize: 16, fontColor: AppColors.blackColor),
                       ),
@@ -94,7 +94,7 @@ class AccountsWidget extends StatelessWidget {
     if (atIndex == -1) return upiId;
 
     final prefix = upiId.substring(0, atIndex);
-    final maskedPrefix = '*' * prefix.length;
+    final maskedPrefix = '*' * (prefix.length > 16 ? 12 : prefix.length);
     final suffix = upiId.substring(atIndex);
 
     return maskedPrefix + suffix;

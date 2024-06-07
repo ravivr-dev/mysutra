@@ -6,6 +6,7 @@ import 'package:my_sutra/features/domain/entities/doctor_entities/withdrawal_ent
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bookings_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_processing_amount_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
 
 part 'earning_state.dart';
@@ -15,16 +16,19 @@ class EarningCubit extends Cubit<EarningState> {
   final GetBookingsUseCase getBookingsUseCase;
   final GetWithdrawalsUseCase getWithdrawalsUseCase;
   final CheckoutUseCase checkoutUseCase;
-  EarningCubit(
-      {required this.getBankAccountUseCase,
-      required this.checkoutUseCase,
-      required this.getBookingsUseCase,
-      required this.getWithdrawalsUseCase})
-      : super(EarningInitial());
+  final GetProcessingAmountUseCase getProcessingAmountUseCase;
+  EarningCubit({
+    required this.getBankAccountUseCase,
+    required this.checkoutUseCase,
+    required this.getBookingsUseCase,
+    required this.getWithdrawalsUseCase,
+    required this.getProcessingAmountUseCase,
+  }) : super(EarningInitial());
 
   int bookingAmount = 0;
   int earningAmount = 0;
   int commisionAmount = 0;
+  int processingAmount = 0;
   List<WithdrawalData> withdrawals = [];
   List<BookingEntity> bookings = [];
   List<BankAccountEntity> accounts = [];
@@ -63,6 +67,17 @@ class EarningCubit extends Cubit<EarningState> {
     final result = await checkoutUseCase.call(params);
     result.fold((l) => emit(EarningError(l.message)), (data) {
       emit(EarningCheckout());
+    });
+  }
+
+  void getProcessingAmount() async {
+    final result = await getProcessingAmountUseCase.call(NoParams());
+    result.fold((l) => emit(EarningError(l.message)), (data) {
+      processingAmount = int.parse(data);
+      
+      emit(EarningProcessingAmount());
+
+
     });
   }
 }

@@ -29,3 +29,5 @@ final class EarningAccountsLoaded extends EarningState {}
 final class EarningCheckout extends EarningState {}
 
 final class EarningWithdrawalLoader extends EarningState {}
+
+final class EarningProcessingAmount extends EarningState {}

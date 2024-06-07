@@ -106,4 +106,7 @@ abstract class DoctorClient {
 
   @POST(EndPoints.payout)
   Future<dynamic> checkout(@Body() Map<String, Object> map);
+
+  @GET(EndPoints.processingAmount)
+  Future<String> getProcessingAmount();
 }

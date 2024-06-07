@@ -57,6 +57,7 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bank_accou
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bookings_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_doctor_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_patient_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_processing_amount_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_time_slots_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
@@ -132,7 +133,9 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // Blocs and Cubits
 
-  sl.registerLazySingleton(() => MainCubit( localDataSource:  sl<LocalDataSource>(), logoutUsecase: sl<LogOutUsecase>()));
+  sl.registerLazySingleton(() => MainCubit(
+      localDataSource: sl<LocalDataSource>(),
+      logoutUsecase: sl<LogOutUsecase>()));
   sl.registerFactory(() => HomeCubit(
       localDataSource: sl<LocalDataSource>(),
       getAppointmentUseCase: sl<GetAppointmentUseCase>(),
@@ -238,6 +241,7 @@ Future<void> init() async {
         checkoutUseCase: sl<CheckoutUseCase>(),
         getBookingsUseCase: sl<GetBookingsUseCase>(),
         getWithdrawalsUseCase: sl<GetWithdrawalsUseCase>(),
+        getProcessingAmountUseCase: sl<GetProcessingAmountUseCase>(),
       ));
 
   // UseCases
@@ -331,6 +335,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetPaymentReceiptUsecase(sl<PatientRepository>()));
   sl.registerFactory(() => UpdateDeviceTokenUsecase(sl<UserRepository>()));
   sl.registerFactory(() => LogOutUsecase(sl<UserRepository>()));
+  sl.registerFactory(() => GetProcessingAmountUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(
