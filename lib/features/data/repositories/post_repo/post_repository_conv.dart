@@ -173,6 +173,7 @@ class PostRepoConv {
             userId: PostUserEntity(
                 id: e.userId.id,
                 role: e.userId.role,
+                profilePic: e.userId.profilePic,
                 fullName: e.userId.fullName,
                 username: e.userId.username,
                 isVerified: e.userId.isVerified),
@@ -190,6 +191,7 @@ class PostRepoConv {
                     userId: PostUserEntity(
                         id: e.userId.id,
                         role: e.userId.role,
+                        profilePic: e.userId.profilePic,
                         fullName: e.userId.fullName,
                         username: e.userId.username,
                         isVerified: e.userId.isVerified),
