@@ -108,3 +108,31 @@ final class GetFollowersError extends ProfileState {
 
   GetFollowersError({required this.error});
 }
+
+final class UpdateProfileLoading extends ProfileState {}
+
+final class UpdateProfileSuccess extends ProfileState {
+  final String message;
+
+  UpdateProfileSuccess({required this.message});
+}
+
+final class UpdateProfileError extends ProfileState {
+  final String error;
+
+  UpdateProfileError({required this.error});
+}
+
+final class UploadPictureLoading extends ProfileState {}
+
+final class UploadPictureSuccess extends ProfileState {
+  final UploadDocModel model;
+
+  UploadPictureSuccess({required this.model});
+}
+
+final class UploadPictureError extends ProfileState {
+  final String error;
+
+  UploadPictureError({required this.error});
+}

@@ -1,5 +1,4 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -174,35 +173,33 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       {required AppointmentEntity appointment, String? errorMessage}) {
     final appointmentHours = DateFormat('hh:mm a').parse(appointment.time);
     debugPrint('appointmentHours : $appointmentHours');
-    DateTime appointmentTime = DateTime.parse(appointment.date).toUtc().add(
-        Duration(
+    DateTime appointmentStartTime = DateTime.parse(appointment.date)
+        .toUtc()
+        .add(Duration(
             hours: appointmentHours.hour, minutes: appointmentHours.minute));
-    debugPrint('appointmentTime : $appointmentTime');
+    debugPrint('appointmentStartTime : $appointmentStartTime');
     final appointmentEndTime =
-        appointmentTime.add(Duration(minutes: appointment.duration));
+        appointmentStartTime.add(Duration(minutes: appointment.duration));
     debugPrint('appointmentEndTime : $appointmentEndTime');
     final now = DateTime.now();
-    debugPrint('now : $now');
+    debugPrint('currentTime : $now');
 
-    if (Utils.isFutureTime(appointmentTime)) {
+    if (Utils.isFutureTime(appointmentStartTime)) {
       widget.showErrorToast(
           context: context,
           message: errorMessage ?? "Can't join call before time");
       return false;
-    } else if (Utils.isPastTime(appointmentTime)){
-      widget.showErrorToast(
-          context: context, message: 'Appointment time has finished');
-    }else if (now.hour > appointmentEndTime.hour ||
+    } else if (now.hour > appointmentEndTime.hour ||
         (now.hour == appointmentEndTime.hour &&
-            now.minute > appointmentEndTime.minute)) {
+            now.minute > appointmentEndTime.minute) ||
+        Utils.isPastTime(appointmentEndTime)) {
       debugPrint(appointmentHours.toString());
       widget.showErrorToast(
           context: context, message: 'Appointment time has finished');
       return false;
     } else if (now.hour < appointmentEndTime.hour ||
         (now.hour == appointmentEndTime.hour &&
-            appointmentEndTime.minute > now.minute)) {
-      debugPrint(appointmentHours.toString());
+            now.minute < appointmentEndTime.minute)) {
       return true;
     }
     return false;

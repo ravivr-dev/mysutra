@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
-import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/past_appointment_entity.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/rate_appointment_usecase.dart';
 import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/widgets/star_rating_widget.dart';
@@ -134,7 +134,7 @@ class _RateAppointmentScreenState extends State<RateAppointmentScreen> {
 class RateAppointmentArgs {
   final String appointmentId;
   final String doctorId;
-  final AppointmentEntity? appointmentEntity;
+  final PastAppointmentResponseEntity? appointmentEntity;
 
   RateAppointmentArgs(
       {this.appointmentEntity,

@@ -122,7 +122,7 @@ class _PatientAppointmentState extends _AppointmentScreenState with RouteAware {
                                       Duration(
                                           hours: appointmentHours.hour,
                                           minutes: appointmentHours.minute));
-                              if (Utils.isPastTime(appointmentTime)) {
+                              if (DateTime.now().isAfter(appointmentTime)) {
                                 widget.showErrorToast(
                                     context: context,
                                     message: "Can't modify past appointment");

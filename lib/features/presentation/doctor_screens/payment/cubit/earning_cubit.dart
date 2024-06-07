@@ -73,11 +73,8 @@ class EarningCubit extends Cubit<EarningState> {
   void getProcessingAmount() async {
     final result = await getProcessingAmountUseCase.call(NoParams());
     result.fold((l) => emit(EarningError(l.message)), (data) {
-      processingAmount = int.parse(data);
-      
+      processingAmount = double.parse(data).round();
       emit(EarningProcessingAmount());
-
-
     });
   }
 }

@@ -4,6 +4,7 @@ import 'package:my_sutra/core/extension/dio_error.dart';
 import 'package:my_sutra/core/utils/constants.dart';
 import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/datasource/local_datasource/local_datasource.dart';
+import 'package:my_sutra/features/data/model/patient_models/get_past_appointment_response_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_history_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/payment_order_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/rate_appointment_model.dart';
@@ -83,7 +84,7 @@ abstract class PatientRestClient {
   Future<dynamic> cancelAppointment(@Body() Map<String, dynamic> map);
 
   @GET(EndPoints.pastAppointment)
-  Future<GetAppointmentResponseModel> pastAppointments(
+  Future<GetPastAppointmentResponseModel> pastAppointments(
       @Queries() Map<String, dynamic> map);
 
   @GET(EndPoints.rasorpayKey)

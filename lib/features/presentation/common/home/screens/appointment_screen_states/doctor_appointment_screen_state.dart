@@ -25,7 +25,7 @@ class _DoctorAppointmentState extends _AppointmentScreenState {
           },
           itemCount: entity?.list.length ?? 0,
         ),
-        if (entity != null && entity!.list.isEmpty) ...[
+        if (entity!= null && entity!.list.isEmpty) ...[
           Align(
               alignment: Alignment.center,
               child: component.text('No Appointments Found'))

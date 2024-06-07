@@ -105,6 +105,7 @@ import 'package:my_sutra/features/domain/usecases/user_usecases/registration_use
 import 'package:my_sutra/features/domain/usecases/user_usecases/select_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/update_device_token_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/update_profile_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/upload_document_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_email_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/verify_change_phone_number_usecase.dart';
@@ -178,6 +179,8 @@ Future<void> init() async {
         // paymentOrderUsercase: sl<PaymentOrderUseCase>(),
       ));
   sl.registerFactory(() => ProfileCubit(
+        uploadDocumentUsecase: sl<UploadDocumentUsecase>(),
+        updateProfileUsecase: sl<UpdateProfileUsecase>(),
         getFollowersUsecase: sl<GetFollowersUsecase>(),
         getFollowingUseCase: sl<GetFollowingUseCase>(),
         getProfileDetailsUseCase: sl<GetProfileDetailsUseCase>(),
@@ -336,6 +339,7 @@ Future<void> init() async {
   sl.registerFactory(() => UpdateDeviceTokenUsecase(sl<UserRepository>()));
   sl.registerFactory(() => LogOutUsecase(sl<UserRepository>()));
   sl.registerFactory(() => GetProcessingAmountUseCase(sl<DoctorRepository>()));
+  sl.registerFactory(() => UpdateProfileUsecase(sl<UserRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(

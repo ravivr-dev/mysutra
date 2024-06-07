@@ -48,7 +48,7 @@ abstract class DoctorDataSource {
 
   Future<dynamic> checkout(Map<String, Object> map);
 
-  Future<String>   getProcessingAmount() ;
+  Future<String> getProcessingAmount();
 }
 
 class DoctorDataSourceImpl extends DoctorDataSource {
@@ -318,14 +318,13 @@ class DoctorDataSourceImpl extends DoctorDataSource {
       rethrow;
     }
   }
-  
+
   @override
-  Future<String> getProcessingAmount()async {
+  Future<String> getProcessingAmount() async {
     try {
-      return await client.getProcessingAmount();
-      // .catchError((err) {
-      //   _processDio(err);
-      // });
+      return await client.getProcessingAmount().catchError((err) {
+        _processDio(err);
+      });
     } on DioException catch (e) {
       throw ServerException(
           message: e.getErrorFromDio(

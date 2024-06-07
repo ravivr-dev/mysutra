@@ -1,7 +1,9 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/common_widgets/upload_image_bottomsheet.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/main_cubit/main_cubit.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
@@ -29,6 +31,7 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   MyProfileEntity? my;
+  XFile? profilePic;
 
   @override
   void initState() {
@@ -64,6 +67,21 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               context, AppRoutes.doctorMyFollowers, state.followers);
         } else if (state is GetFollowersError) {
           _showToast(message: state.error);
+        }
+
+        if (state is UploadPictureSuccess) {
+          context
+              .read<ProfileCubit>()
+              .updateProfile(profilePic: state.model.key ?? '');
+        } else if (state is UploadPictureError) {
+          widget.showErrorToast(
+              context: context, message: 'Error in Uploading New Picture');
+        }
+
+        if (state is UpdateProfileSuccess) {
+          _getProfileDetails();
+        } else if (state is UpdateProfileError) {
+          widget.showErrorToast(context: context, message: state.error);
         }
       },
       builder: (context, state) {
@@ -211,16 +229,29 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _buildProfileWidget() {
-    return Container(
-      height: 130,
-      width: 130,
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-          color: AppColors.grey92.withOpacity(.1),
-          borderRadius: BorderRadius.circular(12)),
-      child: component.networkImage(
-          url: my?.profilePic ?? '',
-          errorWidget: component.assetImage(path: Assets.imagesDefaultAvatar)),
+    return InkWell(
+      onTap: () {
+        if (UserHelper.role != UserRole.patient) {
+          updateProfileImageSheet(onChange: (image) {
+            if (image != null) {
+              context.read<ProfileCubit>().uploadPicture(file: image);
+            }
+            AiloitteNavigation.back(context);
+          });
+        }
+      },
+      child: Container(
+        height: 130,
+        width: 130,
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+            color: AppColors.grey92.withOpacity(.1),
+            borderRadius: BorderRadius.circular(12)),
+        child: component.networkImage(
+            url: my?.profilePic ?? '',
+            errorWidget:
+                component.assetImage(path: Assets.imagesDefaultAvatar)),
+      ),
     );
   }
 
@@ -395,6 +426,25 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   void _goToDoctorFollowingScreen(List<UserDataEntity> followers) {
     AiloitteNavigation.intentWithData(
         context, AppRoutes.doctorMyFollowing, followers);
+  }
+
+  updateProfileImageSheet({required dynamic Function(XFile?) onChange}) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return UploadImageBottomSheet(
+            showRemovePhoto: profilePic != null,
+            removePhoto: () {
+              profilePic = null;
+              setState(() {});
+              Navigator.pop(context);
+            },
+            onChange: onChange);
+      },
+    );
   }
 
   logoutDialog() {

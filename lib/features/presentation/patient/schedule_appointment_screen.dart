@@ -70,10 +70,7 @@ class _RescheduleAppointmentState extends State<ScheduleAppointmentScreen> {
         if (state is GetAvailableAppointmentSuccessState) {
           _availableTImeSlots = state.timeSlots;
         } else if (state is ScheduleAppointmentSuccessState) {
-          if (widget.args.fees == null) {
-            widget.showErrorToast(
-                context: context, message: "Payment Amount is missing");
-          } else if (widget.args.isNewAppointment) {
+          if (widget.args.isNewAppointment) {
             _showConfirmBottomSheet(state.entity.token!);
             return;
           }

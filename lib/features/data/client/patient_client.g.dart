@@ -233,7 +233,7 @@ class _PatientRestClient implements PatientRestClient {
   }
 
   @override
-  Future<GetAppointmentResponseModel> pastAppointments(
+  Future<GetPastAppointmentResponseModel> pastAppointments(
       Map<String, dynamic> map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -241,7 +241,7 @@ class _PatientRestClient implements PatientRestClient {
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GetAppointmentResponseModel>(Options(
+        _setStreamType<GetPastAppointmentResponseModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -257,7 +257,7 @@ class _PatientRestClient implements PatientRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = GetAppointmentResponseModel.fromJson(_result.data!);
+    final value = GetPastAppointmentResponseModel.fromJson(_result.data!);
     return value;
   }
 

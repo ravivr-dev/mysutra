@@ -275,6 +275,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
                     name: 'End',
                     backgroundColor: AppColors.color0xFFF83D39,
                     onClick: () {
+                      _room?.leave();
                       _room?.end();
                     },
                   ),

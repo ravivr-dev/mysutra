@@ -11,9 +11,11 @@ import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:my_sutra/features/data/model/user_models/follow_user_model.dart';
 import 'package:my_sutra/features/data/model/user_models/general_model.dart';
 import 'package:my_sutra/features/data/model/user_models/otp_model.dart';
+import 'package:my_sutra/features/data/model/user_models/profile_update_model.dart';
 import 'package:my_sutra/features/data/model/user_models/specialisation_model.dart';
 import 'package:my_sutra/features/data/model/user_models/upload_doc_model.dart';
 import 'package:my_sutra/features/data/model/user_models/user_accounts_model.dart';
+import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/user_models/generate_username_model.dart';
@@ -98,6 +100,9 @@ abstract class UserRestClient {
 
   @GET(EndPoints.userProfile)
   Future<MyProfileResponseModel> getProfileDetails();
+
+  @PUT(EndPoints.userProfile)
+  Future<ProfileUpdateModel> updateProfile(@Body() Map<String, dynamic> map);
 
   @GET(EndPoints.generateUserName)
   Future<GenerateUsernameModel> generateUserNames(

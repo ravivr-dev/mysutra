@@ -7,12 +7,12 @@ import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/app_decoration.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/past_appointment_entity.dart';
 import 'package:my_sutra/features/presentation/patient/cubit/appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/patient/bottom_sheets/appointment_bottom_sheet.dart';
 import 'package:my_sutra/generated/assets.dart';
 
 import '../../../../routes/routes_constants.dart';
-import '../../../domain/entities/patient_entities/appointment_entity.dart';
 import '../../common/chat_screen/chat_screen.dart';
 import '../schedule_appointment_screen.dart';
 
@@ -26,7 +26,7 @@ class PatientPastAppointmentsScreen extends StatefulWidget {
 
 class _PatientPastAppointmentsScreenState
     extends State<PatientPastAppointmentsScreen> {
-  final List<AppointmentEntity> _appointmentEntities = [];
+  final List<PastAppointmentResponseEntity> _appointmentEntities = [];
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,8 @@ class _PatientPastAppointmentsScreenState
     );
   }
 
-  Widget _buildCard(BuildContext context, AppointmentEntity entity) {
+  Widget _buildCard(
+      BuildContext context, PastAppointmentResponseEntity entity) {
     final dateFormat = DateFormat('dd/MM/yyyy');
     final date = dateFormat.format(DateTime.parse(entity.date));
     return Container(
@@ -96,7 +97,7 @@ class _PatientPastAppointmentsScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               component.networkImage(
-                  url: entity.profilePic ?? '',
+                  url: entity.profilePic,
                   height: 72,
                   width: 72,
                   borderRadius: 8,
@@ -131,7 +132,7 @@ class _PatientPastAppointmentsScreenState
                         )
                       ],
                     ),
-                    component.text(entity.specialization ?? '',
+                    component.text(entity.specialization,
                         style: theme.publicSansFonts.regularStyle(
                           fontColor: AppColors.black81,
                         )),
@@ -145,8 +146,9 @@ class _PatientPastAppointmentsScreenState
                               context,
                               AppRoutes.scheduleAppointment,
                               ScheduleAppointmentScreenArgs(
-                                doctorId: entity.doctorId!,
+                                doctorId: entity.doctorId,
                                 isNewAppointment: true,
+                                fees: entity.totalAmount,
                               ),
                             );
                           },
@@ -182,7 +184,8 @@ class _PatientPastAppointmentsScreenState
     );
   }
 
-  Widget _buildChatIcon(BuildContext context, AppointmentEntity appointment) {
+  Widget _buildChatIcon(
+      BuildContext context, PastAppointmentResponseEntity appointment) {
     return InkWell(
       onTap: () {
         AiloitteNavigation.intentWithData(
@@ -190,10 +193,10 @@ class _PatientPastAppointmentsScreenState
           AppRoutes.chatScreen,
           ChatScreenArgs(
             roomId: '${appointment.doctorId}${appointment.userId}',
-            username: appointment.fullName ?? appointment.username ?? '',
-            currentUserId: appointment.userId!,
+            username: appointment.fullName,
+            currentUserId: appointment.userId,
             profilePic: appointment.profilePic,
-            remoteUserId: appointment.doctorId!,
+            remoteUserId: appointment.doctorId,
             showChatHistory: true,
           ),
         );
