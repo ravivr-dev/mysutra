@@ -26,10 +26,10 @@ class EarningCubit extends Cubit<EarningState> {
     required this.getProcessingAmountUseCase,
   }) : super(EarningInitial());
 
-  int bookingAmount = 0;
-  int earningAmount = 0;
-  int commisionAmount = 0;
-  int processingAmount = 0;
+  num bookingAmount = 0;
+  num earningAmount = 0;
+  num commisionAmount = 0;
+  num processingAmount = 0;
   List<WithdrawalData> withdrawals = [];
   List<BookingEntity> bookings = [];
   List<BankAccountEntity> accounts = [];

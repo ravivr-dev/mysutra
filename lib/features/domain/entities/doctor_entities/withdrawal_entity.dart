@@ -1,7 +1,7 @@
 class WithdrawalEntity {
-  final int? booking;
-  final int? earnings;
-  final int? commision;
+  final num? booking;
+  final num? earnings;
+  final num? commision;
   final List<WithdrawalData> data;
 
   WithdrawalEntity(

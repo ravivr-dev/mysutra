@@ -1,9 +1,9 @@
 class GetBookingsModel {
   String? message;
-  int? booking;
-  int? earnings;
-  int? commision;
-  int? count;
+  num? booking;
+  num? earnings;
+  num? commision;
+  num? count;
   List<BookingItem>? data;
 
   GetBookingsModel({

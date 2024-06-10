@@ -222,7 +222,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                     color: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(4)),
                 child: Text(
-                  'Withdraw',
+                  'Withdrawl',
                   style: theme.publicSansFonts.regularStyle(
                       fontSize: 14, height: 20, fontColor: Colors.white),
                 ),
@@ -325,7 +325,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
   }
 
   Widget _buildTodayAppointmentsContainer(
-      {required String text, required int subText}) {
+      {required String text, required num subText}) {
     return Flexible(
       child: Container(
         width: 100,

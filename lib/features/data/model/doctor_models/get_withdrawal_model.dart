@@ -1,9 +1,9 @@
 class GetWithdrawalModel {
   String? message;
-  int? booking;
-  int? earnings;
-  int? commision;
-  int? count;
+  num? booking;
+  num? earnings;
+  num? commision;
+  num? count;
   List<WithdrawalItem>? data;
 
   GetWithdrawalModel(

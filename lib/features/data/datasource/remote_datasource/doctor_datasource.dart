@@ -277,9 +277,10 @@ class DoctorDataSourceImpl extends DoctorDataSource {
   @override
   Future<GetWithdrawalModel> getWithdrawals(Map<String, Object> map) async {
     try {
-      return await client.getWithdrawals(map).catchError((err) {
-        _processDio(err);
-      });
+      return await client.getWithdrawals(map);
+      // .catchError((err) {
+      //   _processDio(err);
+      // });
     } on DioException catch (e) {
       throw ServerException(
           message: e.getErrorFromDio(
