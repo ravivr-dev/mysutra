@@ -23,7 +23,6 @@ class PaymentMethodScreen extends StatelessWidget {
       },
       builder: (_, state) {
         BankAccountCubit cubit = _.read<BankAccountCubit>();
-
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
@@ -76,7 +75,7 @@ class PaymentMethodScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      builder: (BuildContext context) {
+      builder: (_) {
         return Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -94,7 +93,11 @@ class PaymentMethodScreen extends StatelessWidget {
                 onTap: () {
                   AiloitteNavigation.back(context);
                   AiloitteNavigation.intentWithData(
-                      context, AppRoutes.addBankAccountRoute, false);
+                          context, AppRoutes.addBankAccountRoute, false)
+                      .then((value) {
+                    context.read<BankAccountCubit>().getData();
+                    AiloitteNavigation.back(context);
+                  });
                 },
               ),
               const Divider(
@@ -103,9 +106,12 @@ class PaymentMethodScreen extends StatelessWidget {
               _dropDownItem(
                 text: 'UPI ID',
                 onTap: () {
-                  AiloitteNavigation.back(context);
                   AiloitteNavigation.intentWithData(
-                      context, AppRoutes.addUpiIdRoute, false);
+                          context, AppRoutes.addUpiIdRoute, false)
+                      .then((value) {
+                    context.read<BankAccountCubit>().getData();
+                    AiloitteNavigation.back(context);
+                  });
                 },
               ),
               const SizedBox(height: 30),

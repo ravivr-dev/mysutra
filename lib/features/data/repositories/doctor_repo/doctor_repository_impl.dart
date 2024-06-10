@@ -21,6 +21,7 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/utils/constants.dart';
@@ -246,10 +247,12 @@ class DoctorRepositoryImpl extends DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, List<BankAccountEntity>>> getAccounts() async {
+  Future<Either<Failure, List<BankAccountEntity>>> getAccounts(
+      GeneralPagination params) async {
     try {
       if (await networkInfo.isConnected) {
-        final result = await remoteDataSource.getAccounts();
+        final result = await remoteDataSource
+            .getAccounts({'pagination': params.start, 'limit': params.limit});
 
         return Right(DoctorRepositoryConv.convertBankAccountModelToEntity(
             result.items ?? []));
@@ -340,10 +343,10 @@ class DoctorRepositoryImpl extends DoctorRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
-  
+
   @override
   Future<Either<Failure, String>> getProcessingAmount() async {
-  try {
+    try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getProcessingAmount();
 
@@ -353,6 +356,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
       }
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
-    };
+    }
+    ;
   }
 }

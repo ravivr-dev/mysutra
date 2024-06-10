@@ -92,7 +92,8 @@ abstract class DoctorClient {
   Future<dynamic> createUpi(@Field('vpa') String upi);
 
   @GET(EndPoints.fundAccounts)
-  Future<GetBankAccountsModel> getFundAccounts();
+  Future<GetBankAccountsModel> getFundAccounts(
+      @Queries() Map<String, int?> map);
 
   @PATCH(EndPoints.fundAccounts)
   Future<dynamic> activateDeactivateBankAccount(

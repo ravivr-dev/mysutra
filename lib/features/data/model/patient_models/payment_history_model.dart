@@ -33,19 +33,22 @@ class PaymentHistory {
   String? razorpayOrderId;
   String? razorpayPaymentId;
   String? paymentStatus;
+  String? createdAt;
 
-  PaymentHistory(
-      {this.id,
-      this.doctor,
-      this.specialization,
-      this.date,
-      this.time,
-      this.timeInMinutes,
-      this.duration,
-      this.totalAmount,
-      this.razorpayOrderId,
-      this.razorpayPaymentId,
-      this.paymentStatus});
+  PaymentHistory({
+    this.id,
+    this.doctor,
+    this.specialization,
+    this.date,
+    this.time,
+    this.timeInMinutes,
+    this.duration,
+    this.totalAmount,
+    this.razorpayOrderId,
+    this.razorpayPaymentId,
+    this.paymentStatus,
+    this.createdAt,
+  });
 
   PaymentHistory.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -63,6 +66,7 @@ class PaymentHistory {
     razorpayOrderId = json['razorpayOrderId'];
     razorpayPaymentId = json['razorpayPaymentId'];
     paymentStatus = json['paymentStatus'];
+    createdAt = json['createdAt'];
   }
 }
 

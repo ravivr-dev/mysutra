@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
@@ -36,7 +34,8 @@ class PaymentHistoryCard extends StatelessWidget {
         children: [
           if (data.date != null)
             Text(
-              "${DateFormat('dd/MM/yyyy').format(DateTime.parse(data.date!))}  ${data.time ?? ''}",
+              DateFormat('dd/MM/yyyy  hh:mm a')
+                  .format(DateTime.parse(data.date!).toLocal()),
               style: theme.publicSansFonts.regularStyle(
                   fontSize: 14, height: 20, fontColor: AppColors.grey81),
             ),

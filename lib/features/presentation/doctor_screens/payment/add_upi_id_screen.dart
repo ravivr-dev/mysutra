@@ -39,7 +39,6 @@ class _AddUpiIdScreenState extends State<AddUpiIdScreen> {
     return null;
   }
 
-
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your name';
@@ -78,6 +77,7 @@ class _AddUpiIdScreenState extends State<AddUpiIdScreen> {
             widget.showSuccessToast(
                 context: context, message: 'UPI Id Added Successfully');
             AiloitteNavigation.back(context);
+            Navigator.pop(context);
           } else if (state is BankAccountError) {
             widget.showErrorToast(context: context, message: state.error);
           }

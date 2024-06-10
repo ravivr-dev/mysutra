@@ -3,10 +3,10 @@ import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/add_upi_usecase.dart';
-import 'package:my_sutra/features/domain/usecases/doctor_usecases/checkout_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_fund_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/create_payout_contact.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bank_account_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 
 part 'bank_account_state.dart';
 
@@ -29,8 +29,10 @@ class BankAccountCubit extends Cubit<BankAccountState> {
 
   void getData() async {
     emit(BankAccountLoading());
-    final result = await getBankAccountUseCase.call(NoParams());
+    final result = await getBankAccountUseCase
+        .call(GeneralPagination(start: 1, limit: 100));
     result.fold((l) => emit(BankAccountError(l.message)), (data) {
+      accounts.clear();
       accounts.addAll(data);
       emit(BankAccountLoaded());
     });
@@ -69,6 +71,4 @@ class BankAccountCubit extends Cubit<BankAccountState> {
       emit(BankAccountUpdate());
     });
   }
-
-
 }

@@ -76,7 +76,7 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
               } else if (state is BankAccountBankAdd) {
                 widget.showSuccessToast(
                     context: context, message: 'Account Added Successfully');
-                AiloitteNavigation.back(context);
+                Navigator.pop(context);
               } else if (state is BankAccountError) {
                 widget.showErrorToast(context: context, message: state.error);
               }

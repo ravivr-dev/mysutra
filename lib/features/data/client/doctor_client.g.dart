@@ -355,9 +355,10 @@ class _DoctorClient implements DoctorClient {
   }
 
   @override
-  Future<GetBankAccountsModel> getFundAccounts() async {
+  Future<GetBankAccountsModel> getFundAccounts(Map<String, int?> map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(map);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(

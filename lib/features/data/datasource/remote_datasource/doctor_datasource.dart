@@ -38,7 +38,7 @@ abstract class DoctorDataSource {
 
   Future<dynamic> createUpi(String upi);
 
-  Future<GetBankAccountsModel> getAccounts();
+  Future<GetBankAccountsModel> getAccounts(Map<String, int?> map);
 
   Future<dynamic> activateDeactivateBankAccount(Map<String, Object> map);
 
@@ -245,9 +245,9 @@ class DoctorDataSourceImpl extends DoctorDataSource {
   }
 
   @override
-  Future<GetBankAccountsModel> getAccounts() async {
+  Future<GetBankAccountsModel> getAccounts(Map<String, int?> map) async {
     try {
-      return await client.getFundAccounts().catchError((err) {
+      return await client.getFundAccounts(map).catchError((err) {
         _processDio(err);
       });
     } on DioException catch (e) {

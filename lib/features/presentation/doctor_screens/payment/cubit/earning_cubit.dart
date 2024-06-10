@@ -8,6 +8,7 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bank_accou
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_bookings_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_processing_amount_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 
 part 'earning_state.dart';
 
@@ -55,7 +56,8 @@ class EarningCubit extends Cubit<EarningState> {
   }
 
   void getAccounts() async {
-    final result = await getBankAccountUseCase.call(NoParams());
+    final result = await getBankAccountUseCase
+        .call(GeneralPagination(start: 1, limit: 50));
     result.fold((l) => emit(EarningError(l.message)), (data) {
       accounts.addAll(data);
       emit(EarningAccountsLoaded());

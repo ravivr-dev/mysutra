@@ -1,16 +1,16 @@
 class GetBankAccountsModel {
-  String? entity;
+
   int? count;
   List<BankAccountModel>? items;
 
-  GetBankAccountsModel({this.entity, this.count, this.items});
+  GetBankAccountsModel({ this.count, this.items});
 
   GetBankAccountsModel.fromJson(Map<String, dynamic> json) {
-    entity = json['entity'];
+
     count = json['count'];
-    if (json['items'] != null) {
+    if (json['data'] != null) {
       items = <BankAccountModel>[];
-      json['items'].forEach((v) {
+      json['data'].forEach((v) {
         items!.add(BankAccountModel.fromJson(v));
       });
     }

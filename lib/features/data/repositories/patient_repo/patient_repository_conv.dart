@@ -184,7 +184,7 @@ class PatientRepoConv {
               fullName: e.doctor?.fullName,
               specialization: e.specialization?.name,
               amount: e.totalAmount,
-              date: e.date,
+              date: e.createdAt,
               time: e.time,
             ))
         .toList();
