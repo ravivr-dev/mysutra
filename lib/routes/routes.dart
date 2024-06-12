@@ -137,7 +137,7 @@ class Routes {
             builder: (_) => MultiBlocProvider(
                   providers: [
                     BlocProvider<HomeCubit>(
-                        create: (_) => sl<HomeCubit>()..getHomeData()),
+                        create: (_) => sl<HomeCubit>()),
                     BlocProvider<ChatCubit>(create: (_) => sl<ChatCubit>())
                   ],
                   child: HomeScreen(index: args as int?),
