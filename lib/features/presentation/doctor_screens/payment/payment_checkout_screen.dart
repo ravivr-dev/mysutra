@@ -201,9 +201,19 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                       message: 'Amount below ₹ 1000 cannot be withdraw');
                 } else {
                   AiloitteNavigation.intentWithData(
-                      context,
-                      AppRoutes.withdrawBalanceRoute,
-                      cubit.bookingAmount - cubit.processingAmount);
+                          context,
+                          AppRoutes.withdrawBalanceRoute,
+                          cubit.bookingAmount - cubit.processingAmount)
+                      .then((val) {
+                    context
+                        .read<EarningCubit>()
+                        .getWithdrawalData(GetPayoutParams(
+                          date: DateFormat(format).format(now),
+                        ));
+                    context.read<EarningCubit>().getBookingData(GetPayoutParams(
+                          date: DateFormat(format).format(now),
+                        ));
+                  });
 
                   // if (myAccount.id == null) {
                   //   widget.showErrorToast(
