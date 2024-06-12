@@ -11,7 +11,7 @@ import 'package:my_sutra/generated/assets.dart';
 
 class TextFormWithCountryCode extends StatefulWidget {
   const TextFormWithCountryCode({
-    Key? key,
+    super.key,
     required this.controller,
     required this.countryCode,
     this.isMandatory = true,
@@ -29,7 +29,7 @@ class TextFormWithCountryCode extends StatefulWidget {
     this.horizontalContentPadding = 20,
     this.verticalContentPadding = 14,
     this.borderRadius = 30,
-  }) : super(key: key);
+  });
 
   final TextEditingController controller;
   final TextEditingController countryCode;
@@ -72,10 +72,11 @@ class _TextFormWithCountryCodeState extends State<TextFormWithCountryCode> {
           theme.publicSansFonts.regularStyle(
             fontSize: 16,
           ),
-      validator: (value) => value.trim().validateMobile(),
+      validator: (value) => value.validateMobile(),
       textInputType: TextInputType.number,
       fillColor: widget.fillColor,
       filled: widget.filled,
+      focusNode: widget.focusNode,
       controller: widget.controller,
       borderColor: widget.fillColor ?? AppColors.blackColor.withOpacity(0.08),
       borderRadius: widget.borderRadius,

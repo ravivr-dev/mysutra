@@ -6,7 +6,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   const TextFormFieldWidget({
-    Key? key,
+    super.key,
     this.initialData,
     this.title,
     this.controller,
@@ -46,7 +46,7 @@ class TextFormFieldWidget extends StatefulWidget {
     this.suffixIconConstraints,
     this.prefixIconConstraints,
     this.contentPadding,
-  }) : super(key: key);
+  });
   final String? initialData;
   final String? title;
   final Function(String onChange)? onChange;
@@ -176,6 +176,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             enabledBorder: _getEnabledBorder(),
             errorBorder: _getErrorBorder(),
             disabledBorder: _disabledBorder(),
+            focusedErrorBorder: _getErrorBorder(),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             suffixIcon: widget.suffixWidget,
           ),

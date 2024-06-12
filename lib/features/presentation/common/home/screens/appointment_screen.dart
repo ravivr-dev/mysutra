@@ -253,8 +253,9 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
               ),
               const SizedBox(height: 8),
               component.text(
-                Utils.getNameOrUsername(
-                    widget.entity?.fullName, widget.entity?.username),
+                widget.entity?.fullName ?? widget.entity?.username ?? 'No Name',
+                // Utils.getNameOrUsername(
+                //     widget.entity?.fullName, widget.entity?.username),
                 style: theme.publicSansFonts.mediumStyle(
                   fontColor: AppColors.blackColor,
                   fontSize: 24,

@@ -99,6 +99,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                       title: context.stringForKey(StringKeys.mobileNumber),
                       countryCode: _countryCode,
                       controller: _mobCtrl,
+                      focusNode: FocusNode(),
+                      
                       fillColor: AppColors.greyD9,
                     ),
                     const SizedBox(height: 5),
