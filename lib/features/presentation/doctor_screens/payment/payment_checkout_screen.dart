@@ -145,7 +145,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
           unselectedLabelStyle: theme.publicSansFonts.regularStyle(
               fontSize: 14, fontColor: AppColors.blackTokens.withOpacity(0.6)),
           tabs: const [
-            Tab(text: 'Withdraw'),
+            Tab(text: 'Withdrawl'),
             Tab(text: 'Booking'),
           ],
         ),
@@ -222,7 +222,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                     color: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(4)),
                 child: Text(
-                  'Withdrawl',
+                  'Withdraw',
                   style: theme.publicSansFonts.regularStyle(
                       fontSize: 14, height: 20, fontColor: Colors.white),
                 ),

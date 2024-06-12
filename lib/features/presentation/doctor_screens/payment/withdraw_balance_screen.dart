@@ -111,7 +111,7 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
               text: "Add Withdraw Request",
               onPressed: () {
                 int val = int.parse(_ctrl.text);
-                if (val > 1000) {
+                if (val > 999) {
                   AiloitteNavigation.intentWithData(context,
                       AppRoutes.selectBankAccountRoute, int.parse(_ctrl.text));
                 } else {
