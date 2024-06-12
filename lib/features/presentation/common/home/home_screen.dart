@@ -183,7 +183,7 @@ abstract class _HomeScreenState extends State<HomeScreen>
           ),
           label: ''),
       _buildBottomBarItem(icon: Assets.iconsLms, label: 'LMS'),
-      _buildBottomBarItem(icon: Assets.iconsUser2, label: 'My Profile'),
+      _buildBottomBarItem(icon: Assets.iconsUser2, label: 'Profile'),
     ];
   }
 

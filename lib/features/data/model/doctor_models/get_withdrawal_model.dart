@@ -37,7 +37,7 @@ class WithdrawalItem {
   num? amount;
   num? commision;
   String? currency;
-  Null? utr;
+  String? utr;
   String? mode;
   String? status;
   // StatusDetails? statusDetails;

@@ -194,15 +194,17 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
           else
             InkWell(
               onTap: () {
-                if ((cubit.bookingAmount - cubit.processingAmount) < 999) {
+                if (cubit.processingAmount != 0) {
+                  widget.showErrorToast(
+                      context: context,
+                      message: 'You already have a pending transaction');
+                } else if (cubit.bookingAmount < 999) {
                   widget.showErrorToast(
                       context: context,
                       message: 'Amount below ₹ 1000 cannot be withdraw');
                 } else {
-                  AiloitteNavigation.intentWithData(
-                      context,
-                      AppRoutes.withdrawBalanceRoute,
-                      cubit.bookingAmount - cubit.processingAmount);
+                  AiloitteNavigation.intentWithData(context,
+                      AppRoutes.withdrawBalanceRoute, cubit.bookingAmount);
 
                   // if (myAccount.id == null) {
                   //   widget.showErrorToast(
@@ -308,16 +310,8 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                 text: 'Booking', subText: cubit.bookingAmount),
             _buildTodayAppointmentsContainer(
                 text: 'Earnings', subText: cubit.earningAmount),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
             _buildTodayAppointmentsContainer(
                 text: 'Commission', subText: cubit.commisionAmount),
-            _buildTodayAppointmentsContainer(
-                text: 'Processing', subText: cubit.processingAmount),
           ],
         ),
       ],
