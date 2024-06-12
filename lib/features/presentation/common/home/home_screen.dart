@@ -23,7 +23,9 @@ import '../../../../injection_container.dart';
 import '../../../domain/entities/user_entities/user_entity.dart';
 
 part 'home_screen_states/doctor_home_screen_state.dart';
+
 part 'home_screen_states/influencer_home_screen_state.dart';
+
 part 'home_screen_states/patient_home_screen_state.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -86,6 +88,7 @@ abstract class _HomeScreenState extends State<HomeScreen>
     notificationServices.intiLocalNotifications();
     notificationServices.forgroundMessage();
     updateDeviceToken();
+    context.read<HomeCubit>().getHomeData();
 
     super.initState();
   }

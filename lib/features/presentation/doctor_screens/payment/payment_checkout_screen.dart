@@ -25,6 +25,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
   late TabController _tabController;
   final ScrollController _withdrawalCtrl = ScrollController();
   final ScrollController _bookingCtrl = ScrollController();
+
   // final int _withdrawalPage = 1;
   // final int _bookingPage = 1;
   DateTime now = DateTime.now();
@@ -136,7 +137,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: SizedBox(
-        width: 200,
+        width: 210,
         child: TabBar(
           controller: _tabController,
           indicatorSize: TabBarIndicatorSize.tab,
@@ -145,7 +146,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
           unselectedLabelStyle: theme.publicSansFonts.regularStyle(
               fontSize: 14, fontColor: AppColors.blackTokens.withOpacity(0.6)),
           tabs: const [
-            Tab(text: 'Withdrawl'),
+            Tab(text: 'Withdrawal'),
             Tab(text: 'Booking'),
           ],
         ),
@@ -171,7 +172,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
               softWrap: true,
               text: TextSpan(
                 text:
-                    '₹ ${NumberFormat('#,##,##,###').format((cubit.bookingAmount - cubit.processingAmount) < 0 ? 0 : cubit.bookingAmount - cubit.processingAmount)}  ',
+                    '₹ ${NumberFormat('#,##,##,###').format(cubit.bookingAmount)}  ',
                 style: theme.publicSansFonts.semiBoldStyle(
                   fontSize: 14,
                   height: 20,
@@ -204,7 +205,17 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                       message: 'Amount below ₹ 1000 cannot be withdraw');
                 } else {
                   AiloitteNavigation.intentWithData(context,
-                      AppRoutes.withdrawBalanceRoute, cubit.bookingAmount);
+                          AppRoutes.withdrawBalanceRoute, cubit.bookingAmount)
+                      .then((val) {
+                    context
+                        .read<EarningCubit>()
+                        .getWithdrawalData(GetPayoutParams(
+                          date: DateFormat(format).format(now),
+                        ));
+                    context.read<EarningCubit>().getBookingData(GetPayoutParams(
+                          date: DateFormat(format).format(now),
+                        ));
+                  });
 
                   // if (myAccount.id == null) {
                   //   widget.showErrorToast(

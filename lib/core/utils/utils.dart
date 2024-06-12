@@ -29,7 +29,10 @@ class Utils {
     if (name != null && name.isNotEmpty) {
       return name;
     }
-    return username;
+    if(username != null && username.isNotEmpty) {
+      return username;
+    }
+    return '';
   }
 
   static bool isTodayDate(DateTime dateTime) {
