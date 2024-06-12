@@ -45,8 +45,8 @@ dependencies:
   flutter_bloc: ^8.1.4
   otp_text_field: ^1.1.3
   loading_animation_widget: ^1.2.0+4
-  country_picker: ^2.0.25
-  country_pickers: ^2.0.0
+  country_picker: ^2.0.26
+  country_pickers: ^3.0.1
   table_calendar: ^3.1.0
   lottie: ^3.1.0
   geocoding: ^3.0.0
@@ -59,7 +59,7 @@ dependencies:
   dropdown_textfield:
     git:
       url: https://github.com/sahil-ailoitte/dropdown_textfield.git
-      ref: master
+      ref: b483430d00b99015e6d431fcf4a701a725fc87c7
   flutter_chat_ui: ^1.6.12
   file_picker: ^8.0.2
 #  open_filex: ^4.4.0

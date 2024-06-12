@@ -14,20 +14,27 @@ import 'ailoitte_component_injector.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-// }
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
 
 void main() async {
+
+
   WidgetsFlutterBinding.ensureInitialized();
+
+
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await PushNotificationService().intiNotifications();
 
-  FirebaseMessaging.onBackgroundMessage(
-      (RemoteMessage message) async => await Firebase.initializeApp());
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+
+  await PushNotificationService().intiNotifications();
 
   await di.init();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
