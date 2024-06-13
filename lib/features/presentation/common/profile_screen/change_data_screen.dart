@@ -24,6 +24,7 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
   final TextEditingController _ccCtrl = TextEditingController();
   final TextEditingController _valCtrl = TextEditingController();
   final TextEditingController _otpCtrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool showOTP = false;
   bool _isLoading = false;
 
@@ -86,16 +87,18 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                     text: 'Send OTP',
                     isLoading: _isLoading,
                     onPressed: () {
-                      if (widget.args.isEmail) {
-                        context
-                            .read<ProfileCubit>()
-                            .changeEmail(newEmail: _valCtrl.text);
-                      } else {
-                        context.read<ProfileCubit>().changePhoneNumber(
-                            cc: _ccCtrl.text,
-                            phoneNumber: int.tryParse(_valCtrl.text)!);
+                      if (_formKey.currentState!.validate()) {
+                        if (widget.args.isEmail) {
+                          context
+                              .read<ProfileCubit>()
+                              .changeEmail(newEmail: _valCtrl.text);
+                        } else {
+                          context.read<ProfileCubit>().changePhoneNumber(
+                              cc: _ccCtrl.text,
+                              phoneNumber: int.tryParse(_valCtrl.text)!);
+                        }
+                        _startLoading();
                       }
-                      _startLoading();
                     },
                   ),
           ),
@@ -103,50 +106,59 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
               FloatingActionButtonLocation.centerFloat,
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            child: Column(
-              children: [
-                if (widget.args.isEmail)
-                  TextFormFieldWidget(
-                    title: 'Enter new email address',
-                    fillColor: AppColors.white,
-                    filled: true,
-                    borderRadius: 90,
-                    horizontalContentPadding: 34,
-                    verticalContentPadding: 22,
-                    controller: _valCtrl,
-                    style: theme.publicSansFonts.regularStyle(
-                      fontSize: 16,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  if (widget.args.isEmail)
+                    TextFormFieldWidget(
+                      title: 'Enter new email address',
+                      fillColor: AppColors.white,
+                      filled: true,
+                      borderRadius: 90,
+                      horizontalContentPadding: 34,
+                      verticalContentPadding: 22,
+                      controller: _valCtrl,
+                      style: theme.publicSansFonts.regularStyle(
+                        fontSize: 16,
+                      ),
+                      validator: (value) => value.isEmpty
+                          ? 'Please Enter Email'
+                          : !value.isValidEmail
+                              ? 'Please Enter Valid Email'
+                              : null,
+                    )
+                  else
+                    TextFormWithCountryCode(
+                      title: "Enter new mobile number",
+                      fillColor: AppColors.white,
+                      filled: true,
+                      countryCode: _ccCtrl,
+                      controller: _valCtrl,
+                      verticalContentPadding: 23,
+                      // horizontalContentPadding: =,
+                      borderRadius: 90,
+                      textStyle:
+                          theme.publicSansFonts.regularStyle(fontSize: 16),
                     ),
-                  )
-                else
-                  TextFormWithCountryCode(
-                    title: "Enter new mobile number",
-                    fillColor: AppColors.white,
-                    filled: true,
-                    countryCode: _ccCtrl,
-                    controller: _valCtrl,
-                    verticalContentPadding: 23,
-                    // horizontalContentPadding: =,
-                    borderRadius: 90,
-                    textStyle: theme.publicSansFonts.regularStyle(fontSize: 16),
+                  component.spacer(
+                    height: 12,
                   ),
-                component.spacer(
-                  height: 12,
-                ),
-                if (showOTP)
-                  TextFormFieldWidget(
-                    title: "Enter OTP Sent to  ${_valCtrl.text}",
-                    fillColor: AppColors.white,
-                    borderRadius: 90,
-                    horizontalContentPadding: 34,
-                    verticalContentPadding: 22,
-                    textInputType: TextInputType.number,
-                    filled: true,
-                    controller: _otpCtrl,
-                    autoFocus: true,
-                    style: theme.publicSansFonts.regularStyle(fontSize: 16),
-                  ),
-              ],
+                  if (showOTP)
+                    TextFormFieldWidget(
+                      title: "Enter OTP Sent to  ${_valCtrl.text}",
+                      fillColor: AppColors.white,
+                      borderRadius: 90,
+                      horizontalContentPadding: 34,
+                      verticalContentPadding: 22,
+                      textInputType: TextInputType.number,
+                      filled: true,
+                      controller: _otpCtrl,
+                      autoFocus: true,
+                      style: theme.publicSansFonts.regularStyle(fontSize: 16),
+                    ),
+                ],
+              ),
             ),
           ),
         );

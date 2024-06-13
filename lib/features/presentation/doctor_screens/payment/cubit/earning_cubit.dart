@@ -56,6 +56,7 @@ class EarningCubit extends Cubit<EarningState> {
   }
 
   void getAccounts() async {
+      emit(EarningLoading());
     final result = await getBankAccountUseCase
         .call(GeneralPagination(start: 1, limit: 50));
     result.fold((l) => emit(EarningError(l.message)), (data) {

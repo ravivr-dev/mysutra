@@ -43,92 +43,103 @@ class _SelectBankAccountScreenState extends State<SelectBankAccountScreen> {
             EarningCubit cubit = context.read<EarningCubit>();
             return Column(
               children: [
-                ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: cubit.accounts.length,
-                  itemBuilder: (_, index) {
-                    String? account =
-                        cubit.accounts[index].bankAccount?.accountNumber;
-                    String? upi = cubit.accounts[index].vpa?.address;
+                if (state is EarningLoading)
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                else if (cubit.accounts.isNotEmpty)
+                  ListView.separated(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 20),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cubit.accounts.length,
+                    itemBuilder: (_, index) {
+                      String? account =
+                          cubit.accounts[index].bankAccount?.accountNumber;
+                      String? upi = cubit.accounts[index].vpa?.address;
 
-                    bool isSelected = selectedAccount == cubit.accounts[index];
+                      bool isSelected =
+                          selectedAccount == cubit.accounts[index];
 
-                    return InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedAccount = cubit.accounts[index];
-                        });
-                      },
-                      child: Container(
-                        color: isSelected ? AppColors.white : null,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (account != null) ...[
-                                  Text(
-                                    getMaskedAccountNumber(account),
-                                    style: theme.publicSansFonts.mediumStyle(
-                                        fontSize: 16,
-                                        fontColor: AppColors.blackColor),
-                                  ),
-                                  Text(
-                                    "Bank Account",
-                                    style: theme.publicSansFonts.regularStyle(
-                                        fontSize: 16,
-                                        fontColor: AppColors.color0xFF000713),
-                                  ),
-                                ] else if (upi != null) ...[
-                                  Text(
-                                    getMaskedUpi(upi),
-                                    style: theme.publicSansFonts.mediumStyle(
-                                        fontSize: 16,
-                                        fontColor: AppColors.blackColor),
-                                  ),
-                                  Text(
-                                    "UPI ID",
-                                    style: theme.publicSansFonts.regularStyle(
-                                        fontSize: 16,
-                                        fontColor: AppColors.color0xFF000713),
-                                  ),
-                                ]
-                              ],
-                            ),
-                            // TextButton(
-                            //   onPressed: () {
-                            //     cubit.updateAccount(
-                            //         ActivateDeactivateBankAccountParams(
-                            //             accountId: cubit.accounts[index].id ?? '',
-                            //             activate:
-                            //                 cubit.accounts[index].active != null
-                            //                     ? !cubit.accounts[index].active!
-                            //                     : true),
-                            //         index);
-                            //   },
-                            //   child: Text(
-                            //     cubit.accounts[index].active == true
-                            //         ? 'Deactivate'
-                            //         : 'Activate',
-                            //     style: theme.publicSansFonts.semiBoldStyle(
-                            //         fontSize: 14,
-                            //         fontColor: AppColors.primaryColor),
-                            //   ),
-                            // )
-                          ],
+                      return InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedAccount = cubit.accounts[index];
+                          });
+                        },
+                        child: Container(
+                          color: isSelected ? AppColors.white : null,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (account != null) ...[
+                                    Text(
+                                      getMaskedAccountNumber(account),
+                                      style: theme.publicSansFonts.mediumStyle(
+                                          fontSize: 16,
+                                          fontColor: AppColors.blackColor),
+                                    ),
+                                    Text(
+                                      "Bank Account",
+                                      style: theme.publicSansFonts.regularStyle(
+                                          fontSize: 16,
+                                          fontColor: AppColors.color0xFF000713),
+                                    ),
+                                  ] else if (upi != null) ...[
+                                    Text(
+                                      getMaskedUpi(upi),
+                                      style: theme.publicSansFonts.mediumStyle(
+                                          fontSize: 16,
+                                          fontColor: AppColors.blackColor),
+                                    ),
+                                    Text(
+                                      "UPI ID",
+                                      style: theme.publicSansFonts.regularStyle(
+                                          fontSize: 16,
+                                          fontColor: AppColors.color0xFF000713),
+                                    ),
+                                  ]
+                                ],
+                              ),
+                              // TextButton(
+                              //   onPressed: () {
+                              //     cubit.updateAccount(
+                              //         ActivateDeactivateBankAccountParams(
+                              //             accountId: cubit.accounts[index].id ?? '',
+                              //             activate:
+                              //                 cubit.accounts[index].active != null
+                              //                     ? !cubit.accounts[index].active!
+                              //                     : true),
+                              //         index);
+                              //   },
+                              //   child: Text(
+                              //     cubit.accounts[index].active == true
+                              //         ? 'Deactivate'
+                              //         : 'Activate',
+                              //     style: theme.publicSansFonts.semiBoldStyle(
+                              //         fontSize: 14,
+                              //         fontColor: AppColors.primaryColor),
+                              //   ),
+                              // )
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) =>
-                      const Divider(color: AppColors.color0xFFEBE2FF),
-                ),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        const Divider(color: AppColors.color0xFFEBE2FF),
+                  )
+                else
+                  const Center(child: Text("You don't have any account added")),
                 if (selectedAccount != null)
                   Padding(
                     padding: const EdgeInsets.symmetric(

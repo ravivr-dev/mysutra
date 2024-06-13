@@ -380,7 +380,7 @@ class Routes {
 
       case AppRoutes.withdrawBalanceRoute:
         return MaterialPageRoute(
-          builder: (_) => WithDrawBalanceScreen(amount: args as int),
+          builder: (_) => WithDrawBalanceScreen(amount: args as num),
         );
 
       case AppRoutes.selectBankAccountRoute:

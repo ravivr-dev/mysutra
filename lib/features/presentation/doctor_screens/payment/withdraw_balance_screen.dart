@@ -8,7 +8,7 @@ import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
 
 class WithDrawBalanceScreen extends StatefulWidget {
-  final int amount;
+  final num amount;
   const WithDrawBalanceScreen({super.key, required this.amount});
 
   @override
@@ -20,7 +20,7 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
 
   @override
   void initState() {
-    _ctrl.text = widget.amount.toString();
+    _ctrl.text = widget.amount.toInt().toString();
     super.initState();
   }
 
