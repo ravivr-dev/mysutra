@@ -172,7 +172,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
               softWrap: true,
               text: TextSpan(
                 text:
-                    '₹ ${NumberFormat('#,##,##,###').format(cubit.bookingAmount)}  ',
+                    '₹ ${NumberFormat('#,##,##,###').format(cubit.bookingAmount - cubit.earningAmount - cubit.commisionAmount)}  ',
                 style: theme.publicSansFonts.semiBoldStyle(
                   fontSize: 14,
                   height: 20,
@@ -199,13 +199,20 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                   widget.showErrorToast(
                       context: context,
                       message: 'You already have a pending transaction');
-                } else if (cubit.bookingAmount < 999) {
+                } else if ((cubit.bookingAmount -
+                        cubit.earningAmount -
+                        cubit.commisionAmount) <
+                    999) {
                   widget.showErrorToast(
                       context: context,
                       message: 'Amount below ₹ 1000 cannot be withdraw');
                 } else {
-                  AiloitteNavigation.intentWithData(context,
-                          AppRoutes.withdrawBalanceRoute, cubit.bookingAmount)
+                  AiloitteNavigation.intentWithData(
+                          context,
+                          AppRoutes.withdrawBalanceRoute,
+                          cubit.bookingAmount -
+                              cubit.earningAmount -
+                              cubit.commisionAmount)
                       .then((val) async {
                     context
                         .read<EarningCubit>()
