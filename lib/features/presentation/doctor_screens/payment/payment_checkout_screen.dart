@@ -206,7 +206,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                 } else {
                   AiloitteNavigation.intentWithData(context,
                           AppRoutes.withdrawBalanceRoute, cubit.bookingAmount)
-                      .then((val) {
+                      .then((val) async {
                     context
                         .read<EarningCubit>()
                         .getWithdrawalData(GetPayoutParams(
@@ -215,6 +215,7 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen>
                     context.read<EarningCubit>().getBookingData(GetPayoutParams(
                           date: DateFormat(format).format(now),
                         ));
+                    context.read<EarningCubit>().getProcessingAmount();
                   });
 
                   // if (myAccount.id == null) {
