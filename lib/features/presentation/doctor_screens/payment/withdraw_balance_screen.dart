@@ -1,5 +1,6 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
@@ -50,31 +51,33 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
                   shape: StadiumBorder(
                       side: BorderSide(color: AppColors.color0xFFD8D8D8)),
                   color: AppColors.white),
-              child: Center(
-                child: TextFormField(
-                  showCursor: false,
-                  controller: _ctrl,
-                  // style: theme.publicSansFonts.semiBoldStyle(
-                  //     fontSize: 22,
-                  //     letterSpacing: (context.screenWidth * .129)),
-                  maxLength: 7,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.number,
-                  autofocus: true,
-                  style: theme.publicSansFonts.semiBoldStyle(
-                      fontColor: AppColors.black21, fontSize: 24),
-                  decoration: InputDecoration(
-                      counterText: '',
-                      border: InputBorder.none,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Text(
-                          '₹',
-                          style: theme.publicSansFonts.semiBoldStyle(
-                              fontColor: AppColors.black21, fontSize: 24),
-                        ),
-                      )),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '₹',
+                    style: theme.publicSansFonts.semiBoldStyle(
+                        fontColor: AppColors.black21, fontSize: 24),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: TextFormField(
+                      showCursor: false,
+                      controller: _ctrl,
+                      decoration:
+                          const InputDecoration(border: InputBorder.none),
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(7),
+                      ],
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      autofocus: true,
+                      style: theme.publicSansFonts.semiBoldStyle(
+                          fontColor: AppColors.black21, fontSize: 24),
+                    ),
+                  ),
+                ],
               ),
             ),
 

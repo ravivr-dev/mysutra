@@ -102,7 +102,6 @@ class _AddUpiIdScreenState extends State<AddUpiIdScreen> {
                       title: context.stringForKey(StringKeys.mobileNumber),
                       countryCode: _countryCode,
                       controller: _mobCtrl,
-                      fillColor: AppColors.greyD9,
                     ),
                     const SizedBox(height: 5),
                     TextFormFieldWidget(

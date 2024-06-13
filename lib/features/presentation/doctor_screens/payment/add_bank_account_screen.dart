@@ -88,36 +88,33 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (widget.showBasicDetails) ...[
-                    _title('Basic details'),
-                    TextFormFieldWidget(
-                      title: 'Full name',
-                      controller: _nameCtrl,
-                      validator: validateName,
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormWithCountryCode(
-                      title: context.stringForKey(StringKeys.mobileNumber),
-                      countryCode: _countryCode,
-                      controller: _mobCtrl,
-                      focusNode: FocusNode(),
-                      
-                      fillColor: AppColors.greyD9,
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormFieldWidget(
-                      title: "Email",
-                      validator: (value) => value.isEmpty
-                          ? 'Please Enter Email'
-                          : !value.isValidEmail
-                              ? 'Please Enter Valid Email'
-                              : null,
-                      hintText: 'Enter Email Address',
-                      hintTextStyle: theme.publicSansFonts.regularStyle(
-                          fontSize: 16, fontColor: AppColors.grey92),
-                      controller: _emailCtrl,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                    const SizedBox(height: 20),
+                  _title('Basic details'),
+                  TextFormFieldWidget(
+                    title: 'Full name',
+                    controller: _nameCtrl,
+                    validator: validateName,
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormWithCountryCode(
+                    title: context.stringForKey(StringKeys.mobileNumber),
+                    countryCode: _countryCode,
+                    controller: _mobCtrl,
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormFieldWidget(
+                    title: "Email",
+                    validator: (value) => value.isEmpty
+                        ? 'Please Enter Email'
+                        : !value.isValidEmail
+                            ? 'Please Enter Valid Email'
+                            : null,
+                    hintText: 'Enter Email Address',
+                    hintTextStyle: theme.publicSansFonts.regularStyle(
+                        fontSize: 16, fontColor: AppColors.grey92),
+                    controller: _emailCtrl,
+                    textCapitalization: TextCapitalization.none,
+                  ),
+                  const SizedBox(height: 20),
                   ],
                   _title('Account information'),
                   if (!widget.showBasicDetails) ...[
