@@ -133,9 +133,8 @@ class HomeCubit extends Cubit<HomeState> {
     } else {
       platformText = "Other";
     }
-    final result = await updateDeviceTokenUsecase
+    await updateDeviceTokenUsecase
         .call(DeviceTokenParams(deviceToken: token, deviceType: platformText));
-    result.fold((l) => null, (r) => emit(UpdateDeviceTokenState()));
   }
 
 // FutureOr<void> _emitFailure(
