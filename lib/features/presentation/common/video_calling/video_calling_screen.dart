@@ -13,6 +13,7 @@ import 'package:my_sutra/features/presentation/common/registration/cubit/registr
 import 'package:my_sutra/features/presentation/common/video_calling/widgets/participant_widget.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:videosdk/videosdk.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VideoCallingScreen extends StatefulWidget {
   final VideoCallingArgs args;
@@ -47,6 +48,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
     _initLocalParticipants();
     _room!.join();
     _initCallTimer();
+    WakelockPlus.enable();
     super.initState();
   }
 
@@ -54,6 +56,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
   void dispose() {
     _timer.cancel();
     _timerNotifier.dispose();
+    WakelockPlus.disable();
     super.dispose();
   }
 
