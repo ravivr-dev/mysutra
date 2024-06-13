@@ -117,17 +117,20 @@ abstract class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: BlocBuilder<HomeCubit, HomeState>(builder: (_, state) {
-        if (state is GetHomeDataSuccessState) {
-          _userEntity = state.entity;
-          _setUserData();
-        }
-        final screen = _screens[_selectedScreen];
-        if (screen is AppointmentScreen && screen.entity == null) {
-          _screens[_selectedScreen] = AppointmentScreen(entity: _userEntity);
-        }
-        return screen;
-      }),
+      body: BlocBuilder<HomeCubit, HomeState>(
+          buildWhen: (_, current) => current is GetHomeDataSuccessState,
+          builder: (_, state) {
+            if (state is GetHomeDataSuccessState) {
+              _userEntity = state.entity;
+              _setUserData();
+            }
+            var screen = _screens[_selectedScreen];
+            if (screen is AppointmentScreen) {
+              return _screens[_selectedScreen] =
+                  AppointmentScreen(entity: _userEntity);
+            }
+            return screen;
+          }),
       bottomNavigationBar: BottomNavigationBar(
         unselectedLabelStyle:
             theme.publicSansFonts.regularStyle(fontColor: AppColors.grey92),
