@@ -112,6 +112,7 @@ final class GetVideoRoomSuccessState extends HomeState {
   final String remoteUserId;
   final String currentUserId;
   final String appointmentId;
+  final AppointmentEntity appointment;
 
   GetVideoRoomSuccessState({
     required this.data,
@@ -121,6 +122,7 @@ final class GetVideoRoomSuccessState extends HomeState {
     required this.remoteUserId,
     required this.currentUserId,
     required this.appointmentId,
+    required this.appointment,
   });
 }
 

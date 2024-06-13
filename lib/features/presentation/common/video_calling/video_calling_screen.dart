@@ -13,6 +13,7 @@ import 'package:my_sutra/features/presentation/common/registration/cubit/registr
 import 'package:my_sutra/features/presentation/common/video_calling/widgets/participant_widget.dart';
 import 'package:my_sutra/injection_container.dart';
 import 'package:videosdk/videosdk.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VideoCallingScreen extends StatefulWidget {
   final VideoCallingArgs args;
@@ -37,15 +38,17 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
   @override
   void initState() {
     _room = VideoSDK.createRoom(
-        roomId: widget.args.entity.videoSdkRoomId,
-        displayName: '',
-        defaultCameraIndex: 1,
-        camEnabled: widget.args.isVideoCall,
-        token: widget.args.entity.videoSdkToken);
+      roomId: widget.args.entity.videoSdkRoomId,
+      displayName: '',
+      defaultCameraIndex: 1,
+      camEnabled: widget.args.isVideoCall,
+      token: widget.args.entity.videoSdkToken,
+    );
     _initRoomListener();
     _initLocalParticipants();
     _room!.join();
     _initCallTimer();
+    WakelockPlus.enable();
     super.initState();
   }
 
@@ -53,6 +56,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
   void dispose() {
     _timer.cancel();
     _timerNotifier.dispose();
+    WakelockPlus.disable();
     super.dispose();
   }
 
@@ -63,47 +67,54 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
         .firstOrNull;
     final Participant? localParticipant = _room?.localParticipant;
 
-    return Scaffold(
-      body: !_isJoined
-          ? const Center(child: CircularProgressIndicator())
-          : Stack(
-              children: [
-                if (_showLocalParticipantFullVideo || remoteParticipant != null)
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        _room?.end();
+      },
+      child: Scaffold(
+        body: !_isJoined
+            ? const Center(child: CircularProgressIndicator())
+            : Stack(
+                children: [
+                  if (_showLocalParticipantFullVideo ||
+                      remoteParticipant != null)
 
-                  ///This is a widget that will show video in full screen
-                  ParticipantWidget(
-                      participant: _showLocalParticipantFullVideo
-                          ? localParticipant!
-                          : remoteParticipant!)
-                else
-                  Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: const [0.01, 0.4],
-                      colors: [
-                        AppColors.blackColor.withOpacity(.01),
-                        AppColors.color0xFFEEEEEE,
-                      ],
-                    )),
-                    child: component.text(
-                        '${UserHelper.role == UserRole.patient ? 'Doctor' : 'Patient'} will be joining soon',
-                        style: theme.publicSansFonts.regularStyle(
-                          fontSize: 20,
-                          fontColor: AppColors.color0xFF5C5C5C,
-                        )),
-                  ),
-                _buildSmallVideoRow(!_showLocalParticipantFullVideo
-                    ? localParticipant
-                    : remoteParticipant),
-                _buildBottomSheetWidget(),
-                if (_isChatEnabled) _buildChatWidget()
-              ],
-            ),
+                    ///This is a widget that will show video in full screen
+                    ParticipantWidget(
+                        participant: _showLocalParticipantFullVideo
+                            ? localParticipant!
+                            : remoteParticipant!)
+                  else
+                    Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: const [0.01, 0.4],
+                        colors: [
+                          AppColors.blackColor.withOpacity(.01),
+                          AppColors.color0xFFEEEEEE,
+                        ],
+                      )),
+                      child: component.text(
+                          '${UserHelper.role == UserRole.patient ? 'Doctor' : 'Patient'} will be joining soon',
+                          style: theme.publicSansFonts.regularStyle(
+                            fontSize: 20,
+                            fontColor: AppColors.color0xFF5C5C5C,
+                          )),
+                    ),
+                  _buildSmallVideoRow(!_showLocalParticipantFullVideo
+                      ? localParticipant
+                      : remoteParticipant),
+                  _buildBottomSheetWidget(),
+                  if (_isChatEnabled) _buildChatWidget()
+                ],
+              ),
+      ),
     );
   }
 
@@ -275,7 +286,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
                     name: 'End',
                     backgroundColor: AppColors.color0xFFF83D39,
                     onClick: () {
-                      _room?.leave();
+                      // _room?.leave();
                       _room?.end();
                     },
                   ),

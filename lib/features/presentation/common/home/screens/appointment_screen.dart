@@ -106,7 +106,8 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
               currentUserId: state.currentUserId,
             ),
           ).then((_) {
-            if (UserHelper.role == UserRole.patient) {
+            if (UserHelper.role == UserRole.patient &&
+                _canShowRatingScreen(appointment: state.appointment)) {
               AiloitteNavigation.intentWithData(
                   context,
                   AppRoutes.rateAppointmentRoute,
@@ -200,6 +201,22 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
     } else if (now.hour < appointmentEndTime.hour ||
         (now.hour == appointmentEndTime.hour &&
             now.minute < appointmentEndTime.minute)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _canShowRatingScreen({required AppointmentEntity appointment}) {
+    final appointmentHours = DateFormat('hh:mm a').parse(appointment.time);
+    DateTime appointmentStartTime = DateTime.parse(appointment.date)
+        .toUtc()
+        .add(Duration(
+            hours: appointmentHours.hour, minutes: appointmentHours.minute));
+    final appointmentEndTime =
+        appointmentStartTime.add(Duration(minutes: appointment.duration));
+    final now = DateTime.now();
+
+    if (now.isAfter(appointmentEndTime)) {
       return true;
     }
     return false;
@@ -303,6 +320,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   void _callVideoSdkRoomApi(AppointmentEntity appointment,
       {bool isVideoCall = true, required bool isDoctor}) {
     context.read<HomeCubit>().getVideoRoomId(
+          appointment: appointment,
           appointmentId: appointment.id,
           isVideoCall: isVideoCall,
           name: appointment.fullName ?? appointment.username ?? '',

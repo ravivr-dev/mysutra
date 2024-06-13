@@ -107,6 +107,7 @@ class HomeCubit extends Cubit<HomeState> {
       required String currentUserId,
       required String appointmentId,
       required bool isVideoCall,
+      required AppointmentEntity appointment,
       required String name}) async {
     final result = await getVideoRoomIdUseCase
         .call(GetVideoRoomIdUseCaseParams(appointmentId: appointmentId));
@@ -114,13 +115,15 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
         (l) => emit(GetVideoRoomErrorState(message: l.message)),
         (r) => emit(GetVideoRoomSuccessState(
-            data: r,
-            isVideoCall: isVideoCall,
-            name: name,
-            roomId: roomId,
-            remoteUserId: remoteUserId,
-            currentUserId: currentUserId,
-            appointmentId: appointmentId)));
+              data: r,
+              isVideoCall: isVideoCall,
+              name: name,
+              roomId: roomId,
+              remoteUserId: remoteUserId,
+              currentUserId: currentUserId,
+              appointmentId: appointmentId,
+              appointment: appointment,
+            )));
   }
 
   Future<void> updateDeviceToken(String token) async {
