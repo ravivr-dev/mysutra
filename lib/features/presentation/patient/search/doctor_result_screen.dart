@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
+import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/string_keys.dart';
 import 'package:my_sutra/core/utils/utils.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/doctor_entity.dart';
@@ -42,9 +43,8 @@ class DoctorResultScreen extends StatelessWidget {
                 child: component.networkImage(
                   fit: BoxFit.fill,
                   url: doctorEntity.profilePic ?? '',
-                  errorWidget: component.assetImage(
-                    path: Assets.imagesDefaultAvatar,
-                  ),
+                  errorWidget:
+                      component.assetImage(path: Assets.imagesDefaultAvatar),
                 ),
               ),
             ),
@@ -88,8 +88,10 @@ class DoctorResultScreen extends StatelessWidget {
                           context: context,
                           isFollowed: doctorEntity.isFollowing!),
                     )),
-                    component.spacer(width: 12),
-                    Expanded(child: _buildBookAppointmentButton(context)),
+                    if (UserHelper.role == UserRole.patient) ...[
+                      component.spacer(width: 12),
+                      Expanded(child: _buildBookAppointmentButton(context)),
+                    ],
                   ],
                 );
               },
