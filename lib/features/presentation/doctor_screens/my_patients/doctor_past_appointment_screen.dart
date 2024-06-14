@@ -20,9 +20,9 @@ class DoctorPastAppointmentScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _patientInfo(),
-              component.text('+ Add Prescription',
-                  style: theme.publicSansFonts.regularStyle(
-                      fontSize: 14, fontColor: AppColors.color0xFF8338EC)),
+              // component.text('+ Add Prescription',
+              //     style: theme.publicSansFonts.regularStyle(
+              //         fontSize: 14, fontColor: AppColors.color0xFF8338EC)),
               component.spacer(height: 12),
               component.divider(color: AppColors.dividerColor),
               component.spacer(height: 12),

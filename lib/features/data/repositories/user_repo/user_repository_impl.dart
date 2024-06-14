@@ -210,7 +210,8 @@ class UserRepositoryImpl extends UserRepository {
         final result = await remoteDataSource.getHomeData();
         UserHelper.init(role: result.userModel.role);
         localDataSource.setUserRole(result.userModel.role);
-
+        localDataSource
+            .setIsDoctorVerified(result.userModel.isVerified ?? true);
         if (result.userModel.profilePic != null) {
           localDataSource.setUserProfilePic(result.userModel.profilePic!);
         }
