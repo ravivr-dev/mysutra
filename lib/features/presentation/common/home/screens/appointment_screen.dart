@@ -107,8 +107,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
               currentUserId: state.currentUserId,
             ),
           ).then((_) {
-            if (UserHelper.role == UserRole.patient &&
-                _canShowRatingScreen(appointment: state.appointment)) {
+            if (UserHelper.role == UserRole.patient) {
               AiloitteNavigation.intentWithData(
                   context,
                   AppRoutes.rateAppointmentRoute,

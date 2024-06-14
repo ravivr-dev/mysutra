@@ -53,8 +53,6 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
         }
         if (state is VerifyChangeLoadedState) {
           widget.showSuccessToast(context: context, message: state.message);
-          // showOTP = false;
-          // AiloitteNavigation.intent(context, AppRoutes.homeRoute);
           Navigator.of(context).pop();
         } else if (state is VerifyChangeErrorState) {
           widget.showErrorToast(context: context, message: state.message);
