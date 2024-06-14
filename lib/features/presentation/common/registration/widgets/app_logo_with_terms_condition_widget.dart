@@ -15,11 +15,8 @@ class AppLogoWithTermsConditionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          height: 30,
-          child: component.assetImage(
-              path: Assets.iconsLogo1, fit: BoxFit.fitHeight),
-        ),
+        component.assetImage(
+            path: Assets.iconsLogo1, height: 50, width: 100, fit: BoxFit.contain),
         InkWell(
           onTap: () => Utils.openTermsAndConditionPage(),
           child: Text(

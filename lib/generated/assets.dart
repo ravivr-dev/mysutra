@@ -58,7 +58,7 @@ class Assets {
   static const String iconsLms = 'assets/icons/lms.svg';
   static const String iconsLocation = 'assets/icons/location.svg';
   static const String iconsLogo = 'assets/icons/logo.svg';
-  static const String iconsLogo1 = 'assets/icons/logo_1.png';
+  static const String iconsLogo1 = 'assets/icons/logo_1.svg';
   static const String iconsMedal = 'assets/icons/medal.svg';
   static const String iconsMicrophone = 'assets/icons/microphone.svg';
   static const String iconsPayment = 'assets/icons/payment.svg';
