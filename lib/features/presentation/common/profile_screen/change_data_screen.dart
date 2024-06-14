@@ -1,5 +1,6 @@
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/common_widgets/custom_button.dart';
@@ -55,6 +56,8 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
           // showOTP = false;
           // AiloitteNavigation.intent(context, AppRoutes.homeRoute);
           Navigator.of(context).pop();
+        } else if (state is VerifyChangeErrorState) {
+          widget.showErrorToast(context: context, message: state.message);
         }
       },
       builder: (context, state) {
@@ -74,12 +77,14 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                 ? CustomButton(
                     text: 'Confirm',
                     onPressed: () {
-                      if (widget.args.isEmail) {
-                        context.read<ProfileCubit>().verifyChangeEmail(
-                            otp: int.tryParse(_otpCtrl.text)!);
-                      } else {
-                        context.read<ProfileCubit>().verifyChangePhoneNumber(
-                            otp: int.tryParse(_otpCtrl.text)!);
+                      if (_formKey.currentState!.validate()) {
+                        if (widget.args.isEmail) {
+                          context.read<ProfileCubit>().verifyChangeEmail(
+                              otp: int.tryParse(_otpCtrl.text)!);
+                        } else {
+                          context.read<ProfileCubit>().verifyChangePhoneNumber(
+                              otp: int.tryParse(_otpCtrl.text)!);
+                        }
                       }
                     },
                   )
@@ -136,7 +141,6 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                       countryCode: _ccCtrl,
                       controller: _valCtrl,
                       verticalContentPadding: 23,
-                      // horizontalContentPadding: =,
                       borderRadius: 90,
                       textStyle:
                           theme.publicSansFonts.regularStyle(fontSize: 16),
@@ -155,6 +159,15 @@ class _ChangeDataScreenState extends State<ChangeDataScreen> {
                       filled: true,
                       controller: _otpCtrl,
                       autoFocus: true,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(4),
+                      ],
+                      validator: (value) {
+                        if (value.length != 4) {
+                          return 'OTP must be exactly 4 digits';
+                        }
+                        return null;
+                      },
                       style: theme.publicSansFonts.regularStyle(fontSize: 16),
                     ),
                 ],

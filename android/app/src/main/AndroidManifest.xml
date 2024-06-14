@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-        android:label="my_sutra"
+        android:label="My Sutra"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
