@@ -98,6 +98,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
             context,
             AppRoutes.videoCallingRoute,
             VideoCallingArgs(
+              appointment: state.appointment,
               entity: state.data,
               isVideoCall: state.isVideoCall,
               name: state.name,
@@ -173,17 +174,13 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   bool _canJoinAppointment(
       {required AppointmentEntity appointment, String? errorMessage}) {
     final appointmentHours = DateFormat('hh:mm a').parse(appointment.time);
-    debugPrint('appointmentHours : $appointmentHours');
     DateTime appointmentStartTime = DateTime.parse(appointment.date)
         .toUtc()
         .add(Duration(
             hours: appointmentHours.hour, minutes: appointmentHours.minute));
-    debugPrint('appointmentStartTime : $appointmentStartTime');
     final appointmentEndTime =
         appointmentStartTime.add(Duration(minutes: appointment.duration));
-    debugPrint('appointmentEndTime : $appointmentEndTime');
     final now = DateTime.now();
-    debugPrint('currentTime : $now');
 
     if (Utils.isFutureTime(appointmentStartTime)) {
       widget.showErrorToast(
@@ -214,9 +211,8 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
             hours: appointmentHours.hour, minutes: appointmentHours.minute));
     final appointmentEndTime =
         appointmentStartTime.add(Duration(minutes: appointment.duration));
-    final now = DateTime.now();
 
-    if (now.isAfter(appointmentEndTime)) {
+    if (Utils.isPastTime(appointmentEndTime)) {
       return true;
     }
     return false;
