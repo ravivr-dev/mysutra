@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/core/utils/utils.dart';
+import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/user_entities/video_room_response_entity.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_cubit/chat_cubit.dart';
 import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
@@ -329,6 +332,9 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
       final sec = timer.tick - min * 60;
       _timerNotifier.value =
           '${'${min > 0 ? min : '0'}'.padLeft(2, '0')}:${'$sec'.padLeft(2, '0')}';
+      if (_isTimeOver(appointment: widget.args.appointment)) {
+        _room?.end();
+      }
     });
   }
 
@@ -352,6 +358,22 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
     });
   }
 
+  bool _isTimeOver({required AppointmentEntity appointment}) {
+    // print('Starting Time In _IsTimeOver Method ${DateTime.now()}');
+    final appointmentHours = DateFormat('hh:mm a').parse(appointment.time);
+    DateTime appointmentStartTime = DateTime.parse(appointment.date)
+        .toUtc()
+        .add(Duration(
+            hours: appointmentHours.hour, minutes: appointmentHours.minute));
+    final appointmentEndTime =
+        appointmentStartTime.add(Duration(minutes: appointment.duration));
+    // print('Ending Time In _IsTimeOver Method ${DateTime.now()}');
+    if (Utils.isPastTime(appointmentEndTime)) {
+      return true;
+    }
+    return false;
+  }
+
   void _initLocalParticipants() {
     _participants.putIfAbsent(
         _room!.localParticipant.id, () => _room!.localParticipant);
@@ -369,6 +391,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
 
 class VideoCallingArgs {
   VideoRoomResponseEntity entity;
+  AppointmentEntity appointment;
   final bool isVideoCall;
   final String name;
   final String roomId;
@@ -376,6 +399,7 @@ class VideoCallingArgs {
   final String remoteUserId;
 
   VideoCallingArgs({
+    required this.appointment,
     required this.entity,
     required this.name,
     required this.isVideoCall,
