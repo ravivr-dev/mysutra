@@ -5,6 +5,7 @@ import 'package:my_sutra/core/utils/endpoint_constants.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_bank_accounts_model.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_bookings_model.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_withdrawal_model.dart';
+import 'package:my_sutra/features/data/model/doctor_models/patient_appointments_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/success_message_model.dart';
 import 'package:retrofit/http.dart';
@@ -110,4 +111,8 @@ abstract class DoctorClient {
 
   @GET(EndPoints.processingAmount)
   Future<String> getProcessingAmount();
+
+  @GET(EndPoints.patientAppointment)
+  Future<PatientAppointmentsModel> getPatientAppointments(
+      @Queries() Map<String, String> map);
 }

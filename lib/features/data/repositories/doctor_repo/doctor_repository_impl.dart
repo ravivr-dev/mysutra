@@ -20,6 +20,7 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_cancel_
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_available_slots_for_doctor_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/doctor_reschedule_appointment_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/patient_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 import 'package:my_sutra/features/domain/usecases/user_usecases/specialisation_usecase.dart';
 
@@ -357,6 +358,26 @@ class DoctorRepositoryImpl extends DoctorRepository {
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     }
-    ;
+  }
+
+  @override
+  Future<Either<Failure, List<String?>>> getPatientAppointments(
+      GetPatientAppointmentsParams params) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final result = await remoteDataSource.getPatientAppointments({
+          "patientId": params.id,
+          "pagination": params.pageNumber,
+          "limit": params.limit
+        });
+
+        return Right(DoctorRepositoryConv.convertPatientAppontmentModel(
+            result.data ?? []));
+      } else {
+        return const Left(ServerFailure(message: Constants.errorNoInternet));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
   }
 }

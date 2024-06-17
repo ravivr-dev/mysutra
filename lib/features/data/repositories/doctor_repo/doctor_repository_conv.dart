@@ -2,6 +2,7 @@ import 'package:my_sutra/features/data/model/doctor_models/get_bank_accounts_mod
 import 'package:my_sutra/features/data/model/doctor_models/get_bookings_model.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_doctor_appointment_model.dart';
 import 'package:my_sutra/features/data/model/doctor_models/get_withdrawal_model.dart';
+import 'package:my_sutra/features/data/model/doctor_models/patient_appointments_model.dart';
 import 'package:my_sutra/features/data/model/patient_models/available_time_slot.dart';
 import 'package:my_sutra/features/data/model/user_models/following_response_model.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
@@ -144,5 +145,9 @@ class DoctorRepositoryConv {
             timeInMinutes: e.timeInMinutes,
             totalAmount: e.totalAmount))
         .toList();
+  }
+
+  static List<String?> convertPatientAppontmentModel(List<Appointment> data) {
+    return data.map((e) => e.date).toList();
   }
 }
