@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_sutra/core/usecase/usecase.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/activate_deactivate_bank_account_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/add_upi_usecase.dart';

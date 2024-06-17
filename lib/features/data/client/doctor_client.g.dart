@@ -520,7 +520,7 @@ class _DoctorClient implements DoctorClient {
 
   @override
   Future<PatientAppointmentsModel> getPatientAppointments(
-      Map<String, String> map) async {
+      Map<String, dynamic> map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(map);

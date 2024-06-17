@@ -52,7 +52,7 @@ abstract class DoctorDataSource {
   Future<String> getProcessingAmount();
 
   Future<PatientAppointmentsModel> getPatientAppointments(
-      Map<String, String> map);
+      Map<String, dynamic> map);
 }
 
 class DoctorDataSourceImpl extends DoctorDataSource {

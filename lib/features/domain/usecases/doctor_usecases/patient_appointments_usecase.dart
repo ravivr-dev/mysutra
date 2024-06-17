@@ -18,8 +18,8 @@ class PatientAppointmentsUseCase
 
 class GetPatientAppointmentsParams {
   final String id;
-  final String pageNumber;
-  final String limit;
+  final int pageNumber;
+  final int limit;
 
   GetPatientAppointmentsParams({
     required this.id,

@@ -31,6 +31,7 @@ import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart'
 import 'package:my_sutra/features/presentation/common/video_calling/video_calling_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_follower/my_followers_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_following/doctor_my_following_screen.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_patients/cubit/patient_appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/doctor_past_appointment_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/my_patients_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/add_bank_account_screen.dart';
@@ -136,8 +137,7 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
                   providers: [
-                    BlocProvider<HomeCubit>(
-                        create: (_) => sl<HomeCubit>()),
+                    BlocProvider<HomeCubit>(create: (_) => sl<HomeCubit>()),
                     BlocProvider<ChatCubit>(create: (_) => sl<ChatCubit>())
                   ],
                   child: HomeScreen(index: args as int?),
@@ -195,13 +195,18 @@ class Routes {
         );
 
       case AppRoutes.myPatients:
-        final args = settings?.arguments as List<PatientEntity>;
         return MaterialPageRoute(
-            builder: (_) => MyPatientsScreen(patients: args));
+            builder: (_) =>
+                MyPatientsScreen(patients: args as List<PatientEntity>));
 
       case AppRoutes.doctorPastAppointment:
         return MaterialPageRoute(
-            builder: (_) => const DoctorPastAppointmentScreen());
+            builder: (_) => BlocProvider(
+                  create: (context) => sl<PatientAppointmentCubit>(),
+                  child:
+                      DoctorPastAppointmentScreen(data: args as PatientEntity),
+                ));
+
       case AppRoutes.chatScreen:
         final args = settings!.arguments as ChatScreenArgs;
 

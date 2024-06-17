@@ -31,8 +31,11 @@ class _MyPatientsScreenState extends State<MyPatientsScreen> {
           itemBuilder: (context, index) {
             return InkWell(
                 onTap: () {
-                  AiloitteNavigation.intent(
-                      context, AppRoutes.doctorPastAppointment);
+                  AiloitteNavigation.intentWithData(
+                    context,
+                    AppRoutes.doctorPastAppointment,
+                    widget.patients[index],
+                  );
                 },
                 child: _buildPatientInfoCard(widget.patients[index]));
           },

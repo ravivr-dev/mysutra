@@ -114,5 +114,5 @@ abstract class DoctorClient {
 
   @GET(EndPoints.patientAppointment)
   Future<PatientAppointmentsModel> getPatientAppointments(
-      @Queries() Map<String, String> map);
+      @Queries() Map<String, dynamic> map);
 }

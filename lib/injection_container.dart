@@ -60,6 +60,7 @@ import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_patient_us
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_processing_amount_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_time_slots_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/get_withdrawals_usecase.dart';
+import 'package:my_sutra/features/domain/usecases/doctor_usecases/patient_appointments_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_about_or_fees_usecase.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/update_time_slots_usecases.dart';
 import 'package:my_sutra/features/domain/usecases/patient_usecases/cancel_appointment_usecase.dart';
@@ -117,6 +118,7 @@ import 'package:my_sutra/features/presentation/common/login/cubit/otp_cubit.dart
 import 'package:my_sutra/features/presentation/common/login/cubit/select_account_cubit.dart';
 import 'package:my_sutra/features/presentation/common/profile_screen/bloc/profile_cubit.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
+import 'package:my_sutra/features/presentation/doctor_screens/my_patients/cubit/patient_appointment_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/bank_account_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/payment/cubit/earning_cubit.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/setting_screen/bloc/setting_cubit.dart';
@@ -246,6 +248,8 @@ Future<void> init() async {
         getWithdrawalsUseCase: sl<GetWithdrawalsUseCase>(),
         getProcessingAmountUseCase: sl<GetProcessingAmountUseCase>(),
       ));
+  sl.registerFactory(
+      () => PatientAppointmentCubit(sl<PatientAppointmentsUseCase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));
@@ -340,6 +344,7 @@ Future<void> init() async {
   sl.registerFactory(() => LogOutUsecase(sl<UserRepository>()));
   sl.registerFactory(() => GetProcessingAmountUseCase(sl<DoctorRepository>()));
   sl.registerFactory(() => UpdateProfileUsecase(sl<UserRepository>()));
+  sl.registerFactory(() => PatientAppointmentsUseCase(sl<DoctorRepository>()));
 
   /// Repository
   sl.registerLazySingleton<UserRepository>(
