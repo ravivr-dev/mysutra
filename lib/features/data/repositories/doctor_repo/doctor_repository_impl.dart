@@ -8,6 +8,7 @@ import 'package:my_sutra/features/data/repositories/patient_repo/patient_reposit
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/booking_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/patient_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/withdrawal_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
@@ -361,8 +362,8 @@ class DoctorRepositoryImpl extends DoctorRepository {
   }
 
   @override
-  Future<Either<Failure, List<String?>>> getPatientAppointments(
-      GetPatientAppointmentsParams params) async {
+  Future<Either<Failure, List<PatientAppointmentEntity>>>
+      getPatientAppointments(GetPatientAppointmentsParams params) async {
     try {
       if (await networkInfo.isConnected) {
         final result = await remoteDataSource.getPatientAppointments({

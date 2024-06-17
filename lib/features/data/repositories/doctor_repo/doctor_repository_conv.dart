@@ -8,6 +8,7 @@ import 'package:my_sutra/features/data/model/user_models/following_response_mode
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/booking_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_doctor_appointment_entity.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/patient_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/withdrawal_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
@@ -147,7 +148,7 @@ class DoctorRepositoryConv {
         .toList();
   }
 
-  static List<String?> convertPatientAppontmentModel(List<Appointment> data) {
-    return data.map((e) => e.date).toList();
+  static List<PatientAppointmentEntity> convertPatientAppontmentModel(List<Appointment> data) {
+    return data.map((e) => PatientAppointmentEntity(date: e.date, time: e.time) ).toList();
   }
 }

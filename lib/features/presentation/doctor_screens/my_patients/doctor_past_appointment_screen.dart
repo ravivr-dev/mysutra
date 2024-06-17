@@ -1,13 +1,18 @@
+import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
 import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/patient_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
+import 'package:my_sutra/features/domain/entities/user_entities/my_profile_entity.dart';
 import 'package:my_sutra/features/domain/usecases/doctor_usecases/patient_appointments_usecase.dart';
+import 'package:my_sutra/features/presentation/common/chat_screen/chat_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_patients/cubit/patient_appointment_cubit.dart';
 import 'package:my_sutra/generated/assets.dart';
+import 'package:my_sutra/routes/routes_constants.dart';
 
 class DoctorPastAppointmentScreen extends StatefulWidget {
   final PatientEntity data;
@@ -20,8 +25,11 @@ class DoctorPastAppointmentScreen extends StatefulWidget {
 
 class _DoctorPastAppointmentScreenState
     extends State<DoctorPastAppointmentScreen> {
+  late MyProfileEntity profileInfo;
+
   @override
   void initState() {
+    context.read<PatientAppointmentCubit>().getProfileDetails();
     context.read<PatientAppointmentCubit>().getData(
         GetPatientAppointmentsParams(
             id: widget.data.id, pageNumber: 1, limit: 100));
@@ -39,11 +47,17 @@ class _DoctorPastAppointmentScreenState
           listener: (_, state) {
             if (state is PatientAppointmentError) {
               widget.showErrorToast(context: _, message: state.error);
+            } else if (state is PatientAppointmentProfile) {
+              profileInfo = state.data;
             }
           },
           builder: (_, state) {
-            List<String?> appointments =
+            List<PatientAppointmentEntity> appointments =
                 _.read<PatientAppointmentCubit>().appointments;
+
+            if (state is PatientAppointmentLoading) {
+              const Center(child: CircularProgressIndicator());
+            }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -111,7 +125,7 @@ class _DoctorPastAppointmentScreenState
     );
   }
 
-  Widget _appointmentCard(String? date) {
+  Widget _appointmentCard(PatientAppointmentEntity data) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -119,16 +133,42 @@ class _DoctorPastAppointmentScreenState
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            date != null
-                ? DateFormat('dd MMM yyyy').format(DateTime.parse(date))
-                : '--',
+            "${data.date != null ? DateFormat('dd MMM yyyy').format(DateTime.parse(data.date!)) : '--'}  ${data.time}",
             style: theme.publicSansFonts
                 .regularStyle(fontColor: AppColors.color09, fontSize: 14),
           ),
+          InkWell(
+            onTap: () => _goToChatScreen(),
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(6)),
+              child: component.assetImage(
+                  path: Assets.iconsChat, color: AppColors.white),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  void _goToChatScreen() {
+    AiloitteNavigation.intentWithData(
+      context,
+      AppRoutes.chatScreen,
+      ChatScreenArgs(
+          roomId: '${profileInfo.id}${widget.data.id}',
+          username: widget.data.userName ?? '',
+          currentUserId: profileInfo.id ?? '',
+          profilePic: widget.data.profilePic,
+          remoteUserId: widget.data.id,
+          showChatHistory: true,
+          date: " "),
     );
   }
 }

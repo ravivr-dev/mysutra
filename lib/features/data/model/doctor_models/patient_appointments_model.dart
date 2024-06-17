@@ -54,14 +54,17 @@ class PatientDetails {
 class Appointment {
   String? id;
   String? date;
+   String? time;
 
   Appointment({
     this.id,
     this.date,
+    this.time,
   });
 
   Appointment.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     date = json['date'];
+    time = json['time'];
   }
 }

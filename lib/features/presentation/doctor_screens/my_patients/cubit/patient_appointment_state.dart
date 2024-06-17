@@ -13,3 +13,9 @@ final class PatientAppointmentError extends PatientAppointmentState {
 }
 
 final class PatientAppointmentLoaded extends PatientAppointmentState {}
+
+final class PatientAppointmentProfile extends PatientAppointmentState {
+  final MyProfileEntity data;
+
+  PatientAppointmentProfile({required this.data});
+}

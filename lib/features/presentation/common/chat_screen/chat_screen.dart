@@ -546,6 +546,7 @@ class ChatScreenArgs {
   final String? profilePic;
   final String remoteUserId;
   final bool showBackButton;
+  final String? date;
 
   ///if this flag is try than we will not allow current user to chat
   final bool showChatHistory;
@@ -558,5 +559,6 @@ class ChatScreenArgs {
     required this.remoteUserId,
     this.showChatHistory = false,
     this.showBackButton = true,
+    this.date,
   });
 }

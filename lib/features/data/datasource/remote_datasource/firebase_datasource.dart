@@ -19,7 +19,7 @@ class FirebaseDataSourceImpl extends FirebaseDataSource {
         .collection('chat')
         .doc(roomId)
         .collection('message')
-        .orderBy('time',descending: true)
+        .orderBy('time', descending: true)
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }

@@ -248,8 +248,8 @@ Future<void> init() async {
         getWithdrawalsUseCase: sl<GetWithdrawalsUseCase>(),
         getProcessingAmountUseCase: sl<GetProcessingAmountUseCase>(),
       ));
-  sl.registerFactory(
-      () => PatientAppointmentCubit(sl<PatientAppointmentsUseCase>()));
+  sl.registerFactory(() => PatientAppointmentCubit(
+      sl<PatientAppointmentsUseCase>(), sl<GetProfileDetailsUseCase>()));
 
   // UseCases
   sl.registerLazySingleton(() => LoginUsecase(sl<UserRepository>()));

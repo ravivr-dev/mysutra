@@ -3,6 +3,7 @@ import 'package:my_sutra/core/error/failures.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/bank_account_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/booking_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/get_time_slots_response_data_entity.dart';
+import 'package:my_sutra/features/domain/entities/doctor_entities/patient_appointment_entity.dart';
 import 'package:my_sutra/features/domain/entities/doctor_entities/withdrawal_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/available_time_slot_entity.dart';
 import 'package:my_sutra/features/domain/entities/patient_entities/patient_entity.dart';
@@ -71,6 +72,6 @@ abstract class DoctorRepository {
 
   Future<Either<Failure, String>> getProcessingAmount();
 
-  Future<Either<Failure, List<String?>>> getPatientAppointments(
+  Future<Either<Failure, List<PatientAppointmentEntity>>> getPatientAppointments(
       GetPatientAppointmentsParams params);
 }
