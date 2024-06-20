@@ -42,7 +42,6 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
                   .mediumStyle(fontSize: 20, fontColor: AppColors.blackColor),
             ),
             const SizedBox(height: 16),
-
             Container(
               height: 70,
               width: double.maxFinite,
@@ -80,12 +79,6 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
                 ],
               ),
             ),
-
-            // TextFormFieldWidget(
-            //   prefix: const Text('₹'),
-            //   borderRadius: 40,
-            //   controller: _ctrl,
-            // ),
             const SizedBox(height: 16),
             RichText(
               softWrap: true,
@@ -114,7 +107,12 @@ class _WithDrawBalanceScreenState extends State<WithDrawBalanceScreen> {
               text: "Add Withdraw Request",
               onPressed: () {
                 int val = int.parse(_ctrl.text);
-                if (val > 999) {
+                if (val > widget.amount) {
+                  widget.showErrorToast(
+                      context: context,
+                      message:
+                          'Exceeded your current withdrawal limit, i.e ${widget.amount}');
+                } else if (val > 999) {
                   AiloitteNavigation.intentWithData(context,
                       AppRoutes.selectBankAccountRoute, int.parse(_ctrl.text));
                 } else {

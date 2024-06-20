@@ -2,6 +2,7 @@ import 'package:ailoitte_components/ailoitte_components.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UploadImageBottomSheet extends StatefulWidget {
   final bool showRemovePhoto;
@@ -55,6 +56,10 @@ class _UploadImageBottomSheetState extends State<UploadImageBottomSheet> {
                 ],
                 GestureDetector(
                   onTap: () async {
+                    bool permission = await requestCameraPermission();
+                    if (!permission) {
+                      return;
+                    }
                     XFile? image =
                         await picker.pickImage(source: ImageSource.camera);
                     widget.onChange(image);
@@ -110,5 +115,26 @@ class _UploadImageBottomSheetState extends State<UploadImageBottomSheet> {
         ],
       ),
     );
+  }
+
+  Future<bool> requestCameraPermission() async {
+    const permission = Permission.camera;
+
+    if (!(await permission.isGranted)) {
+      await permission.request();
+      if (!(await permission.isGranted)) {
+        await permission.request();
+      }
+      if (await permission.isPermanentlyDenied) {
+        await openAppSettings();
+      }
+      if (!(await permission.isGranted)) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
   }
 }
