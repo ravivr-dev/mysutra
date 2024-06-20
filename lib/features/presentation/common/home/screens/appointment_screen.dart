@@ -48,6 +48,7 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
   final List<AppointmentEntity> _appointments = [];
   final ScrollController _scrollController = ScrollController();
   int _page = 1;
+  bool isCalling = false;
 
   ///This is for pagination
   bool _isLoading = false;
@@ -115,9 +116,13 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
                       appointmentId: state.appointmentId,
                       doctorId: state.remoteUserId));
             }
+            isCalling = false;
           });
         } else if (state is GetVideoRoomErrorState) {
+          isCalling = false;
           widget.showErrorToast(context: context, message: state.message);
+        } else if (state is GetVideoRoomSuccessState) {
+          isCalling = false;
         }
       },
       buildWhen: (previousState, newState) =>
@@ -156,16 +161,23 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
         component.spacer(width: 8),
         _buildCallingRowItem(
             icon: Assets.iconsPhone,
-            onTap: () => _onVideoCallClick(
-                appointment: appointment,
-                isVideoCall: false,
-                isDoctor: isDoctor)),
+            onTap: () {
+              if (!isCalling) {
+                _onVideoCallClick(
+                    appointment: appointment,
+                    isVideoCall: false,
+                    isDoctor: isDoctor);
+              }
+            }),
         component.spacer(width: 8),
         _buildCallingRowItem(
             icon: Assets.iconsVideo2,
             color: AppColors.color0xFF8338EC,
-            onTap: () => _onVideoCallClick(
-                appointment: appointment, isDoctor: isDoctor)),
+            onTap: () {
+              if (!isCalling) {
+                _onVideoCallClick(appointment: appointment, isDoctor: isDoctor);
+              }
+            }),
       ],
     );
   }
@@ -185,6 +197,9 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       widget.showErrorToast(
           context: context,
           message: errorMessage ?? "Can't join call before time");
+      setState(() {
+        isCalling = false;
+      });
       return false;
     } else if (now.hour > appointmentEndTime.hour ||
         (now.hour == appointmentEndTime.hour &&
@@ -193,12 +208,18 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       debugPrint(appointmentHours.toString());
       widget.showErrorToast(
           context: context, message: 'Appointment time has finished');
+      setState(() {
+        isCalling = false;
+      });
       return false;
     } else if (now.hour < appointmentEndTime.hour ||
         (now.hour == appointmentEndTime.hour &&
             now.minute < appointmentEndTime.minute)) {
       return true;
     }
+    setState(() {
+      isCalling = false;
+    });
     return false;
   }
 
@@ -221,6 +242,9 @@ abstract class _AppointmentScreenState extends State<AppointmentScreen> {
       {required AppointmentEntity appointment,
       bool isVideoCall = true,
       required bool isDoctor}) {
+    setState(() {
+      isCalling = true;
+    });
     if (_canJoinAppointment(appointment: appointment)) {
       _callVideoSdkRoomApi(
         appointment,

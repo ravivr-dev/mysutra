@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:my_sutra/ailoitte_component_injector.dart';
+import 'package:my_sutra/core/extension/widget_ext.dart';
 import 'package:my_sutra/core/models/user_helper.dart';
 import 'package:my_sutra/core/utils/app_colors.dart';
 import 'package:my_sutra/core/utils/utils.dart';
@@ -37,6 +38,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
   final ValueNotifier<String> _timerNotifier = ValueNotifier('00:00');
   late Timer _timer;
   bool _isChatEnabled = false;
+  DateTime now = DateTime.now();
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
       camEnabled: widget.args.isVideoCall,
       token: widget.args.entity.videoSdkToken,
     );
+    _showWarningBefore5mis(widget.args.appointment.time);
     _initRoomListener();
     _initLocalParticipants();
     _room!.join();
@@ -61,6 +64,23 @@ class _VideoCallingScreenState extends State<VideoCallingScreen> {
     _timerNotifier.dispose();
     WakelockPlus.disable();
     super.dispose();
+  }
+
+  _showWarningBefore5mis(String givenTime) {
+    DateTime parsedTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        int.parse(givenTime.split(':')[0]) +
+            (givenTime.contains("PM") ? 12 : 0),
+        int.parse(givenTime.split(':')[1].split(' ')[0]));
+    DateTime targetTime = parsedTime.add(const Duration(minutes: 25));
+    Duration duration = targetTime.difference(now);
+    Timer(duration, _showWarningMessage);
+  }
+
+  void _showWarningMessage() {
+    widget.showErrorToast(context: context, message: "5 mins left");
   }
 
   @override
