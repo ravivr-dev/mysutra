@@ -52,13 +52,22 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCbWp-3cZXqsOnpZCVRnHZkvc5K6sA-2ao',
-    appId: '1:301342070628:android:b606cc7bf06f32cd490c71',
+    appId: '1:301342070628:android:c224eeb667cf049c490c71',
     messagingSenderId: '301342070628',
     projectId: 'mysutra-da737',
     storageBucket: 'mysutra-da737.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDnLoJRY0YeKip-j-NH-0vMo28JiBYGR6c',
+    appId: '1:301342070628:ios:a7e97bab4ee572af490c71',
+    messagingSenderId: '301342070628',
+    projectId: 'mysutra-da737',
+    storageBucket: 'mysutra-da737.appspot.com',
+    iosBundleId: 'com.mysutra',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDnLoJRY0YeKip-j-NH-0vMo28JiBYGR6c',
     appId: '1:301342070628:ios:7068652c3b3fe62f490c71',
     messagingSenderId: '301342070628',
@@ -67,22 +76,14 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.mySutra',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB3R1gg4VcfcpnsHuM0ZE52M49byzK5U00',
-    appId: '1:985473802548:ios:5a8f3d870b31ce66c40561',
-    messagingSenderId: '985473802548',
-    projectId: 'mysutra-2c963',
-    storageBucket: 'mysutra-2c963.appspot.com',
-    iosBundleId: 'com.example.mySutra',
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyC1OW4Hw-_0ik7lLg84WNNEwjzTqGUS8Zs',
+    appId: '1:301342070628:web:1f5c451fef5b8bea490c71',
+    messagingSenderId: '301342070628',
+    projectId: 'mysutra-da737',
+    authDomain: 'mysutra-da737.firebaseapp.com',
+    storageBucket: 'mysutra-da737.appspot.com',
+    measurementId: 'G-DZL6W0N9EM',
   );
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCu_F63iUt-9g-lg5UMrzfpEGddAU2Dp1w',
-    appId: '1:985473802548:web:291872761318e855c40561',
-    messagingSenderId: '985473802548',
-    projectId: 'mysutra-2c963',
-    authDomain: 'mysutra-2c963.firebaseapp.com',
-    storageBucket: 'mysutra-2c963.appspot.com',
-    measurementId: 'G-JMFC2MGSGQ',
-  );
 }

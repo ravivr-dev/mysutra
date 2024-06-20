@@ -1,4 +1,4 @@
-package com.example.my_sutra
+package com.mysutra
 
 import io.flutter.embedding.android.FlutterActivity
 
