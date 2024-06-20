@@ -60,6 +60,7 @@ class AppRoutes {
   static const String addUpiIdRoute = '/add_upi_id_screen';
   static const String withdrawBalanceRoute = '/withdraw_balance_screen';
   static const String selectBankAccountRoute = '/select_bank_account_screen';
+  static const String waitingRoute = '/waiting_screen';
 
   static const String rateAppointmentRoute =
       '/patient/widget/rate_appointment_screen';

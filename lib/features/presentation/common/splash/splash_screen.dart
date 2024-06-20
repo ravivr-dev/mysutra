@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, MainState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is LoggedIn) {
           final totalAccount = localDataSource.getTotalUserAccounts;
           final isAccountSelected = localDataSource.getIsAccountSelected;
@@ -62,12 +62,14 @@ class _SplashScreenState extends State<SplashScreen> {
             UserHelper.init(role: role);
             if (UserRole.getUserRole(role) == UserRole.doctor &&
                 !localDataSource.getIsDoctorVerified) {
-              context.showBottomSheet(
+              await context.showBottomSheet(
                 BlocProvider(
                   create: (_) => sl<HomeCubit>(),
                   child: const VerificationPendingBottomSheet(),
                 ),
               );
+              AiloitteNavigation.intentWithClearAllRoutes(
+                  context, AppRoutes.waitingRoute);
               return;
             }
             AiloitteNavigation.intentWithClearAllRoutes(

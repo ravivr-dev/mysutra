@@ -27,6 +27,7 @@ import 'package:my_sutra/features/presentation/common/profile_screen/my_profile_
 import 'package:my_sutra/features/presentation/common/registration/choose_account_type_scree.dart';
 import 'package:my_sutra/features/presentation/common/registration/create_account_screen.dart';
 import 'package:my_sutra/features/presentation/common/registration/cubit/registration_cubit.dart';
+import 'package:my_sutra/features/presentation/common/splash/doctor_waiting_screen.dart';
 import 'package:my_sutra/features/presentation/common/splash/splash_screen.dart';
 import 'package:my_sutra/features/presentation/common/video_calling/video_calling_screen.dart';
 import 'package:my_sutra/features/presentation/doctor_screens/my_follower/my_followers_screen.dart';
@@ -80,6 +81,11 @@ class Routes {
           ),
         );
 
+      case AppRoutes.waitingRoute:
+        return MaterialPageRoute(
+          builder: (_) => const DoctorsWaitingRoute(),
+        );
+
       case AppRoutes.chooseAccountTypeRoute:
         return MaterialPageRoute(
           builder: (_) => const ChooseAccountTypeScreen(),
@@ -109,11 +115,6 @@ class Routes {
         return MaterialPageRoute(
           builder: (_) => const FindDoctorScreen(),
         );
-
-      // case AppRoutes.searchDoctorRoute:
-      //   return MaterialPageRoute(
-      //     builder: (_) => const AppointmentScreen(),
-      //   );
 
       case AppRoutes.searchResultRoute:
         final args = settings?.arguments as SearchResultArgs?;
