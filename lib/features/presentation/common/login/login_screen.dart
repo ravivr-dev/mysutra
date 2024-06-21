@@ -85,6 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: context.stringForKey(StringKeys.loginWithOTP),
                         isLoading: state is LoginLoading,
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           if (_mobCtrl.text == "" ||
                               _mobCtrl.text.length != 10) {
                             widget.showErrorToast(

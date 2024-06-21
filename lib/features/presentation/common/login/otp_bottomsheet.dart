@@ -128,6 +128,7 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                           const SizedBox(height: 20),
                           InkWell(
                             onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               if (_timeCounter.value <= 0) {
                                 _timeCounter.value = timerInitVal;
                                 resendOtpTimer();
@@ -157,12 +158,14 @@ class _OtpBottomsheetState extends State<OtpBottomsheet> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 31),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 19, vertical: 31),
                     child: SafeArea(
                       child: CustomButton(
                         isLoading: state is OtpLoading,
                         text: context.stringForKey(StringKeys.verify),
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           if (_otpController.text.length == 4) {
                             context
                                 .read<OtpCubit>()
