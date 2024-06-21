@@ -79,7 +79,7 @@ class _ChooseAccountTypeScreenState extends State<ChooseAccountTypeScreen> {
                     ),
                   ),
                 ),
-              )
+              ), const SizedBox(height: 50),
             ],
           ),
         ),
