@@ -21,15 +21,18 @@ class UserFollowWidget extends StatefulWidget {
   final bool isFollowing;
   final bool isPost;
   final Function(bool)? userFollowing;
+  final Function()? refresh;
 
-  const UserFollowWidget(
-      {super.key,
-      required this.userIdEntity,
-      required this.isMyPost,
-      required this.isFollowing,
-      this.postId,
-      this.isPost = true,
-      this.userFollowing});
+  const UserFollowWidget({
+    super.key,
+    required this.userIdEntity,
+    required this.isMyPost,
+    required this.isFollowing,
+    this.postId,
+    this.isPost = true,
+    this.userFollowing,
+    this.refresh,
+  });
 
   @override
   State<UserFollowWidget> createState() => _UserFollowWidgetState();
@@ -128,20 +131,23 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
             )),
             if (widget.isPost) ...[
               InkWell(
-                onTap: () => context.showBottomSheet(widget.isMyPost
-                    ? BlocProvider<PostsCubit>(
-                        create: (context) => sl<PostsCubit>(),
-                        child:
-                            EditOrDeletePostBottomSheet(postId: widget.postId!),
-                      )
-                    : BlocProvider<SearchDoctorCubit>(
-                        create: (context) => sl<SearchDoctorCubit>(),
-                        child: ViewProfileOrReportBottomSheet(
-                          postId: widget.postId!,
-                          userId: widget.userIdEntity.id!,
-                          userRole: widget.userIdEntity.role!,
-                        ),
-                      )),
+                onTap: () {
+                  context.showBottomSheet(widget.isMyPost
+                      ? BlocProvider<PostsCubit>(
+                          create: (context) => sl<PostsCubit>(),
+                          child: EditOrDeletePostBottomSheet(
+                              postId: widget.postId!),
+                        )
+                      : BlocProvider<SearchDoctorCubit>(
+                          create: (context) => sl<SearchDoctorCubit>(),
+                          child: ViewProfileOrReportBottomSheet(
+                            postId: widget.postId!,
+                            userId: widget.userIdEntity.id!,
+                            userRole: widget.userIdEntity.role!,
+                            refresh: () => widget.refresh?.call(),
+                          ),
+                        ));
+                },
                 child: const Icon(
                   Icons.more_vert,
                   color: AppColors.color0xFF292D32,

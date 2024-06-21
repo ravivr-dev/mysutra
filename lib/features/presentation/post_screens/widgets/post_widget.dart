@@ -17,9 +17,10 @@ import 'package:my_sutra/routes/routes_constants.dart';
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
   final VoidCallback onTapShare;
+  final Function() refresh;
 
   const PostWidget(
-      {super.key, required this.postEntity, required this.onTapShare});
+      {super.key, required this.postEntity, required this.onTapShare, required this.refresh});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -59,6 +60,7 @@ class _PostWidgetState extends State<PostWidget> {
                     widget.postEntity.reInitIsFollowing();
                   });
                 },
+               refresh: widget.refresh,
               ),
               component.spacer(height: 10),
               component.text(

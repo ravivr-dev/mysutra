@@ -15,21 +15,27 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
   final String userId;
   final String postId;
   final String userRole;
+  final Function() refresh;
 
-  const ViewProfileOrReportBottomSheet(
-      {super.key,
-      required this.postId,
-      required this.userId,
-      required this.userRole});
+  const ViewProfileOrReportBottomSheet({
+    super.key,
+    required this.postId,
+    required this.userId,
+    required this.userRole,
+    required this.refresh,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<SearchDoctorCubit, SearchDoctorState>(
-      listener: (context, state) {
+      listener: (_, state) async {
         if (state is GetDoctorDetailsSuccessState) {
-          AiloitteNavigation.back(context);
-          Navigator.pushNamed(context, AppRoutes.doctorDetail,
+          await Navigator.pushNamed(context, AppRoutes.doctorDetail,
               arguments: state.doctorEntity);
+          refresh.call();
+          if (context.mounted) {
+            AiloitteNavigation.back(context);
+          }
         }
       },
       child: Container(
@@ -53,7 +59,6 @@ class ViewProfileOrReportBottomSheet extends StatelessWidget {
               const Divider(color: AppColors.color0xFFEAECF0),
             ],
             _buildRow(context, onTap: () {
-              Navigator.pop(context);
               context.showBottomSheet(
                 BlocProvider(
                   create: (context) => sl<PostsCubit>(),

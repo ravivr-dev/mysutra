@@ -345,28 +345,6 @@ class _PostScreenState extends State<PostScreen> {
                         ],
                       ],
                     ),
-                    // component.spacer(height: 12),
-                    // Row(
-                    //   children: [
-                    //     LikeDislikeButtonWidget(
-                    //       isLiked: false,
-                    //       onTap: () {},
-                    //       likeCount: postDetail!.postId!.totalLikes,
-                    //     ),
-                    //     component.spacer(width: 10),
-                    //     CommentButtonWidget(
-                    //       commentCount:
-                    //       postDetail!.postId!.totalComments,
-                    //       postId: postDetail!.postId!.id,
-                    //       onTap: () {},
-                    //     ),
-                    //     const Spacer(),
-                    //     ShareButtonWidget(
-                    //       shareCount: postDetail!.postId!.totalShares,
-                    //       onTap: () {},
-                    //     ),
-                    //   ],
-                    // )
                   ],
                 ),
               ),

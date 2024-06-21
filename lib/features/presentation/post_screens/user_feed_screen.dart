@@ -9,7 +9,6 @@ import 'package:my_sutra/features/presentation/post_screens/cubit/posts_cubit.da
 import 'package:my_sutra/features/presentation/post_screens/widgets/post_widget.dart';
 import 'package:my_sutra/generated/assets.dart';
 import 'package:my_sutra/routes/routes_constants.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserFeedScreen extends StatefulWidget {
   const UserFeedScreen({super.key});
@@ -21,7 +20,7 @@ class UserFeedScreen extends StatefulWidget {
 class _UserFeedScreenState extends State<UserFeedScreen> {
   List<PostEntity> posts = [];
   final ScrollController _scrollCtrl = ScrollController();
-  final RefreshController _refCtrl = RefreshController();
+  // final RefreshController _refCtrl = RefreshController();
   double boundaryOffset = 0.5;
   int pagination = 1;
   bool noMoreData = false;
@@ -43,20 +42,17 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
     }
   }
 
+  _refreshFeeds() {
+    pagination = 1;
+    posts.clear();
+    _loadPosts();
+  }
+
   @override
   void dispose() {
     _scrollCtrl.removeListener(scrollListener);
     _scrollCtrl.dispose();
     super.dispose();
-  }
-
-  void _refresherControls() {
-    if (_refCtrl.isLoading) {
-      _refCtrl.loadComplete();
-    }
-    if (_refCtrl.isRefresh) {
-      _refCtrl.refreshCompleted();
-    }
   }
 
   @override
@@ -65,7 +61,6 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
       listener: (context, state) {
         if (state is GetPostsLoaded) {
           if (pagination == 1) {
-            _refresherControls();
             posts = state.posts;
           } else {
             posts.addAll(state.posts);
@@ -113,6 +108,7 @@ class _UserFeedScreenState extends State<UserFeedScreen> {
                                           AppRoutes.repostRoute, posts[index])
                                       .then((_) => _loadPosts());
                                 },
+                                refresh: () => _refreshFeeds(),
                               );
                             } else {
                               const SizedBox(height: 20);
