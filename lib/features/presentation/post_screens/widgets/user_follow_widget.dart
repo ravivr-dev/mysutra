@@ -116,14 +116,15 @@ class _UserFollowWidgetState extends State<UserFollowWidget> {
                             : AppColors.color0xFFEBE2FF,
                       ),
                       child: component.text(
-                          isFollowing
-                              ? context.stringForKey(StringKeys.unfollow)
-                              : context.stringForKey(StringKeys.follow),
-                          style: theme.publicSansFonts.mediumStyle(
-                            fontColor: isFollowing
-                                ? AppColors.color0xFF85799E
-                                : AppColors.color0xFF8338EC,
-                          )),
+                        isFollowing
+                            ? context.stringForKey(StringKeys.unfollow)
+                            : context.stringForKey(StringKeys.follow),
+                        style: theme.publicSansFonts.mediumStyle(
+                          fontColor: isFollowing
+                              ? AppColors.color0xFF85799E
+                              : AppColors.color0xFF8338EC,
+                        ),
+                      ),
                     ),
                   ),
                 ],

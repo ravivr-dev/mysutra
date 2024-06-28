@@ -206,13 +206,13 @@ class DoctorResultScreen extends StatelessWidget {
   Widget _buildBookAppointmentButton(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (doctorEntity.id == null) {
-          _showToast(context,
-              message:
-                  'Not about to book appointment with this doctor Please try again');
-          return;
-        }
-        _bookAppointment(context, doctorEntity.id!);
+        // if (doctorEntity.id == null) {
+        //   _showToast(context,
+        //       message:
+        //           'Not about to book appointment with this doctor Please try again');
+        //   return;
+        // }
+        // _bookAppointment(context, doctorEntity.id!);
       },
       child: Container(
         height: 50,
@@ -221,7 +221,9 @@ class DoctorResultScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: AppColors.color0xFF8338EC,
         ),
-        child: component.text('Book Appointment',
+        child: component.text(
+            // 'Book Appointment',
+            'Coming Soon',
             style: theme.publicSansFonts.semiBoldStyle(
               fontSize: 14,
               fontColor: AppColors.white,
